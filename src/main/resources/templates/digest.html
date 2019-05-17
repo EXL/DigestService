@@ -6,16 +6,7 @@
     </head>
     <body>
     <h2>Digests</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Author</th>
-                <th>Group</th>
-                <th>Avatar</th>
-                <th>Date</th>
-                <th>Digest</th>
-            </tr>
-            </thead>
+        <table th:if="${count gt 0}">
             <tbody th:remove="all-but-first">
             <tr th:each="digest : ${digests}">
                 <td th:text="${digest.username}">Username</td>
@@ -26,5 +17,6 @@
             </tr>
             </tbody>
         </table>
+        <h3 th:unless="${count gt 0}" th:text="#{digest.list.empty}"></h3>
     </body>
 </html>

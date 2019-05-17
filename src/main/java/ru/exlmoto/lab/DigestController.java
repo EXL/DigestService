@@ -67,7 +67,7 @@ public class DigestController {
             digestModelFactory.addDigest(username, group, avatar, digestEntity.getDigest(), date);
         }
         model.addAttribute("digests", digestModelFactory.getItems());
-
+        model.addAttribute("count", digestModelFactory.getSize());
         return "digest";
     }
 

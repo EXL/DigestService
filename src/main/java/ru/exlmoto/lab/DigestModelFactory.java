@@ -73,4 +73,8 @@ public class DigestModelFactory {
     public ArrayList<DigestItem> getItems() {
         return items;
     }
+
+    public int getSize() {
+        return items.size();
+    }
 }

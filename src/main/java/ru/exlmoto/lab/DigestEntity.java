@@ -21,7 +21,7 @@ public class DigestEntity {
 
     private Integer author;
 
-    private Integer date;
+    private Long date;
 
     private String digest;
 
@@ -41,11 +41,11 @@ public class DigestEntity {
         this.author = author;
     }
 
-    public Integer getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(Integer date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 

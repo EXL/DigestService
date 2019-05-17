@@ -20,7 +20,7 @@
             <tr th:each="digest : ${digests}">
                 <td th:text="${digest.username}">Username</td>
                 <td th:text="${digest.group}">Group</td>
-                <td th:text="${digest.avatar}">Avatar</td>
+                <td><img width="128px" height="128px" th:title="${digest.username}" th:src="${digest.avatar}" /></td>
                 <td th:text="${digest.date}">Date</td>
                 <td th:text="${digest.message}">Digest</td>
             </tr>

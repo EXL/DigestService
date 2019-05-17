@@ -1,16 +1,41 @@
-plugins {
-    id 'java'
-}
-
-group 'ru'
-version '1.0-Alpha'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+bootJar {
+    baseName = 'ru.exlmoto'
+    version =  '1.0-ALPHA'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.1.4.RELEASE')
+    }
+}
 
 repositories {
+    jcenter()
+    google()
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'org.springframework.boot:spring-boot-devtools'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    compile 'mysql:mysql-connector-java'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

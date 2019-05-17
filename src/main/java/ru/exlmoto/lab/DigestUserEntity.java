@@ -2,6 +2,15 @@ package ru.exlmoto.lab;
 
 import javax.persistence.*;
 
+/*
+    CREATE TABLE `digest_users` (
+        `id` MEDIUMINT(8) unsigned NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(100) NOT NULL,
+        `avatar` MEDIUMTEXT NOT NULL,
+        PRIMARY KEY(`id`)
+    ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=MyISAM;
+ */
+
 @Entity
 @Table(name = "digest_users")
 public class DigestUserEntity {

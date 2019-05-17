@@ -1,6 +1,9 @@
 package ru.exlmoto.lab;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,12 +15,53 @@ public class DigestController {
     private IDigestRepository digestRepository;
 
     @Autowired
-    private IDigestUsersRepository digestUsersRepository;
+    private IDigestUserRepository digestUserRepository;
+
+    @Value("${digest.post.max}")
+    private int postPerPage;
+
+    @Value("${digest.list.admins}")
+    private String[] digestAdmins;
+
+    @Value("${digest.list.coords}")
+    private String[] digestCoords;
+
+    @Value("${digest.list.moders}")
+    private String[] digestModers;
+
+    @Value("${digest.chat.room}")
+    private long chatRoom;
 
     @RequestMapping(path = "/digest")
     public String digest(@RequestParam(name = "page", required = false) String page, Model model) {
-        System.out.println("Cnt 1: " + digestRepository.count() +
-                " Cnt 2: " + digestUsersRepository.count());
+        int pageCount = ((int) digestRepository.count() - 1) / postPerPage;
+
+        int pageCurrent;
+        try {
+            pageCurrent = Integer.valueOf(page);
+        } catch (NumberFormatException nfe) {
+            pageCurrent = pageCount + 1;
+        }
+
+        if (pageCurrent < 1) {
+            pageCurrent = 1;
+        }
+
+        Page<DigestEntity> digestEntities = digestRepository.findAll(PageRequest.of(pageCurrent - 1, postPerPage));
+
+        DigestModelFactory digestModelFactory = new DigestModelFactory();
+
+        for (DigestEntity digestEntity : digestEntities) {
+            String username = String.valueOf(digestEntity.getAuthor());
+            String group = String.valueOf(digestEntity.getAuthor());
+            String avatar = String.valueOf(digestEntity.getAuthor());
+            String date = String.valueOf(digestEntity.getAuthor());
+
+            digestModelFactory.addDigest(username, group, avatar, digestEntity.getDigest(), date);
+        }
+
+        model.addAttribute("digests", digestModelFactory.getItems());
+
         return "digest";
     }
 }

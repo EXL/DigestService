@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <title th:text="#{digest.title}"></title>
+    </head>
+    <body>
+    <h2>Digests</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Author</th>
+                <th>Group</th>
+                <th>Avatar</th>
+                <th>Date</th>
+                <th>Digest</th>
+            </tr>
+            </thead>
+            <tbody th:remove="all-but-first">
+            <tr th:each="digest : ${digests}">
+                <td th:text="${digest.username}">Username</td>
+                <td th:text="${digest.group}">Group</td>
+                <td th:text="${digest.avatar}">Avatar</td>
+                <td th:text="${digest.date}">Date</td>
+                <td th:text="${digest.message}">Digest</td>
+            </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

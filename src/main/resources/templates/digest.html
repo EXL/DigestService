@@ -5,7 +5,6 @@
         <title th:text="#{digest.title}"></title>
     </head>
     <body>
-    <h2>Digests</h2>
         <table th:if="${count gt 0}">
             <tbody th:remove="all-but-first">
             <tr th:each="digest : ${digests}">

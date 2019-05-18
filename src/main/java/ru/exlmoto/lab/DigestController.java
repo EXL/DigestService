@@ -120,19 +120,19 @@ public class DigestController {
     private int getValidHumanCurrentPage(String pageParam, int pageCount) {
         int pageCurrent;
         try {
-            pageCurrent = Integer.valueOf(pageParam);
+            pageCurrent = Integer.valueOf(pageParam) - 1;
         } catch (NumberFormatException nfe) {
-            pageCurrent = pageCount + 1;
+            pageCurrent = pageCount;
         }
 
-        if (pageCurrent < 1) {
-            pageCurrent = 1;
+        if (pageCurrent < 0) {
+            pageCurrent = 0;
         }
 
         if (pageCurrent > pageCount) {
-            pageCurrent = pageCount + 1;
+            pageCurrent = pageCount;
         }
 
-        return pageCurrent - 1;
+        return pageCurrent;
     }
 }

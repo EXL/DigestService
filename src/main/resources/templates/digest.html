@@ -5,7 +5,7 @@
         <title th:text="#{digest.title}"></title>
     </head>
     <body>
-        <div th:insert="~{paginator :: pg}"></div>
+        <div th:replace="~{paginator :: pg}"></div>
         <table th:if="${count gt 0}">
             <tbody th:remove="all-but-first">
             <tr th:each="digest : ${digests}">
@@ -17,7 +17,7 @@
             </tr>
             </tbody>
         </table>
-        <div th:insert="~{paginator :: pg}"></div>
+        <div th:replace="~{paginator :: pg}"></div>
         <h3 th:unless="${count gt 0}" th:text="#{digest.list.empty}"></h3>
     </body>
 </html>

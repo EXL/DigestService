@@ -57,9 +57,10 @@ public class DigestController {
     private String siteLanguage;
 
     @RequestMapping(path = "/digest")
-    public String digest(@RequestParam(name = "page", required = false) String page, Model model) {
+    public String digest(@RequestParam(name = "page", required = false) String page, Model model, GoToPageForm goToPageForm) {
         int pageCount = ((int) digestRepository.count() - 1) / postPerPage;
         int startPage = getValidHumanCurrentPage(page, pageCount);
+        goToPageForm.setPage(null);
         Page<DigestEntity> digestEntities = digestRepository.findAll(PageRequest.of(startPage, postPerPage));
 
         DigestModelFactory digestModelFactory = new DigestModelFactory();
@@ -130,16 +131,13 @@ public class DigestController {
     }
 
     private int getValidHumanCurrentPage(String pageParam, int pageCount) {
-        int pageCurrent;
+        int pageCurrent = pageCount;
         try {
             pageCurrent = Integer.valueOf(pageParam) - 1;
-        } catch (NumberFormatException nfe) {
-            pageCurrent = pageCount;
-        }
+        } catch (NumberFormatException ignored) { }
         if (pageCurrent < 0) {
             pageCurrent = 0;
         }
-
         if (pageCurrent > pageCount) {
             pageCurrent = pageCount;
         }

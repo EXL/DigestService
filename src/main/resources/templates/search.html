@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${@environment.getProperty('digest.site.lang')}">
+    <head>
+        <meta charset="utf-8"/>
+        <title th:text="#{digest.search.title}"></title>
+    </head>
+    <body>
+        <form action="#" th:action="@{/digest/search}" th:object="${searchForm}" method="get">
+            <input type="text" th:field="*{text}" size="10" th:placeholder="#{digest.search.placeholder}" />
+            <input type="submit" th:value="#{digest.search.button}" />
+        </form>
+        <div th:replace="~{paginator :: pg}"></div>
+        <h1 th:text="#{digest.search.results}"></h1>
+        <h1 th:text="#{digest.search.username}"></h1>
+        <table>
+            <tbody th:remove="all-but-first">
+            <tr th:each="el : ${inNames}">
+                <td th:text="${el.username}">Username</td>
+            </tr>
+            </tbody>
+        </table>
+        <h1 th:text="#{digest.search.digest}"></h1>
+        <table>
+            <tbody th:remove="all-but-first">
+            <tr th:each="el : ${inDigests}">
+                <td th:text="${el.digest}">Username</td>
+            </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

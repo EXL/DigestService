@@ -57,7 +57,25 @@ public class DigestController {
     private String siteLanguage;
 
     @RequestMapping(path = "/digest/search")
-    public String search(@RequestParam(name = "text", required = false) String search, Model model) {
+    public String search(@RequestParam(name = "page", required = false) String page,
+                         @RequestParam(name = "text", required = false) String search, Model model, SearchForm form) {
+        int startPage = getValidHumanCurrentPageSearch(page);
+        Iterable<DigestUserEntity> digestUserEntities = digestUserRepository.findByUsernameContainingIgnoreCase(search);
+        Page<DigestEntity> digestEntities = digestRepository.findByDigestContainingIgnoreCase(search,
+                PageRequest.of(startPage, postPerPage));
+        int pageCount = ((int) digestEntities.getTotalElements() - 1) / postPerPage;
+
+        model.addAttribute("inNames", digestUserEntities);
+        model.addAttribute("inDigests", digestEntities);
+
+        // Pagination routine.
+        startPage += 1;
+        model.addAttribute("pageForm", new GoToPageForm("/digest/search"));
+        model.addAttribute("current", startPage);
+        model.addAttribute("all", pageCount + 1);
+        model.addAttribute("startAux", startPage - ((pagePagin / 2) + 1));
+        model.addAttribute("endAux", startPage + (pagePagin / 2));
+
         return "search";
     }
 
@@ -77,7 +95,7 @@ public class DigestController {
         }
         model.addAttribute("digests", digestModelFactory.getItems());
         model.addAttribute("count", digestModelFactory.getSize());
-        model.addAttribute("pageForm", new GoToPageForm());
+        model.addAttribute("pageForm", new GoToPageForm("/digest"));
         model.addAttribute("searchForm", new SearchForm());
 
         // Pagination routine.
@@ -134,6 +152,17 @@ public class DigestController {
         } else {
             return getI18nString("digest.name.unknown");
         }
+    }
+
+    private int getValidHumanCurrentPageSearch(String pageParam) {
+        int pageCurrent = 1;
+        try {
+            pageCurrent = Integer.valueOf(pageParam) - 1;
+        } catch (NumberFormatException ignored) { }
+        if (pageCurrent < 0) {
+            pageCurrent = 0;
+        }
+        return pageCurrent;
     }
 
     private int getValidHumanCurrentPage(String pageParam, int pageCount) {

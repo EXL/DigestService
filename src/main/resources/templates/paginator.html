@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <body>
-        <form action="#" th:action="@{/digest}" th:object="${goToPageForm}" method="get" th:fragment="pg" th:if="${all gt 1}" th:with="start=${startAux lt 0 ? 0 : startAux},end=${endAux gt all ? all : endAux}">
+        <form action="#" th:action="@{/digest}" th:object="${pageForm}" method="get" th:fragment="pg" th:if="${all gt 1}" th:with="start=${startAux lt 0 ? 0 : startAux},end=${endAux gt all ? all : endAux}">
             <span th:text="#{digest.paginator.pages} + ': ' + ${all}"></span>
             <span th:if="${start gt 0}">
                 <a href="#" th:href="@{/digest(page=1)}" th:text="'<<'" th:title="#{digest.paginator.page} + ' 1'"></a>

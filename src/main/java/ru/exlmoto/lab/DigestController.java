@@ -56,11 +56,15 @@ public class DigestController {
     @Value("${digest.site.lang}")
     private String siteLanguage;
 
+    @RequestMapping(path = "/digest/search")
+    public String search(@RequestParam(name = "text", required = false) String search, Model model) {
+        return "search";
+    }
+
     @RequestMapping(path = "/digest")
-    public String digest(@RequestParam(name = "page", required = false) String page, Model model, GoToPageForm goToPageForm) {
+    public String digest(@RequestParam(name = "page", required = false) String page, Model model) {
         int pageCount = ((int) digestRepository.count() - 1) / postPerPage;
         int startPage = getValidHumanCurrentPage(page, pageCount);
-        goToPageForm.setPage(null);
         Page<DigestEntity> digestEntities = digestRepository.findAll(PageRequest.of(startPage, postPerPage));
 
         DigestModelFactory digestModelFactory = new DigestModelFactory();
@@ -73,6 +77,8 @@ public class DigestController {
         }
         model.addAttribute("digests", digestModelFactory.getItems());
         model.addAttribute("count", digestModelFactory.getSize());
+        model.addAttribute("pageForm", new GoToPageForm());
+        model.addAttribute("searchForm", new SearchForm());
 
         // Pagination routine.
         startPage += 1;

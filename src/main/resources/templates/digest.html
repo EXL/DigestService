@@ -5,6 +5,10 @@
         <title th:text="#{digest.title}"></title>
     </head>
     <body>
+        <form th:if="${count gt 0}" action="#" th:action="@{/digest/search}" th:object="${searchForm}" method="get">
+            <input type="text" th:field="*{text}" size="10" th:placeholder="#{digest.search.placeholder}" />
+            <input type="submit" th:value="#{digest.search.button}" />
+        </form>
         <div th:replace="~{paginator :: pg}"></div>
         <table th:if="${count gt 0}">
             <tbody th:remove="all-but-first">

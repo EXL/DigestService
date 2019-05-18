@@ -5,24 +5,7 @@
         <title th:text="#{digest.title}"></title>
     </head>
     <body>
-        <div th:if="${all gt 1}" th:with="start=${startAux lt 0 ? 0 : startAux},end=${endAux gt all ? all : endAux}">
-            <span th:text="#{digest.paginator.pages} + ': ' + ${all}"></span>
-            <span th:if="${start gt 0}">
-                <a href="#" th:href="@{/digest(page=1)}" th:text="'<<'" th:title="#{digest.paginator.page} + ' 1'"></a>
-            </span>
-            <span th:if="${current gt 1}">
-                <a href="#" th:href="@{/digest(page=${current - 1})}" th:text="'<'" th:title="#{digest.paginator.page} + ' ' + ${current - 1}"></a>
-            </span>
-            <span th:each="i : ${#numbers.sequence(start + 1, end)}" th:style="${i == current ? 'background:red' : ''}">
-                <a href="#" th:href="@{/digest(page=${i})}" th:text="' ' + ${i}" th:title="#{digest.paginator.page} + ' ' + ${i}"></a>
-            </span>
-            <span th:if="${current lt all}">
-                <a href="#" th:href="@{/digest(page=${current + 1})}" th:text="'>'" th:title="#{digest.paginator.page} + ' ' + ${current + 1}"></a>
-            </span>
-            <span th:if="${end lt all}">
-                <a href="#" th:href="@{/digest(page=${all})}" th:text="'>>'" th:title="#{digest.paginator.page} + ' ' + ${all}"></a>
-            </span>
-        </div>
+        <div th:insert="~{paginator :: pg}"></div>
         <table th:if="${count gt 0}">
             <tbody th:remove="all-but-first">
             <tr th:each="digest : ${digests}">
@@ -34,24 +17,7 @@
             </tr>
             </tbody>
         </table>
+        <div th:insert="~{paginator :: pg}"></div>
         <h3 th:unless="${count gt 0}" th:text="#{digest.list.empty}"></h3>
-        <div th:if="${all gt 1}" th:with="start=${startAux lt 0 ? 0 : startAux},end=${endAux gt all ? all : endAux}">
-            <span th:text="#{digest.paginator.pages} + ': ' + ${all}"></span>
-            <span th:if="${start gt 0}">
-                <a href="#" th:href="@{/digest(page=1)}" th:text="'<<'" th:title="#{digest.paginator.page} + ' 1'"></a>
-            </span>
-            <span th:if="${current gt 1}">
-                <a href="#" th:href="@{/digest(page=${current - 1})}" th:text="'<'" th:title="#{digest.paginator.page} + ' ' + ${current - 1}"></a>
-            </span>
-            <span th:each="i : ${#numbers.sequence(start + 1, end)}" th:style="${i == current ? 'background:red' : ''}">
-                <a href="#" th:href="@{/digest(page=${i})}" th:text="' ' + ${i}" th:title="#{digest.paginator.page} + ' ' + ${i}"></a>
-            </span>
-            <span th:if="${current lt all}">
-                <a href="#" th:href="@{/digest(page=${current + 1})}" th:text="'>'" th:title="#{digest.paginator.page} + ' ' + ${current + 1}"></a>
-            </span>
-            <span th:if="${end lt all}">
-                <a href="#" th:href="@{/digest(page=${all})}" th:text="'>>'" th:title="#{digest.paginator.page} + ' ' + ${all}"></a>
-            </span>
-        </div>
     </body>
 </html>

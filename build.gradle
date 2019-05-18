@@ -35,6 +35,11 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-devtools'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    compile 'com.vladsch.flexmark:flexmark-all:0.42.6'
+
+    compile 'org.python:jython-standalone:2.7.1'
+    compile 'org.pygments:pygments:2.4.0'
+
     compile 'mysql:mysql-connector-java'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'

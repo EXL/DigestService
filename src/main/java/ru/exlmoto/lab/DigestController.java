@@ -38,6 +38,9 @@ public class DigestController {
     @Value("${digest.post.max}")
     private int postPerPage;
 
+    @Value("${digest.page.pagin}")
+    private int pagePagin;
+
     @Value("${digest.list.admins}")
     private String[] digestAdmins;
 
@@ -55,7 +58,8 @@ public class DigestController {
 
     @RequestMapping(path = "/digest")
     public String digest(@RequestParam(name = "page", required = false) String page, Model model) {
-        int startPage = getValidHumanCurrentPage(page,((int) digestRepository.count() - 1) / postPerPage);
+        int pageCount = ((int) digestRepository.count() - 1) / postPerPage;
+        int startPage = getValidHumanCurrentPage(page, pageCount);
         Page<DigestEntity> digestEntities = digestRepository.findAll(PageRequest.of(startPage, postPerPage));
 
         DigestModelFactory digestModelFactory = new DigestModelFactory();
@@ -68,6 +72,14 @@ public class DigestController {
         }
         model.addAttribute("digests", digestModelFactory.getItems());
         model.addAttribute("count", digestModelFactory.getSize());
+
+        // Pagination routine.
+        startPage += 1;
+        model.addAttribute("current", startPage);
+        model.addAttribute("all", pageCount + 1);
+        model.addAttribute("startAux", startPage - ((pagePagin / 2) + 1));
+        model.addAttribute("endAux", startPage + (pagePagin / 2));
+
         return "digest";
     }
 
@@ -124,7 +136,6 @@ public class DigestController {
         } catch (NumberFormatException nfe) {
             pageCurrent = pageCount;
         }
-
         if (pageCurrent < 0) {
             pageCurrent = 0;
         }
@@ -132,7 +143,6 @@ public class DigestController {
         if (pageCurrent > pageCount) {
             pageCurrent = pageCount;
         }
-
         return pageCurrent;
     }
 }

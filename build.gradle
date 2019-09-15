@@ -42,8 +42,11 @@ dependencies {
 
     compile 'mysql:mysql-connector-java'
 
-    compile 'org.telegram:telegrambots:4.4.0'
-    compile 'org.telegram:telegrambots-spring-boot-starter:4.4.0'
+    //compile group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '4.4.0.1'
+    //compile group: 'org.telegram', name: 'telegrambots', version: '4.4.0.1'
+
+    compile 'org.telegram:telegrambots:4.4.0.1'
+    compile 'org.telegram:telegrambots-spring-boot-starter:4.4.0.1'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

@@ -7,9 +7,10 @@ import ru.exlmoto.digestbot.commands.BotCommand;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 
 @Component
-public class HelloCommand extends BotCommand {
+public class SendCommand extends BotCommand {
+
 	@Override
 	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
-		aDigestBot.sendSimpleMessage(aReceivedMessage.getChatId(), aReceivedMessage.toString());
+
 	}
 }

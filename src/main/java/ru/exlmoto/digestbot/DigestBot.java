@@ -10,12 +10,14 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digestbot.callbacks.SendMessageCallback;
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
+import ru.exlmoto.digestbot.utils.ReceivedMessage;
 
 import java.util.List;
 
@@ -130,10 +132,14 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	private void runCommand(String aCommandName, Update aUpdate) {
-		mBotCommandFactory.getCommand(aCommandName).ifPresent(command -> command.run(this, aUpdate));
+		mBotCommandFactory.getCommand(aCommandName).ifPresent(command -> command.prepare(this, aUpdate));
 	}
 
 	public void loge(String aTextToLog) {
 		mBotLogger.error(aTextToLog);
+	}
+
+	public ReceivedMessage createReceivedMessage(Message aMessage) {
+		return new ReceivedMessage(aMessage, mBotAdmins);
 	}
 }

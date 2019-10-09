@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import ru.exlmoto.digestbot.commands.impl.CoffeeCommand;
 import ru.exlmoto.digestbot.commands.impl.HelloCommand;
 import ru.exlmoto.digestbot.commands.impl.SendCommand;
 
@@ -22,7 +23,7 @@ public class BotCommandFactory {
 		mBotCommandsMap.put("/hi", aApplicationContext.getBean(HelloCommand.class));
 		mBotCommandsMap.put("/send", aApplicationContext.getBean(SendCommand.class));
 		mBotCommandsMap.put("/sticker", aApplicationContext.getBean(SendCommand.class));
-		// mBotCommandsMap.put("/coffee", aApplicationContext.getBean(StickerCommand.class));
+		mBotCommandsMap.put("/coffee", aApplicationContext.getBean(CoffeeCommand.class));
 	}
 
 	public Optional<BotCommand> getCommand(String aCommandName) {

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -107,7 +108,7 @@ public class DigestBot extends TelegramLongPollingBot {
 			lSendMessage.setText(aMessage);
 			executeAsync(lSendMessage, new SendMessageCallback<>(this));
 		} catch (TelegramApiException e) {
-			loge(String.format("Cannot send simple message into '%d' chat: '%s'.", aChatId, e.toString()));
+			loge(String.format("Cannot send message into '%d' chat: '%s'.", aChatId, e.toString()));
 		}
 	}
 
@@ -121,6 +122,17 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public void sendMarkdownMessage(Long aChatId, String aMessage) {
 		sendMessage(aChatId, aMessage, MessageMode.MESSAGE_MARKDOWN);
+	}
+
+	public void sendStickerToChat(Long aChatId, String aStickerId) {
+		try {
+			final SendSticker lSendSticker = new SendSticker();
+			lSendSticker.setChatId(aChatId);
+			lSendSticker.setSticker(aStickerId);
+			execute(lSendSticker);
+		} catch (TelegramApiException e) {
+			loge(String.format("Cannot send sticker '%s' into '%d' chat: '%s'.", aStickerId, aChatId, e.toString()));
+		}
 	}
 
 	private void onCommand(Update aUpdate) {

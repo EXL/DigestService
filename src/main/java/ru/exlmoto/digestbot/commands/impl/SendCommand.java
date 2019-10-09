@@ -9,22 +9,51 @@ import ru.exlmoto.digestbot.utils.ReceivedMessage;
 
 @Component
 public class SendCommand extends BotAdminCommand {
+	private final String SEND_COMMAND = "/send";
+	private final String STICKER_COMMAND = "/sticker";
+
+	/**
+	 * Send command looks like: "/send <chat id> <message>".
+	 * Sticker command looks like: "/sticker <chat id> <sticker id>".
+	 */
 	@Override
 	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
 		String lCommandText = aReceivedMessage.getMessageText();
 		Long lChatId = aReceivedMessage.getChatId();
-		// Send command looks like: "/send <chat id> <message>".
 		final String[] lCommandWithArgs = lCommandText.split(" ");
-		if (lCommandWithArgs.length >= 3) {
+
+		boolean lIsStickerMode = false;
+		boolean lError = false;
+		String lCommand = SEND_COMMAND;
+		if (lCommandWithArgs[0].trim().equals(STICKER_COMMAND)) {
+			lCommand = STICKER_COMMAND;
+			lIsStickerMode = true;
+		}
+
+		if ((!lIsStickerMode && lCommandWithArgs.length >= 3) || (lIsStickerMode && lCommandWithArgs.length == 3)) {
 			// Determine chat id and cut message from command.
 			final String lStringChatId = lCommandWithArgs[1];
-			lChatId = NumberUtils.parseNumber(lStringChatId, Long.class);
-			lCommandText = lCommandText.replaceFirst("/send", "")
-			                           .replaceFirst(lStringChatId, "");
+			try {
+				lChatId = NumberUtils.parseNumber(lStringChatId, Long.class);
+			} catch (NumberFormatException e) {
+				// TODO: Set a normal error message.
+				lError = true;
+				lCommandText = "NumberFormatException Error!";
+			}
+			if (!lError) {
+				lCommandText = lCommandText.replaceFirst(lCommand, "")
+				        .replaceFirst(lStringChatId, "");
+			}
 		} else {
 			// TODO: Set a normal error message.
-			lCommandText = "Error!";
+			lError = true;
+			lCommandText = "Command Format Error!";
 		}
-		aDigestBot.sendSimpleMessage(lChatId, lCommandText);
+
+		if (lIsStickerMode && !lError) {
+			aDigestBot.sendStickerToChat(lChatId, lCommandText.trim());
+		} else {
+			aDigestBot.sendSimpleMessage(lChatId, lCommandText);
+		}
 	}
 }

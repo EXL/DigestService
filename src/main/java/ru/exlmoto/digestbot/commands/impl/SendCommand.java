@@ -4,11 +4,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
 
 import ru.exlmoto.digestbot.DigestBot;
-import ru.exlmoto.digestbot.commands.BotCommand;
+import ru.exlmoto.digestbot.commands.BotAdminCommand;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 
 @Component
-public class SendCommand extends BotCommand {
+public class SendCommand extends BotAdminCommand {
 	@Override
 	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
 		String lCommandText = aReceivedMessage.getMessageText();
@@ -22,7 +22,7 @@ public class SendCommand extends BotCommand {
 			lCommandText = lCommandText.replaceFirst("/send", "")
 			                           .replaceFirst(lStringChatId, "");
 		} else {
-			// TODO: Set normal error message.
+			// TODO: Set a normal error message.
 			lCommandText = "Error!";
 		}
 		aDigestBot.sendSimpleMessage(lChatId, lCommandText);

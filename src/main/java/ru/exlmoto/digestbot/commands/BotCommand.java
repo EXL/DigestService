@@ -6,10 +6,10 @@ import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 
 public abstract class BotCommand {
-	public abstract void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage);
-
 	public void prepare(DigestBot aDigestBot, Update aUpdate) {
-		ReceivedMessage lReceivedMessage = aDigestBot.createReceivedMessage(aUpdate.getMessage());
+		final ReceivedMessage lReceivedMessage = aDigestBot.createReceivedMessage(aUpdate.getMessage());
 		run(aDigestBot, lReceivedMessage);
 	}
+
+	public abstract void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage);
 }

@@ -10,6 +10,7 @@ import ru.exlmoto.digestbot.utils.ReceivedMessage;
 public class HelloCommand extends BotCommand {
 	@Override
 	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
+		// TODO: Set random message as answer.
 		aDigestBot.sendSimpleMessage(aReceivedMessage.getChatId(), aReceivedMessage.toString());
 	}
 }

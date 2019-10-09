@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digestbot.commands.impl.HelloCommand;
+import ru.exlmoto.digestbot.commands.impl.SendCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class BotCommandFactory {
 		mBotCommandsMap = new HashMap<>();
 		mBotCommandsMap.put("/hello", aApplicationContext.getBean(HelloCommand.class));
 		mBotCommandsMap.put("/hi", aApplicationContext.getBean(HelloCommand.class));
+		mBotCommandsMap.put("/send", aApplicationContext.getBean(SendCommand.class));
 	}
 
 	public Optional<BotCommand> getCommand(String aCommandName) {

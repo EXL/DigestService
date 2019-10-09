@@ -1,22 +1,17 @@
 package ru.exlmoto.digestbot.commands.impl;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
 import ru.exlmoto.digestbot.DigestBot;
-import ru.exlmoto.digestbot.annotations.ChatCommand;
-import ru.exlmoto.digestbot.commands.Command;
-import ru.exlmoto.digestbot.commands.CommandsContext;
+import ru.exlmoto.digestbot.commands.BotCommand;
 
 @Component
-@ChatCommand(name = "/hello")
-public class HelloCommand implements Command {
-	private DigestBot mDigestBot;
-
-	public HelloCommand(DigestBot aDigestBot) {
-		this.mDigestBot = aDigestBot;
-	}
-
+public class HelloCommand implements BotCommand {
 	@Override
-	public void execute(CommandsContext aCommandsContext) {
-		this.mDigestBot.sendSimpleMessage(aCommandsContext.getChatId(), aCommandsContext.getText());
+	public void run(DigestBot aDigestBot, Update aUpdate) {
+		final Long lChatId = aUpdate.getMessage().getChatId();
+		
+		aDigestBot.sendSimpleMessage(lChatId, "test");
 	}
 }

@@ -16,6 +16,6 @@ public class CoffeeCommand extends BotCommand {
 
 	@Override
 	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
-		aDigestBot.sendStickerToChat(aReceivedMessage.getChatId(), mCoffeeStickerId);
+		aDigestBot.sendStickerToChat(aReceivedMessage.getChatId(), aReceivedMessage.getMessageId(), mCoffeeStickerId);
 	}
 }

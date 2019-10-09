@@ -11,6 +11,7 @@ public class HelloCommand extends BotAdminCommand {
 	@Override
 	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
 		// TODO: Set random message as answer.
-		aDigestBot.sendSimpleMessage(aReceivedMessage.getChatId(), aReceivedMessage.toString());
+		aDigestBot.sendSimpleMessage(aReceivedMessage.getChatId(),
+		        aReceivedMessage.getMessageId(), aReceivedMessage.toString());
 	}
 }

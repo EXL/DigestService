@@ -51,9 +51,9 @@ public class SendCommand extends BotAdminCommand {
 		}
 
 		if (lIsStickerMode && !lError) {
-			aDigestBot.sendStickerToChat(lChatId, lCommandText.trim());
+			aDigestBot.sendStickerToChat(lChatId, aReceivedMessage.getMessageId(), lCommandText.trim());
 		} else {
-			aDigestBot.sendSimpleMessage(lChatId, lCommandText);
+			aDigestBot.sendSimpleMessage(lChatId, aReceivedMessage.getMessageId(), lCommandText);
 		}
 	}
 }

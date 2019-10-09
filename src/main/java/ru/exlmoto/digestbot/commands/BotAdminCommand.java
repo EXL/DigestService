@@ -13,7 +13,8 @@ public abstract class BotAdminCommand extends BotCommand {
 			run(aDigestBot, lReceivedMessage);
 		} else {
 			// TODO: Set a normal error message.
-			aDigestBot.sendSimpleMessage(lReceivedMessage.getChatId(), "Error: You aren't admin!");
+			aDigestBot.sendSimpleMessage(lReceivedMessage.getChatId(),
+			        lReceivedMessage.getMessageId(),"Error: You aren't admin!");
 		}
 	}
 

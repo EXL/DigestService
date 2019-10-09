@@ -86,10 +86,11 @@ public class DigestBot extends TelegramLongPollingBot {
 		return mBotToken;
 	}
 
-	private void sendMessage(Long aChatId, String aMessage, MessageMode aMessageMode) {
+	private void sendMessage(Long aChatId, Integer aMessageId, String aMessage, MessageMode aMessageMode) {
 		try {
 			SendMessage lSendMessage = new SendMessage();
 			lSendMessage.setChatId(aChatId);
+			lSendMessage.setReplyToMessageId(aMessageId);
 			switch (aMessageMode) {
 				case MESSAGE_SIMPLE:
 				default: {
@@ -112,21 +113,22 @@ public class DigestBot extends TelegramLongPollingBot {
 		}
 	}
 
-	public void sendSimpleMessage(Long aChatId, String aMessage) {
-		sendMessage(aChatId, aMessage, MessageMode.MESSAGE_SIMPLE);
+	public void sendSimpleMessage(Long aChatId, Integer aMessageId, String aMessage) {
+		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_SIMPLE);
 	}
 
-	public void sendHtmlMessage(Long aChatId, String aMessage) {
-		sendMessage(aChatId, aMessage, MessageMode.MESSAGE_HTML);
+	public void sendHtmlMessage(Long aChatId, Integer aMessageId, String aMessage) {
+		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_HTML);
 	}
 
-	public void sendMarkdownMessage(Long aChatId, String aMessage) {
-		sendMessage(aChatId, aMessage, MessageMode.MESSAGE_MARKDOWN);
+	public void sendMarkdownMessage(Long aChatId, Integer aMessageId, String aMessage) {
+		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN);
 	}
 
-	public void sendStickerToChat(Long aChatId, String aStickerId) {
+	public void sendStickerToChat(Long aChatId, Integer aMessageId, String aStickerId) {
 		try {
 			final SendSticker lSendSticker = new SendSticker();
+			lSendSticker.setReplyToMessageId(aMessageId);
 			lSendSticker.setChatId(aChatId);
 			lSendSticker.setSticker(aStickerId);
 			execute(lSendSticker);

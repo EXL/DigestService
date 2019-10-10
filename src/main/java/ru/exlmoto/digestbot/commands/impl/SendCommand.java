@@ -37,7 +37,6 @@ public class SendCommand extends BotAdminCommand {
 			final String lStringChatId = lCommandWithArgs[1];
 			try {
 				lChatId = NumberUtils.parseNumber(lStringChatId, Long.class);
-				lIsSameChat = aReceivedMessage.getChatId().equals(lChatId);
 			} catch (NumberFormatException e) {
 				lError = true;
 				lCommandText = lLocalizationHelper.getLocalizedString("digestbot.error.chatid");
@@ -54,9 +53,11 @@ public class SendCommand extends BotAdminCommand {
 			        lLocalizationHelper.getLocalizedString("digestbot.error.send.format");
 		}
 
+		lIsSameChat = aReceivedMessage.getChatId().equals(lChatId);
 		if (lIsStickerMode && !lError) {
 			aDigestBot.sendStickerToChat(lChatId,
-			        (lIsSameChat) ? aReceivedMessage.getMessageId() : null, lCommandText.trim());
+			        (lIsSameChat) ? aReceivedMessage.getMessageId() : null,
+			        aReceivedMessage.getChatId(), lCommandText.trim());
 		} else {
 			aDigestBot.sendMarkdownMessage(lChatId,
 			        (lIsSameChat) ? aReceivedMessage.getMessageId() : null, lCommandText);

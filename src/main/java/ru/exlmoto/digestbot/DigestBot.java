@@ -135,7 +135,8 @@ public class DigestBot extends TelegramLongPollingBot {
 		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN);
 	}
 
-	public void sendStickerToChat(final Long aChatId, final Integer aMessageId, final String aStickerId) {
+	public void sendStickerToChat(final Long aChatId, final Integer aMessageId,
+	                              final Long aOriginalChatId, final String aStickerId) {
 		try {
 			final SendSticker lSendSticker = new SendSticker();
 			if (aMessageId != null) {
@@ -145,6 +146,11 @@ public class DigestBot extends TelegramLongPollingBot {
 			lSendSticker.setSticker(aStickerId);
 			execute(lSendSticker);
 		} catch (TelegramApiException e) {
+			if (aOriginalChatId != null) {
+				sendSimpleMessage(aOriginalChatId, aMessageId,
+				        String.format(mLocalizationHelper.getLocalizedString("digestbot.error.sticker"),
+				                aStickerId, aChatId, e.toString()));
+			}
 			loge(String.format("Cannot send sticker '%s' into '%d' chat: '%s'.", aStickerId, aChatId, e.toString()));
 		}
 	}

@@ -1,0 +1,39 @@
+// Send commands:
+
+/send
+/send@DigestTest_bot
+/send wrong-id
+/send@DigestTest_bot wrong-id
+/send wrong-id text
+/send@DigestTest_bot wrong-id text
+/send wrong-id text text
+/send@DigestTest_bot wrong-id text text
+/send 87336977
+/send@DigestTest_bot 87336977
+/send 87336977 text
+/send@DigestTest_bot 87336977 text
+/send 87336977 text text
+/send@DigestTest_bot 87336977 text text
+/send -1001148683293 text
+/send@DigestTest_bot -1001148683293 text
+/send -1001148683293 text text
+/send@DigestTest_bot -1001148683293 text text
+
+/sticker
+/sticker@DigestTest_bot
+/sticker wrong-id
+/sticker@DigestTest_bot wrong-id
+/sticker wrong-id CAADAgADzAEAAhGoNAVFRRJu94qe3gI
+/sticker@DigestTest_bot wrong-id CAADAgADzAEAAhGoNAVFRRJu94qe3gI
+/sticker wrong-id CAADAgADzAEAAhGoNAVFRRJu94qe3gI text
+/sticker@DigestTest_bot wrong-id CAADAgADzAEAAhGoNAVFRRJu94qe3gI text
+/sticker 87336977
+/sticker@DigestTest_bot 87336977
+/sticker 87336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI
+/sticker@DigestTest_bot 87336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI
+/sticker 87336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI text
+/sticker@DigestTest_bot 87336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI text
+/sticker -1001148683293 CAADAgADzAEAAhGoNAVFRRJu94qe3gI
+/sticker@DigestTest_bot -1001148683293 CAADAgADzAEAAhGoNAVFRRJu94qe3gI
+/sticker -1001148683293 CAADAgADzAEAAhGoNAVFRRJu94qe3gI text
+/sticker@DigestTest_bot -1001148683293 CAADAgADzAEAAhGoNAVFRRJu94qe3gI text

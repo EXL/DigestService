@@ -1,5 +1,6 @@
 package ru.exlmoto.digestbot.commands;
 
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import ru.exlmoto.digestbot.DigestBot;
@@ -8,9 +9,10 @@ import ru.exlmoto.utils.LocalizationHelper;
 
 public abstract class BotAdminCommand extends BotCommand {
 	@Override
-	public void prepare(final DigestBot aDigestBot, final Update aUpdate) {
+	public void prepare(final DigestBot aDigestBot, final Update aUpdate, final boolean aIsEdited) {
 		final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
-		final ReceivedMessage lReceivedMessage = aDigestBot.createReceivedMessage(aUpdate.getMessage());
+		final Message lMessage = (aIsEdited) ? aUpdate.getEditedMessage() : aUpdate.getMessage();
+		final ReceivedMessage lReceivedMessage = aDigestBot.createReceivedMessage(lMessage);
 		if (lReceivedMessage.isIsUserAdmin()) {
 			run(aDigestBot, lReceivedMessage);
 		} else {

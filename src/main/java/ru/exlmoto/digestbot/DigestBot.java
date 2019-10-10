@@ -63,7 +63,9 @@ public class DigestBot extends TelegramLongPollingBot {
 	@Override
 	public void onUpdateReceived(final Update aUpdate) {
 		if (aUpdate.hasMessage() && aUpdate.getMessage().isCommand()) {
-			onCommand(aUpdate);
+			onCommand(aUpdate, false);
+		} else if (aUpdate.hasEditedMessage() && aUpdate.getEditedMessage().isCommand()) {
+			onCommand(aUpdate, true);
 		}
 	}
 
@@ -155,16 +157,18 @@ public class DigestBot extends TelegramLongPollingBot {
 		}
 	}
 
-	private void onCommand(final Update aUpdate) {
-		final List<MessageEntity> lEntities = aUpdate.getMessage().getEntities();
+	private void onCommand(final Update aUpdate, final boolean aIsEdited) {
+		final Message lMessage = (aIsEdited) ? aUpdate.getEditedMessage() : aUpdate.getMessage();
+		final List<MessageEntity> lEntities = lMessage.getEntities();
 		lEntities.stream().filter(aMessageEntity ->
 		        aMessageEntity.getType().equals(K_BOT_COMMAND_ENTITY) &&
 		        aMessageEntity.getOffset() == 0)
-		                .forEach(command -> runCommand(command.getText(), aUpdate));
+		                .forEach(command -> runCommand(command.getText(), aUpdate, aIsEdited));
 	}
 
-	private void runCommand(final String aCommandName, final Update aUpdate) {
-		mBotCommandFactory.getCommand(aCommandName).ifPresent(aCommand -> aCommand.prepare(this, aUpdate));
+	private void runCommand(final String aCommandName, final Update aUpdate, final boolean aIsEdited) {
+		mBotCommandFactory.getCommand(aCommandName).ifPresent(
+		        aCommand -> aCommand.prepare(this, aUpdate, aIsEdited));
 	}
 
 	public void loge(final String aTextToLog) {

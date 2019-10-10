@@ -35,14 +35,14 @@
 1. `/digest` -
 2. `/rates` -
 3. `/charts` -
-4. `/start` -
+4. `/start` +
 5. `/coffee` +
 6. `/help` -
-7. `/hi` -
-8. `/hello` -
+7. `/hi` +
+8. `/hello` +
 9. `/delete` -
-10. `/send <chat id> <message>` -
-11. `/sticker <chat id> <sticker id>` -
+10. `/send <chat id> <message>` +
+11. `/sticker <chat id> <sticker id>` +
 12. `/hostip — IP хост-сервера` -
 13. `#digest` -
 14. `#news` -

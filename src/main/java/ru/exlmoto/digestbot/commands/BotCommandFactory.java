@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digestbot.commands.impl.CoffeeCommand;
 import ru.exlmoto.digestbot.commands.impl.HelloCommand;
 import ru.exlmoto.digestbot.commands.impl.SendCommand;
+import ru.exlmoto.digestbot.commands.impl.StartCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class BotCommandFactory {
 		addCommand("/send", mApplicationContext.getBean(SendCommand.class));
 		addCommand("/sticker", mApplicationContext.getBean(SendCommand.class));
 		addCommand("/coffee", mApplicationContext.getBean(CoffeeCommand.class));
+		addCommand("/start", mApplicationContext.getBean(StartCommand.class));
 	}
 
 	/**

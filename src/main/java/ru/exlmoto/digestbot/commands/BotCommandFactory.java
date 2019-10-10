@@ -41,6 +41,7 @@ public class BotCommandFactory {
 		addCommand("/start", mApplicationContext.getBean(StartCommand.class));
 		addCommand("/help", mApplicationContext.getBean(HelpCommand.class));
 		addCommand("/hostip", mApplicationContext.getBean(HostIpCommand.class));
+		addCommand("/game", mApplicationContext.getBean(GameCommand.class));
 	}
 
 	/**

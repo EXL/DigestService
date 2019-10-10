@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
@@ -161,6 +162,27 @@ public class DigestBot extends TelegramLongPollingBot {
 				                aStickerId, aChatId, e.toString()));
 			}
 			loge(String.format("Cannot send sticker '%s' into '%d' chat: '%s'.", aStickerId, aChatId, e.toString()));
+		}
+	}
+
+	public void sendPhotoToChatFromUrl(final Long aChatId, final Integer aMessageId,
+	                                   final Long aOriginalChatId, final String aCaption, final String aImageUrl) {
+		try {
+			final SendPhoto lSendPhoto = new SendPhoto();
+			if (aMessageId != null) {
+				lSendPhoto.setReplyToMessageId(aMessageId);
+			}
+			lSendPhoto.setChatId(aChatId);
+			lSendPhoto.setPhoto(aImageUrl);
+			lSendPhoto.setCaption(aCaption);
+			execute(lSendPhoto);
+		} catch (TelegramApiException e) {
+			if (aOriginalChatId != null) {
+				sendSimpleMessage(aOriginalChatId, aMessageId,
+				        String.format(mLocalizationHelper.getLocalizedString("digestbot.error.image"),
+				                aImageUrl, aChatId, e.toString()));
+			}
+			loge(String.format("Cannot send photo into '%d' chat: '%s'.", aChatId, e.toString()));
 		}
 	}
 

@@ -5,13 +5,18 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotAdminCommand;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
+import ru.exlmoto.utils.LocalizationHelper;
 
 @Component
 public class HelloCommand extends BotAdminCommand {
 	@Override
 	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
-		// TODO: Set random message as answer.
-		aDigestBot.sendSimpleMessage(aReceivedMessage.getChatId(),
-		        aReceivedMessage.getMessageId(), aReceivedMessage.toString());
+		final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
+		aDigestBot.sendSimpleMessage(
+		        aReceivedMessage.getChatId(),
+		        aReceivedMessage.getMessageId(),
+		        lLocalizationHelper.replaceUsernameTagByRealName(
+		                lLocalizationHelper.getRandomLocalizedString("digestbot.command.hello"),
+		                aReceivedMessage.getMessageUsername()));
 	}
 }

@@ -36,7 +36,7 @@
 2. `/rates` -
 3. `/charts` -
 4. `/start` -
-5. `/coffee` -
+5. `/coffee` +
 6. `/help` -
 7. `/hi` -
 8. `/hello` -

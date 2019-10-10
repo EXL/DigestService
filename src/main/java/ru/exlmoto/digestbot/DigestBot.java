@@ -19,12 +19,13 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.exlmoto.digestbot.callbacks.SendMessageCallback;
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
+import ru.exlmoto.utils.LocalizationHelper;
 
 import java.util.List;
 
 @Component
 public class DigestBot extends TelegramLongPollingBot {
-	private final String mBotUserName;
+	private final String mBotUsername;
 	private final String mBotToken;
 	private final String[] mBotAdmins;
 	private final int mBotMaxUpdates;
@@ -32,7 +33,9 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final Logger mBotLogger;
 	private final BotCommandFactory mBotCommandFactory;
 
-	private final String BOT_COMMAND_ENTITY = "bot_command";
+	private final LocalizationHelper mLocalizationHelper;
+
+	private final String K_BOT_COMMAND_ENTITY = "bot_command";
 
 	private enum MessageMode {
 		MESSAGE_SIMPLE,
@@ -41,18 +44,20 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	@Autowired
-	public DigestBot(@Value("${digestbot.name}") String aBotUserName,
+	public DigestBot(@Value("${digestbot.name}") String aBotUsername,
 	                 @Value("${digestbot.token}") String aBotToken,
 	                 @Value("${digestbot.admins}") String[] aBotAdmins,
 	                 @Value("${digestbot.max_updates}") int aBotMaxUpdates,
-	                 BotCommandFactory aBotCommandFactory) {
-		mBotUserName = aBotUserName;
+	                 BotCommandFactory aBotCommandFactory,
+	                 LocalizationHelper aLocalizationHelper) {
+		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
 		mBotMaxUpdates = aBotMaxUpdates;
 
 		mBotLogger = LoggerFactory.getLogger(DigestBot.class);
 		mBotCommandFactory = aBotCommandFactory;
+		mLocalizationHelper = aLocalizationHelper;
 	}
 
 	@Override
@@ -78,7 +83,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	@Override
 	public String getBotUsername() {
-		return mBotUserName;
+		return mBotUsername;
 	}
 
 	@Override
@@ -140,7 +145,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	private void onCommand(Update aUpdate) {
 		final List<MessageEntity> lEntities = aUpdate.getMessage().getEntities();
 		lEntities.stream().filter(messageEntity ->
-		        messageEntity.getType().equals(BOT_COMMAND_ENTITY) &&
+		        messageEntity.getType().equals(K_BOT_COMMAND_ENTITY) &&
 		        messageEntity.getOffset() == 0)
 		                .forEach(command -> runCommand(command.getText(), aUpdate));
 	}
@@ -155,5 +160,9 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public ReceivedMessage createReceivedMessage(Message aMessage) {
 		return new ReceivedMessage(aMessage, mBotAdmins);
+	}
+
+	public LocalizationHelper getLocalizationHelper() {
+		return mLocalizationHelper;
 	}
 }

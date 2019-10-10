@@ -10,9 +10,8 @@ import org.telegram.telegrambots.ApiContextInitializer;
 @PropertySource(value = { "classpath:ru_exlmoto.properties" })
 public class ExlmotoApplication {
     public static void main(String[] args) {
-        /* Initialize Telegram Bot API */
+        // Initialize Telegram Bot API.
         ApiContextInitializer.init();
-
         SpringApplication.run(ExlmotoApplication.class, args);
     }
 }

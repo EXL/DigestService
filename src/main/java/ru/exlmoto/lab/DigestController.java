@@ -108,12 +108,14 @@ public class DigestController {
         return "digest";
     }
 
+    /*
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
         sessionLocaleResolver.setDefaultLocale(Locale.forLanguageTag(siteLanguage));
         return sessionLocaleResolver;
     }
+    */
 
     private String getUserGroup(String username) {
         if (ArrayUtils.contains(digestAdmins, username)) {

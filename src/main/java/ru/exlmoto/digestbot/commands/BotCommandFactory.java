@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digestbot.commands.impl.CoffeeCommand;
-import ru.exlmoto.digestbot.commands.impl.HelloCommand;
-import ru.exlmoto.digestbot.commands.impl.SendCommand;
-import ru.exlmoto.digestbot.commands.impl.StartCommand;
+import ru.exlmoto.digestbot.commands.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +39,7 @@ public class BotCommandFactory {
 		addCommand("/sticker", mApplicationContext.getBean(SendCommand.class));
 		addCommand("/coffee", mApplicationContext.getBean(CoffeeCommand.class));
 		addCommand("/start", mApplicationContext.getBean(StartCommand.class));
+		addCommand("/help", mApplicationContext.getBean(HelpCommand.class));
 	}
 
 	/**

@@ -43,7 +43,7 @@
 9. `/delete` -
 10. `/send <chat id> <message>` +
 11. `/sticker <chat id> <sticker id>` +
-12. `/hostip` -
+12. `/hostip` +
 13. `/game` -
 14. `#digest` -
 15. `#news` -

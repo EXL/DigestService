@@ -10,7 +10,6 @@ import ru.exlmoto.utils.LocalizationHelper;
 
 @Component
 public class SendCommand extends BotAdminCommand {
-	private final String SEND_COMMAND = "/send";
 	private final String STICKER_COMMAND = "/sticker";
 
 	/**
@@ -26,9 +25,7 @@ public class SendCommand extends BotAdminCommand {
 		boolean lIsSameChat = false;
 		boolean lIsStickerMode = false;
 		boolean lError = false;
-		String lCommand = SEND_COMMAND;
 		if (lCommandWithArgs[0].trim().startsWith(STICKER_COMMAND)) {
-			lCommand = STICKER_COMMAND;
 			lIsStickerMode = true;
 		}
 

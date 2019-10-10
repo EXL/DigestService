@@ -28,7 +28,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final String mBotUsername;
 	private final String mBotToken;
 	private final String[] mBotAdmins;
-	private final int mBotMaxUpdates;
+	private final Integer mBotMaxUpdates;
+	private final Integer mBotMaxResponseLength;
 
 	private final Logger mBotLogger;
 	private final BotCommandFactory mBotCommandFactory;
@@ -47,13 +48,15 @@ public class DigestBot extends TelegramLongPollingBot {
 	public DigestBot(@Value("${digestbot.name}") final String aBotUsername,
 	                 @Value("${digestbot.token}") final String aBotToken,
 	                 @Value("${digestbot.admins}") final String[] aBotAdmins,
-	                 @Value("${digestbot.max_updates}") final int aBotMaxUpdates,
+	                 @Value("${digestbot.max_updates}") final Integer aBotMaxUpdates,
+	                 @Value("${digestbot.response.maxsize}") final Integer aBotMaxResponseLength,
 	                 final BotCommandFactory aBotCommandFactory,
 	                 final LocalizationHelper aLocalizationHelper) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
 		mBotMaxUpdates = aBotMaxUpdates;
+		mBotMaxResponseLength = aBotMaxResponseLength;
 
 		mBotLogger = LoggerFactory.getLogger(DigestBot.class);
 		mBotCommandFactory = aBotCommandFactory;
@@ -118,7 +121,11 @@ public class DigestBot extends TelegramLongPollingBot {
 					lSendMessage.enableMarkdown(true);
 				}
 			}
-			lSendMessage.setText(aMessage);
+			String lBotAnswerText = aMessage;
+			if (aMessage.length() > mBotMaxResponseLength) {
+				lBotAnswerText = mLocalizationHelper.getLocalizedString("digestbot.error.response.toolong");
+			}
+			lSendMessage.setText(lBotAnswerText);
 			executeAsync(lSendMessage, new SendMessageCallback<>(this));
 		} catch (TelegramApiException e) {
 			loge(String.format("Cannot send message into '%d' chat: '%s'.", aChatId, e.toString()));

@@ -40,6 +40,7 @@ public class BotCommandFactory {
 		addCommand("/coffee", mApplicationContext.getBean(CoffeeCommand.class));
 		addCommand("/start", mApplicationContext.getBean(StartCommand.class));
 		addCommand("/help", mApplicationContext.getBean(HelpCommand.class));
+		addCommand("/hostip", mApplicationContext.getBean(HostIpCommand.class));
 	}
 
 	/**

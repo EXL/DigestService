@@ -17,7 +17,7 @@ public class SendCommand extends BotAdminCommand {
 	 * Sticker command looks like: "/sticker <chat id> <sticker id>".
 	 */
 	@Override
-	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
+	public void run(final DigestBot aDigestBot, final ReceivedMessage aReceivedMessage) {
 		String lCommandText = aReceivedMessage.getMessageText();
 		Long lChatId = aReceivedMessage.getChatId();
 		final String[] lCommandWithArgs = lCommandText.split(" ");

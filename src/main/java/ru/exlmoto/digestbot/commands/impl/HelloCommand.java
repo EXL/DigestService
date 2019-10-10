@@ -10,7 +10,7 @@ import ru.exlmoto.utils.LocalizationHelper;
 @Component
 public class HelloCommand extends BotAdminCommand {
 	@Override
-	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
+	public void run(final DigestBot aDigestBot, final ReceivedMessage aReceivedMessage) {
 		final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
 		aDigestBot.sendSimpleMessage(
 		        aReceivedMessage.getChatId(),

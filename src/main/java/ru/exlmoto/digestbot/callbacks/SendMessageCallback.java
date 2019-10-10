@@ -11,22 +11,22 @@ import java.io.Serializable;
 public class SendMessageCallback<T extends Serializable> implements SentCallback<T> {
 	private final DigestBot mDigestBot;
 
-	public SendMessageCallback(DigestBot aDigestBot) {
+	public SendMessageCallback(final DigestBot aDigestBot) {
 		mDigestBot = aDigestBot;
 	}
 
 	@Override
-	public void onResult(BotApiMethod<T> aMethod, T aResponse) {
-		// mDigestBot.logi(String.format("Message sent: '%s'.", aResponse.toString()));
+	public void onResult(final BotApiMethod<T> aMethod, final T aResponse) {
+		// mDigestBot.loge(String.format("Message sent: '%s'.", aResponse.toString()));
 	}
 
 	@Override
-	public void onError(BotApiMethod<T> aMethod, TelegramApiRequestException aApiException) {
+	public void onError(final BotApiMethod<T> aMethod, final TelegramApiRequestException aApiException) {
 		mDigestBot.loge(String.format("Error sending message: '%s'.", aApiException.toString()));
 	}
 
 	@Override
-	public void onException(BotApiMethod<T> aMethod, Exception aException) {
+	public void onException(final BotApiMethod<T> aMethod, final Exception aException) {
 		mDigestBot.loge(String.format("Exception on sending message: '%s'.", aException.toString()));
 	}
 }

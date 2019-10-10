@@ -44,12 +44,12 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	@Autowired
-	public DigestBot(@Value("${digestbot.name}") String aBotUsername,
-	                 @Value("${digestbot.token}") String aBotToken,
-	                 @Value("${digestbot.admins}") String[] aBotAdmins,
-	                 @Value("${digestbot.max_updates}") int aBotMaxUpdates,
-	                 BotCommandFactory aBotCommandFactory,
-	                 LocalizationHelper aLocalizationHelper) {
+	public DigestBot(@Value("${digestbot.name}") final String aBotUsername,
+	                 @Value("${digestbot.token}") final String aBotToken,
+	                 @Value("${digestbot.admins}") final String[] aBotAdmins,
+	                 @Value("${digestbot.max_updates}") final int aBotMaxUpdates,
+	                 final BotCommandFactory aBotCommandFactory,
+	                 final LocalizationHelper aLocalizationHelper) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -61,7 +61,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	@Override
-	public void onUpdateReceived(Update aUpdate) {
+	public void onUpdateReceived(final Update aUpdate) {
 		if (aUpdate.hasMessage() && aUpdate.getMessage().isCommand()) {
 			onCommand(aUpdate);
 		}
@@ -73,7 +73,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	 * Default is 30.
 	 */
 	@Override
-	public void onUpdatesReceived(List<Update> aUpdates) {
+	public void onUpdatesReceived(final List<Update> aUpdates) {
 		final int lListSize = aUpdates.size();
 		if (lListSize > mBotMaxUpdates) {
 			aUpdates.subList(0, lListSize - mBotMaxUpdates).clear();
@@ -91,9 +91,12 @@ public class DigestBot extends TelegramLongPollingBot {
 		return mBotToken;
 	}
 
-	private void sendMessage(Long aChatId, Integer aMessageId, String aMessage, MessageMode aMessageMode) {
+	private void sendMessage(final Long aChatId,
+	                         final Integer aMessageId,
+	                         final String aMessage,
+	                         final MessageMode aMessageMode) {
 		try {
-			SendMessage lSendMessage = new SendMessage();
+			final SendMessage lSendMessage = new SendMessage();
 			lSendMessage.setChatId(aChatId);
 			lSendMessage.setReplyToMessageId(aMessageId);
 			switch (aMessageMode) {
@@ -118,19 +121,19 @@ public class DigestBot extends TelegramLongPollingBot {
 		}
 	}
 
-	public void sendSimpleMessage(Long aChatId, Integer aMessageId, String aMessage) {
+	public void sendSimpleMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
 		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_SIMPLE);
 	}
 
-	public void sendHtmlMessage(Long aChatId, Integer aMessageId, String aMessage) {
+	public void sendHtmlMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
 		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_HTML);
 	}
 
-	public void sendMarkdownMessage(Long aChatId, Integer aMessageId, String aMessage) {
+	public void sendMarkdownMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
 		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN);
 	}
 
-	public void sendStickerToChat(Long aChatId, Integer aMessageId, String aStickerId) {
+	public void sendStickerToChat(final Long aChatId, final Integer aMessageId, final String aStickerId) {
 		try {
 			final SendSticker lSendSticker = new SendSticker();
 			lSendSticker.setReplyToMessageId(aMessageId);
@@ -142,23 +145,23 @@ public class DigestBot extends TelegramLongPollingBot {
 		}
 	}
 
-	private void onCommand(Update aUpdate) {
+	private void onCommand(final Update aUpdate) {
 		final List<MessageEntity> lEntities = aUpdate.getMessage().getEntities();
-		lEntities.stream().filter(messageEntity ->
-		        messageEntity.getType().equals(K_BOT_COMMAND_ENTITY) &&
-		        messageEntity.getOffset() == 0)
+		lEntities.stream().filter(aMessageEntity ->
+		        aMessageEntity.getType().equals(K_BOT_COMMAND_ENTITY) &&
+		        aMessageEntity.getOffset() == 0)
 		                .forEach(command -> runCommand(command.getText(), aUpdate));
 	}
 
-	private void runCommand(String aCommandName, Update aUpdate) {
-		mBotCommandFactory.getCommand(aCommandName).ifPresent(command -> command.prepare(this, aUpdate));
+	private void runCommand(final String aCommandName, final Update aUpdate) {
+		mBotCommandFactory.getCommand(aCommandName).ifPresent(aCommand -> aCommand.prepare(this, aUpdate));
 	}
 
-	public void loge(String aTextToLog) {
+	public void loge(final String aTextToLog) {
 		mBotLogger.error(aTextToLog);
 	}
 
-	public ReceivedMessage createReceivedMessage(Message aMessage) {
+	public ReceivedMessage createReceivedMessage(final Message aMessage) {
 		return new ReceivedMessage(aMessage, mBotAdmins);
 	}
 

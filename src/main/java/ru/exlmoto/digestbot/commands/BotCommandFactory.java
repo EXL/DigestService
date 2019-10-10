@@ -23,9 +23,9 @@ public class BotCommandFactory {
 	private final Map<String, BotCommand> mBotCommandsMap;
 
 	@Autowired
-	public BotCommandFactory(ApplicationContext aApplicationContext,
-	                         @Value("${digestbot.name}") String aBotUsername,
-	                         @Value("${general.username.cast}") String aUsernameCast) {
+	public BotCommandFactory(final ApplicationContext aApplicationContext,
+	                         @Value("${digestbot.name}") final String aBotUsername,
+	                         @Value("${general.username.cast}") final String aUsernameCast) {
 		mApplicationContext = aApplicationContext;
 		mBotUsername = aBotUsername;
 		mUsernameCast = aUsernameCast;
@@ -42,16 +42,16 @@ public class BotCommandFactory {
 		addCommand("/coffee", mApplicationContext.getBean(CoffeeCommand.class));
 	}
 
-	public Optional<BotCommand> getCommand(String aCommandName) {
-		return Optional.ofNullable(mBotCommandsMap.get(aCommandName));
-	}
-
 	/**
-	 * The second addition of the command to the table to respond
-	 * to the command with the nickname of the bot, i.e "/hello" and "/hello@Digest_bot".
+	 * The second addition of the same command to the hash table is respond to the command with the bot nickname.
+	 * Example: "/hello" and "/hello@Digest_bot" commands.
 	 */
 	private void addCommand(final String aCommand, final BotCommand aBotCommandClass) {
 		mBotCommandsMap.put(aCommand, aBotCommandClass);
 		mBotCommandsMap.put(aCommand + mUsernameCast + mBotUsername, aBotCommandClass);
+	}
+
+	public Optional<BotCommand> getCommand(String aCommandName) {
+		return Optional.ofNullable(mBotCommandsMap.get(aCommandName));
 	}
 }

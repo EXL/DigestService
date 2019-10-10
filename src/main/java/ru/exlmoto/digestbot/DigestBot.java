@@ -174,7 +174,9 @@ public class DigestBot extends TelegramLongPollingBot {
 			}
 			lSendPhoto.setChatId(aChatId);
 			lSendPhoto.setPhoto(aImageUrl);
-			lSendPhoto.setCaption(aCaption);
+			if (aCaption != null) {
+				lSendPhoto.setCaption(aCaption);
+			}
 			execute(lSendPhoto);
 		} catch (TelegramApiException e) {
 			if (aOriginalChatId != null) {

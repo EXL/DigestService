@@ -9,27 +9,17 @@ import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.utils.LocalizationHelper;
 
 @Component
-public class SendCommand extends BotAdminCommand {
-	private final String STICKER_COMMAND = "/sticker";
-
-	/**
-	 * Send command looks like: "/send <chat id> <message>".
-	 * Sticker command looks like: "/sticker <chat id> <sticker id>".
-	 */
+public class ImageCommand extends BotAdminCommand {
 	@Override
-	public void run(final DigestBot aDigestBot, final ReceivedMessage aReceivedMessage) {
+	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
 		final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
 		String lCommandText = aReceivedMessage.getMessageText();
 		Long lChatId = aReceivedMessage.getChatId();
 		final String[] lCommandWithArgs = lCommandText.split(" ");
 		boolean lIsSameChat = false;
-		boolean lIsStickerMode = false;
 		boolean lError = false;
-		if (lCommandWithArgs[0].startsWith(STICKER_COMMAND)) {
-			lIsStickerMode = true;
-		}
 
-		if ((!lIsStickerMode && lCommandWithArgs.length >= 3) || (lIsStickerMode && lCommandWithArgs.length == 3)) {
+		if (lCommandWithArgs.length == 3) {
 			// Determine chat id.
 			final String lStringChatId = lCommandWithArgs[1];
 			try {
@@ -45,16 +35,14 @@ public class SendCommand extends BotAdminCommand {
 			}
 		} else {
 			lError = true;
-			lCommandText = (lIsStickerMode) ?
-			        lLocalizationHelper.getLocalizedString("digestbot.error.sticker.format") :
-			        lLocalizationHelper.getLocalizedString("digestbot.error.send.format");
+			lCommandText = lLocalizationHelper.getLocalizedString("digestbot.error.image.format");
 		}
 
 		lIsSameChat = aReceivedMessage.getChatId().equals(lChatId);
-		if (lIsStickerMode && !lError) {
-			aDigestBot.sendStickerToChat(lChatId,
+		if (!lError) {
+			aDigestBot.sendPhotoToChatFromUrl(lChatId,
 			        (lIsSameChat) ? aReceivedMessage.getMessageId() : null,
-			        aReceivedMessage.getChatId(), lCommandText.trim());
+			        aReceivedMessage.getChatId(), null, lCommandText.trim());
 		} else {
 			aDigestBot.sendMarkdownMessage(lChatId,
 			        (lIsSameChat) ? aReceivedMessage.getMessageId() : null, lCommandText);

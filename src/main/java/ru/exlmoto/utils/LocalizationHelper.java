@@ -32,12 +32,20 @@ public class LocalizationHelper {
 		LocaleContextHolder.setDefaultLocale(Locale.forLanguageTag(aLanguage));
 	}
 
-	public String getLocalizedString(final String path) {
-		return mMessageSource.getMessage(path, null, LocaleContextHolder.getLocale()).trim();
+	public String getLocalizedString(final String aPath) {
+		return mMessageSource.getMessage(aPath, null, LocaleContextHolder.getLocale()).trim();
 	}
 
-	public String getRandomLocalizedString(final String path) {
-		final String[] lAllMessagesArray = getLocalizedString(path).split(mDelimiter);
+	public String getLocalizedStringWithUsername(final String aPath, final String aUsername) {
+		return replaceUsernameTagByRealName(getLocalizedString(aPath), aUsername);
+	}
+
+	public String getRandomLocalizedStringWithUsername(final String aPath, final String aUsername) {
+		return replaceUsernameTagByRealName(getRandomLocalizedString(aPath), aUsername);
+	}
+
+	private String getRandomLocalizedString(final String aPath) {
+		final String[] lAllMessagesArray = getLocalizedString(aPath).split(mDelimiter);
 		return lAllMessagesArray[getRandomIntInRangeFromZero(lAllMessagesArray.length)];
 	}
 
@@ -45,7 +53,7 @@ public class LocalizationHelper {
 		return ThreadLocalRandom.current().nextInt(0, aMax);
 	}
 
-	public String replaceUsernameTagByRealName(final String aMessageText, final String aUsername) {
+	private String replaceUsernameTagByRealName(final String aMessageText, final String aUsername) {
 		return aMessageText.replaceAll(mUsernameTag, mUsernameCast + aUsername);
 	}
 }

@@ -15,8 +15,7 @@ public class HelloCommand extends BotAdminCommand {
 		aDigestBot.sendSimpleMessage(
 		        aReceivedMessage.getChatId(),
 		        aReceivedMessage.getMessageId(),
-		        lLocalizationHelper.replaceUsernameTagByRealName(
-		                lLocalizationHelper.getRandomLocalizedString("digestbot.command.hello"),
-		                aReceivedMessage.getMessageUsername()));
+		        lLocalizationHelper.getRandomLocalizedStringWithUsername("digestbot.command.hello",
+		            aReceivedMessage.getMessageUsername()));
 	}
 }

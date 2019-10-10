@@ -98,7 +98,9 @@ public class DigestBot extends TelegramLongPollingBot {
 		try {
 			final SendMessage lSendMessage = new SendMessage();
 			lSendMessage.setChatId(aChatId);
-			lSendMessage.setReplyToMessageId(aMessageId);
+			if (aMessageId != null) {
+				lSendMessage.setReplyToMessageId(aMessageId);
+			}
 			switch (aMessageMode) {
 				case MESSAGE_SIMPLE:
 				default: {
@@ -136,7 +138,9 @@ public class DigestBot extends TelegramLongPollingBot {
 	public void sendStickerToChat(final Long aChatId, final Integer aMessageId, final String aStickerId) {
 		try {
 			final SendSticker lSendSticker = new SendSticker();
-			lSendSticker.setReplyToMessageId(aMessageId);
+			if (aMessageId != null) {
+				lSendSticker.setReplyToMessageId(aMessageId);
+			}
 			lSendSticker.setChatId(aChatId);
 			lSendSticker.setSticker(aStickerId);
 			execute(lSendSticker);

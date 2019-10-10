@@ -23,27 +23,29 @@ public class SendCommand extends BotAdminCommand {
 		String lCommandText = aReceivedMessage.getMessageText();
 		Long lChatId = aReceivedMessage.getChatId();
 		final String[] lCommandWithArgs = lCommandText.split(" ");
-
+		boolean lIsSameChat = false;
 		boolean lIsStickerMode = false;
 		boolean lError = false;
 		String lCommand = SEND_COMMAND;
-		if (lCommandWithArgs[0].trim().equals(STICKER_COMMAND)) {
+		if (lCommandWithArgs[0].trim().startsWith(STICKER_COMMAND)) {
 			lCommand = STICKER_COMMAND;
 			lIsStickerMode = true;
 		}
 
 		if ((!lIsStickerMode && lCommandWithArgs.length >= 3) || (lIsStickerMode && lCommandWithArgs.length == 3)) {
-			// Determine chat id and cut message from command.
+			// Determine chat id.
 			final String lStringChatId = lCommandWithArgs[1];
 			try {
 				lChatId = NumberUtils.parseNumber(lStringChatId, Long.class);
+				lIsSameChat = aReceivedMessage.getChatId().equals(lChatId);
 			} catch (NumberFormatException e) {
 				lError = true;
 				lCommandText = lLocalizationHelper.getLocalizedString("digestbot.error.chatid");
 			}
 			if (!lError) {
-				lCommandText = lCommandText.replaceFirst(lCommand, "")
-				        .replaceFirst(lStringChatId, "");
+				// Delete command and chat id from text.
+				lCommandText = lCommandText.replaceFirst(lCommandWithArgs[0], "")
+				                           .replaceFirst(lCommandWithArgs[1], "");
 			}
 		} else {
 			lError = true;
@@ -53,9 +55,11 @@ public class SendCommand extends BotAdminCommand {
 		}
 
 		if (lIsStickerMode && !lError) {
-			aDigestBot.sendStickerToChat(lChatId, aReceivedMessage.getMessageId(), lCommandText.trim());
+			aDigestBot.sendStickerToChat(lChatId,
+			        (lIsSameChat) ? aReceivedMessage.getMessageId() : null, lCommandText.trim());
 		} else {
-			aDigestBot.sendMarkdownMessage(lChatId, aReceivedMessage.getMessageId(), lCommandText);
+			aDigestBot.sendMarkdownMessage(lChatId,
+			        (lIsSameChat) ? aReceivedMessage.getMessageId() : null, lCommandText);
 		}
 	}
 }

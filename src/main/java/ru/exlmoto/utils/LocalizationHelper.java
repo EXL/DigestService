@@ -14,18 +14,20 @@ import java.util.concurrent.ThreadLocalRandom;
 public class LocalizationHelper {
 	private final String mDelimiter;
 	private final String mUsernameTag;
-	private final String K_USERNAME_CAST = "@";
+	private final String mUsernameCast;
 
 	private final MessageSource mMessageSource;
 
 	@Autowired
 	public LocalizationHelper(@Value("${general.lang}") final String aLanguage,
 	                          @Value("${general.delimiter}") final String aDelimiter,
-	                          @Value("${general.tag.username}") final String aUsernameTag,
+	                          @Value("${general.username.tag}") final String aUsernameTag,
+	                          @Value("${general.username.cast}") final String aUsernameCast,
 	                          @Qualifier("messageSource") final MessageSource aMessageSource) {
 		mMessageSource = aMessageSource;
 		mDelimiter = aDelimiter;
 		mUsernameTag = aUsernameTag;
+		mUsernameCast = aUsernameCast;
 
 		LocaleContextHolder.setDefaultLocale(Locale.forLanguageTag(aLanguage));
 	}
@@ -44,6 +46,6 @@ public class LocalizationHelper {
 	}
 
 	public String replaceUsernameTagByRealName(final String aMessageText, final String aUsername) {
-		return aMessageText.replaceAll(mUsernameTag, K_USERNAME_CAST + aUsername);
+		return aMessageText.replaceAll(mUsernameTag, mUsernameCast + aUsername);
 	}
 }

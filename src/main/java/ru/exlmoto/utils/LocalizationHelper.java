@@ -33,7 +33,7 @@ public class LocalizationHelper {
 	}
 
 	public String getLocalizedString(final String path) {
-		return mMessageSource.getMessage(path, null, LocaleContextHolder.getLocale());
+		return mMessageSource.getMessage(path, null, LocaleContextHolder.getLocale()).trim();
 	}
 
 	public String getRandomLocalizedString(final String path) {

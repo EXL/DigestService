@@ -6,6 +6,7 @@ import org.springframework.util.NumberUtils;
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotAdminCommand;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
+import ru.exlmoto.utils.LocalizationHelper;
 
 @Component
 public class SendCommand extends BotAdminCommand {
@@ -18,6 +19,7 @@ public class SendCommand extends BotAdminCommand {
 	 */
 	@Override
 	public void run(final DigestBot aDigestBot, final ReceivedMessage aReceivedMessage) {
+		final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
 		String lCommandText = aReceivedMessage.getMessageText();
 		Long lChatId = aReceivedMessage.getChatId();
 		final String[] lCommandWithArgs = lCommandText.split(" ");
@@ -36,24 +38,24 @@ public class SendCommand extends BotAdminCommand {
 			try {
 				lChatId = NumberUtils.parseNumber(lStringChatId, Long.class);
 			} catch (NumberFormatException e) {
-				// TODO: Set a normal error message.
 				lError = true;
-				lCommandText = "NumberFormatException Error!";
+				lCommandText = lLocalizationHelper.getLocalizedString("digestbot.error.chatid");
 			}
 			if (!lError) {
 				lCommandText = lCommandText.replaceFirst(lCommand, "")
 				        .replaceFirst(lStringChatId, "");
 			}
 		} else {
-			// TODO: Set a normal error message.
 			lError = true;
-			lCommandText = "Command Format Error!";
+			lCommandText = (lIsStickerMode) ?
+			        lLocalizationHelper.getLocalizedString("digestbot.error.sticker.format") :
+			        lLocalizationHelper.getLocalizedString("digestbot.error.send.format");
 		}
 
 		if (lIsStickerMode && !lError) {
 			aDigestBot.sendStickerToChat(lChatId, aReceivedMessage.getMessageId(), lCommandText.trim());
 		} else {
-			aDigestBot.sendSimpleMessage(lChatId, aReceivedMessage.getMessageId(), lCommandText);
+			aDigestBot.sendMarkdownMessage(lChatId, aReceivedMessage.getMessageId(), lCommandText);
 		}
 	}
 }

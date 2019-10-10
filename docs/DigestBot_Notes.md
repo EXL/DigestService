@@ -44,8 +44,9 @@
 10. `/send <chat id> <message>` +
 11. `/sticker <chat id> <sticker id>` +
 12. `/hostip — IP хост-сервера` -
-13. `#digest` -
-14. `#news` -
+13. `/game` -
+14. `#digest` -
+15. `#news` -
 
 С чего начать? С продумывания базовой архитектуры проекта, посмотреть примеры Spring-приложений, построенных с использованием этой библиотеки можно [здесь](https://github.com/rubenlagus/TelegramBots/network/dependents?package_id=UGFja2FnZS0zMTc5NTk2NjQ%3D). В частности, интересен проект [cat-girl-assistant](https://github.com/JackSmellyDog/cat-girl-assistant).
 

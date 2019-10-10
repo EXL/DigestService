@@ -45,7 +45,7 @@
 11. `/sticker <chat id> <sticker id>` +
 12. `/hostip` +
 13. `/game` +
-14. `/image <chat id> <url>` -
+14. `/image <chat id> <url>` +
 15. `#digest` -
 16. `#news` -
 

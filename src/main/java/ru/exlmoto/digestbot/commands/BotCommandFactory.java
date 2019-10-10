@@ -42,7 +42,7 @@ public class BotCommandFactory {
 		addCommand("/help", mApplicationContext.getBean(HelpCommand.class));
 		addCommand("/hostip", mApplicationContext.getBean(HostIpCommand.class));
 		addCommand("/game", mApplicationContext.getBean(GameCommand.class));
-		addCommand("/image", mApplicationContext.getBean(ImageCommand.class));
+		addCommand("/image", mApplicationContext.getBean(SendCommand.class));
 	}
 
 	/**

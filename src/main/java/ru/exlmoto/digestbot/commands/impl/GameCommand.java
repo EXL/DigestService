@@ -21,7 +21,7 @@ public class GameCommand extends BotCommand {
 	@Autowired
 	public GameCommand(final FileService aFileService,
 	                   @Value("${digestbot.service.game}") final String aGameImageUrl,
-	                   @Value("${digestbot.uri.downloader}") final Boolean aFileDownloader) {
+	                   @Value("${digestbot.file.downloader}") final Boolean aFileDownloader) {
 		mFileService = aFileService;
 		mGameImageUrl = aGameImageUrl;
 		mFileDownloader = aFileDownloader;

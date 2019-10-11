@@ -168,7 +168,7 @@ public class DigestBot extends TelegramLongPollingBot {
 			execute(lSendSticker);
 		} catch (TelegramApiException e) {
 			if (aOriginalChatId != null) {
-				sendSimpleMessage(aOriginalChatId, aMessageId,
+				sendMarkdownMessage(aOriginalChatId, aMessageId,
 					String.format(mLocalizationHelper.getLocalizedString("digestbot.error.sticker"),
 						aStickerId, aChatId, e.toString()));
 			}
@@ -199,7 +199,7 @@ public class DigestBot extends TelegramLongPollingBot {
 			execute(lSendPhoto);
 		} catch (TelegramApiException e) {
 			if (aOriginalSenderChatId != null) {
-				sendSimpleMessage(aOriginalSenderChatId, aMessageId,
+				sendMarkdownMessage(aOriginalSenderChatId, aMessageId,
 					String.format(mLocalizationHelper.getLocalizedString("digestbot.error.image"),
 						aImagePathOrUrl, aChatId, e.toString()));
 			}

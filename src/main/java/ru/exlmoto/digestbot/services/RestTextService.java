@@ -7,15 +7,14 @@ import org.springframework.http.ResponseEntity;
 
 public class RestTextService extends RestService {
 	public RestTextService(final RestTemplateBuilder aRestTemplateBuilder,
-	                       final String aRequestUrl,
 	                       final Integer aRequestTimeout) {
-		super(aRestTemplateBuilder, aRequestUrl, aRequestTimeout);
+		super(aRestTemplateBuilder, aRequestTimeout);
 	}
 
-	public Pair<Boolean, String> receiveObject() {
+	public Pair<Boolean, String> receiveObject(final String aRequestUrl) {
 		String lErrorText = "Wrong Status Code!";
 		try {
-			final ResponseEntity<String> lResponse = getRestTemplate().getForEntity(getRequestUrl(), String.class);
+			final ResponseEntity<String> lResponse = getRestTemplate().getForEntity(aRequestUrl, String.class);
 			final HttpStatus lStatusCode = lResponse.getStatusCode();
 			if (lStatusCode == HttpStatus.OK) {
 				final String lBody = lResponse.getBody();

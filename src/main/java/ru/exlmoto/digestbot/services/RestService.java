@@ -8,13 +8,9 @@ import java.time.Duration;
 
 public abstract class RestService {
 	private final RestTemplate mRestTemplate;
-	private final String mRequestUrl;
 
 	public RestService(final RestTemplateBuilder aRestTemplateBuilder,
-	                   final String aRequestUrl,
 	                   final Integer aRequestTimeout) {
-		mRequestUrl = aRequestUrl;
-
 		final Duration lDuration = Duration.ofSeconds(aRequestTimeout);
 		mRestTemplate = aRestTemplateBuilder.setConnectTimeout(lDuration).setReadTimeout(lDuration).build();
 	}
@@ -23,9 +19,5 @@ public abstract class RestService {
 		return mRestTemplate;
 	}
 
-	public String getRequestUrl() {
-		return mRequestUrl;
-	}
-
-	public abstract Pair<Boolean, ?> receiveObject();
+	public abstract Pair<Boolean, ?> receiveObject(final String aRequestUrl);
 }

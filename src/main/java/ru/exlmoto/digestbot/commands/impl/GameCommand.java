@@ -14,33 +14,38 @@ import ru.exlmoto.utils.LocalizationHelper;
 @Component
 public class GameCommand extends BotCommand {
 	private final String mGameImageUrl;
+	private final Boolean mFileDownloader;
 
 	private final FileService mFileService;
 
 	@Autowired
 	public GameCommand(final FileService aFileService,
-	                   @Value("${digestbot.service.game}") final String aGameImageUrl) {
-		mGameImageUrl = aGameImageUrl;
+	                   @Value("${digestbot.service.game}") final String aGameImageUrl,
+	                   @Value("${digestbot.uri.downloader}") final Boolean aFileDownloader) {
 		mFileService = aFileService;
+		mGameImageUrl = aGameImageUrl;
+		mFileDownloader = aFileDownloader;
 	}
 
 	@Override
 	public void run(final DigestBot aDigestBot,
 	                final LocalizationHelper aLocalizationHelper,
 	                final ReceivedMessage aReceivedMessage) {
-		final Pair<Boolean, String> lAnswer = mFileService.receiveObject(mGameImageUrl);
-		final String lResult = lAnswer.getSecond();
-		if (lAnswer.getFirst()) {
-			aDigestBot.sendPhotoToChatFromUrl(aReceivedMessage.getChatId(),
-				aReceivedMessage.getMessageId(),
-				aReceivedMessage.getChatId(),
-				aLocalizationHelper.getLocalizedString("digestbot.command.game"),
-				lResult, true);
+		final Long lChatId = aReceivedMessage.getChatId();
+		final Integer lMessageId = aReceivedMessage.getMessageId();
+		final String lCaption = aLocalizationHelper.getLocalizedString("digestbot.command.game");
+		if (mFileDownloader) {
+			final Pair<Boolean, String> lAnswer = mFileService.receiveObject(mGameImageUrl);
+			final String lResult = lAnswer.getSecond();
+			if (lAnswer.getFirst()) {
+				aDigestBot.sendPhotoToChatFromUrl(lChatId, lMessageId, lChatId, lCaption, lResult, true);
+			} else {
+				aDigestBot.getBotLogger().error(String.format("Cannot get game statistic: %s", lResult));
+				aDigestBot.sendMarkdownMessage(lChatId, lMessageId,
+					String.format(aLocalizationHelper.getLocalizedString("digestbot.error.game"), lResult));
+			}
 		} else {
-			aDigestBot.getBotLogger().error(String.format("Cannot get game statistic: %s", lResult));
-			aDigestBot.sendMarkdownMessage(aReceivedMessage.getChatId(),
-				aReceivedMessage.getMessageId(),
-				String.format(aLocalizationHelper.getLocalizedString("digestbot.error.game"), lResult));
+			aDigestBot.sendPhotoToChatFromUrl(lChatId, lMessageId, lChatId, lCaption, mGameImageUrl, false);
 		}
 	}
 }

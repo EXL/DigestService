@@ -178,8 +178,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	public void sendPhotoToChatFromUrl(final Long aChatId, final Integer aMessageId,
-	                                   final Long aOriginalChatId, final String aCaption,
-	                                   final String aImagePathOrUrl, boolean isFilePath) {
+	                                   final Long aOriginalSenderChatId, final String aCaption,
+	                                   final String aImagePathOrUrl, boolean aIsFilePath) {
 		File lTempFile = null;
 		try {
 			final SendPhoto lSendPhoto = new SendPhoto();
@@ -187,7 +187,7 @@ public class DigestBot extends TelegramLongPollingBot {
 				lSendPhoto.setReplyToMessageId(aMessageId);
 			}
 			lSendPhoto.setChatId(aChatId);
-			if (isFilePath) {
+			if (aIsFilePath) {
 				lTempFile = new File(aImagePathOrUrl);
 				lSendPhoto.setPhoto(lTempFile);
 			} else {
@@ -198,8 +198,8 @@ public class DigestBot extends TelegramLongPollingBot {
 			}
 			execute(lSendPhoto);
 		} catch (TelegramApiException e) {
-			if (aOriginalChatId != null) {
-				sendSimpleMessage(aOriginalChatId, aMessageId,
+			if (aOriginalSenderChatId != null) {
+				sendSimpleMessage(aOriginalSenderChatId, aMessageId,
 					String.format(mLocalizationHelper.getLocalizedString("digestbot.error.image"),
 						aImagePathOrUrl, aChatId, e.toString()));
 			}

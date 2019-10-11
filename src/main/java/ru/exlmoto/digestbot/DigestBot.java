@@ -21,6 +21,7 @@ import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.utils.LocalizationHelper;
 
+import java.io.File;
 import java.util.List;
 
 @Component
@@ -173,14 +174,19 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	public void sendPhotoToChatFromUrl(final Long aChatId, final Integer aMessageId,
-	                                   final Long aOriginalChatId, final String aCaption, final String aImageUrl) {
+	                                   final Long aOriginalChatId, final String aCaption,
+	                                   final String aImagePathOrUrl, boolean isFilePath) {
 		try {
 			final SendPhoto lSendPhoto = new SendPhoto();
 			if (aMessageId != null) {
 				lSendPhoto.setReplyToMessageId(aMessageId);
 			}
 			lSendPhoto.setChatId(aChatId);
-			lSendPhoto.setPhoto(aImageUrl);
+			if (isFilePath) {
+				lSendPhoto.setPhoto(new File(aImagePathOrUrl));
+			} else {
+				lSendPhoto.setPhoto(aImagePathOrUrl);
+			}
 			if (aCaption != null) {
 				lSendPhoto.setCaption(aCaption);
 			}
@@ -189,7 +195,7 @@ public class DigestBot extends TelegramLongPollingBot {
 			if (aOriginalChatId != null) {
 				sendSimpleMessage(aOriginalChatId, aMessageId,
 					String.format(mLocalizationHelper.getLocalizedString("digestbot.error.image"),
-						aImageUrl, aChatId, e.toString()));
+						aImagePathOrUrl, aChatId, e.toString()));
 			}
 			mBotLogger.error(String.format("Cannot send photo into '%d' chat: '%s'.", aChatId, e.toString()));
 		}

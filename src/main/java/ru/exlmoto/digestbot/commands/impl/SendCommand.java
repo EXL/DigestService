@@ -1,10 +1,13 @@
 package ru.exlmoto.digestbot.commands.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
 
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotAdminCommand;
+import ru.exlmoto.digestbot.services.impl.FileService;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.utils.LocalizationHelper;
 
@@ -14,10 +17,17 @@ public class SendCommand extends BotAdminCommand {
 	private final String STICKER_COMMAND = "/sticker";
 	private final String IMAGE_COMMAND = "/image";
 
+	private final FileService mFileService;
+
 	private enum SendCommandMode {
 		SEND_COMMAND,
 		STICKER_COMMAND,
 		IMAGE_COMMAND
+	}
+
+	@Autowired
+	public SendCommand(final FileService aFileService) {
+		mFileService = aFileService;
 	}
 
 	/**
@@ -75,27 +85,34 @@ public class SendCommand extends BotAdminCommand {
 			}
 		}
 
-		boolean lIsSameChat = aReceivedMessage.getChatId().equals(lChatId);
+		final boolean lIsSameChat = aReceivedMessage.getChatId().equals(lChatId);
+		final Integer lMessageId = (lIsSameChat) ? aReceivedMessage.getMessageId() : null;
 		if (lError) {
 			lSendCommandMode = SendCommandMode.SEND_COMMAND;
 		}
 
 		switch (lSendCommandMode) {
 			default: {
-				aDigestBot.sendMarkdownMessage(lChatId,
-					(lIsSameChat) ? aReceivedMessage.getMessageId() : null, lCommandText);
+				aDigestBot.sendMarkdownMessage(lChatId, lMessageId, lCommandText);
 				break;
 			}
 			case STICKER_COMMAND: {
-				aDigestBot.sendStickerToChat(lChatId,
-					(lIsSameChat) ? aReceivedMessage.getMessageId() : null,
-					aReceivedMessage.getChatId(), lCommandText.trim());
+				aDigestBot.sendStickerToChat(lChatId, lMessageId, aReceivedMessage.getChatId(), lCommandText.trim());
 				break;
 			}
 			case IMAGE_COMMAND: {
-				aDigestBot.sendPhotoToChatFromUrl(lChatId,
-					(lIsSameChat) ? aReceivedMessage.getMessageId() : null,
-					aReceivedMessage.getChatId(), null, lCommandText.trim());
+				final String lImageUrl = lCommandText.trim();
+				final Pair<Boolean, String> lAnswer = mFileService.receiveObject(lImageUrl);
+				final String lResult = lAnswer.getSecond();
+				if (lAnswer.getFirst()) {
+					aDigestBot.sendPhotoToChatFromUrl(lChatId, lMessageId, aReceivedMessage.getChatId(),
+						null, lResult, true);
+				} else {
+					aDigestBot.getBotLogger().error(String.format("Cannot get image via link: %s", lResult));
+					aDigestBot.sendMarkdownMessage(lChatId, lMessageId,
+						String.format(aLocalizationHelper.getLocalizedString("digestbot.error.image"),
+							lImageUrl, lChatId, lResult));
+				}
 				break;
 			}
 		}

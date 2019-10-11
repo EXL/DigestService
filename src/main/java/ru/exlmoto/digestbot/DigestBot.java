@@ -67,7 +67,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	public void onUpdateReceived(final Update aUpdate) {
 		Message lMessage =
 			(aUpdate.hasEditedMessage()) ? aUpdate.getEditedMessage() :
-				(aUpdate.hasMessage()) ? aUpdate.getEditedMessage() : null;
+				(aUpdate.hasMessage()) ? aUpdate.getMessage() : null;
 		if (lMessage != null) {
 			handleMessage(lMessage);
 		}

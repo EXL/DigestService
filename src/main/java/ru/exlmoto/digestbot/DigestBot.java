@@ -131,7 +131,11 @@ public class DigestBot extends TelegramLongPollingBot {
 			}
 			String lBotAnswerText = aMessage;
 			if (aMessage.length() > mBotMaxResponseLength) {
-				lBotAnswerText = mLocalizationHelper.getLocalizedString("digestbot.error.response.toolong");
+				mBotLogger.warn(String.format(
+					"Unexpectedly large response size! The message will be truncated to %d characters.",
+					mBotMaxResponseLength));
+				lBotAnswerText = lBotAnswerText.substring(0, mBotMaxResponseLength);
+				lBotAnswerText += '\n' + mLocalizationHelper.getLocalizedString("digestbot.warn.response.long");
 			}
 			lSendMessage.setText(lBotAnswerText);
 			execute(lSendMessage);

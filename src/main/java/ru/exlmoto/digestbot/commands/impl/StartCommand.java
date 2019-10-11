@@ -10,10 +10,11 @@ import ru.exlmoto.utils.LocalizationHelper;
 @Component
 public class StartCommand extends BotCommand {
 	@Override
-	public void run(final DigestBot aDigestBot, final ReceivedMessage aReceivedMessage) {
-		final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
+	public void run(final DigestBot aDigestBot,
+	                final LocalizationHelper aLocalizationHelper,
+	                final ReceivedMessage aReceivedMessage) {
 		aDigestBot.sendSimpleMessage(aReceivedMessage.getChatId(),
-		        aReceivedMessage.getMessageId(),
-		        lLocalizationHelper.getLocalizedString("digestbot.command.start"));
+			aReceivedMessage.getMessageId(),
+			aLocalizationHelper.getLocalizedString("digestbot.command.start"));
 	}
 }

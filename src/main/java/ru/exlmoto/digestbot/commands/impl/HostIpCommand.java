@@ -20,16 +20,17 @@ public class HostIpCommand extends BotAdminCommand {
 	}
 
 	@Override
-	public void run(final DigestBot aDigestBot, final ReceivedMessage aReceivedMessage) {
-		final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
-		new Thread(() -> {
-			final Pair<Boolean, String> lAnswer = mHostIpService.receiveObject();
-			String lAnswerText = lLocalizationHelper.getLocalizedString("digestbot.command.hostip");
-			if (!lAnswer.getFirst()) {
-				lAnswerText = lLocalizationHelper.getLocalizedString("digestbot.error.hostip");
-			}
-			lAnswerText += "\n`" + lAnswer.getSecond() + '`';
-			aDigestBot.sendMarkdownMessage(aReceivedMessage.getChatId(), aReceivedMessage.getMessageId(), lAnswerText);
-		}).start();
+	public void run(final DigestBot aDigestBot,
+	                final LocalizationHelper aLocalizationHelper,
+	                final ReceivedMessage aReceivedMessage) {
+		final Pair<Boolean, String> lAnswer = mHostIpService.receiveObject();
+		String lAnswerText = aLocalizationHelper.getLocalizedString("digestbot.command.hostip");
+		if (!lAnswer.getFirst()) {
+			lAnswerText = aLocalizationHelper.getLocalizedString("digestbot.error.hostip");
+		}
+		lAnswerText += "\n`" + lAnswer.getSecond() + '`';
+		aDigestBot.sendMarkdownMessage(aReceivedMessage.getChatId(),
+			aReceivedMessage.getMessageId(),
+			lAnswerText);
 	}
 }

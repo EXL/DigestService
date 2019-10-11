@@ -17,10 +17,13 @@ public class GameCommand extends BotCommand {
 	}
 
 	@Override
-	public void run(DigestBot aDigestBot, ReceivedMessage aReceivedMessage) {
-		final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
-		new Thread(() -> aDigestBot.sendPhotoToChatFromUrl(aReceivedMessage.getChatId(),
-		        aReceivedMessage.getMessageId(), aReceivedMessage.getChatId(),
-		        lLocalizationHelper.getLocalizedString("digestbot.command.game"), mGameImageUrl)).start();
+	public void run(final DigestBot aDigestBot,
+	                final LocalizationHelper aLocalizationHelper,
+	                final ReceivedMessage aReceivedMessage) {
+		aDigestBot.sendPhotoToChatFromUrl(aReceivedMessage.getChatId(),
+			aReceivedMessage.getMessageId(),
+			aReceivedMessage.getChatId(),
+			aLocalizationHelper.getLocalizedString("digestbot.command.game"),
+			mGameImageUrl);
 	}
 }

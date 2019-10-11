@@ -11,8 +11,8 @@ public abstract class RestService {
 	private final String mRequestUrl;
 
 	public RestService(final RestTemplateBuilder aRestTemplateBuilder,
-	                       final String aRequestUrl,
-	                       final Integer aRequestTimeout) {
+	                   final String aRequestUrl,
+	                   final Integer aRequestTimeout) {
 		mRequestUrl = aRequestUrl;
 
 		final Duration lDuration = Duration.ofSeconds(aRequestTimeout);

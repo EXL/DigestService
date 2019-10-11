@@ -10,12 +10,15 @@ import ru.exlmoto.utils.LocalizationHelper;
 @Component
 public class HelpCommand extends BotCommand {
 	@Override
-	public void run(final DigestBot aDigestBot, final ReceivedMessage aReceivedMessage) {
-		final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
-		String lHelpText = lLocalizationHelper.getLocalizedString("digestbot.command.help");
+	public void run(final DigestBot aDigestBot,
+	                final LocalizationHelper aLocalizationHelper,
+	                final ReceivedMessage aReceivedMessage) {
+		String lHelpText = aLocalizationHelper.getLocalizedString("digestbot.command.help");
 		if (aReceivedMessage.isIsUserAdmin()) {
-			lHelpText += '\n' + lLocalizationHelper.getLocalizedString("digestbot.command.help.admin");
+			lHelpText += '\n' + aLocalizationHelper.getLocalizedString("digestbot.command.help.admin");
 		}
-		aDigestBot.sendMarkdownMessage(aReceivedMessage.getChatId(), aReceivedMessage.getMessageId(), lHelpText);
+		aDigestBot.sendMarkdownMessage(aReceivedMessage.getChatId(),
+			aReceivedMessage.getMessageId(),
+			lHelpText);
 	}
 }

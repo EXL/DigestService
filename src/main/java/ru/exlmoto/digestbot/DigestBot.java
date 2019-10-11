@@ -17,7 +17,6 @@ import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import ru.exlmoto.digestbot.callbacks.SendMessageCallback;
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.utils.LocalizationHelper;
@@ -67,8 +66,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	@Override
 	public void onUpdateReceived(final Update aUpdate) {
 		Message lMessage =
-		        (aUpdate.hasEditedMessage()) ? aUpdate.getEditedMessage() :
-		        (aUpdate.hasMessage()) ? aUpdate.getEditedMessage() : null;
+			(aUpdate.hasEditedMessage()) ? aUpdate.getEditedMessage() :
+				(aUpdate.hasMessage()) ? aUpdate.getEditedMessage() : null;
 		if (lMessage != null) {
 			handleMessage(lMessage);
 		}
@@ -115,7 +114,6 @@ public class DigestBot extends TelegramLongPollingBot {
 				lSendMessage.setReplyToMessageId(aMessageId);
 			}
 			switch (aMessageMode) {
-				case MESSAGE_SIMPLE:
 				default: {
 					break;
 				}
@@ -127,6 +125,7 @@ public class DigestBot extends TelegramLongPollingBot {
 				case MESSAGE_MARKDOWN: {
 					lSendMessage.setParseMode(ParseMode.MARKDOWN);
 					lSendMessage.enableMarkdown(true);
+					break;
 				}
 			}
 			String lBotAnswerText = aMessage;
@@ -134,9 +133,9 @@ public class DigestBot extends TelegramLongPollingBot {
 				lBotAnswerText = mLocalizationHelper.getLocalizedString("digestbot.error.response.toolong");
 			}
 			lSendMessage.setText(lBotAnswerText);
-			executeAsync(lSendMessage, new SendMessageCallback<>(this));
+			execute(lSendMessage);
 		} catch (TelegramApiException e) {
-			loge(String.format("Cannot send message into '%d' chat: '%s'.", aChatId, e.toString()));
+			mBotLogger.error(String.format("Cannot send message into '%d' chat: '%s'.", aChatId, e.toString()));
 		}
 	}
 
@@ -165,10 +164,11 @@ public class DigestBot extends TelegramLongPollingBot {
 		} catch (TelegramApiException e) {
 			if (aOriginalChatId != null) {
 				sendSimpleMessage(aOriginalChatId, aMessageId,
-				        String.format(mLocalizationHelper.getLocalizedString("digestbot.error.sticker"),
-				                aStickerId, aChatId, e.toString()));
+					String.format(mLocalizationHelper.getLocalizedString("digestbot.error.sticker"),
+						aStickerId, aChatId, e.toString()));
 			}
-			loge(String.format("Cannot send sticker '%s' into '%d' chat: '%s'.", aStickerId, aChatId, e.toString()));
+			mBotLogger.error(String.format("Cannot send sticker '%s' into '%d' chat: '%s'.",
+				aStickerId, aChatId, e.toString()));
 		}
 	}
 
@@ -188,28 +188,24 @@ public class DigestBot extends TelegramLongPollingBot {
 		} catch (TelegramApiException e) {
 			if (aOriginalChatId != null) {
 				sendSimpleMessage(aOriginalChatId, aMessageId,
-				        String.format(mLocalizationHelper.getLocalizedString("digestbot.error.image"),
-				                aImageUrl, aChatId, e.toString()));
+					String.format(mLocalizationHelper.getLocalizedString("digestbot.error.image"),
+						aImageUrl, aChatId, e.toString()));
 			}
-			loge(String.format("Cannot send photo into '%d' chat: '%s'.", aChatId, e.toString()));
+			mBotLogger.error(String.format("Cannot send photo into '%d' chat: '%s'.", aChatId, e.toString()));
 		}
 	}
 
 	private void onCommand(final Message aMessage) {
 		final List<MessageEntity> lEntities = aMessage.getEntities();
 		lEntities.stream().filter(aMessageEntity ->
-		        aMessageEntity.getType().equals(K_BOT_COMMAND_ENTITY) &&
-		        aMessageEntity.getOffset() == 0)
-		                .forEach(command -> runCommand(command.getText(), aMessage));
+			                          aMessageEntity.getType().equals(K_BOT_COMMAND_ENTITY) &&
+				                          aMessageEntity.getOffset() == 0)
+			.forEach(command -> runCommand(command.getText(), aMessage));
 	}
 
 	private void runCommand(final String aCommandName, final Message aMessage) {
 		mBotCommandFactory.getCommand(aCommandName).ifPresent(
-		        aCommand -> aCommand.prepare(this, aMessage));
-	}
-
-	public void loge(final String aTextToLog) {
-		mBotLogger.error(aTextToLog);
+			aCommand -> aCommand.prepare(this, aMessage));
 	}
 
 	public ReceivedMessage createReceivedMessage(final Message aMessage) {

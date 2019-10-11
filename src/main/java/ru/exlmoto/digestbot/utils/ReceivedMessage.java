@@ -13,7 +13,8 @@ public class ReceivedMessage {
 	private final boolean mIsMessageCommand;
 	private final boolean mIsUserAdmin;
 
-	public ReceivedMessage(final Message aMessage, final String[] aAdministrators) {
+	public ReceivedMessage(final Message aMessage,
+	                       final String[] aAdministrators) {
 		mChatId = aMessage.getChatId();
 		mMessageDate = aMessage.getDate();
 		mMessageId = aMessage.getMessageId();
@@ -24,7 +25,8 @@ public class ReceivedMessage {
 		mIsUserAdmin = isUserHasAdminRights(mMessageUsername, aAdministrators);
 	}
 
-	private boolean isUserHasAdminRights(final Object aMessageUsername, final Object[] aAdministrators) {
+	private boolean isUserHasAdminRights(final Object aMessageUsername,
+	                                     final Object[] aAdministrators) {
 		return ArrayUtils.contains(aAdministrators, aMessageUsername);
 	}
 
@@ -63,14 +65,14 @@ public class ReceivedMessage {
 	@Override
 	public String toString() {
 		return "ReceivedMessage{" +
-		        "mChatId=" + mChatId +
-		        ", mMessageDate=" + mMessageDate +
-		        ", mMessageId=" + mMessageId +
-		        ", mMessageUsernameId=" + mMessageUsernameId +
-		        ", mMessageText='" + mMessageText + '\'' +
-		        ", mMessageUsername='" + mMessageUsername + '\'' +
-		        ", mIsMessageCommand=" + mIsMessageCommand +
-		        ", mIsUserAdmin=" + mIsUserAdmin +
-		        '}';
+			       "mChatId=" + mChatId +
+			       ", mMessageDate=" + mMessageDate +
+			       ", mMessageId=" + mMessageId +
+			       ", mMessageUsernameId=" + mMessageUsernameId +
+			       ", mMessageText='" + mMessageText + '\'' +
+			       ", mMessageUsername='" + mMessageUsername + '\'' +
+			       ", mIsMessageCommand=" + mIsMessageCommand +
+			       ", mIsUserAdmin=" + mIsUserAdmin +
+			       '}';
 	}
 }

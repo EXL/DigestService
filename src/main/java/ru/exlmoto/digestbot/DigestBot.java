@@ -215,4 +215,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	public LocalizationHelper getLocalizationHelper() {
 		return mLocalizationHelper;
 	}
+
+	public Logger getBotLogger() {
+		return mBotLogger;
+	}
 }

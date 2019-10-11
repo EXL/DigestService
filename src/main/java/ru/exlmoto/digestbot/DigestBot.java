@@ -176,6 +176,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	public void sendPhotoToChatFromUrl(final Long aChatId, final Integer aMessageId,
 	                                   final Long aOriginalChatId, final String aCaption,
 	                                   final String aImagePathOrUrl, boolean isFilePath) {
+		File lTempFile = null;
 		try {
 			final SendPhoto lSendPhoto = new SendPhoto();
 			if (aMessageId != null) {
@@ -183,7 +184,8 @@ public class DigestBot extends TelegramLongPollingBot {
 			}
 			lSendPhoto.setChatId(aChatId);
 			if (isFilePath) {
-				lSendPhoto.setPhoto(new File(aImagePathOrUrl));
+				lTempFile = new File(aImagePathOrUrl);
+				lSendPhoto.setPhoto(lTempFile);
 			} else {
 				lSendPhoto.setPhoto(aImagePathOrUrl);
 			}
@@ -198,6 +200,11 @@ public class DigestBot extends TelegramLongPollingBot {
 						aImagePathOrUrl, aChatId, e.toString()));
 			}
 			mBotLogger.error(String.format("Cannot send photo into '%d' chat: '%s'.", aChatId, e.toString()));
+		}
+		if (lTempFile != null) {
+			if (!lTempFile.delete()) {
+				mBotLogger.error(String.format("Cannot delete temporary file '%s'.", aImagePathOrUrl));
+			}
 		}
 	}
 

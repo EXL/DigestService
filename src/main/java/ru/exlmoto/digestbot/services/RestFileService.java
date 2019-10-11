@@ -21,11 +21,11 @@ public class RestFileService extends RestService {
 	public Pair<Boolean, String> receiveObject(final String aRequestUrl) {
 		try {
 			final String lFileName = new File(new URL(aRequestUrl).getPath()).getName();
-			final String lExtension = FilenameUtils.getExtension(lFileName);
+			final String lExtension = '.' + FilenameUtils.getExtension(lFileName);
 			final String lClearFileName = FilenameUtils.removeExtension(lFileName);
 			return Pair.of(true, Objects.requireNonNull(getRestTemplate().execute(aRequestUrl, HttpMethod.GET,
 				null, aClientHttpResponse -> {
-					File lTempFile = File.createTempFile(lExtension, lClearFileName);
+					File lTempFile = File.createTempFile(lClearFileName, lExtension);
 					StreamUtils.copy(aClientHttpResponse.getBody(), new FileOutputStream(lTempFile));
 					return lTempFile.getAbsolutePath();
 				})));

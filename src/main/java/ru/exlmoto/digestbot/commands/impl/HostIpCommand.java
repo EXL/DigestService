@@ -28,7 +28,7 @@ public class HostIpCommand extends BotAdminCommand {
 		final String lAnswerString = lAnswer.getSecond();
 		if (!lAnswer.getFirst()) {
 			lAnswerText = aLocalizationHelper.getLocalizedString("digestbot.error.hostip");
-			aDigestBot.getBotLogger().error(String.format("Cannot get host ip address %s", lAnswerString));
+			aDigestBot.getBotLogger().error(String.format("Cannot get host ip address '%s'.", lAnswerString));
 		}
 		lAnswerText += "\n`" + lAnswerString + '`';
 		aDigestBot.sendMarkdownMessage(aReceivedMessage.getChatId(),

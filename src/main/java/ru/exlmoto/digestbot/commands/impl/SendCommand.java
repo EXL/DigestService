@@ -108,7 +108,8 @@ public class SendCommand extends BotAdminCommand {
 					aDigestBot.sendPhotoToChatFromUrl(lChatId, lMessageId, aReceivedMessage.getChatId(),
 						null, lResult, true);
 				} else {
-					aDigestBot.getBotLogger().error(String.format("Cannot get image via link: %s", lResult));
+					aDigestBot.getBotLogger().error(String.format("Cannot get image via link '%s', error: '%s'.",
+						lImageUrl, lResult));
 					aDigestBot.sendMarkdownMessage(lChatId, lMessageId,
 						String.format(aLocalizationHelper.getLocalizedString("digestbot.error.image"),
 							lImageUrl, lChatId, lResult));

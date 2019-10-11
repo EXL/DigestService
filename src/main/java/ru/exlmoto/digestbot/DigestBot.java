@@ -66,10 +66,11 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	@Override
 	public void onUpdateReceived(final Update aUpdate) {
-		if (aUpdate.hasMessage() && aUpdate.getMessage().isCommand()) {
-			onCommand(aUpdate, false);
-		} else if (aUpdate.hasEditedMessage() && aUpdate.getEditedMessage().isCommand()) {
-			onCommand(aUpdate, true);
+		Message lMessage =
+		        (aUpdate.hasEditedMessage()) ? aUpdate.getEditedMessage() :
+		        (aUpdate.hasMessage()) ? aUpdate.getEditedMessage() : null;
+		if (lMessage != null) {
+			handleMessage(lMessage);
 		}
 	}
 
@@ -95,6 +96,12 @@ public class DigestBot extends TelegramLongPollingBot {
 	@Override
 	public String getBotToken() {
 		return mBotToken;
+	}
+
+	private void handleMessage(final Message aMessage) {
+		if (aMessage.isCommand()) {
+			onCommand(aMessage);
+		}
 	}
 
 	private void sendMessage(final Long aChatId,
@@ -188,18 +195,17 @@ public class DigestBot extends TelegramLongPollingBot {
 		}
 	}
 
-	private void onCommand(final Update aUpdate, final boolean aIsEdited) {
-		final Message lMessage = (aIsEdited) ? aUpdate.getEditedMessage() : aUpdate.getMessage();
-		final List<MessageEntity> lEntities = lMessage.getEntities();
+	private void onCommand(final Message aMessage) {
+		final List<MessageEntity> lEntities = aMessage.getEntities();
 		lEntities.stream().filter(aMessageEntity ->
 		        aMessageEntity.getType().equals(K_BOT_COMMAND_ENTITY) &&
 		        aMessageEntity.getOffset() == 0)
-		                .forEach(command -> runCommand(command.getText(), aUpdate, aIsEdited));
+		                .forEach(command -> runCommand(command.getText(), aMessage));
 	}
 
-	private void runCommand(final String aCommandName, final Update aUpdate, final boolean aIsEdited) {
+	private void runCommand(final String aCommandName, final Message aMessage) {
 		mBotCommandFactory.getCommand(aCommandName).ifPresent(
-		        aCommand -> aCommand.prepare(this, aUpdate, aIsEdited));
+		        aCommand -> aCommand.prepare(this, aMessage));
 	}
 
 	public void loge(final String aTextToLog) {

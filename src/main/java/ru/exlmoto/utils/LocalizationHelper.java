@@ -12,22 +12,21 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 public class LocalizationHelper {
-	private final String mDelimiter;
 	private final String mUsernameTag;
 	private final String mUsernameCast;
+	private final String mLanguage;
 
 	private final MessageSource mMessageSource;
 
 	@Autowired
 	public LocalizationHelper(@Value("${general.lang}") final String aLanguage,
-	                          @Value("${general.delimiter}") final String aDelimiter,
 	                          @Value("${general.username.tag}") final String aUsernameTag,
 	                          @Value("${general.username.cast}") final String aUsernameCast,
 	                          @Qualifier("messageSource") final MessageSource aMessageSource) {
 		mMessageSource = aMessageSource;
-		mDelimiter = aDelimiter;
 		mUsernameTag = aUsernameTag;
 		mUsernameCast = aUsernameCast;
+		mLanguage = aLanguage;
 
 		LocaleContextHolder.setDefaultLocale(Locale.forLanguageTag(aLanguage));
 	}
@@ -40,20 +39,11 @@ public class LocalizationHelper {
 		return replaceUsernameTagByRealName(getLocalizedString(aPath), aUsername);
 	}
 
-	public String getRandomLocalizedStringWithUsername(final String aPath, final String aUsername) {
-		return replaceUsernameTagByRealName(getRandomLocalizedString(aPath), aUsername);
-	}
-
-	private String getRandomLocalizedString(final String aPath) {
-		final String[] lAllMessagesArray = getLocalizedString(aPath).split(mDelimiter);
-		return lAllMessagesArray[getRandomIntInRangeFromZero(lAllMessagesArray.length)];
-	}
-
-	private int getRandomIntInRangeFromZero(final int aMax) {
+	public int getRandomIntInRangeFromZero(final int aMax) {
 		return ThreadLocalRandom.current().nextInt(0, aMax);
 	}
 
-	private String replaceUsernameTagByRealName(final String aMessageText, final String aUsername) {
+	public String replaceUsernameTagByRealName(final String aMessageText, final String aUsername) {
 		return aMessageText.replaceAll(mUsernameTag, mUsernameCast + aUsername);
 	}
 }

@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
@@ -107,12 +108,16 @@ public class DigestBot extends TelegramLongPollingBot {
 	private void sendMessage(final Long aChatId,
 	                         final Integer aMessageId,
 	                         final String aMessage,
-	                         final MessageMode aMessageMode) {
+	                         final MessageMode aMessageMode,
+	                         final InlineKeyboardMarkup aInlineKeyboardMarkup) {
 		try {
 			final SendMessage lSendMessage = new SendMessage();
 			lSendMessage.setChatId(aChatId);
 			if (aMessageId != null) {
 				lSendMessage.setReplyToMessageId(aMessageId);
+			}
+			if (aInlineKeyboardMarkup != null) {
+				lSendMessage.setReplyMarkup(aInlineKeyboardMarkup);
 			}
 			switch (aMessageMode) {
 				default: {
@@ -145,15 +150,22 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	public void sendSimpleMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
-		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_SIMPLE);
+		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_SIMPLE, null);
 	}
 
 	public void sendHtmlMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
-		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_HTML);
+		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_HTML, null);
 	}
 
 	public void sendMarkdownMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
-		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN);
+		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN, null);
+	}
+
+	public void sendMarkdownMessageWithKeyboard(final Long aChatId,
+	                                            final Integer aMessageId,
+	                                            final String aMessage,
+	                                            final InlineKeyboardMarkup aInlineKeyboardMarkup) {
+		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN, aInlineKeyboardMarkup);
 	}
 
 	public void sendStickerToChat(final Long aChatId, final Integer aMessageId,

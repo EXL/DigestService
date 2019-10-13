@@ -1,0 +1,56 @@
+command.start:
+  - "Hi, I'm Gadget Hackwrench!"
+  - "Please send me /help to get a full list of commands."
+command.hello:
+  - "Hello, my creators!"
+  - "Have a nice day, %username%!"
+  - "Hey. I'm a little broken here. Fix me with the next commit."
+  - "Wow. Long time no see. Hi!"
+  - "I'm still here. Hi! :3"
+  - "Hello, my brother. May I be of service this glorius day?"
+  - "Hello to you, my developer!"
+command.help:
+  - "Gadget Hackwrench commands help:"
+  - "/digest — Show latest messages with `#digest` tag."
+  - "/rates — Show exchange rates."
+  - "/charts — Show charts of exchange rates."
+  - "/start — Show start greeting."
+  - "/coffee — Send sticker with coffee."
+  - "/game — Show game server statistic."
+  - "/help — Show this help."
+command.help.admin:
+  - "/hello or /hi  — Get greeting from bot."
+  - "/delete <arg> — Remove digest entry by <arg> number."
+  - "/send <chat id> <message> — Send <message> into <chat id>."
+  - "/sticker <chat id> <sticker id> — Send sticker into <chat id>."
+  - "/image <chat id> <url> — Send photo into <chat id>."
+  - "/hostip — Host server IP address."
+command.hostip:
+  - "Come to me (via SSH). My IP address:"
+command.game:
+  - "Game statistics:"
+command.charts:
+  - "📈 Please select a chart 📉"
+error.access:
+  - "Unfortunately, %username%, you are not allowed to use this command. Only my creator can use it."
+error.chatid:
+  - "Wrong chat `id` number."
+error.sticker:
+  - "Cannot send sticker `%s` into `%d` chat, error: `%s`."
+error.image:
+  - "Cannot send image from url `%s` into `%d` chat, error: `%s`."
+error.sticker.format:
+  - "Wrong command format, please use:"
+  - "`/sticker <chat id> <sticker id>`."
+error.send.format:
+  - "Wrong command format, please use:"
+  - "`/send <chat id> <message>`."
+error.image.format:
+  - "Wrong command format, please use:"
+  - "`/image <chat id> <image url>`."
+error.hostip:
+  - "Error getting host IP address:"
+error.game:
+  - "Cannot get game statistics, error `%s`."
+warn.response.long:
+  - "<text is cropped>"

@@ -5,16 +5,16 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotCommand;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.utils.LocalizationHelper;
+import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
 
 @Component
 public class StartCommand extends BotCommand {
 	@Override
 	public void run(final DigestBot aDigestBot,
-	                final LocalizationHelper aLocalizationHelper,
+	                final YamlLocalizationHelper aLocalizationHelper,
 	                final ReceivedMessage aReceivedMessage) {
 		aDigestBot.sendSimpleMessage(aReceivedMessage.getChatId(),
 			aReceivedMessage.getMessageId(),
-			aLocalizationHelper.getLocalizedString("digestbot.command.start"));
+			aLocalizationHelper.getLocalizedString("command.start"));
 	}
 }

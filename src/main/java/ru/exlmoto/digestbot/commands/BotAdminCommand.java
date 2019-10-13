@@ -4,20 +4,20 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.utils.LocalizationHelper;
+import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
 
 public abstract class BotAdminCommand extends BotCommand {
 	@Override
 	public void prepare(final DigestBot aDigestBot, final Message aMessage) {
 		new Thread(() -> {
-			final LocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
+			final YamlLocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
 			final ReceivedMessage lReceivedMessage = aDigestBot.createReceivedMessage(aMessage);
 			if (lReceivedMessage.isIsUserAdmin()) {
 				run(aDigestBot, lLocalizationHelper, lReceivedMessage);
 			} else {
 				aDigestBot.sendSimpleMessage(lReceivedMessage.getChatId(),
 					lReceivedMessage.getMessageId(),
-					lLocalizationHelper.getLocalizedStringWithUsername("digestbot.error.access",
+					lLocalizationHelper.getLocalizedString("error.access",
 						lReceivedMessage.getMessageUsername()));
 			}
 		}).start();
@@ -25,6 +25,6 @@ public abstract class BotAdminCommand extends BotCommand {
 
 	@Override
 	public abstract void run(final DigestBot aDigestBot,
-	                         final LocalizationHelper localizationHelper,
+	                         final YamlLocalizationHelper localizationHelper,
 	                         final ReceivedMessage aReceivedMessage);
 }

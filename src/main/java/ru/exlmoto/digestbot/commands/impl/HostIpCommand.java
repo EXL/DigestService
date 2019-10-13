@@ -8,7 +8,7 @@ import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotAdminCommand;
 import ru.exlmoto.digestbot.services.impl.HostIpService;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.utils.LocalizationHelper;
+import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
 
 @Component
 public class HostIpCommand extends BotAdminCommand {
@@ -21,13 +21,13 @@ public class HostIpCommand extends BotAdminCommand {
 
 	@Override
 	public void run(final DigestBot aDigestBot,
-	                final LocalizationHelper aLocalizationHelper,
+	                final YamlLocalizationHelper aLocalizationHelper,
 	                final ReceivedMessage aReceivedMessage) {
 		final Pair<Boolean, String> lAnswer = mHostIpService.receiveObject();
-		String lAnswerText = aLocalizationHelper.getLocalizedString("digestbot.command.hostip");
+		String lAnswerText = aLocalizationHelper.getLocalizedString("command.hostip");
 		final String lAnswerString = lAnswer.getSecond();
 		if (!lAnswer.getFirst()) {
-			lAnswerText = aLocalizationHelper.getLocalizedString("digestbot.error.hostip");
+			lAnswerText = aLocalizationHelper.getLocalizedString("error.hostip");
 			aDigestBot.getBotLogger().error(String.format("Cannot get host ip address '%s'.", lAnswerString));
 		}
 		lAnswerText += "\n`" + lAnswerString + '`';

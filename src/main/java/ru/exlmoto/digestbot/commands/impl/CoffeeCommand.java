@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotCommand;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.utils.LocalizationHelper;
+import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
 
 @Component
 public class CoffeeCommand extends BotCommand {
@@ -18,7 +18,7 @@ public class CoffeeCommand extends BotCommand {
 
 	@Override
 	public void run(final DigestBot aDigestBot,
-	                final LocalizationHelper aLocalizationHelper,
+	                final YamlLocalizationHelper aLocalizationHelper,
 	                final ReceivedMessage aReceivedMessage) {
 		aDigestBot.sendStickerToChat(aReceivedMessage.getChatId(),
 			aReceivedMessage.getMessageId(),

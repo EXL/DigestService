@@ -10,7 +10,7 @@ import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotAdminCommand;
 import ru.exlmoto.digestbot.services.impl.FileService;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.utils.LocalizationHelper;
+import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
 
 @Component
 public class SendCommand extends BotAdminCommand {
@@ -42,7 +42,7 @@ public class SendCommand extends BotAdminCommand {
 	 */
 	@Override
 	public void run(final DigestBot aDigestBot,
-	                final LocalizationHelper aLocalizationHelper,
+	                final YamlLocalizationHelper aLocalizationHelper,
 	                final ReceivedMessage aReceivedMessage) {
 		String lCommandText = aReceivedMessage.getMessageText();
 		Long lChatId = aReceivedMessage.getChatId();
@@ -65,7 +65,7 @@ public class SendCommand extends BotAdminCommand {
 				lChatId = NumberUtils.parseNumber(lStringChatId, Long.class);
 			} catch (NumberFormatException e) {
 				lError = true;
-				lCommandText = aLocalizationHelper.getLocalizedString("digestbot.error.chatid");
+				lCommandText = aLocalizationHelper.getLocalizedString("error.chatid");
 			}
 			if (!lError) {
 				// Delete command and chat id from received message.
@@ -76,15 +76,15 @@ public class SendCommand extends BotAdminCommand {
 			lError = true;
 			switch (lSendCommandMode) {
 				default: {
-					lCommandText = aLocalizationHelper.getLocalizedString("digestbot.error.send.format");
+					lCommandText = aLocalizationHelper.getLocalizedString("error.send.format");
 					break;
 				}
 				case STICKER_COMMAND: {
-					lCommandText = aLocalizationHelper.getLocalizedString("digestbot.error.sticker.format");
+					lCommandText = aLocalizationHelper.getLocalizedString("error.sticker.format");
 					break;
 				}
 				case IMAGE_COMMAND: {
-					lCommandText = aLocalizationHelper.getLocalizedString("digestbot.error.image.format");
+					lCommandText = aLocalizationHelper.getLocalizedString("error.image.format");
 					break;
 				}
 			}
@@ -118,7 +118,7 @@ public class SendCommand extends BotAdminCommand {
 						aDigestBot.getBotLogger().error(String.format("Cannot get image via link '%s', error: '%s'.",
 							lImageUrl, lResult));
 						aDigestBot.sendMarkdownMessage(lChatId, lMessageId,
-							String.format(aLocalizationHelper.getLocalizedString("digestbot.error.image"),
+							String.format(aLocalizationHelper.getLocalizedString("error.image"),
 								lImageUrl, lChatId, lResult));
 					}
 				} else {

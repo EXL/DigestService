@@ -20,7 +20,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.utils.LocalizationHelper;
+import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
 
 import java.io.File;
 import java.util.List;
@@ -36,7 +36,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final Logger mBotLogger;
 	private final BotCommandFactory mBotCommandFactory;
 
-	private final LocalizationHelper mLocalizationHelper;
+	private final YamlLocalizationHelper mLocalizationHelper;
 
 	private final String K_BOT_COMMAND_ENTITY = "bot_command";
 
@@ -53,7 +53,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 @Value("${digestbot.max_updates}") final Integer aBotMaxUpdates,
 	                 @Value("${digestbot.response.maxsize}") final Integer aBotMaxResponseLength,
 	                 final BotCommandFactory aBotCommandFactory,
-	                 final LocalizationHelper aLocalizationHelper) {
+	                 final YamlLocalizationHelper aLocalizationHelper) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -140,7 +140,7 @@ public class DigestBot extends TelegramLongPollingBot {
 					"Unexpectedly large response size! The message will be truncated to %d characters.",
 					mBotMaxResponseLength));
 				lBotAnswerText = lBotAnswerText.substring(0, mBotMaxResponseLength);
-				lBotAnswerText += '\n' + mLocalizationHelper.getLocalizedString("digestbot.warn.response.long");
+				lBotAnswerText += '\n' + mLocalizationHelper.getLocalizedString("warn.response.long");
 			}
 			lSendMessage.setText(lBotAnswerText);
 			execute(lSendMessage);
@@ -181,7 +181,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		} catch (TelegramApiException e) {
 			if (aOriginalChatId != null) {
 				sendMarkdownMessage(aOriginalChatId, aMessageId,
-					String.format(mLocalizationHelper.getLocalizedString("digestbot.error.sticker"),
+					String.format(mLocalizationHelper.getLocalizedString("error.sticker"),
 						aStickerId, aChatId, e.toString()));
 			}
 			mBotLogger.error(String.format("Cannot send sticker '%s' into '%d' chat: '%s'.",
@@ -212,7 +212,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		} catch (TelegramApiException e) {
 			if (aOriginalSenderChatId != null) {
 				sendMarkdownMessage(aOriginalSenderChatId, aMessageId,
-					String.format(mLocalizationHelper.getLocalizedString("digestbot.error.image"),
+					String.format(mLocalizationHelper.getLocalizedString("error.image"),
 						aImagePathOrUrl, aChatId, e.toString()));
 			}
 			mBotLogger.error(String.format("Cannot send photo into '%d' chat: '%s'.", aChatId, e.toString()));
@@ -241,7 +241,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		return new ReceivedMessage(aMessage, mBotAdmins);
 	}
 
-	public LocalizationHelper getLocalizationHelper() {
+	public YamlLocalizationHelper getLocalizationHelper() {
 		return mLocalizationHelper;
 	}
 

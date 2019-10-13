@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotCommand;
+import ru.exlmoto.digestbot.utils.ChartsKeyboard;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.digestbot.yaml.impl.YamlChartIndexHelper;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
@@ -25,6 +26,7 @@ public class ChartsCommand extends BotCommand {
 		aDigestBot.sendMarkdownMessageWithKeyboard(aReceivedMessage.getChatId(),
 			aReceivedMessage.getMessageId(),
 			aLocalizationHelper.getLocalizedString("command.charts") + "\n\n" +
-				mYamlChartIndexHelper.getDescriptions(), null);
+				mYamlChartIndexHelper.getDescriptions(),
+			ChartsKeyboard.getChartsKeyboard(mYamlChartIndexHelper.getKeys()));
 	}
 }

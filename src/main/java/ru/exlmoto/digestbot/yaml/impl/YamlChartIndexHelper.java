@@ -43,10 +43,18 @@ public class YamlChartIndexHelper extends YamlLoader {
 		}
 	}
 
+	public ArrayList<String> getKeys() {
+		final ArrayList<String> lKeys = new ArrayList<>();
+		mYamlData.forEach((iKey, iValue) -> {
+			lKeys.add(iKey);
+		});
+		return lKeys;
+	}
+
 	public String getDescriptions() {
 		final StringBuilder lStringBuilder = new StringBuilder();
-		mYamlData.forEach((k, v) -> {
-			lStringBuilder.append(v.get(mDescriptionIndex));
+		mYamlData.forEach((iKey, iValue) -> {
+			lStringBuilder.append(iValue.get(mDescriptionIndex));
 			lStringBuilder.append('\n');
 		});
 		return "```\n" + lStringBuilder.toString().trim() + "\n```";

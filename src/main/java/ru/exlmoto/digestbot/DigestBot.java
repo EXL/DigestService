@@ -20,7 +20,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
+import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
 import java.io.File;
 import java.util.List;

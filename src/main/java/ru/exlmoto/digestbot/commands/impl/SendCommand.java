@@ -10,7 +10,7 @@ import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotAdminCommand;
 import ru.exlmoto.digestbot.services.impl.FileService;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
+import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
 @Component
 public class SendCommand extends BotAdminCommand {

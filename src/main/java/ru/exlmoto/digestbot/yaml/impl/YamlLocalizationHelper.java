@@ -1,7 +1,8 @@
-package ru.exlmoto.digestbot.yaml;
+package ru.exlmoto.digestbot.yaml.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import ru.exlmoto.digestbot.yaml.YamlLoader;
 
 import java.util.ArrayList;
 import java.util.Map;

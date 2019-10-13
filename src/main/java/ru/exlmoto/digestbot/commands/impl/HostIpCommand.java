@@ -8,7 +8,7 @@ import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotAdminCommand;
 import ru.exlmoto.digestbot.services.impl.HostIpService;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
+import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
 @Component
 public class HostIpCommand extends BotAdminCommand {

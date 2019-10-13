@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotCommand;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
+import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
 @Component
 public class HelpCommand extends BotCommand {

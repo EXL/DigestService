@@ -4,7 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
-import ru.exlmoto.digestbot.yaml.YamlLocalizationHelper;
+import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
 public abstract class BotAdminCommand extends BotCommand {
 	@Override

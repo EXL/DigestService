@@ -58,3 +58,5 @@ warn.response.long:
   - "<text is cropped>"
 inline.chart.selected:
   - "You have chosen:"
+inline.error.cooldown:
+  - "❌ Please wait %d sec."

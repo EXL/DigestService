@@ -58,3 +58,5 @@ warn.response.long:
   - "<текст обрезан>"
 inline.chart.selected:
   - "Вы выбрали:"
+inline.error.cooldown:
+  - "❌ Подождите %d сек."

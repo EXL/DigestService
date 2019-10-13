@@ -35,6 +35,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final String[] mBotAdmins;
 	private final Integer mBotMaxUpdates;
 	private final Integer mBotMaxResponseLength;
+	private final Integer mBotInlineCoolDown;
 
 	private final Logger mBotLogger;
 	private final BotCommandFactory mBotCommandFactory;
@@ -57,6 +58,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 @Value("${digestbot.admins}") final String[] aBotAdmins,
 	                 @Value("${digestbot.max_updates}") final Integer aBotMaxUpdates,
 	                 @Value("${digestbot.response.maxsize}") final Integer aBotMaxResponseLength,
+	                 @Value("${digestbot.inline.cooldown}") final Integer aBotInlineCoolDown,
 	                 final BotCommandFactory aBotCommandFactory,
 	                 final YamlLocalizationHelper aLocalizationHelper,
 	                 final ChartsKeyboard aChartsKeyboard) {
@@ -65,6 +67,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		mBotAdmins = aBotAdmins;
 		mBotMaxUpdates = aBotMaxUpdates;
 		mBotMaxResponseLength = aBotMaxResponseLength;
+		mBotInlineCoolDown = aBotInlineCoolDown;
 
 		mBotLogger = LoggerFactory.getLogger(DigestBot.class);
 		mBotCommandFactory = aBotCommandFactory;
@@ -117,9 +120,17 @@ public class DigestBot extends TelegramLongPollingBot {
 		}
 	}
 
-	public void sendAnswerCallbackQuery(final AnswerCallbackQuery aAnswerCallbackQuery) {
+	private AnswerCallbackQuery createAnswerCallbackQuery(final String aCallbackId, final String aText) {
+		final AnswerCallbackQuery lAnswerCallbackQuery = new AnswerCallbackQuery();
+		lAnswerCallbackQuery.setCallbackQueryId(aCallbackId);
+		lAnswerCallbackQuery.setText(aText);
+		lAnswerCallbackQuery.setShowAlert(false);
+		return lAnswerCallbackQuery;
+	}
+
+	public void createAndSendAnswerCallbackQuery(final String aCallbackId, final String aText) {
 		try {
-			execute(aAnswerCallbackQuery);
+			execute(createAnswerCallbackQuery(aCallbackId, aText));
 		} catch (TelegramApiException e) {
 			mBotLogger.error(String.format("Cannot send callback query answer: '%s'.", e.toString()));
 		}
@@ -271,5 +282,9 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public Logger getBotLogger() {
 		return mBotLogger;
+	}
+
+	public Integer getBotInlineCoolDown() {
+		return mBotInlineCoolDown;
 	}
 }

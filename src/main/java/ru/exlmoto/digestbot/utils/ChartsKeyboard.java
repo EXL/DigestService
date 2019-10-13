@@ -68,12 +68,8 @@ public class ChartsKeyboard {
 		final String lTitle = mYamlChartsIndexHelper.getTitleByKey(lKey);
 		final String lApiLink = mYamlChartsIndexHelper.getApiLinkByKey(lKey);
 
-		final AnswerCallbackQuery lAnswerCallbackQuery = new AnswerCallbackQuery();
-		lAnswerCallbackQuery.setCallbackQueryId(aCallbackQuery.getId());
-		lAnswerCallbackQuery.setText(
+		aDigestBot.createAndSendAnswerCallbackQuery(aCallbackQuery.getId(),
 			lLocalizationHelper.getLocalizedString("inline.chart.selected") + ' ' + lTitle);
-		lAnswerCallbackQuery.setShowAlert(false);
-		aDigestBot.sendAnswerCallbackQuery(lAnswerCallbackQuery);
 
 		if (mFileDownloader) {
 			final Pair<Boolean, String> lAnswer = mFileService.receiveObject(lApiLink);

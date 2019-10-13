@@ -34,7 +34,7 @@
 
 1. `/digest` -
 2. `/rates` -
-3. `/charts` -
+3. `/charts` +
 4. `/start` +
 5. `/coffee` +
 6. `/help` +

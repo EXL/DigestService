@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -19,6 +20,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
+import ru.exlmoto.digestbot.utils.CallbackQueryHandler;
+import ru.exlmoto.digestbot.utils.ChartsKeyboard;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
@@ -37,6 +40,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final BotCommandFactory mBotCommandFactory;
 
 	private final YamlLocalizationHelper mLocalizationHelper;
+	private final ChartsKeyboard mChartsKeyboard;
+	private final CallbackQueryHandler mCallbackQueryHandler;
 
 	private final String K_BOT_COMMAND_ENTITY = "bot_command";
 
@@ -53,7 +58,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 @Value("${digestbot.max_updates}") final Integer aBotMaxUpdates,
 	                 @Value("${digestbot.response.maxsize}") final Integer aBotMaxResponseLength,
 	                 final BotCommandFactory aBotCommandFactory,
-	                 final YamlLocalizationHelper aLocalizationHelper) {
+	                 final YamlLocalizationHelper aLocalizationHelper,
+	                 final ChartsKeyboard aChartsKeyboard) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -63,6 +69,9 @@ public class DigestBot extends TelegramLongPollingBot {
 		mBotLogger = LoggerFactory.getLogger(DigestBot.class);
 		mBotCommandFactory = aBotCommandFactory;
 		mLocalizationHelper = aLocalizationHelper;
+
+		mChartsKeyboard = aChartsKeyboard;
+		mCallbackQueryHandler = new CallbackQueryHandler();
 	}
 
 	@Override
@@ -72,6 +81,9 @@ public class DigestBot extends TelegramLongPollingBot {
 				(aUpdate.hasMessage()) ? aUpdate.getMessage() : null;
 		if (lMessage != null) {
 			handleMessage(lMessage);
+		}
+		if (aUpdate.hasCallbackQuery()) {
+			mCallbackQueryHandler.handle(this, aUpdate.getCallbackQuery());
 		}
 	}
 
@@ -102,6 +114,14 @@ public class DigestBot extends TelegramLongPollingBot {
 	private void handleMessage(final Message aMessage) {
 		if (aMessage.isCommand()) {
 			onCommand(aMessage);
+		}
+	}
+
+	public void sendAnswerCallbackQuery(final AnswerCallbackQuery aAnswerCallbackQuery) {
+		try {
+			execute(aAnswerCallbackQuery);
+		} catch (TelegramApiException e) {
+			mBotLogger.error(String.format("Cannot send callback query answer: '%s'.", e.toString()));
 		}
 	}
 
@@ -243,6 +263,10 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public YamlLocalizationHelper getLocalizationHelper() {
 		return mLocalizationHelper;
+	}
+
+	public ChartsKeyboard getChartsKeyboard() {
+		return mChartsKeyboard;
 	}
 
 	public Logger getBotLogger() {

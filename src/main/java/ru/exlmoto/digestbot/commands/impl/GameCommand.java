@@ -40,7 +40,7 @@ public class GameCommand extends BotCommand {
 			if (lAnswer.getFirst()) {
 				aDigestBot.sendPhotoToChatFromUrl(lChatId, lMessageId, lChatId, lCaption, lResult, true);
 			} else {
-				aDigestBot.getBotLogger().error(String.format("Cannot get game statistic: %s", lResult));
+				aDigestBot.getBotLogger().error(String.format("Cannot get game statistic: '%s'.", lResult));
 				aDigestBot.sendMarkdownMessage(lChatId, lMessageId,
 					String.format(aLocalizationHelper.getLocalizedString("error.game"), lResult));
 			}

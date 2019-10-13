@@ -52,5 +52,9 @@ error.hostip:
   - "Error getting host IP address:"
 error.game:
   - "Cannot get game statistics, error `%s`."
+error.chart:
+  - "Cannot get chart image, error: `%s`."
 warn.response.long:
   - "<text is cropped>"
+inline.chart.selected:
+  - "You have chosen:"

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 @Component
-public class YamlChartIndexHelper extends YamlLoader {
+public class YamlChartsIndexHelper extends YamlLoader {
 	private final int K_TITLE_RU = 0;
 	private final int K_TITLE_EN = 1;
 	private final int K_DESCR_RU = 2;
@@ -28,8 +28,8 @@ public class YamlChartIndexHelper extends YamlLoader {
 
 	private final Map<String, ArrayList<String>> mYamlData;
 
-	public YamlChartIndexHelper(@Value("${digestbot.file.name.charts}") final String aGeneralFilename,
-	                            @Value("${general.lang}") final String aLanguage) {
+	public YamlChartsIndexHelper(@Value("${digestbot.file.name.charts}") final String aGeneralFilename,
+	                             @Value("${general.lang}") final String aLanguage) {
 		mYamlData = loadYamlFromResources(aGeneralFilename);
 
 		if (aLanguage.startsWith(K_ENGLISH_LANG)) {
@@ -43,11 +43,23 @@ public class YamlChartIndexHelper extends YamlLoader {
 		}
 	}
 
+	public String getTitleByKey(final String aKey) {
+		return mYamlData.get(aKey).get(mTitleIndex);
+	}
+
+	public String getApiLinkByKey(final String aKey) {
+		return mYamlData.get(aKey).get(K_API_LINK);
+	}
+
+	public ArrayList<String> getButtons() {
+		final ArrayList<String> lButtonLabels = new ArrayList<>();
+		mYamlData.forEach((iKey, iValue) -> lButtonLabels.add(iValue.get(mButtonsIndex)));
+		return lButtonLabels;
+	}
+
 	public ArrayList<String> getKeys() {
 		final ArrayList<String> lKeys = new ArrayList<>();
-		mYamlData.forEach((iKey, iValue) -> {
-			lKeys.add(iKey);
-		});
+		mYamlData.forEach((iKey, iValue) -> lKeys.add(iKey));
 		return lKeys;
 	}
 

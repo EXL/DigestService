@@ -34,7 +34,7 @@ public class CallbackQueryHandler {
 				while (mSeconds > 0) {
 					mSeconds -= 1;
 					// Seconds to milliseconds.
-					Thread.sleep(aCoolDown * 1000);
+					Thread.sleep(1000);
 				}
 			} catch (InterruptedException e) {
 				aDigestBot.getBotLogger().error(String.format("Inline delay error: '%s'.", e.toString()));

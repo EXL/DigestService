@@ -17,12 +17,14 @@ public class RatesCommand extends BotCommand {
 	                final ReceivedMessage aReceivedMessage) {
 		final RatesKeyboard lRatesKeyboard = aDigestBot.getRatesKeyboard();
 		final YamlRatesIndexHelper lYamlRatesIndexHelper = lRatesKeyboard.getYamlRatesIndexHelper();
-		final String lTitle = lYamlRatesIndexHelper.getTitleByKey("i.rate.ru") + '\n';
-		final String lTitleAux = lYamlRatesIndexHelper.getTitleByKey("rate") + ' ';
-		final String lTitleChange = lYamlRatesIndexHelper.getTitleByKey("rate.change");
+		final String lTitle = lYamlRatesIndexHelper.getTitleByKey("i.rate.ru") + ' ';
+		final String lTitleAux = lYamlRatesIndexHelper.getTitleByKey("rate") + '\n';
+		final String lTitleChange = lYamlRatesIndexHelper.getTitleByKey("rate.change") + '\n';
+
+		aDigestBot.getBankWorker().updateAllBanks();
 
 		aDigestBot.sendMarkdownMessageWithKeyboard(aReceivedMessage.getChatId(),
-			aReceivedMessage.getMessageId(), lTitle + lTitleAux + lTitleChange,
+			aReceivedMessage.getMessageId(), lTitle + lTitleChange + lTitleAux,
 			lRatesKeyboard.getRatesKeyboard());
 	}
 }

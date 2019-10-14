@@ -63,7 +63,6 @@
 `/debug UseUriInsteadFiles`
 `/debug EnableLogUpdates`
 `/debug UseStackForDelay`
-`/debug UseCbrMirror`
 
 - Банк KZ @Sebastianxy1
 - Подписка @Motofan

@@ -44,4 +44,8 @@ public class BankService extends RestTextService {
 	public Pair<Boolean, String> receiveBankRuMirrorData() {
 		return receiveObject(mYamlRatesIndexHelper.getSingleParameter("rate.ru.mirror"));
 	}
+
+	public Pair<Boolean, String> receiveBankUaMirrorData() {
+		return receiveObject(mYamlRatesIndexHelper.getSingleParameter("rate.ua.mirror"));
+	}
 }

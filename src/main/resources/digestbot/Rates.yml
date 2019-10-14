@@ -13,6 +13,8 @@ rate.change:
   - "Change:"
 rate.ru.mirror:
   - "https://www.cbr-xml-daily.ru/daily.xml"
+rate.ua.mirror:
+  - "https://www.bank-ua.com/export/currrate.xml"
 i.rate.ru:
   - "Источник — ЦБ РФ."
   - "Source - CBR."

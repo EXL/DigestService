@@ -24,6 +24,7 @@ import ru.exlmoto.digestbot.utils.CallbackQueryHandler;
 import ru.exlmoto.digestbot.utils.ChartsKeyboard;
 import ru.exlmoto.digestbot.utils.RatesKeyboard;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
+import ru.exlmoto.digestbot.workers.BankWorker;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
 import java.io.File;
@@ -46,6 +47,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final RatesKeyboard mRatesKeyboard;
 	private final CallbackQueryHandler mCallbackQueryHandler;
 
+	private final BankWorker mBankWorker;
+
 	private final String K_BOT_COMMAND_ENTITY = "bot_command";
 
 	private enum MessageMode {
@@ -64,7 +67,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final BotCommandFactory aBotCommandFactory,
 	                 final YamlLocalizationHelper aLocalizationHelper,
 	                 final ChartsKeyboard aChartsKeyboard,
-	                 final RatesKeyboard aRatesKeyboard) {
+	                 final RatesKeyboard aRatesKeyboard,
+	                 final BankWorker aBankWorker) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -79,6 +83,9 @@ public class DigestBot extends TelegramLongPollingBot {
 		mChartsKeyboard = aChartsKeyboard;
 		mRatesKeyboard = aRatesKeyboard;
 		mCallbackQueryHandler = new CallbackQueryHandler();
+
+		mBankWorker = aBankWorker;
+		mBankWorker.setBotLogger(mBotLogger);
 	}
 
 	@Override
@@ -294,5 +301,9 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public Integer getBotInlineCoolDown() {
 		return mBotInlineCoolDown;
+	}
+
+	public BankWorker getBankWorker() {
+		return mBankWorker;
 	}
 }

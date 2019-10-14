@@ -22,6 +22,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.utils.CallbackQueryHandler;
 import ru.exlmoto.digestbot.utils.ChartsKeyboard;
+import ru.exlmoto.digestbot.utils.RatesKeyboard;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
@@ -42,6 +43,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	private final YamlLocalizationHelper mLocalizationHelper;
 	private final ChartsKeyboard mChartsKeyboard;
+	private final RatesKeyboard mRatesKeyboard;
 	private final CallbackQueryHandler mCallbackQueryHandler;
 
 	private final String K_BOT_COMMAND_ENTITY = "bot_command";
@@ -61,7 +63,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 @Value("${digestbot.inline.cooldown}") final Integer aBotInlineCoolDown,
 	                 final BotCommandFactory aBotCommandFactory,
 	                 final YamlLocalizationHelper aLocalizationHelper,
-	                 final ChartsKeyboard aChartsKeyboard) {
+	                 final ChartsKeyboard aChartsKeyboard,
+	                 final RatesKeyboard aRatesKeyboard) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -74,6 +77,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		mLocalizationHelper = aLocalizationHelper;
 
 		mChartsKeyboard = aChartsKeyboard;
+		mRatesKeyboard = aRatesKeyboard;
 		mCallbackQueryHandler = new CallbackQueryHandler();
 	}
 
@@ -278,6 +282,10 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public ChartsKeyboard getChartsKeyboard() {
 		return mChartsKeyboard;
+	}
+
+	public RatesKeyboard getRatesKeyboard() {
+		return mRatesKeyboard;
 	}
 
 	public Logger getBotLogger() {

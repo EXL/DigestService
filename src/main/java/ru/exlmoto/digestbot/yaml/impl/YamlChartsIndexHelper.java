@@ -11,16 +11,11 @@ import java.util.Map;
 
 @Component
 public class YamlChartsIndexHelper extends YamlLoader {
-	private final int K_TITLE_RU = 0;
-	private final int K_TITLE_EN = 1;
 	private final int K_DESCR_RU = 2;
 	private final int K_DESCR_EN = 3;
 	private final int K_BUTTN_RU = 4;
 	private final int K_BUTTN_EN = 5;
 	private final int K_API_LINK = 6;
-
-	private final String K_RUSSIAN_LANG = "ru";
-	private final String K_ENGLISH_LANG = "en";
 
 	private int mTitleIndex;
 	private int mDescriptionIndex;

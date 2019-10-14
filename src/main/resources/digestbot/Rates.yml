@@ -1,0 +1,40 @@
+# Structure:
+# private final int K_TITLE_RU     = 0;
+# private final int K_TITLE_EN     = 1;
+# private final int K_BUTTON_LABEL = 2;
+# private final int K_BANK_LINK    = 3;
+# i. - is iterable object.
+
+rate:
+  - "Курс валют:"
+  - "Exchange Rates:"
+rate.change:
+  - "Изменение:"
+  - "Change:"
+rate.ru.mirror:
+  - "https://www.cbr-xml-daily.ru/daily.xml"
+i.rate.ru:
+  - "Источник — ЦБ РФ."
+  - "Source - CBR."
+  - "🇷🇺 RUB"
+  - "https://www.cbr.ru/scripts/XML_daily.asp?"
+i.rate.ua:
+  - "Источник — НБУ."
+  - "Source - NBU."
+  - "🇺🇦 UAH"
+  - "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange"
+i.rate.by:
+  - "Источник — НБ РБ."
+  - "Source - NB RB."
+  - "🇧🇾 BYN"
+  - "https://nbrb.by/Services/XmlExRates.aspx"
+i.rate.kz:
+  - "Источник — НБК."
+  - "Source — NBK."
+  - "🇰🇿 KAZ"
+  - "https://nationalbank.kz/rss/rates_all.xml?switch=russian"
+i.rate.metal:
+  - "Источник — ЦБ РФ."
+  - "Source - CBR."
+  - "🤘 MET"
+  - "https://www.cbr.ru/hd_base/metall/metall_base_new/"

@@ -32,9 +32,9 @@ public class CallbackQueryHandler {
 		new Thread(() -> {
 			try {
 				while (mSeconds > 0) {
-					mSeconds -= 1;
-					// Seconds to milliseconds.
+					// Seconds to milliseconds, 1 second.
 					Thread.sleep(1000);
+					mSeconds -= 1;
 				}
 			} catch (InterruptedException e) {
 				aDigestBot.getBotLogger().error(String.format("Inline delay error: '%s'.", e.toString()));

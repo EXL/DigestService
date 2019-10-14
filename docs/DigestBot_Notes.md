@@ -58,3 +58,13 @@
 Ещё нужно обеспечить отлов различных событий в чате, например, смены фотографии или вход/выход нового участника.
 
 Более удачный пример использования архитектуры приложения в [этом репозитории](https://github.com/jonigl/tacs-grupo1-api).
+
+`/debug RefreshRates`
+`/debug UseUriInsteadFiles`
+`/debug EnableLogUpdates`
+`/debug UseStackForDelay`
+`/debug UseCbrMirror`
+
+- Банк KZ @Sebastianxy1
+- Подписка @Motofan
+- Нейтральное реагирование на digest'ы @baaaaat

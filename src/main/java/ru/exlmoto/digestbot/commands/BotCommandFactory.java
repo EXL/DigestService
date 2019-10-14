@@ -44,6 +44,7 @@ public class BotCommandFactory {
 		addCommand("/game", mApplicationContext.getBean(GameCommand.class));
 		addCommand("/image", mApplicationContext.getBean(SendCommand.class));
 		addCommand("/charts", mApplicationContext.getBean(ChartsCommand.class));
+		addCommand("/rates", mApplicationContext.getBean(RatesCommand.class));
 	}
 
 	/**

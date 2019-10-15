@@ -67,3 +67,5 @@
 - Банк KZ @Sebastianxy1
 - Подписка @Motofan
 - Нейтральное реагирование на digest'ы @baaaaat
+
+Оптимизация циклов fori.

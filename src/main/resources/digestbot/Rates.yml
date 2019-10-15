@@ -9,12 +9,16 @@ rate:
   - "Курс валют:"
   - "Exchange Rates:"
 rate.change:
-  - "Изменение:"
-  - "Change:"
+  - "Изменение по USD:"
+  - "Change for USD:"
+rate.change.up:
+  - ⬆️
+rate.change.down:
+  - ⬇️
 rate.ru.mirror:
   - "https://www.cbr-xml-daily.ru/daily.xml"
 rate.ua.mirror:
-  - "https://www.bank-ua.com/export/currrate.xml"
+  - "https://pf-soft.net/service/currency/"
 i.rate.ru:
   - "Источник — ЦБ РФ."
   - "Source - CBR."

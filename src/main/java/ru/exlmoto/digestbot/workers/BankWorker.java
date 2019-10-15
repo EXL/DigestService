@@ -9,6 +9,7 @@ import ru.exlmoto.digestbot.services.impl.BankService;
 import ru.exlmoto.digestbot.workers.banks.Bank;
 import ru.exlmoto.digestbot.workers.banks.Metal;
 import ru.exlmoto.digestbot.workers.banks.impl.*;
+import ru.exlmoto.digestbot.yaml.impl.YamlRatesIndexHelper;
 
 @Service
 public class BankWorker {
@@ -37,7 +38,7 @@ public class BankWorker {
 	}
 
 	public void updateAllBanks() {
-		mBotLogger.info("Starting crawling currencies data!");
+		mBotLogger.info("Start crawling currencies data!");
 		if (!updateBank(mBankRu, mBankService.receiveBankRuData())) {
 			updateBank(mBankRu, mBankService.receiveBankRuMirrorData());
 		}
@@ -47,6 +48,7 @@ public class BankWorker {
 		updateBank(mBankBy, mBankService.receiveBankByData());
 		updateBank(mBankKz, mBankService.receiveBankKzData());
 		updateMetal(mMetalRu, mBankService.receiveBankMetalData());
+		mBotLogger.info("End crawling currencies data!");
 	}
 
 	private boolean updateMetal(final Metal aMetal,
@@ -55,7 +57,7 @@ public class BankWorker {
 		final boolean lIsHtml = lServerAnswerString.startsWith("<!DOCTYPE HTML") ||
 			                    lServerAnswerString.startsWith("<!doctype html");
 		if (aServerAnswer.getFirst() && lIsHtml) {
-			aMetal.parseHtml(lServerAnswerString);
+			aMetal.parseHtml(lServerAnswerString, mBotLogger);
 			return true;
 		} else {
 			if (mBotLogger != null) {
@@ -71,14 +73,36 @@ public class BankWorker {
 		final String lServerAnswerString = aServerAnswer.getSecond();
 		final boolean lIsXml = lServerAnswerString.startsWith("<?xml") || lServerAnswerString.startsWith("<?XML");
 		if (aServerAnswer.getFirst() && lIsXml) {
-			aBank.parseXml(lServerAnswerString);
+			aBank.parseXml(lServerAnswerString, mBotLogger);
 			return true;
 		} else {
-			if (mBotLogger != null) {
-				mBotLogger.error(String.format("Cannot get bank currencies list: '%s' '%s'.",
-					aBank.getClass(), lServerAnswerString));
-			}
+			mBotLogger.error(String.format("Cannot get bank currencies list: '%s' '%s'.",
+				aBank.getClass(), lServerAnswerString));
 			return false;
 		}
+	}
+
+	public BankRu getBankRu() {
+		return mBankRu;
+	}
+
+	public String determineDifference(final Double aValue, final YamlRatesIndexHelper aYamlRatesIndexHelper) {
+		if (aValue == null) {
+			return "\n";
+		}
+		return aYamlRatesIndexHelper.getTitleByKey("rate.change") +
+			       addSignAndIcon(aValue, aYamlRatesIndexHelper) + '\n';
+	}
+
+	private String addSignAndIcon(final Double aValue, final YamlRatesIndexHelper aYamlRatesIndexHelper) {
+		String lAnswer = " ";
+		if (aValue < 0) {
+			lAnswer += String.format("%.4f", aValue) + ' ' +
+				           aYamlRatesIndexHelper.getTitleByKey("rate.change.down");
+		} else {
+			lAnswer += '+' + String.format("%.4f", aValue) + ' ' +
+				           aYamlRatesIndexHelper.getTitleByKey("rate.change.up");
+		}
+		return lAnswer;
 	}
 }

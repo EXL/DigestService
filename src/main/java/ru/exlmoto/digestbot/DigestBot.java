@@ -86,6 +86,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 		mBankWorker = aBankWorker;
 		mBankWorker.setBotLogger(mBotLogger);
+		mBankWorker.updateAllBanks();
 	}
 
 	@Override

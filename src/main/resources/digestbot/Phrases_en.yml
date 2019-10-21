@@ -54,6 +54,8 @@ error.game:
   - "Cannot get game statistics, error `%s`."
 error.chart:
   - "Cannot get chart image, error: `%s`."
+error.rates:
+  - "Error: Cannot get rates data."
 warn.response.long:
   - "<text is cropped>"
 inline.chart.selected:

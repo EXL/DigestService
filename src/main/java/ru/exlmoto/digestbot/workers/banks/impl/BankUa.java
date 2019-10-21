@@ -45,14 +45,16 @@ public class BankUa extends Bank {
 
 	@Override
 	public String generateMarkdownAnswer() {
-		return "```\n" +
+		final boolean lAllOk = (mUSD != null) && (mEUR != null) && (mKZT != null) &&
+			                       (mBYN != null) && (mRUB != null) && (mGBP != null);
+		return (lAllOk) ? "```\n" +
 			       "1 USD = " + mUSD + " UAH.\n" +
 			       "1 EUR = " + mEUR + " UAH.\n" +
 			       "1 KZT = " + mKZT + " UAH.\n" +
 			       "1 BYN = " + mBYN + " UAH.\n" +
 			       "1 RUB = " + mRUB + " UAH.\n" +
 			       "1 GPB = " + mGBP + " UAH.\n" +
-			       "```";
+			       "```" : null;
 	}
 
 	public void setIsMirror(final boolean aIsMirror) {

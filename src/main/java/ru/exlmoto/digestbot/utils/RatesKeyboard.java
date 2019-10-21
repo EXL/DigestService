@@ -84,11 +84,14 @@ public class RatesKeyboard {
 			lLocalizationHelper.getLocalizedString("inline.chart.selected") + ' ' + lButtonLabel);
 
 		if (lRateEntity != null) {
+			String lMarkdownAnswer = lRateEntity.generateMarkdownAnswer();
+			if (lMarkdownAnswer == null) {
+				lMarkdownAnswer = lLocalizationHelper.getLocalizedString("error.rates");
+			}
 			aDigestBot.editMarkdownMessageWithKeyboard(aCallbackQuery.getMessage().getChatId(),
 				aCallbackQuery.getMessage().getMessageId(),
 				lTitle + lBankWorker.determineDifference(lRateEntity.getDifference(), lYamlRatesIndexHelper) +
-					lTitleAux + lRateEntity.generateMarkdownAnswer(),
-				lRatesKeyboard.getRatesKeyboard());
+					lTitleAux + lMarkdownAnswer, lRatesKeyboard.getRatesKeyboard());
 		}
 	}
 }

@@ -32,13 +32,15 @@ public class BankBy extends Bank {
 
 	@Override
 	public String generateMarkdownAnswer() {
-		return "```\n" +
+		final boolean lAllOk = (mUSD != null) && (mEUR != null) && (mRUB != null) &&
+			                       (mKZT != null) && (mUAH != null) && (mGBP != null);
+		return (lAllOk) ? "```\n" +
 			       "1 USD = " + mUSD + " BYN.\n" +
 			       "1 EUR = " + mEUR + " BYN.\n" +
 			       "1 KZT = " + mKZT + " BYN.\n" +
 			       "1 RUB = " + mRUB + " BYN.\n" +
 			       "1 UAH = " + mUAH + " BYN.\n" +
 			       "1 GPB = " + mGBP + " BYN.\n" +
-			       "```";
+			       "```" : null;
 	}
 }

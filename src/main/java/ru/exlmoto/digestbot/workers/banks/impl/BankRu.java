@@ -31,13 +31,15 @@ public class BankRu extends Bank {
 	}
 
 	public String generateMarkdownAnswer() {
-		return "```\n" +
+		final boolean lAllOk = (mUSD != null) && (mEUR != null) && (mKZT != null) &&
+			                   (mBYN != null) && (mUAH != null) && (mGBP != null);
+		return (lAllOk) ? "```\n" +
 			       "1 USD = " + mUSD + " RUB.\n" +
 			       "1 EUR = " + mEUR + " RUB.\n" +
 			       "1 KZT = " + mKZT + " RUB.\n" +
 			       "1 BYN = " + mBYN + " RUB.\n" +
 			       "1 UAH = " + mUAH + " RUB.\n" +
 			       "1 GPB = " + mGBP + " RUB.\n" +
-				   "```";
+				   "```" : null;
 	}
 }

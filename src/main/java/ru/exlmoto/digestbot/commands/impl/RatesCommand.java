@@ -23,10 +23,13 @@ public class RatesCommand extends BotCommand {
 		final String lTitleAux = lYamlRatesIndexHelper.getTitleByKey("rate") + '\n';
 		final BankWorker lBankWorker = aDigestBot.getBankWorker();
 		final BankRu lBankRu = lBankWorker.getBankRu();
+		String lMarkdownAnswer = lBankRu.generateMarkdownAnswer();
+		if (lMarkdownAnswer == null) {
+			lMarkdownAnswer = aLocalizationHelper.getLocalizedString("error.rates");
+		}
 
 		aDigestBot.sendMarkdownMessageWithKeyboard(aReceivedMessage.getChatId(), aReceivedMessage.getMessageId(),
 			lTitle + lBankWorker.determineDifference(lBankRu.getDifference(), lYamlRatesIndexHelper) +
-				lTitleAux + lBankRu.generateMarkdownAnswer(),
-			lRatesKeyboard.getRatesKeyboard());
+				lTitleAux + lMarkdownAnswer, lRatesKeyboard.getRatesKeyboard());
 	}
 }

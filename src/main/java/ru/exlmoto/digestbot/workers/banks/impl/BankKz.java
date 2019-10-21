@@ -9,4 +9,9 @@ public class BankKz extends Bank {
 	public void parseXml(final String aXml, final Logger aBotLogger) {
 		// System.out.println(aXml);
 	}
+
+	@Override
+	public String generateMarkdownAnswer() {
+		return null;
+	}
 }

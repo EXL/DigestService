@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -148,6 +149,48 @@ public class DigestBot extends TelegramLongPollingBot {
 		}
 	}
 
+	private void editMessage(final Long aChatId,
+	                         final Integer aMessageId,
+	                         final String aNewMessage,
+	                         final MessageMode aMessageMode,
+	                         final InlineKeyboardMarkup aInlineKeyboardMarkup) {
+		try {
+			final EditMessageText lEditMessageText = new EditMessageText();
+			lEditMessageText.setChatId(aChatId);
+			lEditMessageText.setMessageId(aMessageId);
+			switch (aMessageMode) {
+				default: {
+					break;
+				}
+				case MESSAGE_HTML: {
+					lEditMessageText.setParseMode(ParseMode.HTML);
+					lEditMessageText.enableHtml(true);
+					break;
+				}
+				case MESSAGE_MARKDOWN: {
+					lEditMessageText.setParseMode(ParseMode.MARKDOWN);
+					lEditMessageText.enableMarkdown(true);
+					break;
+				}
+			}
+			if (aInlineKeyboardMarkup != null) {
+				lEditMessageText.setReplyMarkup(aInlineKeyboardMarkup);
+			}
+			String lBotAnswerText = aNewMessage;
+			if (aNewMessage.length() > mBotMaxResponseLength) {
+				mBotLogger.warn(String.format(
+					"Unexpectedly large response size! The message will be truncated to %d characters.",
+					mBotMaxResponseLength));
+				lBotAnswerText = lBotAnswerText.substring(0, mBotMaxResponseLength);
+				lBotAnswerText += '\n' + mLocalizationHelper.getLocalizedString("warn.response.long");
+			}
+			lEditMessageText.setText(lBotAnswerText);
+			execute(lEditMessageText);
+		} catch (TelegramApiException e) {
+			mBotLogger.error(String.format("Cannot edit message in '%d' chat: '%s'.", aChatId, e.toString()));
+		}
+	}
+
 	private void sendMessage(final Long aChatId,
 	                         final Integer aMessageId,
 	                         final String aMessage,
@@ -192,6 +235,10 @@ public class DigestBot extends TelegramLongPollingBot {
 		}
 	}
 
+	public void editSimpleMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
+		editMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_SIMPLE, null);
+	}
+
 	public void sendSimpleMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
 		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_SIMPLE, null);
 	}
@@ -200,8 +247,16 @@ public class DigestBot extends TelegramLongPollingBot {
 		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_HTML, null);
 	}
 
+	public void editHtmlMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
+		editMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_HTML, null);
+	}
+
 	public void sendMarkdownMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
 		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN, null);
+	}
+
+	public void editMarkdownMessage(final Long aChatId, final Integer aMessageId, final String aMessage) {
+		editMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN, null);
 	}
 
 	public void sendMarkdownMessageWithKeyboard(final Long aChatId,
@@ -210,6 +265,14 @@ public class DigestBot extends TelegramLongPollingBot {
 	                                            final InlineKeyboardMarkup aInlineKeyboardMarkup) {
 		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN, aInlineKeyboardMarkup);
 	}
+
+	public void editMarkdownMessageWithKeyboard(final Long aChatId,
+	                                            final Integer aMessageId,
+	                                            final String aMessage,
+	                                            final InlineKeyboardMarkup aInlineKeyboardMarkup) {
+		editMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN, aInlineKeyboardMarkup);
+	}
+
 
 	public void sendStickerToChat(final Long aChatId, final Integer aMessageId,
 	                              final Long aOriginalChatId, final String aStickerId) {

@@ -60,3 +60,5 @@ inline.chart.selected:
   - "Вы выбрали:"
 inline.error.cooldown:
   - "❌ Подождите %d сек."
+inline.info.updated:
+  - "Данные обновлены."

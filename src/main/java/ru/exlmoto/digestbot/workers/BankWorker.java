@@ -88,6 +88,18 @@ public class BankWorker {
 		return mBankRu;
 	}
 
+	public BankUa getBankUa() {
+		return mBankUa;
+	}
+
+	public BankBy getBankBy() {
+		return mBankBy;
+	}
+
+	public BankKz getBankKz() {
+		return mBankKz;
+	}
+
 	public String determineDifference(final BigDecimal aValue, final YamlRatesIndexHelper aYamlRatesIndexHelper) {
 		if (aValue == null) {
 			return "\n";

@@ -59,7 +59,7 @@ public class ChartsKeyboard {
 		return mYamlChartsIndexHelper;
 	}
 
-	public void handleRatesKeyboard(final DigestBot aDigestBot, final CallbackQuery aCallbackQuery) {
+	public void handleChartsKeyboard(final DigestBot aDigestBot, final CallbackQuery aCallbackQuery) {
 		final YamlLocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
 		final Message lMessage = aCallbackQuery.getMessage();
 		final Long lChatId = lMessage.getChatId();

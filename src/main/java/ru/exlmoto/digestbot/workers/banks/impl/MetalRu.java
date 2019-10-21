@@ -8,4 +8,9 @@ public class MetalRu extends Metal {
 	public void parseHtml(final String aHtml, final Logger aBotLogger) {
 		// System.out.println(aHtml);
 	}
+
+	@Override
+	public String generateMarkdownAnswer() {
+		return null;
+	}
 }

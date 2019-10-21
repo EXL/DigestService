@@ -11,7 +11,7 @@ import javax.xml.xpath.*;
 import java.io.StringReader;
 import java.math.BigDecimal;
 
-public abstract class Bank {
+public abstract class Bank extends RateEntity {
 	protected String mUSD = null;
 	protected String mEUR = null;
 	protected String mKZT = null;
@@ -19,9 +19,6 @@ public abstract class Bank {
 	protected String mUAH = null;
 	protected String mGBP = null;
 	protected String mRUB = null;
-
-	private String mPrevUSD = null;
-	private BigDecimal mDifference = null;
 
 	private final DocumentBuilderFactory mDocumentBuilderFactory;
 	private final XPath mXPath;
@@ -53,11 +50,11 @@ public abstract class Bank {
 		return lStringBuilder.toString();
 	}
 
-	protected void updateDifference(final Logger aBotLogger) {
+	public void updateDifference(final Logger aBotLogger) {
 		if (mUSD != null) {
-			if (mPrevUSD != null) {
+			if (mPrevValue != null) {
 				try {
-					final BigDecimal lNewValue = new BigDecimal(mPrevUSD).subtract(new BigDecimal(mUSD));
+					final BigDecimal lNewValue = new BigDecimal(mPrevValue).subtract(new BigDecimal(mUSD));
 					if (lNewValue.compareTo(BigDecimal.ZERO) == 0) {
 						mDifference = null;
 					} else {
@@ -69,15 +66,11 @@ public abstract class Bank {
 				}
 			} else {
 				mDifference = null;
-				mPrevUSD = mUSD;
+				mPrevValue = mUSD;
 			}
 		} else {
 			mDifference = null;
 		}
-	}
-
-	public BigDecimal getDifference() {
-		return mDifference;
 	}
 
 	protected String normalizeValue(final String aXml,

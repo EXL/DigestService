@@ -12,6 +12,7 @@ import ru.exlmoto.digestbot.workers.BankWorker;
 import ru.exlmoto.digestbot.workers.banks.Bank;
 import ru.exlmoto.digestbot.workers.banks.RateEntity;
 import ru.exlmoto.digestbot.workers.banks.impl.BankRu;
+import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 import ru.exlmoto.digestbot.yaml.impl.YamlRatesIndexHelper;
 
 import java.util.ArrayList;
@@ -49,30 +50,38 @@ public class RatesKeyboard {
 	public void handleRatesKeyboard(final DigestBot aDigestBot, final CallbackQuery aCallbackQuery) {
 		final RatesKeyboard lRatesKeyboard = aDigestBot.getRatesKeyboard();
 		final YamlRatesIndexHelper lYamlRatesIndexHelper = lRatesKeyboard.getYamlRatesIndexHelper();
-		final String lTitle;
+		final YamlLocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
 		final String lTitleAux = lYamlRatesIndexHelper.getTitleByKey("rate") + '\n';
 		final BankWorker lBankWorker = aDigestBot.getBankWorker();
 		final String lCallbackQueryData = aCallbackQuery.getData();
-		final RateEntity lRateEntity;
+		String lTitle = null;
+		String lButtonLabel = null;
+		RateEntity lRateEntity = null;
+
 		if (lCallbackQueryData.startsWith("i.rate.ru")) {
 			lTitle = lYamlRatesIndexHelper.getTitleByKey("i.rate.ru") + ' ';
+			lButtonLabel = lYamlRatesIndexHelper.getButtonLabel("i.rate.ru");
 			lRateEntity = lBankWorker.getBankRu();
 		} else if (lCallbackQueryData.startsWith("i.rate.ua")) {
 			lTitle = lYamlRatesIndexHelper.getTitleByKey("i.rate.ua") + ' ';
+			lButtonLabel = lYamlRatesIndexHelper.getButtonLabel("i.rate.ua");
 			lRateEntity = lBankWorker.getBankUa();
 		} else if (lCallbackQueryData.startsWith("i.rate.by")) {
 			lTitle = lYamlRatesIndexHelper.getTitleByKey("i.rate.by") + ' ';
+			lButtonLabel = lYamlRatesIndexHelper.getButtonLabel("i.rate.by");
 			lRateEntity = lBankWorker.getBankBy();
 		} else if (lCallbackQueryData.startsWith("i.rate.kz")) {
 			lTitle = lYamlRatesIndexHelper.getTitleByKey("i.rate.kz") + ' ';
+			lButtonLabel = lYamlRatesIndexHelper.getButtonLabel("i.rate.kz");
 			lRateEntity = lBankWorker.getBankKz();
 		} else if (lCallbackQueryData.startsWith("i.rate.metal")) {
 			lTitle = lYamlRatesIndexHelper.getTitleByKey("i.rate.metal") + ' ';
-			lRateEntity = lBankWorker.getBankKz();
-		} else {
-			lTitle = null;
-			lRateEntity = null;
+			lButtonLabel = lYamlRatesIndexHelper.getButtonLabel("i.rate.metal");
+			lRateEntity = lBankWorker.getMetalRu();
 		}
+
+		aDigestBot.createAndSendAnswerCallbackQuery(aCallbackQuery.getId(),
+			lLocalizationHelper.getLocalizedString("inline.chart.selected") + ' ' + lButtonLabel);
 
 		if (lRateEntity != null) {
 			aDigestBot.editMarkdownMessageWithKeyboard(aCallbackQuery.getMessage().getChatId(),
@@ -81,8 +90,5 @@ public class RatesKeyboard {
 					lTitleAux + lRateEntity.generateMarkdownAnswer(),
 				lRatesKeyboard.getRatesKeyboard());
 		}
-
-		aDigestBot.createAndSendAnswerCallbackQuery(aCallbackQuery.getId(),
-			aDigestBot.getLocalizationHelper().getLocalizedString("inline.info.updated"));
 	}
 }

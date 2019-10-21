@@ -45,6 +45,7 @@ public class BankWorker {
 			updateBank(mBankRu, mBankService.receiveBankRuMirrorData());
 		}
 		if (!updateBank(mBankUa, mBankService.receiveBankUaData())) {
+			mBankUa.setIsMirror(true);
 			updateBank(mBankUa, mBankService.receiveBankUaMirrorData());
 		}
 		updateBank(mBankBy, mBankService.receiveBankByData());
@@ -98,6 +99,10 @@ public class BankWorker {
 
 	public BankKz getBankKz() {
 		return mBankKz;
+	}
+
+	public MetalRu getMetalRu() {
+		return mMetalRu;
 	}
 
 	public String determineDifference(final BigDecimal aValue, final YamlRatesIndexHelper aYamlRatesIndexHelper) {

@@ -60,5 +60,3 @@ inline.chart.selected:
   - "You have chosen:"
 inline.error.cooldown:
   - "❌ Please wait %d sec."
-inline.info.updated:
-  - "Data is updated."

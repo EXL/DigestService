@@ -11,6 +11,8 @@ import ru.exlmoto.digestbot.workers.banks.Metal;
 import ru.exlmoto.digestbot.workers.banks.impl.*;
 import ru.exlmoto.digestbot.yaml.impl.YamlRatesIndexHelper;
 
+import java.math.BigDecimal;
+
 @Service
 public class BankWorker {
 	private final BankService mBankService;
@@ -86,7 +88,7 @@ public class BankWorker {
 		return mBankRu;
 	}
 
-	public String determineDifference(final Double aValue, final YamlRatesIndexHelper aYamlRatesIndexHelper) {
+	public String determineDifference(final BigDecimal aValue, final YamlRatesIndexHelper aYamlRatesIndexHelper) {
 		if (aValue == null) {
 			return "\n";
 		}
@@ -94,9 +96,9 @@ public class BankWorker {
 			       addSignAndIcon(aValue, aYamlRatesIndexHelper) + '\n';
 	}
 
-	private String addSignAndIcon(final Double aValue, final YamlRatesIndexHelper aYamlRatesIndexHelper) {
+	private String addSignAndIcon(final BigDecimal aValue, final YamlRatesIndexHelper aYamlRatesIndexHelper) {
 		String lAnswer = " ";
-		if (aValue < 0) {
+		if (aValue.compareTo(BigDecimal.ZERO) < 0) {
 			lAnswer += String.format("%.4f", aValue) + ' ' +
 				           aYamlRatesIndexHelper.getTitleByKey("rate.change.down");
 		} else {

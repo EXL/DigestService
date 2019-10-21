@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.*;
 
 import java.io.StringReader;
+import java.math.BigDecimal;
 
 public abstract class Bank {
 	protected String mUSD = null;
@@ -20,7 +21,7 @@ public abstract class Bank {
 	protected String mRUB = null;
 
 	private String mPrevUSD = null;
-	private Double mDifference = null;
+	private BigDecimal mDifference = null;
 
 	private final DocumentBuilderFactory mDocumentBuilderFactory;
 	private final XPath mXPath;
@@ -56,8 +57,8 @@ public abstract class Bank {
 		if (mUSD != null) {
 			if (mPrevUSD != null) {
 				try {
-					final Double lNewValue = Double.parseDouble(mPrevUSD) - Double.parseDouble(mUSD);
-					if (Math.abs(lNewValue) < 2 * Double.MIN_VALUE) {
+					final BigDecimal lNewValue = new BigDecimal(mPrevUSD).subtract(new BigDecimal(mUSD));
+					if (lNewValue.compareTo(BigDecimal.ZERO) == 0) {
 						mDifference = null;
 					} else {
 						mDifference = lNewValue;
@@ -75,7 +76,7 @@ public abstract class Bank {
 		}
 	}
 
-	public Double getDifference() {
+	public BigDecimal getDifference() {
 		return mDifference;
 	}
 
@@ -87,11 +88,12 @@ public abstract class Bank {
 		final String lValue = evaluateXPath(aXml, aXPathValue, aBotLogger);
 		if (lNominal != null && lValue != null) {
 			try {
-				final Double lNominalDouble = Double.valueOf(lNominal.replaceAll(",", "."));
-				final Double lValueDouble = Double.valueOf(lValue.replaceAll(",", "."));
-				return addTrailingZeros(String.format("%.4f", lValueDouble / lNominalDouble));
+				final BigDecimal lNominalBigDecimal = new BigDecimal(lNominal.replaceAll(",", "."));
+				final BigDecimal lValueBigDecimal = new BigDecimal(lValue.replaceAll(",", "."));
+				return addTrailingZeros(String.format("%.4f", lValueBigDecimal.divide(lNominalBigDecimal,
+					BigDecimal.ROUND_FLOOR)));
 			} catch (Exception e) {
-				aBotLogger.error(String.format("Cannot parse double value from XML: '%s'.", e.toString()));
+				aBotLogger.error(String.format("Cannot parse BigDecimal value from XML: '%s'.", e.toString()));
 			}
 		}
 		return null;

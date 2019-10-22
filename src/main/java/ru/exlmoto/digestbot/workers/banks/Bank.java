@@ -31,7 +31,11 @@ public abstract class Bank extends RateEntity {
 		mXPath = XPathFactory.newInstance().newXPath();
 	}
 
-	public abstract void parseXml(final String aXml, final Logger aBotLogger);
+	public void parseXml(final String aXml, final Logger aBotLogger) {
+		clearValues();
+		parseXmlInner(aXml, aBotLogger);
+	}
+	public abstract void parseXmlInner(final String aXml, final Logger aBotLogger);
 
 	private String evaluateXPath(final String aAllXml, final String aXPathExpression, final Logger aBotLogger) {
 		try {
@@ -57,14 +61,7 @@ public abstract class Bank extends RateEntity {
 		return null;
 	}
 
-	private String addTrailingZeros(final String aValue) {
-		final StringBuilder lStringBuilder = new StringBuilder(aValue);
-		for (int i = aValue.indexOf('.'); i < 3; i++) {
-			lStringBuilder.append('0');
-		}
-		return lStringBuilder.toString();
-	}
-
+	@Override
 	public void updateDifference(final Logger aBotLogger) {
 		if (mUSD != null) {
 			if (mPrevValue != null) {
@@ -77,7 +74,7 @@ public abstract class Bank extends RateEntity {
 					}
 				} catch (Exception e) {
 					mDifference = null;
-					aBotLogger.error(String.format("Cannot update difference: '%s'.", e.toString()));
+					aBotLogger.error(String.format("Cannot update bank difference: '%s'.", e.toString()));
 				}
 			} else {
 				mDifference = null;
@@ -96,8 +93,8 @@ public abstract class Bank extends RateEntity {
 			final String lNominal = evaluateXPath(aXml, aXPathNominal, aBotLogger);
 			final String lValue = evaluateXPath(aXml, aXPathValue, aBotLogger);
 			if (lNominal != null && lValue != null) {
-				final BigDecimal lNominalBigDecimal = new BigDecimal(lNominal.replaceAll(",", "."));
-				final BigDecimal lValueBigDecimal = new BigDecimal(lValue.replaceAll(",", "."));
+				final BigDecimal lNominalBigDecimal = new BigDecimal(replaceCommasByDots(lNominal));
+				final BigDecimal lValueBigDecimal = new BigDecimal(replaceCommasByDots(lValue));
 				return addTrailingZeros(String.format("%.4f", lValueBigDecimal.divide(lNominalBigDecimal,
 					BigDecimal.ROUND_FLOOR)));
 			}
@@ -127,13 +124,13 @@ public abstract class Bank extends RateEntity {
 						if (aQuantTag != null) {
 							final String lValue = lElement.getElementsByTagName(aRateTag).item(0).getTextContent();
 							final String lQuant = lElement.getElementsByTagName(aQuantTag).item(0).getTextContent();
-							final BigDecimal lValueBigDecimal = new BigDecimal(lValue.replaceAll(",", "."));
-							final BigDecimal lQuantBigDecimal = new BigDecimal(lQuant.replaceAll(",", "."));
+							final BigDecimal lValueBigDecimal = new BigDecimal(replaceCommasByDots(lValue));
+							final BigDecimal lQuantBigDecimal = new BigDecimal(replaceCommasByDots(lQuant));
 							return addTrailingZeros(String.format("%.4f", lValueBigDecimal.divide(lQuantBigDecimal,
 								BigDecimal.ROUND_FLOOR)));
 						} else {
 							final String lValue = lElement.getElementsByTagName(aRateTag).item(0).getTextContent();
-							final BigDecimal lValueBigDecimal = new BigDecimal(lValue.replaceAll(",", "."));
+							final BigDecimal lValueBigDecimal = new BigDecimal(replaceCommasByDots(lValue));
 							return addTrailingZeros(String.format("%.4f", lValueBigDecimal));
 						}
 					}

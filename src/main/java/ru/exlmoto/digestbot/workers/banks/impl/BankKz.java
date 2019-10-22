@@ -17,7 +17,7 @@ public class BankKz extends Bank {
 	private final String mQuantTag = "quant";
 
 	@Override
-	public void parseXml(final String aXml, final Logger aBotLogger) {
+	public void parseXmlInner(final String aXml, final Logger aBotLogger) {
 		mUSD = getCurrencyValue(aXml, mUsdId, aBotLogger);
 		updateDifference(aBotLogger);
 		mEUR = getCurrencyValue(aXml, mEurId, aBotLogger);
@@ -33,16 +33,29 @@ public class BankKz extends Bank {
 	}
 
 	@Override
-	public String generateMarkdownAnswer() {
-		final boolean lAllOk = (mUSD != null) && (mEUR != null) && (mRUB != null) &&
-			                       (mBYN != null) && (mUAH != null) && (mGBP != null);
-		return (lAllOk) ? "```\n" +
+	public String generateAnswerInner() {
+		return "```\n" +
 			       "1 USD = " + mUSD + " KZT.\n" +
 			       "1 EUR = " + mEUR + " KZT.\n" +
 			       "1 RUB = " + mRUB + " KZT.\n" +
 			       "1 BYN = " + mBYN + " KZT.\n" +
 			       "1 UAH = " + mUAH + " KZT.\n" +
 			       "1 GPB = " + mGBP + " KZT.\n" +
-			       "```" : null;
+			       "```";
+	}
+
+	@Override
+	public boolean checkValues() {
+		return (mUSD != null) && (mEUR != null) && (mRUB != null) && (mBYN != null) && (mUAH != null) && (mGBP != null);
+	}
+
+	@Override
+	public void clearValues() {
+		mUSD = null;
+		mEUR = null;
+		mRUB = null;
+		mBYN = null;
+		mUAH = null;
+		mGBP = null;
 	}
 }

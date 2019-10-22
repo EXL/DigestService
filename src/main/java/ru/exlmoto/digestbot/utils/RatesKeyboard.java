@@ -51,7 +51,7 @@ public class RatesKeyboard {
 		final RatesKeyboard lRatesKeyboard = aDigestBot.getRatesKeyboard();
 		final YamlRatesIndexHelper lYamlRatesIndexHelper = lRatesKeyboard.getYamlRatesIndexHelper();
 		final YamlLocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();
-		final String lTitleAux = lYamlRatesIndexHelper.getTitleByKey("rate") + '\n';
+		String lTitleAux = lYamlRatesIndexHelper.getTitleByKey("rate") + '\n';
 		final BankWorker lBankWorker = aDigestBot.getBankWorker();
 		final String lCallbackQueryData = aCallbackQuery.getData();
 		String lTitle = null;
@@ -78,19 +78,20 @@ public class RatesKeyboard {
 			lTitle = lYamlRatesIndexHelper.getTitleByKey("i.rate.metal") + ' ';
 			lButtonLabel = lYamlRatesIndexHelper.getButtonLabel("i.rate.metal");
 			lRateEntity = lBankWorker.getMetalRu();
+			lTitleAux = "";
 		}
 
 		aDigestBot.createAndSendAnswerCallbackQuery(aCallbackQuery.getId(),
 			lLocalizationHelper.getLocalizedString("inline.chart.selected") + ' ' + lButtonLabel);
 
 		if (lRateEntity != null) {
-			String lMarkdownAnswer = lRateEntity.generateMarkdownAnswer();
+			String lMarkdownAnswer = lRateEntity.generateAnswer();
 			if (lMarkdownAnswer == null) {
 				lMarkdownAnswer = lLocalizationHelper.getLocalizedString("error.rates");
 			}
 			aDigestBot.editMarkdownMessageWithKeyboard(aCallbackQuery.getMessage().getChatId(),
 				aCallbackQuery.getMessage().getMessageId(),
-				lTitle + lBankWorker.determineDifference(lRateEntity.getDifference(), lYamlRatesIndexHelper) +
+				lTitle + lBankWorker.determineDifference(lRateEntity.getDifference()) +
 					lTitleAux + lMarkdownAnswer, lRatesKeyboard.getRatesKeyboard());
 		}
 	}

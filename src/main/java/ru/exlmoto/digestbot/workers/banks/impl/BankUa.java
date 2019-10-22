@@ -25,7 +25,7 @@ public class BankUa extends Bank {
 	private boolean mIsMirror = false;
 
 	@Override
-	public void parseXml(final String aXml, final Logger aBotLogger) {
+	public void parseXmlInner(final String aXml, final Logger aBotLogger) {
 		mUSD = getCurrencyValue(aXml, (mIsMirror) ? mUsdIdM : mUsdId, aBotLogger);
 		updateDifference(aBotLogger);
 		mEUR = getCurrencyValue(aXml, (mIsMirror) ? mEurIdM : mEurId, aBotLogger);
@@ -44,17 +44,30 @@ public class BankUa extends Bank {
 	}
 
 	@Override
-	public String generateMarkdownAnswer() {
-		final boolean lAllOk = (mUSD != null) && (mEUR != null) && (mKZT != null) &&
-			                       (mBYN != null) && (mRUB != null) && (mGBP != null);
-		return (lAllOk) ? "```\n" +
+	public String generateAnswerInner() {
+		return "```\n" +
 			       "1 USD = " + mUSD + " UAH.\n" +
 			       "1 EUR = " + mEUR + " UAH.\n" +
 			       "1 KZT = " + mKZT + " UAH.\n" +
 			       "1 BYN = " + mBYN + " UAH.\n" +
 			       "1 RUB = " + mRUB + " UAH.\n" +
 			       "1 GPB = " + mGBP + " UAH.\n" +
-			       "```" : null;
+			       "```";
+	}
+
+	@Override
+	public boolean checkValues() {
+		return (mUSD != null) && (mEUR != null) && (mKZT != null) && (mBYN != null) && (mRUB != null) && (mGBP != null);
+	}
+
+	@Override
+	public void clearValues() {
+		mUSD = null;
+		mEUR = null;
+		mKZT = null;
+		mBYN = null;
+		mRUB = null;
+		mGBP = null;
 	}
 
 	public void setIsMirror(final boolean aIsMirror) {

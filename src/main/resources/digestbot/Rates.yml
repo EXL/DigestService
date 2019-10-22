@@ -5,20 +5,6 @@
 # private final int K_BANK_LINK    = 3;
 # i. - is iterable object.
 
-rate:
-  - "Курс валют:"
-  - "Exchange Rates:"
-rate.change:
-  - "Изменение по USD:"
-  - "Change for USD:"
-rate.change.up:
-  - ⬆️
-rate.change.down:
-  - ⬇️
-rate.ru.mirror:
-  - "https://www.cbr-xml-daily.ru/daily.xml"
-rate.ua.mirror:
-  - "https://pf-soft.net/service/currency/"
 i.rate.ru:
   - "Источник — ЦБ РФ."
   - "Source - CBR."
@@ -44,3 +30,37 @@ i.rate.metal:
   - "Source - CBR."
   - "🤘 MET"
   - "https://www.cbr.ru/hd_base/metall/metall_base_new/"
+
+rate.ru.mirror:
+  - "https://www.cbr-xml-daily.ru/daily.xml"
+rate.ua.mirror:
+  - "https://pf-soft.net/service/currency/"
+
+rate:
+  - "Курс валют:"
+  - "Exchange Rates:"
+rate.change:
+  - "Изменение по первой строке:"
+  - "Change from first line:"
+rate.metal.prices:
+  - "Цены за 1 грамм на"
+  - "Prices for 1 gram on"
+rate.metal.gold:
+  - "Золото:"
+  - "Gold:"
+rate.metal.silver:
+  - "Серебро:"
+  - "Silver:"
+rate.metal.platinum:
+  - "Платина:"
+  - "Platinum:"
+rate.metal.palladium:
+  - "Палладий:"
+  - "Palladium:"
+rate.metal.roubles:
+  - "Рублей."
+  - "Roubles."
+rate.change.up:
+  - ⬆️
+rate.change.down:
+  - ⬇️

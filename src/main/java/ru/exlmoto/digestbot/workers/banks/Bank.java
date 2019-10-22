@@ -31,11 +31,10 @@ public abstract class Bank extends RateEntity {
 		mXPath = XPathFactory.newInstance().newXPath();
 	}
 
-	public void parseXml(final String aXml, final Logger aBotLogger) {
-		clearValues();
-		parseXmlInner(aXml, aBotLogger);
+	public boolean parseXml(final String aXml, final Logger aBotLogger) {
+		return parseContent(aXml, aBotLogger);
 	}
-	public abstract void parseXmlInner(final String aXml, final Logger aBotLogger);
+	public abstract void parseContentInner(final String aXml, final Logger aBotLogger);
 
 	private String evaluateXPath(final String aAllXml, final String aXPathExpression, final Logger aBotLogger) {
 		try {

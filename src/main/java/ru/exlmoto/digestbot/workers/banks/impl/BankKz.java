@@ -17,9 +17,8 @@ public class BankKz extends Bank {
 	private final String mQuantTag = "quant";
 
 	@Override
-	public void parseXmlInner(final String aXml, final Logger aBotLogger) {
+	public void parseContentInner(final String aXml, final Logger aBotLogger) {
 		mUSD = getCurrencyValue(aXml, mUsdId, aBotLogger);
-		updateDifference(aBotLogger);
 		mEUR = getCurrencyValue(aXml, mEurId, aBotLogger);
 		mRUB = getCurrencyValue(aXml, mRubId, aBotLogger);
 		mBYN = getCurrencyValue(aXml, mBynId, aBotLogger);

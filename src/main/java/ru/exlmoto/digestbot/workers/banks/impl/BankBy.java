@@ -13,9 +13,8 @@ public class BankBy extends Bank {
 	private final String mGbpId = "143";
 
 	@Override
-	public void parseXmlInner(final String aXml, final Logger aBotLogger) {
+	public void parseContentInner(final String aXml, final Logger aBotLogger) {
 		mUSD = getCurrencyValue(aXml, mUsdId, aBotLogger);
-		updateDifference(aBotLogger);
 		mEUR = getCurrencyValue(aXml, mEurId, aBotLogger);
 		mKZT = getCurrencyValue(aXml, mKztId, aBotLogger);
 		mRUB = getCurrencyValue(aXml, mRubId, aBotLogger);

@@ -10,12 +10,11 @@ public abstract class Metal extends RateEntity {
 	protected String mPlatinum = null;
 	protected String mPalladium = null;
 
-	public void parseHtml(final String aHtml, final Logger aBotLogger) {
-		clearValues();
-		parseHtmlInner(aHtml, aBotLogger);
+	public boolean parseHtml(final String aHtml, final Logger aBotLogger) {
+		return parseContent(aHtml, aBotLogger);
 	}
 
-	public abstract void parseHtmlInner(final String aHtml, final Logger aBotLogger);
+	public abstract void parseContentInner(final String aHtml, final Logger aBotLogger);
 
 	@Override
 	public void updateDifference(Logger aBotLogger) {

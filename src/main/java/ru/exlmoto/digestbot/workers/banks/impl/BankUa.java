@@ -25,9 +25,8 @@ public class BankUa extends Bank {
 	private boolean mIsMirror = false;
 
 	@Override
-	public void parseXmlInner(final String aXml, final Logger aBotLogger) {
+	public void parseContentInner(final String aXml, final Logger aBotLogger) {
 		mUSD = getCurrencyValue(aXml, (mIsMirror) ? mUsdIdM : mUsdId, aBotLogger);
-		updateDifference(aBotLogger);
 		mEUR = getCurrencyValue(aXml, (mIsMirror) ? mEurIdM : mEurId, aBotLogger);
 		mKZT = getCurrencyValue(aXml, (mIsMirror) ? mKztIdM : mKztId, aBotLogger);
 		mBYN = getCurrencyValue(aXml, (mIsMirror) ? mBynIdM : mBynId, aBotLogger);

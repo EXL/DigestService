@@ -34,14 +34,14 @@ i.rate.metal:
 rate.ru.mirror:
   - "https://www.cbr-xml-daily.ru/daily.xml"
 rate.ua.mirror:
-  - "https://pf-soft.net/service/currency/"
+  - "http://pf-soft.net/service/currency/"
 
 rate:
   - "Курс валют:"
   - "Exchange Rates:"
 rate.change:
-  - "Изменение по первой строке:"
-  - "Change from first line:"
+  - "Изменение:"
+  - "Change:"
 rate.metal.prices:
   - "Цены за 1 грамм на"
   - "Prices for 1 gram on"

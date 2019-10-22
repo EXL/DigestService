@@ -11,12 +11,23 @@ public abstract class RateEntity {
 	protected int mAddZeros  =  8;
 	protected int mAddSpaces = 10;
 
+	public boolean parseContent(final String aContent, final Logger aBotLogger) {
+		clearValues();
+		parseContentInner(aContent, aBotLogger);
+		final boolean lIsAllOkay = checkValues();
+		if (lIsAllOkay) {
+			updateDifference(aBotLogger);
+		}
+		return lIsAllOkay;
+	}
+
 	public String generateAnswer() {
 		if (!checkValues()) {
 			return null;
 		}
 		return generateAnswerInner();
 	}
+	public abstract void parseContentInner(final String aContent, final Logger aBotLogger);
 	public abstract boolean checkValues();
 	public abstract String generateAnswerInner();
 	public abstract void updateDifference(final Logger aBotLogger);

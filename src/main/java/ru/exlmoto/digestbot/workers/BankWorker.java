@@ -3,6 +3,7 @@ package ru.exlmoto.digestbot.workers;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digestbot.services.impl.BankService;
@@ -42,33 +43,31 @@ public class BankWorker {
 		mBotLogger = aBotLogger;
 	}
 
+	@Scheduled(cron = "${digestbot.crawler.cron.rates}")
 	public void updateAllBanks() {
-		mBotLogger.info("=> Start crawling currencies data...");
+		mBotLogger.info("=> Crawling currencies data.");
 
-		mBotLogger.info("==> Start crawling BankRu...");
+		mBotLogger.info("==> Crawling BankRu.");
 		if (!updateBank(mBankRu, mBankService.receiveBankRuData())) {
+			mBotLogger.info("===> Crawling mirror BankRu.");
 			updateBank(mBankRu, mBankService.receiveBankRuMirrorData());
 		}
-		mBotLogger.info("==> End crawling BankRu.");
 
-		mBotLogger.info("==> Start crawling BankUa...");
+		mBotLogger.info("==> Crawling BankUa.");
 		if (!updateBank(mBankUa, mBankService.receiveBankUaData())) {
+			mBotLogger.info("===> Crawling mirror BankUa.");
 			mBankUa.setIsMirror(true);
 			updateBank(mBankUa, mBankService.receiveBankUaMirrorData());
 		}
-		mBotLogger.info("==> End crawling BankUa.");
 
-		mBotLogger.info("==> Start crawling BankBy...");
+		mBotLogger.info("==> Crawling BankBy.");
 		updateBank(mBankBy, mBankService.receiveBankByData());
-		mBotLogger.info("==> End crawling BankBy.");
 
-		mBotLogger.info("==> Start crawling BankKz...");
+		mBotLogger.info("==> Crawling BankKz.");
 		updateBank(mBankKz, mBankService.receiveBankKzData());
-		mBotLogger.info("==> End crawling BankKz.");
 
-		mBotLogger.info("==> Start crawling MetalRu...");
+		mBotLogger.info("==> Crawling MetalRu.");
 		updateMetal(mMetalRu, mBankService.receiveBankMetalData());
-		mBotLogger.info("==> End crawling MetalRu.");
 
 		mBotLogger.info("=> End crawling currencies data.");
 	}
@@ -78,8 +77,7 @@ public class BankWorker {
 		final String lServerAnswerString = aServerAnswer.getSecond();
 		final boolean lIsHtml = lServerAnswerString.startsWith("<");
 		if (aServerAnswer.getFirst() && lIsHtml) {
-			aMetal.parseHtml(lServerAnswerString, mBotLogger);
-			return true;
+			return aMetal.parseHtml(lServerAnswerString, mBotLogger);
 		} else {
 			if (mBotLogger != null) {
 				mBotLogger.error(String.format("Cannot get metal rates list: '%s' '%s'.",
@@ -94,8 +92,7 @@ public class BankWorker {
 		final String lServerAnswerString = aServerAnswer.getSecond();
 		final boolean lIsXml = lServerAnswerString.startsWith("<?xml") || lServerAnswerString.startsWith("<?XML");
 		if (aServerAnswer.getFirst() && lIsXml) {
-			aBank.parseXml(lServerAnswerString, mBotLogger);
-			return true;
+			return aBank.parseXml(lServerAnswerString, mBotLogger);
 		} else {
 			mBotLogger.error(String.format("Cannot get bank currencies list: '%s' '%s'.",
 				aBank.getClass(), lServerAnswerString));

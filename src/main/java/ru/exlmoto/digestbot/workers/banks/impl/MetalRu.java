@@ -29,11 +29,10 @@ public class MetalRu extends Metal {
 	}
 
 	@Override
-	public void parseHtmlInner(final String aHtml, final Logger aBotLogger) {
+	public void parseContentInner(final String aHtml, final Logger aBotLogger) {
 		final String lHtmlChunk = getHtmlChunk(aHtml, aHtml.indexOf(mMarker), mLineCount);
 		mDate = getClearTextFromHtml(getHtmlLine(lHtmlChunk, mDateLine));
 		mGold = addTrailingZeros(removeLastZeros(getClearTextFromHtml(getHtmlLine(lHtmlChunk, mGoldLine))));
-		updateDifference(aBotLogger);
 		mSilver = addTrailingZeros(removeLastZeros(getClearTextFromHtml(getHtmlLine(lHtmlChunk, mSilverLine))));
 		mPlatinum = addTrailingZeros(removeLastZeros(getClearTextFromHtml(getHtmlLine(lHtmlChunk, mPlatinumLine))));
 		mPalladium = addTrailingZeros(removeLastZeros(getClearTextFromHtml(getHtmlLine(lHtmlChunk, mPalladiumLine))));

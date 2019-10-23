@@ -43,7 +43,7 @@ public class BankWorker {
 		mBotLogger = aBotLogger;
 	}
 
-	@Scheduled(cron = "${digestbot.crawler.cron.rates}")
+	@Scheduled(cron = "${digestbot.crawler.rates.cron}")
 	public void updateAllBanks() {
 		mBotLogger.info("=> Crawling currencies data.");
 
@@ -88,7 +88,7 @@ public class BankWorker {
 	}
 
 	private boolean updateBank(final Bank aBank,
-	                               final Pair<Boolean, String> aServerAnswer) {
+	                           final Pair<Boolean, String> aServerAnswer) {
 		final String lServerAnswerString = aServerAnswer.getSecond();
 		final boolean lIsXml = lServerAnswerString.startsWith("<?xml") || lServerAnswerString.startsWith("<?XML");
 		if (aServerAnswer.getFirst() && lIsXml) {

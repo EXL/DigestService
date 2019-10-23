@@ -26,6 +26,7 @@ import ru.exlmoto.digestbot.utils.ChartsKeyboard;
 import ru.exlmoto.digestbot.utils.RatesKeyboard;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.digestbot.workers.BankWorker;
+import ru.exlmoto.digestbot.workers.MotoFanWorker;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
 import java.io.File;
@@ -49,6 +50,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final CallbackQueryHandler mCallbackQueryHandler;
 
 	private final BankWorker mBankWorker;
+	private final MotoFanWorker mMotoFanWorker;
 
 	private final String K_BOT_COMMAND_ENTITY = "bot_command";
 
@@ -69,7 +71,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final YamlLocalizationHelper aLocalizationHelper,
 	                 final ChartsKeyboard aChartsKeyboard,
 	                 final RatesKeyboard aRatesKeyboard,
-	                 final BankWorker aBankWorker) {
+	                 final BankWorker aBankWorker,
+	                 final MotoFanWorker aMotoFanWorker) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -88,6 +91,10 @@ public class DigestBot extends TelegramLongPollingBot {
 		mBankWorker = aBankWorker;
 		mBankWorker.setBotLogger(mBotLogger);
 		mBankWorker.updateAllBanks();
+
+		mMotoFanWorker = aMotoFanWorker;
+		mMotoFanWorker.setDigestBot(this);
+		mMotoFanWorker.updateLatestMotoFanPosts();
 	}
 
 	@Override

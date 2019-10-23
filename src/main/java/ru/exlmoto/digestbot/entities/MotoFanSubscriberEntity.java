@@ -3,13 +3,14 @@ package ru.exlmoto.digestbot.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "motofan_subscription")
+@Table(name = "motofan_subscription", uniqueConstraints={@UniqueConstraint(columnNames = {"subscription_id"})})
 public class MotoFanSubscriberEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private Long subscription_id;
+	@Column(name="subscription_id")
+	private Long subscription;
 
 	public Integer getId() {
 		return id;
@@ -19,11 +20,11 @@ public class MotoFanSubscriberEntity {
 		this.id = id;
 	}
 
-	public Long getSubscription_id() {
-		return subscription_id;
+	public Long getSubscription() {
+		return subscription;
 	}
 
-	public void setSubscription_id(Long subscription_id) {
-		this.subscription_id = subscription_id;
+	public void setSubscription(Long subscription) {
+		this.subscription = subscription;
 	}
 }

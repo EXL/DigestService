@@ -1,5 +1,6 @@
 package ru.exlmoto.digestbot;
 
+import org.python.antlr.op.Sub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,10 +24,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.entities.MotoFanSubscriberEntity;
 import ru.exlmoto.digestbot.repos.IMotoFanSubscribersRepository;
-import ru.exlmoto.digestbot.utils.CallbackQueryHandler;
-import ru.exlmoto.digestbot.utils.ChartsKeyboard;
-import ru.exlmoto.digestbot.utils.RatesKeyboard;
-import ru.exlmoto.digestbot.utils.ReceivedMessage;
+import ru.exlmoto.digestbot.utils.*;
 import ru.exlmoto.digestbot.workers.BankWorker;
 import ru.exlmoto.digestbot.workers.MotoFanWorker;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
@@ -49,6 +47,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final YamlLocalizationHelper mLocalizationHelper;
 	private final ChartsKeyboard mChartsKeyboard;
 	private final RatesKeyboard mRatesKeyboard;
+	private final SubscribeKeyboard mSubscribeKeyboard;
 	private final CallbackQueryHandler mCallbackQueryHandler;
 
 	private final BankWorker mBankWorker;
@@ -75,6 +74,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final YamlLocalizationHelper aLocalizationHelper,
 	                 final ChartsKeyboard aChartsKeyboard,
 	                 final RatesKeyboard aRatesKeyboard,
+	                 final SubscribeKeyboard aSubscribeKeyboard,
 	                 final BankWorker aBankWorker,
 	                 final MotoFanWorker aMotoFanWorker,
 	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository) {
@@ -91,6 +91,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 		mChartsKeyboard = aChartsKeyboard;
 		mRatesKeyboard = aRatesKeyboard;
+		mSubscribeKeyboard = aSubscribeKeyboard;
 		mCallbackQueryHandler = new CallbackQueryHandler();
 
 		mIMotoFanSubscribersRepository = aIMotoFanSubscribersRepository;
@@ -375,6 +376,10 @@ public class DigestBot extends TelegramLongPollingBot {
 		return mRatesKeyboard;
 	}
 
+	public SubscribeKeyboard getSubscribeKeyboard() {
+		return mSubscribeKeyboard;
+	}
+
 	public Logger getBotLogger() {
 		return mBotLogger;
 	}
@@ -392,11 +397,13 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	private void testDataBase() {
+		/*
 		final MotoFanSubscriberEntity lMotoFanSubscriberEntity1 = new MotoFanSubscriberEntity();
 		lMotoFanSubscriberEntity1.setSubscription_id(87336977L);
 		final MotoFanSubscriberEntity lMotoFanSubscriberEntity2 = new MotoFanSubscriberEntity();
 		lMotoFanSubscriberEntity2.setSubscription_id(-1001148683293L);
 		mIMotoFanSubscribersRepository.save(lMotoFanSubscriberEntity1);
 		mIMotoFanSubscribersRepository.save(lMotoFanSubscriberEntity2);
+		 */
 	}
 }

@@ -17,6 +17,7 @@ command.help:
   - "/start — Show start greeting."
   - "/coffee — Send sticker with coffee."
   - "/game — Show game server statistic."
+  - "/subscribe — Subscribe to MotoFan.Ru forum posts."
   - "/help — Show this help."
 command.help.admin:
   - "/hello or /hi  — Get greeting from bot."
@@ -31,6 +32,18 @@ command.game:
   - "Game statistics:"
 command.charts:
   - "📈 Please select a chart 📉"
+command.subscribe:
+  - "Chat `%d` subscription to MotoFan.Ru posts."
+  - "Status: %s"
+  - "Please select an action:"
+command.subscribe.subscribed:
+  - "✅ Subscribed."
+command.subscribe.unsubscribed:
+  - "❌ Unsubscribed."
+command.subscribe.button.subscribe:
+  - "Subscribe"
+command.subscribe.button.unsubscribe:
+  - "Unsubscribe"
 error.access:
   - "Unfortunately, %username%, you are not allowed to use this command. Only my creator can use it."
 error.chatid:
@@ -62,3 +75,13 @@ inline.chart.selected:
   - "You have chosen:"
 inline.error.cooldown:
   - "❌ Please wait %d sec."
+inline.error.subscribe.admin:
+  - "❌ Groups subscribing is only possible for the admins."
+inline.error.subscribe.exist:
+  - "❌ Chat has already been subscribed."
+inline.error.unsubscribe.exist:
+  - "❌ Chat has already been unsubscribed."
+inline.subscribe.subscribed:
+  - "✅ Chat Subscribed."
+inline.subscribe.unsubscribed:
+  - "✅ Chat Unsubscribed."

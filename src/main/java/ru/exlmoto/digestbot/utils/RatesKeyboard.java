@@ -5,13 +5,11 @@ import org.springframework.stereotype.Component;
 
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.workers.BankWorker;
-import ru.exlmoto.digestbot.workers.banks.Bank;
 import ru.exlmoto.digestbot.workers.banks.RateEntity;
-import ru.exlmoto.digestbot.workers.banks.impl.BankRu;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 import ru.exlmoto.digestbot.yaml.impl.YamlRatesIndexHelper;
 
@@ -48,6 +46,7 @@ public class RatesKeyboard {
 	}
 
 	public void handleRatesKeyboard(final DigestBot aDigestBot, final CallbackQuery aCallbackQuery) {
+		// TODO: ????
 		final RatesKeyboard lRatesKeyboard = aDigestBot.getRatesKeyboard();
 		final YamlRatesIndexHelper lYamlRatesIndexHelper = lRatesKeyboard.getYamlRatesIndexHelper();
 		final YamlLocalizationHelper lLocalizationHelper = aDigestBot.getLocalizationHelper();

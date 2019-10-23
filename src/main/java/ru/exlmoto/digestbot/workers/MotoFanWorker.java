@@ -15,7 +15,6 @@ import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 @Service
 public class MotoFanWorker {
 	private final MotoFanService mMotoFanService;
@@ -24,7 +23,7 @@ public class MotoFanWorker {
 	private Logger mBotLogger = null;
 	private YamlLocalizationHelper mYamlLocalizationHelper = null;
 
-	private Long mLatestPostTime = 1571518852L;
+	private Long mLatestPostTime = 1571792416L;
 	private Integer mLatestTopicId = 0;
 	private String mLatestPostAuthor = null;
 	private String mLatestPostText = null;
@@ -105,19 +104,16 @@ public class MotoFanWorker {
 
 	private void sendLatestMessages(final ArrayList<MotoFanPost> aMotoFanPosts) {
 		if (aMotoFanPosts.size() > 0) {
-			new Thread(() -> {
-				aMotoFanPosts.forEach((aMotoFanPost) -> {
-					mDigestBot.getIMotoFanSubscribersRepository().findAll().forEach((aSubscriberEntity) -> {
-						mDigestBot.sendHtmlMessage(aSubscriberEntity.getSubscription_id(), null,
-							aMotoFanPost.toString());
-						try {
-							Thread.sleep(mDigestBot.getBotInlineCoolDown() * 1000);
-						} catch (InterruptedException e) {
-							mBotLogger.error(String.format("Cannot delay thread: '%s'.", e.toString()));
-						}
-					});
-				});
-			}).start();
+			new Thread(() -> aMotoFanPosts.forEach((aMotoFanPost) ->
+				mDigestBot.getIMotoFanSubscribersRepository().findAll().forEach((aSubscriberEntity) -> {
+				mDigestBot.sendHtmlMessage(aSubscriberEntity.getSubscription(), null,
+					aMotoFanPost.toString());
+				try {
+					Thread.sleep(mDigestBot.getBotInlineCoolDown() * 1000);
+				} catch (InterruptedException e) {
+					mBotLogger.error(String.format("Cannot delay thread: '%s'.", e.toString()));
+				}
+			}))).start();
 		}
 	}
 }

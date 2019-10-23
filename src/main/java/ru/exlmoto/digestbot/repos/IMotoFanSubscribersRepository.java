@@ -8,5 +8,7 @@ import ru.exlmoto.digestbot.entities.MotoFanSubscriberEntity;
 import java.util.ArrayList;
 
 public interface IMotoFanSubscribersRepository extends CrudRepository<MotoFanSubscriberEntity, Long> {
-	public ArrayList<MotoFanSubscriberEntity> findAll(Pageable aPageable);
+	public ArrayList<MotoFanSubscriberEntity> findAll(final Pageable aPageable);
+	public MotoFanSubscriberEntity findOneMotoFanSubscriberEntityBySubscription(final Long aSubscription);
+	public void deleteMotoFanSubscriberEntityBySubscription(final Long aSubscription);
 }

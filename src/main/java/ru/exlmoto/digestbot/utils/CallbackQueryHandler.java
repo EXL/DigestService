@@ -22,10 +22,12 @@ public class CallbackQueryHandler {
 	private void handleCallbackQuery(final DigestBot aDigestBot, final CallbackQuery aCallbackQuery) {
 		new Thread(() -> {
 			final String lData = aCallbackQuery.getData();
-			if (lData.startsWith("chart")) {
+			if (lData.startsWith("chart.")) {
 				aDigestBot.getChartsKeyboard().handleChartsKeyboard(aDigestBot, aCallbackQuery);
 			} else if (lData.startsWith("i.rate.")) {
 				aDigestBot.getRatesKeyboard().handleRatesKeyboard(aDigestBot, aCallbackQuery);
+			} else if (lData.startsWith("subscribe.")) {
+				aDigestBot.getSubscribeKeyboard().handleSubscribeKeyboard(aDigestBot, aCallbackQuery);
 			}
 		}).start();
 	}

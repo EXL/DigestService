@@ -107,12 +107,15 @@ public class MotoFanWorker {
 		if (aMotoFanPosts.size() > 0) {
 			new Thread(() -> {
 				aMotoFanPosts.forEach((aMotoFanPost) -> {
-					mDigestBot.sendHtmlMessage(87336977L, null, aMotoFanPost.toString());
-					try {
-						Thread.sleep(mDigestBot.getBotInlineCoolDown() * 1000);
-					} catch (InterruptedException e) {
-						mBotLogger.error(String.format("Cannot delay thread: '%s'.", e.toString()));
-					}
+					mDigestBot.getIMotoFanSubscribersRepository().findAll().forEach((aSubscriberEntity) -> {
+						mDigestBot.sendHtmlMessage(aSubscriberEntity.getSubscription_id(), null,
+							aMotoFanPost.toString());
+						try {
+							Thread.sleep(mDigestBot.getBotInlineCoolDown() * 1000);
+						} catch (InterruptedException e) {
+							mBotLogger.error(String.format("Cannot delay thread: '%s'.", e.toString()));
+						}
+					});
 				});
 			}).start();
 		}

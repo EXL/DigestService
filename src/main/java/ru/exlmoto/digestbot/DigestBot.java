@@ -21,6 +21,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
+import ru.exlmoto.digestbot.entities.MotoFanSubscriberEntity;
+import ru.exlmoto.digestbot.repos.IMotoFanSubscribersRepository;
 import ru.exlmoto.digestbot.utils.CallbackQueryHandler;
 import ru.exlmoto.digestbot.utils.ChartsKeyboard;
 import ru.exlmoto.digestbot.utils.RatesKeyboard;
@@ -52,6 +54,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final BankWorker mBankWorker;
 	private final MotoFanWorker mMotoFanWorker;
 
+	private final IMotoFanSubscribersRepository mIMotoFanSubscribersRepository;
+
 	private final String K_BOT_COMMAND_ENTITY = "bot_command";
 
 	private enum MessageMode {
@@ -72,7 +76,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final ChartsKeyboard aChartsKeyboard,
 	                 final RatesKeyboard aRatesKeyboard,
 	                 final BankWorker aBankWorker,
-	                 final MotoFanWorker aMotoFanWorker) {
+	                 final MotoFanWorker aMotoFanWorker,
+	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -88,6 +93,8 @@ public class DigestBot extends TelegramLongPollingBot {
 		mRatesKeyboard = aRatesKeyboard;
 		mCallbackQueryHandler = new CallbackQueryHandler();
 
+		mIMotoFanSubscribersRepository = aIMotoFanSubscribersRepository;
+
 		mBankWorker = aBankWorker;
 		mBankWorker.setBotLogger(mBotLogger);
 		mBankWorker.updateAllBanks();
@@ -95,6 +102,8 @@ public class DigestBot extends TelegramLongPollingBot {
 		mMotoFanWorker = aMotoFanWorker;
 		mMotoFanWorker.setDigestBot(this);
 		mMotoFanWorker.updateLatestMotoFanPosts();
+
+		// testDataBase();
 	}
 
 	@Override
@@ -376,5 +385,18 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public BankWorker getBankWorker() {
 		return mBankWorker;
+	}
+
+	public IMotoFanSubscribersRepository getIMotoFanSubscribersRepository() {
+		return mIMotoFanSubscribersRepository;
+	}
+
+	private void testDataBase() {
+		final MotoFanSubscriberEntity lMotoFanSubscriberEntity1 = new MotoFanSubscriberEntity();
+		lMotoFanSubscriberEntity1.setSubscription_id(87336977L);
+		final MotoFanSubscriberEntity lMotoFanSubscriberEntity2 = new MotoFanSubscriberEntity();
+		lMotoFanSubscriberEntity2.setSubscription_id(-1001148683293L);
+		mIMotoFanSubscribersRepository.save(lMotoFanSubscriberEntity1);
+		mIMotoFanSubscribersRepository.save(lMotoFanSubscriberEntity2);
 	}
 }

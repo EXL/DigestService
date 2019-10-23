@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class MotoFanWorker {
 	private Logger mBotLogger = null;
 	private YamlLocalizationHelper mYamlLocalizationHelper = null;
 
-	private Long mLatestPostTime = 1571792416L;
+	private Long mLatestPostTime = 0L;
 	private Integer mLatestTopicId = 0;
 	private String mLatestPostAuthor = null;
 	private String mLatestPostText = null;
@@ -41,6 +40,7 @@ public class MotoFanWorker {
 		mYamlLocalizationHelper = mDigestBot.getLocalizationHelper();
 	}
 
+	@Scheduled(cron = "${digestbot.crawler.motofan.cron}")
 	public void updateLatestMotoFanPosts() {
 		mBotLogger.info("=> Crawling MotoFan.Ru latest posts.");
 		final Pair<Boolean, String> lServerAnswer = mMotoFanService.receiveObject();

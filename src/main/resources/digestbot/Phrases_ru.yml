@@ -85,3 +85,9 @@ inline.subscribe.subscribed:
   - "✅ Подписка оформлена."
 inline.subscribe.unsubscribed:
   - "✅ Подписка отменена."
+crawler.motofan.title:
+  - "Новое сообщение на форуме MotoFan.Ru!"
+crawler.motofan.writing:
+  - "пишет"
+crawler.motofan.read:
+  - "Прочитать сообщение в теме:\n➡️"

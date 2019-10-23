@@ -85,3 +85,9 @@ inline.subscribe.subscribed:
   - "✅ Chat Subscribed."
 inline.subscribe.unsubscribed:
   - "✅ Chat Unsubscribed."
+crawler.motofan.title:
+  - "New message on the MotoFan.Ru forum!"
+crawler.motofan.writing:
+  - "wrote"
+crawler.motofan.read:
+  - "Read message in the topic:\n➡️"

@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digestbot.DigestBot;
@@ -63,6 +65,7 @@ public class MotoFanWorker {
 			sendLatestMessages(processMotoFanPostArray(lObjectMapper.readValue(lServerAnswer, MotoFanPost[].class)));
 		} catch (IOException e) {
 			mBotLogger.error(String.format("Cannot parse JSON, error:'%s'.", e.toString()));
+			return false;
 		}
 		return true;
 	}
@@ -107,7 +110,7 @@ public class MotoFanWorker {
 			new Thread(() -> aMotoFanPosts.forEach((aMotoFanPost) ->
 				mDigestBot.getIMotoFanSubscribersRepository().findAll().forEach((aSubscriberEntity) -> {
 				mDigestBot.sendHtmlMessage(aSubscriberEntity.getSubscription(), null,
-					aMotoFanPost.toString());
+					formatMotoFanPost(aMotoFanPost));
 				try {
 					Thread.sleep(mDigestBot.getBotInlineCoolDown() * 1000);
 				} catch (InterruptedException e) {
@@ -115,5 +118,19 @@ public class MotoFanWorker {
 				}
 			}))).start();
 		}
+	}
+
+	private String formatMotoFanPost(final MotoFanPost aMotoFanPost) {
+		return mYamlLocalizationHelper.getLocalizedString("crawler.motofan.title") + "\n\n<b>" +
+			       aMotoFanPost.getAuthor() + "</b> " +
+			       mYamlLocalizationHelper.getLocalizedString("crawler.motofan.writing") +
+			       " (" + aMotoFanPost.getTime() + "):\n<i>" + deleteBbCodesFromText(aMotoFanPost.getText()) +
+			       "</i>\n\n" + mYamlLocalizationHelper.getLocalizedString("crawler.motofan.read") +
+			       " <a href=\"" + aMotoFanPost.getPost_link() + "\">" + aMotoFanPost.getTitle() + "</a>";
+	}
+
+	// https://stackoverflow.com/questions/14445386/how-to-remove-text-in-brackets-from-the-start-of-a-string
+	private String deleteBbCodesFromText(final String aText) {
+		return aText.replaceAll("\\[.*?\\]", "");
 	}
 }

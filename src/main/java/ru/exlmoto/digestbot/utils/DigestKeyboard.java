@@ -1,6 +1,8 @@
 package ru.exlmoto.digestbot.utils;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -23,7 +25,8 @@ public class DigestKeyboard {
 	}
 
 	public InlineKeyboardMarkup getDigestKeyboard() {
-		// TODO: init on startup???
+		// TODO: init on startup??? For another ones.
+		// Dynamically.
 		final InlineKeyboardMarkup lInlineKeyboardMarkup = new InlineKeyboardMarkup();
 		final List<List<InlineKeyboardButton>> lKeyboardMarkup = new ArrayList<>();
 		List<InlineKeyboardButton> lKeyboardRow = new ArrayList<>();
@@ -31,7 +34,7 @@ public class DigestKeyboard {
 		for (int i = 0; i < mPagesCount; i++) {
 			lKeyboardRow.add(new InlineKeyboardButton(
 				mYamlLocalizationHelper.getLocalizedString("command.digest.page") + ' ' + (i + 1))
-				                 .setCallbackData("page." + "asd"));
+				                 .setCallbackData("page." + i));
 		}
 
 		lKeyboardMarkup.add(lKeyboardRow);
@@ -50,5 +53,26 @@ public class DigestKeyboard {
 
 		aDigestBot.createAndSendAnswerCallbackQuery(aCallbackQuery.getId(),
 			mYamlLocalizationHelper.getLocalizedString("inline.digest.page") + ' ' + (lPage + 1));
+
+		final Pair<Boolean, String> lCorrectName =
+			ReceivedMessage.determineCorrectName(aCallbackQuery.getFrom().getUserName(),
+				aCallbackQuery.getFrom().getFirstName());
+
+		final String lHello = mYamlLocalizationHelper.getRandomLocalizedString("command.digest.hello",
+			lCorrectName);
+		final String lEmpty = mYamlLocalizationHelper.getRandomLocalizedString("command.digest.empty",
+			lCorrectName);
+		final String lHeader = mYamlLocalizationHelper.getRandomLocalizedString("command.digest.header");
+
+		String lAnswer = "";
+
+		if (true) {
+			lAnswer += lHello + '\n' + lHeader + ' ' + (lPage + 1) + ":\n";
+		} else {
+			lAnswer += lEmpty;
+		}
+
+		aDigestBot.editMarkdownMessageWithKeyboard(aCallbackQuery.getMessage().getChatId(),
+			aCallbackQuery.getMessage().getMessageId(), lAnswer, getDigestKeyboard());
 	}
 }

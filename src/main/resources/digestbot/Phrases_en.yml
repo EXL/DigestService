@@ -46,6 +46,27 @@ command.subscribe.button.unsubscribe:
   - "Unsubscribe"
 command.digest.page:
   - "Page"
+command.digest.hello:
+  - "Hi guys! #digest"
+  - "Sunny day to you, %username%! #digest"
+  - "Hello, my kittens :3 #digest"
+  - "Hi, %username%, glad to see you again :3 #digest"
+  - "Hello Developers! #digest"
+  - "Hi everybody. #digest"
+command.digest.header:
+  - "At your request, I have compiled the following, p."
+  - "Your personal digest, p."
+  - "So, the following happened, p."
+  - "Not a boring day. Here are the latest events, p."
+  - "The following happened, p."
+  - "So many things happened while you were away, p."
+command.digest.empty:
+  - "Unfortunately, there is nothing. Sorry me, %username%."
+  - "Someone again forgot to fill out #digest! %username%, scold them."
+  - "Well, who forgot to fill out the digest? Is it you, %username%?!"
+  - "Ohh! %username% did not fill out the digest. What a shame!"
+  - "All night obscene pictures were posted in the chat, but they did not fill out the digest. Ohh!"
+  - "Again, everyone forgot about the digest. Nothing here 😓"
 error.access:
   - "Unfortunately, %username%, you are not allowed to use this command. Only my creator can use it."
 error.chatid:

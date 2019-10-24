@@ -1,5 +1,6 @@
 package ru.exlmoto.digestbot.utils;
 
+import org.springframework.data.util.Pair;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.thymeleaf.util.ArrayUtils;
 
@@ -10,6 +11,7 @@ public class ReceivedMessage {
 	private final Integer mMessageUsernameId;
 	private final String mMessageText;
 	private final String mMessageUsername;
+	private final String mMessageUserFirstName;
 	private final boolean mIsMessageCommand;
 	private final boolean mIsUserAdmin;
 
@@ -20,6 +22,7 @@ public class ReceivedMessage {
 		mMessageId = aMessage.getMessageId();
 		mMessageText = aMessage.getText();
 		mMessageUsername = aMessage.getFrom().getUserName();
+		mMessageUserFirstName = aMessage.getFrom().getFirstName();
 		mMessageUsernameId = aMessage.getFrom().getId();
 		mIsMessageCommand = aMessage.isCommand();
 		mIsUserAdmin = isUserHasAdminRights(mMessageUsername, aAdministrators);
@@ -52,6 +55,22 @@ public class ReceivedMessage {
 
 	public String getMessageUsername() {
 		return mMessageUsername;
+	}
+
+	public String getMessageUserFirstName() {
+		return mMessageUserFirstName;
+	}
+
+	public Pair<Boolean, String> getAvailableUsername() {
+		return determineCorrectName(mMessageUsername, mMessageUserFirstName);
+	}
+
+	public static Pair<Boolean, String> determineCorrectName(final String aUsername, final String aFirstName) {
+		if (aUsername == null || aUsername.equals("null")) {
+			return Pair.of(false, aFirstName);
+		} else {
+			return Pair.of(true, aUsername);
+		}
 	}
 
 	public boolean isIsMessageCommand() {

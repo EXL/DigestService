@@ -1,7 +1,9 @@
 package ru.exlmoto.digestbot.yaml.impl;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
+
 import ru.exlmoto.digestbot.yaml.YamlLoader;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class YamlLocalizationHelper extends YamlLoader {
 		mYamlData = loadYamlFromResources(aGeneralFilename + '_' + aLanguage);
 	}
 
-	public String getRandomLocalizedString(final String aPath, final String aUsername) {
+	public String getRandomLocalizedString(final String aPath, final Pair<Boolean, String> aUsername) {
 		return replaceUsernameTagByRealName(getRandomLocalizedString(aPath), aUsername);
 	}
 
@@ -35,7 +37,7 @@ public class YamlLocalizationHelper extends YamlLoader {
 		return lStringArrayList.get(lRandomIndex);
 	}
 
-	public String getLocalizedString(final String aPath, final String aUsername) {
+	public String getLocalizedString(final String aPath, final Pair<Boolean, String> aUsername) {
 		return replaceUsernameTagByRealName(getLocalizedString(aPath), aUsername);
 	}
 
@@ -63,7 +65,12 @@ public class YamlLocalizationHelper extends YamlLoader {
 		}
 	}
 
-	private String replaceUsernameTagByRealName(final String aMessageText, final String aUsername) {
-		return aMessageText.replaceAll(mUsernameTag, mUsernameCast + aUsername);
+	private String replaceUsernameTagByRealName(final String aMessageText, final Pair<Boolean, String> aUsername) {
+		final String lUsername = aUsername.getSecond();
+		if (aUsername.getFirst()) {
+			return aMessageText.replaceAll(mUsernameTag, mUsernameCast + lUsername);
+		} else {
+			return aMessageText.replaceAll(mUsernameTag, lUsername);
+		}
 	}
 }

@@ -18,7 +18,7 @@ public abstract class BotAdminCommand extends BotCommand {
 				aDigestBot.sendSimpleMessage(lReceivedMessage.getChatId(),
 					lReceivedMessage.getMessageId(),
 					lLocalizationHelper.getLocalizedString("error.access",
-						lReceivedMessage.getMessageUsername()));
+						lReceivedMessage.getAvailableUsername()));
 			}
 		}).start();
 	}

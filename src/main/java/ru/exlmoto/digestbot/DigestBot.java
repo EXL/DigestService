@@ -209,6 +209,8 @@ public class DigestBot extends TelegramLongPollingBot {
 				lBotAnswerText += '\n' + mLocalizationHelper.getLocalizedString("warn.response.long");
 			}
 			lEditMessageText.setText(lBotAnswerText);
+			// TODO: digestbot.file.downloader???
+			lEditMessageText.disableWebPagePreview();
 			execute(lEditMessageText);
 		} catch (TelegramApiException e) {
 			mBotLogger.error(String.format("Cannot edit message in '%d' chat: '%s'.", aChatId, e.toString()));
@@ -253,6 +255,9 @@ public class DigestBot extends TelegramLongPollingBot {
 				lBotAnswerText += '\n' + mLocalizationHelper.getLocalizedString("warn.response.long");
 			}
 			lSendMessage.setText(lBotAnswerText);
+			lSendMessage.disableNotification();
+			// TODO: digestbot.file.downloader???
+			lSendMessage.disableWebPagePreview();
 			execute(lSendMessage);
 		} catch (TelegramApiException e) {
 			mBotLogger.error(String.format("Cannot send message into '%d' chat: '%s'.", aChatId, e.toString()));

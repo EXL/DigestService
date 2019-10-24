@@ -425,7 +425,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		mIMotoFanSubscribersRepository.save(lMotoFanSubscriberEntity1);
 		mIMotoFanSubscribersRepository.save(lMotoFanSubscriberEntity2);
 		 */
-
+/*
 		for (int i = 0; i < 9; i++) {
 			final DigestEntity lDigestEntity = new DigestEntity();
 			lDigestEntity.setAuthor(999);
@@ -435,7 +435,7 @@ public class DigestBot extends TelegramLongPollingBot {
 			lDigestEntity.setChat(-1001148683293L);
 			mIDigestEntriesRepository.save(lDigestEntity);
 		}
-
+*/
 		// mIDigestEntriesRepository.deleteAll();
 	}
 }

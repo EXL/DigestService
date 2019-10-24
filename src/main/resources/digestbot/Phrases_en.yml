@@ -44,6 +44,8 @@ command.subscribe.button.subscribe:
   - "Subscribe"
 command.subscribe.button.unsubscribe:
   - "Unsubscribe"
+command.digest.page:
+  - "Page"
 error.access:
   - "Unfortunately, %username%, you are not allowed to use this command. Only my creator can use it."
 error.chatid:
@@ -85,6 +87,8 @@ inline.subscribe.subscribed:
   - "✅ Chat Subscribed."
 inline.subscribe.unsubscribed:
   - "✅ Chat Unsubscribed."
+inline.digest.page:
+  - "You have selected a page:"
 crawler.motofan.title:
   - "New message on the MotoFan.Ru forum!"
 crawler.motofan.writing:

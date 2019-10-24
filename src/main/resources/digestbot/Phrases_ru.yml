@@ -44,6 +44,8 @@ command.subscribe.button.subscribe:
   - "Подписаться"
 command.subscribe.button.unsubscribe:
   - "Отписаться"
+command.digest.page:
+  - "Стр."
 error.access:
   - "К сожалению, %username%, ты не имеешь права использовать эту команду. Её может использовать лишь мой создатель."
 error.chatid:
@@ -85,6 +87,8 @@ inline.subscribe.subscribed:
   - "✅ Подписка оформлена."
 inline.subscribe.unsubscribed:
   - "✅ Подписка отменена."
+inline.digest.page:
+  - "Вы выбрали страницу:"
 crawler.motofan.title:
   - "Новое сообщение на форуме MotoFan.Ru!"
 crawler.motofan.writing:

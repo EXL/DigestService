@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Transactional
+@Transactional // TODO: ???
 public class SubscribeKeyboard {
 	private final YamlLocalizationHelper mYamlLocalizationHelper;
 

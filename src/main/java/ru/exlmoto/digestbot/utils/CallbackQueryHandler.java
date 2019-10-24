@@ -28,6 +28,8 @@ public class CallbackQueryHandler {
 				aDigestBot.getRatesKeyboard().handleRatesKeyboard(aDigestBot, aCallbackQuery);
 			} else if (lData.startsWith("subscribe.")) {
 				aDigestBot.getSubscribeKeyboard().handleSubscribeKeyboard(aDigestBot, aCallbackQuery);
+			} else if (lData.startsWith("page.")) {
+				aDigestBot.getDigestKeyboard().handleDigestKeyboard(aDigestBot, aCallbackQuery);
 			}
 		}).start();
 	}

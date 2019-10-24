@@ -1,6 +1,5 @@
 package ru.exlmoto.digestbot;
 
-import org.python.antlr.op.Sub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +47,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final ChartsKeyboard mChartsKeyboard;
 	private final RatesKeyboard mRatesKeyboard;
 	private final SubscribeKeyboard mSubscribeKeyboard;
+	private final DigestKeyboard mDigestKeyboard;
 	private final CallbackQueryHandler mCallbackQueryHandler;
 
 	private final BankWorker mBankWorker;
@@ -75,6 +75,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final ChartsKeyboard aChartsKeyboard,
 	                 final RatesKeyboard aRatesKeyboard,
 	                 final SubscribeKeyboard aSubscribeKeyboard,
+	                 final DigestKeyboard aDigestKeyboard,
 	                 final BankWorker aBankWorker,
 	                 final MotoFanWorker aMotoFanWorker,
 	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository) {
@@ -92,6 +93,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		mChartsKeyboard = aChartsKeyboard;
 		mRatesKeyboard = aRatesKeyboard;
 		mSubscribeKeyboard = aSubscribeKeyboard;
+		mDigestKeyboard = aDigestKeyboard;
 		mCallbackQueryHandler = new CallbackQueryHandler();
 
 		mIMotoFanSubscribersRepository = aIMotoFanSubscribersRepository;
@@ -378,6 +380,10 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public SubscribeKeyboard getSubscribeKeyboard() {
 		return mSubscribeKeyboard;
+	}
+
+	public DigestKeyboard getDigestKeyboard() {
+		return mDigestKeyboard;
 	}
 
 	public Logger getBotLogger() {

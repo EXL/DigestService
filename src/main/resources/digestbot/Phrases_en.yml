@@ -67,6 +67,10 @@ command.digest.empty:
   - "Ohh! %username% did not fill out the digest. What a shame!"
   - "All night obscene pictures were posted in the chat, but they did not fill out the digest. Ohh!"
   - "Again, everyone forgot about the digest. Nothing here 😓"
+command.digest.marker:
+  - "•"
+command.digest.marker.new:
+  - "🆕"
 error.access:
   - "Unfortunately, %username%, you are not allowed to use this command. Only my creator can use it."
 error.chatid:

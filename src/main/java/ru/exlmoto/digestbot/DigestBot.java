@@ -21,7 +21,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
+import ru.exlmoto.digestbot.entities.DigestEntity;
 import ru.exlmoto.digestbot.entities.MotoFanSubscriberEntity;
+import ru.exlmoto.digestbot.repos.IDigestEntriesRepository;
 import ru.exlmoto.digestbot.repos.IMotoFanSubscribersRepository;
 import ru.exlmoto.digestbot.utils.*;
 import ru.exlmoto.digestbot.workers.BankWorker;
@@ -54,6 +56,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final MotoFanWorker mMotoFanWorker;
 
 	private final IMotoFanSubscribersRepository mIMotoFanSubscribersRepository;
+	private final IDigestEntriesRepository mIDigestEntriesRepository;
 
 	private final String K_BOT_COMMAND_ENTITY = "bot_command";
 
@@ -78,7 +81,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final DigestKeyboard aDigestKeyboard,
 	                 final BankWorker aBankWorker,
 	                 final MotoFanWorker aMotoFanWorker,
-	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository) {
+	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository,
+	                 final IDigestEntriesRepository aIDigestEntriesRepository) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -97,6 +101,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		mCallbackQueryHandler = new CallbackQueryHandler();
 
 		mIMotoFanSubscribersRepository = aIMotoFanSubscribersRepository;
+		mIDigestEntriesRepository = aIDigestEntriesRepository;
 
 		mBankWorker = aBankWorker;
 		mBankWorker.setBotLogger(mBotLogger);
@@ -106,7 +111,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		mMotoFanWorker.setDigestBot(this);
 		mMotoFanWorker.updateLatestMotoFanPosts();
 
-		// testDataBase();
+		testDataBase();
 	}
 
 	@Override
@@ -402,6 +407,10 @@ public class DigestBot extends TelegramLongPollingBot {
 		return mIMotoFanSubscribersRepository;
 	}
 
+	public IDigestEntriesRepository getIDigestEntriesRepository() {
+		return mIDigestEntriesRepository;
+	}
+
 	private void testDataBase() {
 		/*
 		final MotoFanSubscriberEntity lMotoFanSubscriberEntity1 = new MotoFanSubscriberEntity();
@@ -411,5 +420,17 @@ public class DigestBot extends TelegramLongPollingBot {
 		mIMotoFanSubscribersRepository.save(lMotoFanSubscriberEntity1);
 		mIMotoFanSubscribersRepository.save(lMotoFanSubscriberEntity2);
 		 */
+
+		for (int i = 0; i < 9; i++) {
+			final DigestEntity lDigestEntity = new DigestEntity();
+			lDigestEntity.setAuthor(999);
+			lDigestEntity.setDigest("Test " + (System.currentTimeMillis()));
+			lDigestEntity.setHtml("Test " + (System.currentTimeMillis()));
+			lDigestEntity.setDate(9999L);
+			lDigestEntity.setChat(-1001148683293L);
+			mIDigestEntriesRepository.save(lDigestEntity);
+		}
+
+		// mIDigestEntriesRepository.deleteAll();
 	}
 }

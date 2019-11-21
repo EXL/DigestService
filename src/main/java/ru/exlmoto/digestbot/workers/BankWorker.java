@@ -1,6 +1,7 @@
 package ru.exlmoto.digestbot.workers;
 
 import org.slf4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.Scheduled;

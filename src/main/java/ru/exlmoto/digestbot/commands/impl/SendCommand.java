@@ -60,9 +60,8 @@ public class SendCommand extends BotAdminCommand {
 
 		if ((lIsTextMode && lCommandWithArgs.length >= 3) || (!lIsTextMode && lCommandWithArgs.length == 3)) {
 			// Determine chat id.
-			final String lStringChatId = lCommandWithArgs[1];
 			try {
-				lChatId = NumberUtils.parseNumber(lStringChatId, Long.class);
+				lChatId = NumberUtils.parseNumber(lCommandWithArgs[1], Long.class);
 			} catch (NumberFormatException e) {
 				lError = true;
 				lCommandText = aLocalizationHelper.getLocalizedString("error.chatid");

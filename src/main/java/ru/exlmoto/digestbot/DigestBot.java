@@ -22,11 +22,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.entities.DigestEntity;
-import ru.exlmoto.digestbot.entities.MotoFanSubscriberEntity;
 import ru.exlmoto.digestbot.repos.IDigestEntriesRepository;
 import ru.exlmoto.digestbot.repos.IMotoFanSubscribersRepository;
 import ru.exlmoto.digestbot.utils.*;
 import ru.exlmoto.digestbot.workers.BankWorker;
+import ru.exlmoto.digestbot.workers.DigestShredder;
 import ru.exlmoto.digestbot.workers.MotoFanWorker;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
@@ -81,6 +81,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final DigestKeyboard aDigestKeyboard,
 	                 final BankWorker aBankWorker,
 	                 final MotoFanWorker aMotoFanWorker,
+	                 final DigestShredder aDigestShredder,
 	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository,
 	                 final IDigestEntriesRepository aIDigestEntriesRepository) {
 		mBotUsername = aBotUsername;
@@ -105,12 +106,18 @@ public class DigestBot extends TelegramLongPollingBot {
 
 		mBankWorker = aBankWorker;
 		mBankWorker.setBotLogger(mBotLogger);
-		mBankWorker.updateAllBanks();
 
 		mMotoFanWorker = aMotoFanWorker;
 		mMotoFanWorker.setDigestBot(this);
-		mMotoFanWorker.updateLatestMotoFanPosts();
 
+		aDigestShredder.setBotLogger(mBotLogger);
+
+		new Thread(() -> {
+			mBankWorker.updateAllBanks();
+			mMotoFanWorker.updateLatestMotoFanPosts();
+		}).start();
+
+		// TODO: Delete this shit
 		testDataBase();
 	}
 
@@ -154,6 +161,10 @@ public class DigestBot extends TelegramLongPollingBot {
 	private void handleMessage(final Message aMessage) {
 		if (aMessage.isCommand()) {
 			onCommand(aMessage);
+		} else {
+			sendMarkdownMessage(aMessage.getChatId(), aMessage.getMessageId(),
+					String.valueOf(aMessage.getDate()) + " " +
+					String.valueOf(System.currentTimeMillis() / 1000L));
 		}
 	}
 
@@ -429,10 +440,10 @@ public class DigestBot extends TelegramLongPollingBot {
 		for (int i = 0; i < 9; i++) {
 			final DigestEntity lDigestEntity = new DigestEntity();
 			lDigestEntity.setAuthor(999);
-			lDigestEntity.setDigest("Test " + (System.currentTimeMillis()));
+			lDigestEntity.setDigest("1 Test " + (System.currentTimeMillis()) + " bbbbbbbbbbbbbbb");
 			lDigestEntity.setHtml("Test " + (System.currentTimeMillis()));
-			lDigestEntity.setDate(9999L);
-			lDigestEntity.setChat(-1001148683293L);
+			lDigestEntity.setDate(29999L);
+			lDigestEntity.setChat(-1001148683296L);
 			mIDigestEntriesRepository.save(lDigestEntity);
 		}
 */

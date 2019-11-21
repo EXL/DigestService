@@ -21,7 +21,7 @@ command.help:
   - "/help — Show this help."
 command.help.admin:
   - "/hello or /hi  — Get greeting from bot."
-  - "/delete — Show digests list."
+  - "/show <page id> — Show digests list."
   - "/delete <id> — Remove digest entry by <id> number."
   - "/send <chat id> <message> — Send <message> into <chat id>."
   - "/sticker <chat id> <sticker id> — Send sticker into <chat id>."
@@ -72,9 +72,9 @@ command.digest.marker:
   - "•"
 command.digest.marker.new:
   - "🆕"
-command.delete.show.header:
+command.show.header:
   - "Latest digests, use `/delete <id>` for deleting entry:"
-command.delete.ellipsis:
+command.show.ellipsis:
   - "…"
 command.delete.ok:
   - "Entry id `%d` has been deleted from the database!"
@@ -103,12 +103,12 @@ error.chart:
   - "Cannot get chart image, error: `%s`."
 error.rates:
   - "Error: Cannot get rates data."
-error.delete.empty:
+error.show.empty:
   - "Error: There are no matching entries in the database."
 error.delete.format:
   - "Wrong command format, please use:"
   - "`/delete <id>`."
-error.delete.error:
+error.delete.entry:
   - "Cannot delete the `%d` entry from the database."
   - "Perhaps the record has already been deleted."
 warn.response.long:

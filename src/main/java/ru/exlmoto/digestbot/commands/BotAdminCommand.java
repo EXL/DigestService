@@ -25,6 +25,6 @@ public abstract class BotAdminCommand extends BotCommand {
 
 	@Override
 	public abstract void run(final DigestBot aDigestBot,
-	                         final YamlLocalizationHelper localizationHelper,
+	                         final YamlLocalizationHelper aLocalizationHelper,
 	                         final ReceivedMessage aReceivedMessage);
 }

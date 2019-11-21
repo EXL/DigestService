@@ -48,6 +48,7 @@ public class BotCommandFactory {
 		addCommand("/subscribe", mApplicationContext.getBean(SubscribeCommand.class));
 		addCommand("/digest", mApplicationContext.getBean(DigestCommand.class));
 		addCommand("/delete", mApplicationContext.getBean(DeleteCommand.class));
+		addCommand("/show", mApplicationContext.getBean(ShowCommand.class));
 	}
 
 	/**

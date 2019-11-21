@@ -161,10 +161,6 @@ public class DigestBot extends TelegramLongPollingBot {
 	private void handleMessage(final Message aMessage) {
 		if (aMessage.isCommand()) {
 			onCommand(aMessage);
-		} else {
-			sendMarkdownMessage(aMessage.getChatId(), aMessage.getMessageId(),
-					String.valueOf(aMessage.getDate()) + " " +
-					String.valueOf(System.currentTimeMillis() / 1000L));
 		}
 	}
 

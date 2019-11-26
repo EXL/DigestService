@@ -56,3 +56,21 @@
 /image@DigestTest_bot -1001148683293 https://exlmoto.ru/wp-content/Images/GISH/Gish_Motorola_Photon_Q.jpg
 /image -1001148683293 https://exlmoto.ru/wp-content/Images/GISH/Gish_Motorola_Photon_Q.jpg text
 /image@DigestTest_bot -1001148683293 https://exlmoto.ru/wp-content/Images/GISH/Gish_Motorola_Photon_Q.jpg text
+
+// Digest and News hashtags:
+
+#digest
+#news
+#digest #news
+#digest#news
+
+#digest test
+#news test
+#digest #news test
+#new #digest test
+#news #digest test
+
+test #digest asd
+test #news asd
+test #digest #news asd
+test #news #digest asd

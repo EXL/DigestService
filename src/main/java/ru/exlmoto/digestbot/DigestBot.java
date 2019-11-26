@@ -14,14 +14,15 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.EntityType;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import ru.exlmoto.digestbot.commands.BotCommand;
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
-import ru.exlmoto.digestbot.entities.DigestEntity;
 import ru.exlmoto.digestbot.repos.IDigestEntriesRepository;
 import ru.exlmoto.digestbot.repos.IMotoFanSubscribersRepository;
 import ru.exlmoto.digestbot.utils.*;
@@ -31,7 +32,9 @@ import ru.exlmoto.digestbot.workers.MotoFanWorker;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DigestBot extends TelegramLongPollingBot {
@@ -57,8 +60,6 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	private final IMotoFanSubscribersRepository mIMotoFanSubscribersRepository;
 	private final IDigestEntriesRepository mIDigestEntriesRepository;
-
-	private final String K_BOT_COMMAND_ENTITY = "bot_command";
 
 	private enum MessageMode {
 		MESSAGE_SIMPLE,
@@ -161,6 +162,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	private void handleMessage(final Message aMessage) {
 		if (aMessage.isCommand()) {
 			onCommand(aMessage);
+		} else {
+			onHashTag(aMessage);
 		}
 	}
 
@@ -366,17 +369,38 @@ public class DigestBot extends TelegramLongPollingBot {
 		}
 	}
 
+	// TODO: getOffset == from start of message
 	private void onCommand(final Message aMessage) {
 		final List<MessageEntity> lEntities = aMessage.getEntities();
-		lEntities.stream().filter(aMessageEntity ->
-			                          aMessageEntity.getType().equals(K_BOT_COMMAND_ENTITY) &&
-				                          aMessageEntity.getOffset() == 0)
-			.forEach(command -> runCommand(command.getText(), aMessage));
+		if (lEntities != null) {
+			lEntities.stream().filter(aMessageEntity ->
+					aMessageEntity.getType().equals(EntityType.BOTCOMMAND) &&
+							aMessageEntity.getOffset() == 0)
+					.forEach(command -> runCommand(command.getText(), aMessage));
+		}
+	}
+
+	// TODO: Only first hashtag is relevant
+	private void onHashTag(final Message aMessage) {
+		final List<MessageEntity> lEntities = aMessage.getEntities();
+		if (lEntities != null) {
+			final List<String> lHashTags = new ArrayList<>();
+			lEntities.stream().filter(aMessageEntity ->
+					aMessageEntity.getType().equals(EntityType.HASHTAG))
+					.forEach(hashTag -> lHashTags.add(hashTag.getText()));
+
+			for (String iHashTag : lHashTags) {
+				Optional<BotCommand> lOptionalBotCommand = mBotCommandFactory.getCommand(iHashTag);
+				if (lOptionalBotCommand.isPresent()) {
+					lOptionalBotCommand.ifPresent(aCommand -> aCommand.prepare(this, aMessage));
+					break;
+				}
+			}
+		}
 	}
 
 	private void runCommand(final String aCommandName, final Message aMessage) {
-		mBotCommandFactory.getCommand(aCommandName).ifPresent(
-			aCommand -> aCommand.prepare(this, aMessage));
+		mBotCommandFactory.getCommand(aCommandName).ifPresent(aCommand -> aCommand.prepare(this, aMessage));
 	}
 
 	public ReceivedMessage createReceivedMessage(final Message aMessage) {

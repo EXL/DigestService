@@ -49,6 +49,9 @@ public class BotCommandFactory {
 		addCommand("/digest", mApplicationContext.getBean(DigestCommand.class));
 		addCommand("/delete", mApplicationContext.getBean(DeleteCommand.class));
 		addCommand("/show", mApplicationContext.getBean(ShowCommand.class));
+
+		addCommand("#digest", mApplicationContext.getBean(DigestHashTag.class));
+		addCommand("#news", mApplicationContext.getBean(DigestHashTag.class));
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class BotCommandFactory {
 		mBotCommandsMap.put(aCommand + mUsernameCast + mBotUsername, aBotCommandClass);
 	}
 
-	public Optional<BotCommand> getCommand(String aCommandName) {
+	public Optional<BotCommand> getCommand(final String aCommandName) {
 		return Optional.ofNullable(mBotCommandsMap.get(aCommandName));
 	}
 }

@@ -78,6 +78,12 @@ command.show.ellipsis:
   - "…"
 command.delete.ok:
   - "Entry id `%d` has been deleted from the database!"
+hashtag.digest.ok:
+  - "I recorded it."
+  - "Recorded."
+  - "I recorded it, %username%."
+  - "Recorded, %username%."
+  - "Saved."
 error.access:
   - "Unfortunately, %username%, you are not allowed to use this command. Only my creator can use it."
 error.chatid:

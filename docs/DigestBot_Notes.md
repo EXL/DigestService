@@ -33,7 +33,7 @@
 
 Таким образом, требуется релизовать функциональность для следующих сущностей:
 
-1. `/digest` -
+1. `/digest` +
 2. `/rates` +
 3. `/charts` +
 4. `/start` +
@@ -41,7 +41,7 @@
 6. `/help` +
 7. `/hi` +
 8. `/hello` +
-9. `/delete` -
+9. `/delete` +
 10. `/send <chat id> <message>` +
 11. `/sticker <chat id> <sticker id>` +
 12. `/hostip` +

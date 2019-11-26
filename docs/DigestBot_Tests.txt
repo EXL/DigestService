@@ -74,3 +74,5 @@ test #digest asd
 test #news asd
 test #digest #news asd
 test #news #digest asd
+
+https://exlmoto.ru/manual#digest

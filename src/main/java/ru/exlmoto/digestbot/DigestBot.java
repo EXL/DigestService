@@ -24,6 +24,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.exlmoto.digestbot.commands.BotCommand;
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.repos.IDigestEntriesRepository;
+import ru.exlmoto.digestbot.repos.IDigestUsersRepository;
 import ru.exlmoto.digestbot.repos.IMotoFanSubscribersRepository;
 import ru.exlmoto.digestbot.utils.*;
 import ru.exlmoto.digestbot.workers.BankWorker;
@@ -60,6 +61,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	private final IMotoFanSubscribersRepository mIMotoFanSubscribersRepository;
 	private final IDigestEntriesRepository mIDigestEntriesRepository;
+	private final IDigestUsersRepository mIDigestUsersRepository;
 
 	private enum MessageMode {
 		MESSAGE_SIMPLE,
@@ -84,7 +86,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final MotoFanWorker aMotoFanWorker,
 	                 final DigestShredder aDigestShredder,
 	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository,
-	                 final IDigestEntriesRepository aIDigestEntriesRepository) {
+	                 final IDigestEntriesRepository aIDigestEntriesRepository,
+	                 final IDigestUsersRepository aIDigestUsersRepository) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -104,6 +107,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 		mIMotoFanSubscribersRepository = aIMotoFanSubscribersRepository;
 		mIDigestEntriesRepository = aIDigestEntriesRepository;
+		mIDigestUsersRepository = aIDigestUsersRepository;
 
 		mBankWorker = aBankWorker;
 		mBankWorker.setBotLogger(mBotLogger);
@@ -445,6 +449,10 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public IDigestEntriesRepository getIDigestEntriesRepository() {
 		return mIDigestEntriesRepository;
+	}
+
+	public IDigestUsersRepository getIDigestUsersRepository() {
+		return mIDigestUsersRepository;
 	}
 
 	private void testDataBase() {

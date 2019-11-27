@@ -20,6 +20,9 @@ public class DigestUserEntity {
 	@Column(name = "username", nullable = false)
 	private String username;
 
+	@Column(name = "username_ok", nullable = false)
+	private Boolean usernameOk;
+
 	@Column(name = "username_html", nullable = false, length = 1024)
 	@Length(max = 1024)
 	private String username_html;
@@ -54,5 +57,13 @@ public class DigestUserEntity {
 
 	public void setUsername_html(String username_html) {
 		this.username_html = username_html;
+	}
+
+	public Boolean getUsernameOk() {
+		return usernameOk;
+	}
+
+	public void setUsernameOk(Boolean usernameOk) {
+		this.usernameOk = usernameOk;
 	}
 }

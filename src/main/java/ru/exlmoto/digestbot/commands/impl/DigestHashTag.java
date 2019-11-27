@@ -37,6 +37,9 @@ public class DigestHashTag extends BotCommand {
 
 			commitDigestToDataBase(aDigestBot, aReceivedMessage, lMessageText);
 			commitUserToDataBase(aDigestBot, aReceivedMessage);
+
+			aDigestBot.getIDigestUsersRepository().findAllByUsernameOkIsTrue().forEach(ue ->
+				System.out.println(ue.getUsername() + ":" + ue.getUsernameOk()));
 		}
 	}
 
@@ -62,8 +65,10 @@ public class DigestHashTag extends BotCommand {
 		lDigestUser.setUsername(lCanonicalUserName);
 		if (lUserName.getFirst()) {
 			lDigestUser.setUsername_html(activateLinksInUsername(lCanonicalUserName));
+			lDigestUser.setUsernameOk(true);
 		} else {
 			lDigestUser.setUsername_html(lCanonicalUserName);
+			lDigestUser.setUsernameOk(false);
 		}
 		lDigestUser.setAvatarLink(
 			mAvatarService.getAvatarUrlByUserName(aReceivedMessage.getMessageUsername()).getSecond());

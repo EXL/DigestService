@@ -27,6 +27,7 @@ import ru.exlmoto.digestbot.repos.IDigestEntriesRepository;
 import ru.exlmoto.digestbot.repos.IDigestUsersRepository;
 import ru.exlmoto.digestbot.repos.IMotoFanSubscribersRepository;
 import ru.exlmoto.digestbot.utils.*;
+import ru.exlmoto.digestbot.workers.AvatarUpdater;
 import ru.exlmoto.digestbot.workers.BankWorker;
 import ru.exlmoto.digestbot.workers.DigestShredder;
 import ru.exlmoto.digestbot.workers.MotoFanWorker;
@@ -58,6 +59,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	private final BankWorker mBankWorker;
 	private final MotoFanWorker mMotoFanWorker;
+	private final AvatarUpdater mAvatarUpdater;
 
 	private final IMotoFanSubscribersRepository mIMotoFanSubscribersRepository;
 	private final IDigestEntriesRepository mIDigestEntriesRepository;
@@ -85,6 +87,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final BankWorker aBankWorker,
 	                 final MotoFanWorker aMotoFanWorker,
 	                 final DigestShredder aDigestShredder,
+	                 final AvatarUpdater aAvatarUpdater,
 	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository,
 	                 final IDigestEntriesRepository aIDigestEntriesRepository,
 	                 final IDigestUsersRepository aIDigestUsersRepository) {
@@ -114,6 +117,9 @@ public class DigestBot extends TelegramLongPollingBot {
 
 		mMotoFanWorker = aMotoFanWorker;
 		mMotoFanWorker.setDigestBot(this);
+
+		mAvatarUpdater = aAvatarUpdater;
+		mAvatarUpdater.setBotLogger(mBotLogger);
 
 		aDigestShredder.setBotLogger(mBotLogger);
 

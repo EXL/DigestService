@@ -1,9 +1,11 @@
 package ru.exlmoto.digestbot.entities;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "digest_entries")
+@Table(name = "bot_digest_entries")
 public class DigestEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,8 +17,12 @@ public class DigestEntity {
 
 	private Long chat;
 
+	@Column(name = "digest", nullable = false, length = 2048)
+	@Length(max = 2048)
 	private String digest;
 
+	@Column(name = "digest_html", nullable = false, length = 4096)
+	@Length(max = 4096)
 	private String html;
 
 	public Integer getId() {

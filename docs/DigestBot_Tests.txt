@@ -76,3 +76,7 @@ test #digest #news asd
 test #news #digest asd
 
 https://exlmoto.ru/manual#digest
+
+#digest Проверяем ник: @exlmoto @ZorgeR
+#digest проверяем ссылку https://exlmoto.ru tg://t.me/exlmoto file:///usr/local/
+#digest Проверяем ник и ссылки: @exlmoto и https://exlmoto.ru

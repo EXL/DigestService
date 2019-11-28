@@ -97,6 +97,7 @@ public class BankWorker {
 		} else {
 			mBotLogger.error(String.format("Cannot get bank currencies list: '%s' '%s'.",
 				aBank.getClass(), lServerAnswerString));
+			aBank.clearValues();
 			return false;
 		}
 	}

@@ -14,7 +14,7 @@ chart.mmbv:
   - "MICEX     — MICEX index chart."
   - "ММВБ"
   - "MICEX"
-  - "http://api.z-lab.me/charts/mmvb.png"
+  - "https://api.z-lab.me/charts/mmvb.png"
 chart.usd_rub:
   - "Курс USD/RUB по Forex."
   - "USD/RUB rate from Forex."
@@ -22,7 +22,7 @@ chart.usd_rub:
   - "USD/RUB   — Current USD/RUB rate from Forex."
   - "USD/RUB"
   - "USD/RUB"
-  - "http://api.z-lab.me/charts/usd_rub_forex.png"
+  - "https://api.z-lab.me/charts/usd_rub_forex.png"
 chart.usd_uah:
   - "Курс USD/UAH по Nasdaq, NYSE."
   - "USD/UAH rate from Nasdaq, NYSE."
@@ -30,7 +30,7 @@ chart.usd_uah:
   - "USD/UAH   — Current USD/UAH rate from NYSE."
   - "USD/UAH"
   - "USD/UAH"
-  - "http://api.z-lab.me/charts/usd_uah.png"
+  - "https://api.z-lab.me/charts/usd_uah.png"
 chart.eur_rub:
   - "Курс EUR/RUB по Forex."
   - "EUR/RUB rate from Forex."
@@ -38,7 +38,7 @@ chart.eur_rub:
   - "EUR/RUB   — Current EUR/RUB rate from Forex."
   - "EUR/RUB"
   - "EUR/RUB"
-  - "http://api.z-lab.me/charts/rub_eur_forex.png"
+  - "https://api.z-lab.me/charts/rub_eur_forex.png"
 chart.eur_usd:
   - "Курс EUR/UAH по Forex."
   - "EUR/UAH rate from Forex."
@@ -46,7 +46,7 @@ chart.eur_usd:
   - "EUR/UAH   — Current EUR/USD rate from Forex."
   - "EUR/UAH"
   - "EUR/UAH"
-  - "http://api.z-lab.me/charts/eur_usd_forex.png"
+  - "https://api.z-lab.me/charts/eur_usd_forex.png"
 chart.gold:
   - "Золото по Nasdaq."
   - "Gold from Nasdaq."
@@ -54,7 +54,7 @@ chart.gold:
   - "Gold      — Gold from Nasdaq."
   - "Золото"
   - "Gold"
-  - "http://api.z-lab.me/charts/gold.png"
+  - "https://api.z-lab.me/charts/gold.png"
 chart.palladium:
   - "Палладий по Nasdaq."
   - "Palladium from Nasdaq."
@@ -62,7 +62,7 @@ chart.palladium:
   - "Palladium — Palladium from Nasdaq."
   - "Палладий"
   - "Palladium"
-  - "http://api.z-lab.me/charts/palladium.png"
+  - "https://api.z-lab.me/charts/palladium.png"
 chart.platinum:
   - "Платина по Nasdaq."
   - "Platinum from Nasdaq."
@@ -70,7 +70,7 @@ chart.platinum:
   - "Platinum  — Platinum from Nasdaq."
   - "Платина"
   - "Platinum"
-  - "http://api.z-lab.me/charts/platinum.png"
+  - "https://api.z-lab.me/charts/platinum.png"
 chart.rhodium:
   - "Родий по Nasdaq."
   - "Rhodium from Nasdaq."
@@ -78,7 +78,7 @@ chart.rhodium:
   - "Rhodium   — Rhodium from Nasdaq."
   - "Родий"
   - "Rhodium"
-  - "http://api.z-lab.me/charts/rhodium.png"
+  - "https://api.z-lab.me/charts/rhodium.png"
 chart.silver:
   - "Серебро по Nasdaq."
   - "Silver from Nasdaq."
@@ -86,7 +86,7 @@ chart.silver:
   - "Silver    — Silver from Nasdaq."
   - "Серебро"
   - "Silver"
-  - "http://api.z-lab.me/charts/silver.png"
+  - "https://api.z-lab.me/charts/silver.png"
 chart.rts:
   - "Индекс РТС по ММВБ."
   - "RTS Index from ММВБ (MICEX)."
@@ -94,7 +94,7 @@ chart.rts:
   - "RTS       — RTS Index chart from ММВБ (MICEX)."
   - "РТС"
   - "RTS"
-  - "http://api.z-lab.me/charts/rts.png"
+  - "https://api.z-lab.me/charts/rts.png"
 chart.btc_usd:
   - "Курс BTC/USD по WorldCoinIndex."
   - "BTC/USD rate from WorldCoinIndex."
@@ -102,7 +102,7 @@ chart.btc_usd:
   - "BTC/USD   — Current BTC/USD rate from WCI."
   - "BTC/USD"
   - "BTC/USD"
-  - "http://api.z-lab.me/charts/btc_usd.png"
+  - "https://api.z-lab.me/charts/btc_usd.png"
 chart.bcc_usd:
   - "Курс BCC/USD по WorldCoinIndex."
   - "BCC/USD rate from WorldCoinIndex."
@@ -110,7 +110,7 @@ chart.bcc_usd:
   - "BCC/USD   — Current BCC/USD rate from WCI."
   - "BCC/USD"
   - "BCC/USD"
-  - "http://api.z-lab.me/charts/bcc_usd.png"
+  - "https://api.z-lab.me/charts/bcc_usd.png"
 chart.dsh_usd:
   - "Курс DSH/USD по WorldCoinIndex."
   - "DSH/USD rate from WorldCoinIndex."
@@ -118,7 +118,7 @@ chart.dsh_usd:
   - "DSH/USD   — Current DSH/USD rate from WCI."
   - "DSH/USD"
   - "DSH/USD"
-  - "http://api.z-lab.me/charts/dsh_usd.png"
+  - "https://api.z-lab.me/charts/dsh_usd.png"
 chart.ltc_usd:
   - "Курс LTC/USD по WorldCoinIndex."
   - "LTC/USD rate from WorldCoinIndex."
@@ -126,7 +126,7 @@ chart.ltc_usd:
   - "LTC/USD   — Current LTC/USD rate from WCI."
   - "LTC/USD"
   - "LTC/USD"
-  - "http://api.z-lab.me/charts/ltc_usd.png"
+  - "https://api.z-lab.me/charts/ltc_usd.png"
 chart.eth_usd:
   - "Курс ETH/USD по WorldCoinIndex."
   - "ETH/USD rate from WorldCoinIndex."
@@ -134,7 +134,7 @@ chart.eth_usd:
   - "ETH/USD   — Current ETH/USD rate from WCI."
   - "ETH/USD"
   - "ETH/USD"
-  - "http://api.z-lab.me/charts/eth_usd.png"
+  - "https://api.z-lab.me/charts/eth_usd.png"
 chart.iota_usd:
   - "Курс IOTA/USD по WorldCoinIndex."
   - "IOTA/USD rate from WorldCoinIndex."
@@ -142,7 +142,7 @@ chart.iota_usd:
   - "IOTA/USD  — Current IOTA/USD rate from WCI."
   - "IOTA/USD"
   - "IOTA/USD"
-  - "http://api.z-lab.me/charts/iota_usd.png"
+  - "https://api.z-lab.me/charts/iota_usd.png"
 chart.usd_rub_n:
   - "Курс USD/RUB по Nasdaq, NYSE."
   - "USD/RUB rate from Nasdaq, NYSE."
@@ -150,7 +150,7 @@ chart.usd_rub_n:
   - "USD/RUB N — Current USD/RUB rate from NYSE."
   - "USD/RUB N"
   - "USD/RUB N"
-  - "http://api.z-lab.me/charts/usd_rub.png"
+  - "https://api.z-lab.me/charts/usd_rub.png"
 chart.brent:
   - "Нефть Brent по Nasdaq, NYSE."
   - "Brent oil from Nasdaq, NYSE."
@@ -158,7 +158,7 @@ chart.brent:
   - "Brent Oil — Brent oil USD/BBL rate from NYSE."
   - "Нефть Brent"
   - "Brent Oil"
-  - "http://api.z-lab.me/charts/brent.png"
+  - "https://api.z-lab.me/charts/brent.png"
 chart.wti:
   - "Нефть WTI по Nasdaq, NYSE."
   - "WTI oil from Nasdaq, NYSE."
@@ -166,4 +166,4 @@ chart.wti:
   - "WTI Oil   — WTI oil USD/BBL rate from NYSE."
   - "Нефть WTI"
   - "WTI Oil"
-  - "http://api.z-lab.me/charts/wti.png"
+  - "https://api.z-lab.me/charts/wti.png"

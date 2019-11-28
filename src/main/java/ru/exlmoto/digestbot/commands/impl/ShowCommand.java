@@ -10,6 +10,7 @@ import org.springframework.util.NumberUtils;
 import ru.exlmoto.digestbot.DigestBot;
 import ru.exlmoto.digestbot.commands.BotAdminCommand;
 import ru.exlmoto.digestbot.entities.DigestEntity;
+import ru.exlmoto.digestbot.repos.IDigestUsersRepository;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
@@ -17,16 +18,21 @@ import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 public class ShowCommand extends BotAdminCommand {
 	private final int K_FIRST_PAGE = 0;
 
+	private final IDigestUsersRepository mIDigestUsersRepository;
+
 	private final Integer mDigestPerPage;
 	private final Integer mChopStringShort;
 	private final Integer mChopStringLong;
 
-	public ShowCommand(@Value("${digestbot.show.posts}") final Integer aDigestPerPage,
+	public ShowCommand(final IDigestUsersRepository aIDigestUsersRepository,
+	                   @Value("${digestbot.show.posts}") final Integer aDigestPerPage,
 	                   @Value("${digestbot.show.chop.short}") final Integer aChopStringShort,
 	                   @Value("${digestbot.show.chop.long}") final Integer aChopStringLong) {
 		mDigestPerPage = aDigestPerPage;
 		mChopStringShort = aChopStringShort;
 		mChopStringLong = aChopStringLong;
+
+		mIDigestUsersRepository = aIDigestUsersRepository;
 	}
 
 	@Override
@@ -56,11 +62,13 @@ public class ShowCommand extends BotAdminCommand {
 				lStringBuilder.append(aLocalizationHelper.getLocalizedString("command.show.header"));
 				lStringBuilder.append("```\n");
 				lStringBuilder.append("id    user  chat  date  post\n");
+				lStringBuilder.append("----------------------------------------\n");
 				for (DigestEntity iDigest : lDigestEntries) {
 					lStringBuilder.append(ellipsisString(String.valueOf(iDigest.getId()),
 							mChopStringShort, lEllipsis, false)).append(' ');
-					lStringBuilder.append(ellipsisString(String.valueOf(iDigest.getAuthor()),
-							mChopStringShort, lEllipsis, false)).append(' ');
+					lStringBuilder.append(ellipsisString(
+							mIDigestUsersRepository.findDigestUserEntityById(iDigest.getAuthor()).getUsername(),
+							mChopStringShort, lEllipsis, true)).append(' ');
 					lStringBuilder.append(ellipsisString(String.valueOf(iDigest.getChat()),
 							mChopStringShort, lEllipsis, false)).append(' ');
 					lStringBuilder.append(ellipsisString(String.valueOf(iDigest.getDate()),

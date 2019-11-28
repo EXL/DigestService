@@ -9,11 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.exlmoto.digestbot.repos.IDigestEntriesRepository;
+import ru.exlmoto.digestbot.repos.IDigestUsersRepository;
+
+import java.util.ArrayList;
 
 @Service
 @Transactional
 public class DigestShredder {
 	private final IDigestEntriesRepository mIDigestEntriesRepository;
+	private final IDigestUsersRepository mIDigestUsersRepository;
 
 	private final Long mChatId;
 
@@ -21,8 +25,10 @@ public class DigestShredder {
 
 	@Autowired
 	public DigestShredder(final IDigestEntriesRepository aIDigestEntriesRepository,
+	                      final IDigestUsersRepository aIDigestUsersRepository,
 	                      @Value("${digestbot.chat.motofan}") final Long aChatId) {
 		mIDigestEntriesRepository = aIDigestEntriesRepository;
+		mIDigestUsersRepository = aIDigestUsersRepository;
 		mChatId = aChatId;
 	}
 
@@ -35,10 +41,20 @@ public class DigestShredder {
 	// https://stackoverflow.com/a/732043
 	@Scheduled(cron = "${digestbot.digest.shredder.cron}")
 	public void dropObsoleteDigests() {
-		mBotLogger.info("=> Start dropping obsolete digest from database.");
+		mBotLogger.info("=> Start dropping obsolete data from database.");
 		mIDigestEntriesRepository.deleteAllByDateIsLessThanAndChatIsNot(
 				(System.currentTimeMillis() / 1000L) - (604800 + 43200), mChatId);
-		mBotLogger.info("=> End dropping obsolete digest from database.");
+
+		final ArrayList<Integer> lAllAuthorIdsInDigests = mIDigestEntriesRepository.findAllAuthorsId();
+		final ArrayList<Integer> lAllAuthorIdsInDigestUsers = mIDigestUsersRepository.findAllAuthorsId();
+		lAllAuthorIdsInDigestUsers.removeAll(lAllAuthorIdsInDigests);
+		lAllAuthorIdsInDigestUsers.forEach(aId -> {
+			mBotLogger.info(String.format("==> Delete obsolete user: %s",
+					mIDigestUsersRepository.findDigestUserEntityById(aId).getUsername()));
+			mIDigestUsersRepository.deleteAllById(aId);
+		});
+
+		mBotLogger.info("=> End dropping obsolete data from database.");
 	}
 
 	public void setBotLogger(final Logger aBotLogger) {

@@ -37,9 +37,6 @@ public class DigestHashTag extends BotCommand {
 
 			commitDigestToDataBase(aDigestBot, aReceivedMessage, lMessageText);
 			commitUserToDataBase(aDigestBot, aReceivedMessage);
-
-			aDigestBot.getIDigestUsersRepository().findAllByUsernameOkIsTrue().forEach(ue ->
-				System.out.println(ue.getUsername() + ":" + ue.getUsernameOk()));
 		}
 	}
 

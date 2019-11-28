@@ -60,10 +60,14 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final BankWorker mBankWorker;
 	private final MotoFanWorker mMotoFanWorker;
 	private final AvatarUpdater mAvatarUpdater;
+	private final DigestShredder mDigestShredder;
 
 	private final IMotoFanSubscribersRepository mIMotoFanSubscribersRepository;
 	private final IDigestEntriesRepository mIDigestEntriesRepository;
 	private final IDigestUsersRepository mIDigestUsersRepository;
+
+	private Boolean mShowUpdatesInLog;
+	private Boolean mUseFileLoader;
 
 	private enum MessageMode {
 		MESSAGE_SIMPLE,
@@ -78,6 +82,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 @Value("${digestbot.max_updates}") final Integer aBotMaxUpdates,
 	                 @Value("${digestbot.response.maxsize}") final Integer aBotMaxResponseLength,
 	                 @Value("${digestbot.inline.cooldown}") final Integer aBotInlineCoolDown,
+	                 @Value("${digestbot.debug.updates}") final Boolean aShowUpdatesInLog,
+	                 @Value("${digestbot.file.downloader}") final Boolean aUseFileLoader,
 	                 final BotCommandFactory aBotCommandFactory,
 	                 final YamlLocalizationHelper aLocalizationHelper,
 	                 final ChartsKeyboard aChartsKeyboard,
@@ -97,6 +103,9 @@ public class DigestBot extends TelegramLongPollingBot {
 		mBotMaxUpdates = aBotMaxUpdates;
 		mBotMaxResponseLength = aBotMaxResponseLength;
 		mBotInlineCoolDown = aBotInlineCoolDown;
+
+		mShowUpdatesInLog = aShowUpdatesInLog;
+		mUseFileLoader = aUseFileLoader;
 
 		mBotLogger = LoggerFactory.getLogger(DigestBot.class);
 		mBotCommandFactory = aBotCommandFactory;
@@ -121,7 +130,8 @@ public class DigestBot extends TelegramLongPollingBot {
 		mAvatarUpdater = aAvatarUpdater;
 		mAvatarUpdater.setBotLogger(mBotLogger);
 
-		aDigestShredder.setBotLogger(mBotLogger);
+		mDigestShredder = aDigestShredder;
+		mDigestShredder.setBotLogger(mBotLogger);
 
 		new Thread(() -> {
 			mBankWorker.updateAllBanks();
@@ -134,6 +144,9 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	@Override
 	public void onUpdateReceived(final Update aUpdate) {
+		if (mShowUpdatesInLog) {
+			mBotLogger.info(aUpdate.toString());
+		}
 		Message lMessage =
 			(aUpdate.hasEditedMessage()) ? aUpdate.getEditedMessage() :
 				(aUpdate.hasMessage()) ? aUpdate.getMessage() : null;
@@ -229,8 +242,9 @@ public class DigestBot extends TelegramLongPollingBot {
 				lBotAnswerText += '\n' + mLocalizationHelper.getLocalizedString("warn.response.long");
 			}
 			lEditMessageText.setText(lBotAnswerText);
-			// TODO: digestbot.file.downloader???
-			lEditMessageText.disableWebPagePreview();
+			if (mUseFileLoader) {
+				lEditMessageText.disableWebPagePreview();
+			}
 			execute(lEditMessageText);
 		} catch (TelegramApiException e) {
 			mBotLogger.error(String.format("Cannot edit message in '%d' chat: '%s'.", aChatId, e.toString()));
@@ -276,8 +290,9 @@ public class DigestBot extends TelegramLongPollingBot {
 			}
 			lSendMessage.setText(lBotAnswerText);
 			lSendMessage.disableNotification();
-			// TODO: digestbot.file.downloader???
-			lSendMessage.disableWebPagePreview();
+			if (mUseFileLoader) {
+				lSendMessage.disableWebPagePreview();
+			}
 			execute(lSendMessage);
 		} catch (TelegramApiException e) {
 			mBotLogger.error(String.format("Cannot send message into '%d' chat: '%s'.", aChatId, e.toString()));
@@ -449,6 +464,18 @@ public class DigestBot extends TelegramLongPollingBot {
 		return mBankWorker;
 	}
 
+	public MotoFanWorker getMotoFanWorker() {
+		return mMotoFanWorker;
+	}
+
+	public AvatarUpdater getAvatarUpdater() {
+		return mAvatarUpdater;
+	}
+
+	public DigestShredder getDigestShredder() {
+		return mDigestShredder;
+	}
+
 	public IMotoFanSubscribersRepository getIMotoFanSubscribersRepository() {
 		return mIMotoFanSubscribersRepository;
 	}
@@ -459,6 +486,22 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public IDigestUsersRepository getIDigestUsersRepository() {
 		return mIDigestUsersRepository;
+	}
+
+	public Boolean getShowUpdatesInLog() {
+		return mShowUpdatesInLog;
+	}
+
+	public void toggleShowUpdatesInLog() {
+		mShowUpdatesInLog = !mShowUpdatesInLog;
+	}
+
+	public Boolean getUseFileLoader() {
+		return mUseFileLoader;
+	}
+
+	public void toggleUseFileLoader() {
+		mUseFileLoader = !mUseFileLoader;
 	}
 
 	private void testDataBase() {

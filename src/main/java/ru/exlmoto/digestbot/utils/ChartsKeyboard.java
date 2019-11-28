@@ -23,13 +23,9 @@ public class ChartsKeyboard {
 	private final YamlChartsIndexHelper mYamlChartsIndexHelper;
 	private final FileService mFileService;
 
-	private final Boolean mFileDownloader;
-
 	@Autowired
-	public ChartsKeyboard(@Value("${digestbot.file.downloader}") final Boolean aFileDownloader,
-	                      final YamlChartsIndexHelper aYamlChartsIndexHelper,
+	public ChartsKeyboard(final YamlChartsIndexHelper aYamlChartsIndexHelper,
 	                      final FileService aFileService) {
-		mFileDownloader = aFileDownloader;
 		mYamlChartsIndexHelper = aYamlChartsIndexHelper;
 		mFileService = aFileService;
 	}
@@ -71,7 +67,7 @@ public class ChartsKeyboard {
 		aDigestBot.createAndSendAnswerCallbackQuery(aCallbackQuery.getId(),
 			lLocalizationHelper.getLocalizedString("inline.chart.selected") + ' ' + lTitle);
 
-		if (mFileDownloader) {
+		if (aDigestBot.getUseFileLoader()) {
 			final Pair<Boolean, String> lAnswer = mFileService.receiveObject(lApiLink);
 			final String lResult = lAnswer.getSecond();
 			if (lAnswer.getFirst()) {

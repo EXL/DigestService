@@ -27,7 +27,7 @@ public class AvatarUpdater {
 	}
 
 	@Scheduled(cron = "${digestbot.avatar.updater.cron}")
-	public void dropObsoleteDigests() {
+	public void updateUserAvatars() {
 		mBotLogger.info("=> Start updating user avatars.");
 
 		mIDigestUsersRepository.findAllByUsernameOkIsTrue().forEach(iDigestUserEntity -> {

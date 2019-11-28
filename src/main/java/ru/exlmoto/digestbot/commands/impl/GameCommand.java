@@ -14,17 +14,14 @@ import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 @Component
 public class GameCommand extends BotCommand {
 	private final String mGameImageUrl;
-	private final Boolean mFileDownloader;
 
 	private final FileService mFileService;
 
 	@Autowired
 	public GameCommand(final FileService aFileService,
-	                   @Value("${digestbot.service.game}") final String aGameImageUrl,
-	                   @Value("${digestbot.file.downloader}") final Boolean aFileDownloader) {
+	                   @Value("${digestbot.service.game}") final String aGameImageUrl) {
 		mFileService = aFileService;
 		mGameImageUrl = aGameImageUrl;
-		mFileDownloader = aFileDownloader;
 	}
 
 	@Override
@@ -34,7 +31,7 @@ public class GameCommand extends BotCommand {
 		final Long lChatId = aReceivedMessage.getChatId();
 		final Integer lMessageId = aReceivedMessage.getMessageId();
 		final String lCaption = aLocalizationHelper.getLocalizedString("command.game");
-		if (mFileDownloader) {
+		if (aDigestBot.getUseFileLoader()) {
 			final Pair<Boolean, String> lAnswer = mFileService.receiveObject(mGameImageUrl);
 			final String lResult = lAnswer.getSecond();
 			if (lAnswer.getFirst()) {

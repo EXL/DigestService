@@ -15,32 +15,56 @@ public class DebugCommand extends BotAdminCommand {
                     final ReceivedMessage aReceivedMessage) {
         String lCommandText = aReceivedMessage.getMessageText();
         final String[] lCommandWithArgs = lCommandText.split(" ");
-        final String lCommand = lCommandWithArgs[1];
-
-        switch (lCommand) {
-            default: {
-                lCommandText = aLocalizationHelper.getLocalizedString("command.debug.help");
-                break;
-            }
-            case "RefreshRates": {
-                lCommandText = aLocalizationHelper.getLocalizedString("command.debug.data");
-                aDigestBot.getBankWorker().updateAllBanks();
-                break;
-            }
-            case "UseUriInsteadFiles": {
-                break;
-            }
-            case "EnableLogUpdates": {
-                break;
-            }
-            case "UseStackForDelay": {
-                break;
-            }
-            case "DisableGreetings": {
-                break;
+        lCommandText = aLocalizationHelper.getLocalizedString("command.debug.help");
+        if (lCommandWithArgs.length == 2) {
+            final String lCommand = lCommandWithArgs[1];
+            switch (lCommand) {
+                case "VRates": {
+                    lCommandText = aLocalizationHelper.getLocalizedString("command.debug.data");
+                    aDigestBot.getBankWorker().updateAllBanks();
+                    break;
+                }
+                case "VPosts": {
+                    lCommandText = aLocalizationHelper.getLocalizedString("command.debug.data");
+                    aDigestBot.getMotoFanWorker().updateLatestMotoFanPosts();
+                    break;
+                }
+                case "VShredder": {
+                    lCommandText = aLocalizationHelper.getLocalizedString("command.debug.data");
+                    aDigestBot.getDigestShredder().dropObsoleteDigests();
+                    break;
+                }
+                case "VAvatars": {
+                    lCommandText = aLocalizationHelper.getLocalizedString("command.debug.data");
+                    aDigestBot.getAvatarUpdater().updateUserAvatars();
+                    break;
+                }
+                case "VStatus" : {
+                    lCommandText = aLocalizationHelper.getLocalizedString("command.debug.values") + "\n";
+                    lCommandText += "BFileDownloader: `" + aDigestBot.getUseFileLoader() + "`\n";
+                    lCommandText += "BLogUpdates: `" + aDigestBot.getShowUpdatesInLog() + "`\n";
+                    break;
+                }
+                case "BFileDownloader": {
+                    aDigestBot.toggleUseFileLoader();
+                    lCommandText = String.format(aLocalizationHelper.getLocalizedString("command.debug.variable"),
+                            lCommand, aDigestBot.getUseFileLoader());
+                    break;
+                }
+                case "BLogUpdates": {
+                    aDigestBot.toggleShowUpdatesInLog();
+                    lCommandText = String.format(aLocalizationHelper.getLocalizedString("command.debug.variable"),
+                            lCommand, aDigestBot.getShowUpdatesInLog());
+                    break;
+                }
+                case "BStackForDelay": {
+                    break;
+                }
+                case "BGreetings": {
+                    break;
+                }
             }
         }
-
         aDigestBot.sendMarkdownMessage(aReceivedMessage.getChatId(), aReceivedMessage.getMessageId(), lCommandText);
     }
 }

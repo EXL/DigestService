@@ -81,15 +81,21 @@ command.delete.ok:
   - "Entry id `%d` has been deleted from the database!"
 command.debug.help:
   - "Please choose `/debug` command with argument:"
-  - "`/debug RefreshRates` — Refresh exchanges."
-  - "`/debug UseUriInsteadFiles` — Use URL links instead files."
-  - "`/debug EnableLogUpdates` — Show Updates in system log."
-  - "`/debug UseStackForDelay` — Use stack for delay."
-  - "`/debug DisableGreetings` — Disable greetings."
+  - "/debug VRates — Refresh exchange rates."
+  - "/debug VPosts — Get latest MotoFan posts."
+  - "/debug VShredder — Run database shredder."
+  - "/debug VAvatars — Update user avatars."
+  - "/debug VStatus — Show variable values."
+  - "/debug BFileDownloader — Use URL links instead files."
+  - "/debug BLogUpdates — Show Updates in system log."
+  - "/debug BStackForDelay — Use stack for delay."
+  - "/debug BGreetings — Disable greetings."
 command.debug.variable:
-  - "Variable `%s` set to `%d`."
+  - "Variable `%s` set to `%b`."
 command.debug.data:
   - "Data updated!"
+command.debug.values:
+  - "Variable values:"
 hashtag.digest.ok:
   - "I recorded it."
   - "Recorded."

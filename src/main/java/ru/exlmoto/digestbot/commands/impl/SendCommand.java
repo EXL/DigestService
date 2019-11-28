@@ -20,8 +20,6 @@ public class SendCommand extends BotAdminCommand {
 
 	private final FileService mFileService;
 
-	private final Boolean mFileDownloader;
-
 	private enum SendCommandMode {
 		SEND_COMMAND,
 		STICKER_COMMAND,
@@ -29,10 +27,8 @@ public class SendCommand extends BotAdminCommand {
 	}
 
 	@Autowired
-	public SendCommand(final FileService aFileService,
-	                   @Value("${digestbot.file.downloader}") final Boolean aFileDownloader) {
+	public SendCommand(final FileService aFileService) {
 		mFileService = aFileService;
-		mFileDownloader = aFileDownloader;
 	}
 
 	/**
@@ -107,7 +103,7 @@ public class SendCommand extends BotAdminCommand {
 			}
 			case IMAGE_COMMAND: {
 				final String lImageUrl = lCommandText.trim();
-				if (mFileDownloader) {
+				if (aDigestBot.getUseFileLoader()) {
 					final Pair<Boolean, String> lAnswer = mFileService.receiveObject(lImageUrl);
 					final String lResult = lAnswer.getSecond();
 					if (lAnswer.getFirst()) {

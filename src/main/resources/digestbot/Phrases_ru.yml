@@ -81,15 +81,21 @@ command.delete.ok:
   - "Запись под номером `%d` удалена из базы данных!"
 command.debug.help:
   - "Выберите команду `/debug` с параметром:"
-  - "`/debug RefreshRates` — Обновить котировки."
-  - "`/debug UseUriInsteadFiles` — URL-cсылки вместо файлов."
-  - "`/debug EnableLogUpdates` — Выводить Updates в лог."
-  - "`/debug UseStackForDelay` — Использовать стэк для задержки."
-  - "`/debug DisableGreetings` — Отключить приветствия."
+  - "/debug VRates — Обновить котировки валют."
+  - "/debug VPosts — Последние сообщения с MotoFan."
+  - "/debug VShredder — Запустить очистку базы данных."
+  - "/debug VAvatars — Обновить аватары пользователей."
+  - "/debug VStatus — Показать значения переменных."
+  - "/debug BFileDownloader — URL-cсылки вместо файлов."
+  - "/debug BLogUpdates — Выводить Updates в лог."
+  - "/debug BStackForDelay — Использовать стэк для задержки."
+  - "/debug BGreetings — Отключить приветствия."
 command.debug.variable:
-  - "Переменная `%s` установлена в значение `%d`."
+  - "Переменная `%s` установлена в значение `%b`."
 command.debug.data:
   - "Данные обновлены!"
+command.debug.values:
+  - "Значения переменных:"
 hashtag.digest.ok:
   - "Записала."
   - "Записано."

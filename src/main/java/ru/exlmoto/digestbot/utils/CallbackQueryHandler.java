@@ -4,19 +4,43 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import ru.exlmoto.digestbot.DigestBot;
 
+import java.util.HashMap;
+
 public class CallbackQueryHandler {
 	private int mSeconds = 0;
 
+	private final HashMap<Long, Long> mCallBackQueriesStack = new HashMap<>();
+
 	public void handle(final DigestBot aDigestBot, final CallbackQuery aCallbackQuery) {
 		final Integer lCoolDown = aDigestBot.getBotInlineCoolDown();
-		if (mSeconds == 0) {
-			coolDown(aDigestBot, lCoolDown);
-			handleCallbackQuery(aDigestBot, aCallbackQuery);
+		if (aDigestBot.getUseStackForDelay()) {
+			final Long lChatId = aCallbackQuery.getMessage().getChatId();
+			// TODO: Use this function in another
+			final Long lCurrentTime = (System.currentTimeMillis() / 1000L);
+			if (!mCallBackQueriesStack.containsKey(lChatId) ||
+					mCallBackQueriesStack.get(lChatId) <= lCurrentTime - lCoolDown) {
+				mCallBackQueriesStack.put(lChatId, lCurrentTime);
+				handleCallbackQuery(aDigestBot, aCallbackQuery);
+			} else {
+				sendCoolDownAnswer(aDigestBot, aCallbackQuery,
+						(int) (lCoolDown - (lCurrentTime - mCallBackQueriesStack.get(lChatId))));
+			}
 		} else {
-			aDigestBot.createAndSendAnswerCallbackQuery(aCallbackQuery.getId(),
-				String.format(aDigestBot.getLocalizationHelper().getLocalizedString("inline.error.cooldown"),
-					mSeconds));
+			if (mSeconds == 0) {
+				coolDown(aDigestBot, lCoolDown);
+				handleCallbackQuery(aDigestBot, aCallbackQuery);
+			} else {
+				sendCoolDownAnswer(aDigestBot, aCallbackQuery, mSeconds);
+			}
 		}
+	}
+
+	private void sendCoolDownAnswer(final DigestBot aDigestBot,
+									final CallbackQuery aCallbackQuery,
+									final Integer aCoolDown) {
+		aDigestBot.createAndSendAnswerCallbackQuery(aCallbackQuery.getId(),
+				String.format(aDigestBot.getLocalizationHelper().getLocalizedString("inline.error.cooldown"),
+						aCoolDown));
 	}
 
 	private void handleCallbackQuery(final DigestBot aDigestBot, final CallbackQuery aCallbackQuery) {

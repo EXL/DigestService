@@ -14,10 +14,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.EntityType;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.MessageEntity;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -68,6 +65,8 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	private Boolean mShowUpdatesInLog;
 	private Boolean mUseFileLoader;
+	private Boolean mUseStackForDelay;
+	private Boolean mShowGreetings;
 
 	private enum MessageMode {
 		MESSAGE_SIMPLE,
@@ -83,7 +82,9 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 @Value("${digestbot.response.maxsize}") final Integer aBotMaxResponseLength,
 	                 @Value("${digestbot.inline.cooldown}") final Integer aBotInlineCoolDown,
 	                 @Value("${digestbot.debug.updates}") final Boolean aShowUpdatesInLog,
-	                 @Value("${digestbot.file.downloader}") final Boolean aUseFileLoader,
+	                 @Value("${digestbot.debug.fileloader}") final Boolean aUseFileLoader,
+	                 @Value("${digestbot.debug.stack}") final Boolean aUseStackForDelay,
+	                 @Value("${digestbot.debug.greetings}") final Boolean aShowGreetings,
 	                 final BotCommandFactory aBotCommandFactory,
 	                 final YamlLocalizationHelper aLocalizationHelper,
 	                 final ChartsKeyboard aChartsKeyboard,
@@ -106,6 +107,8 @@ public class DigestBot extends TelegramLongPollingBot {
 
 		mShowUpdatesInLog = aShowUpdatesInLog;
 		mUseFileLoader = aUseFileLoader;
+		mUseStackForDelay = aUseStackForDelay;
+		mShowGreetings = aShowGreetings;
 
 		mBotLogger = LoggerFactory.getLogger(DigestBot.class);
 		mBotCommandFactory = aBotCommandFactory;
@@ -147,13 +150,12 @@ public class DigestBot extends TelegramLongPollingBot {
 		if (mShowUpdatesInLog) {
 			mBotLogger.info(aUpdate.toString());
 		}
-		Message lMessage =
+		final Message lMessage =
 			(aUpdate.hasEditedMessage()) ? aUpdate.getEditedMessage() :
 				(aUpdate.hasMessage()) ? aUpdate.getMessage() : null;
 		if (lMessage != null) {
 			handleMessage(lMessage);
-		}
-		if (aUpdate.hasCallbackQuery()) {
+		} else if (aUpdate.hasCallbackQuery()) {
 			mCallbackQueryHandler.handle(this, aUpdate.getCallbackQuery());
 		}
 	}
@@ -502,6 +504,22 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public void toggleUseFileLoader() {
 		mUseFileLoader = !mUseFileLoader;
+	}
+
+	public Boolean getUseStackForDelay() {
+		return mUseStackForDelay;
+	}
+
+	public void toggleUseStackForDelay() {
+		mUseStackForDelay = !mUseStackForDelay;
+	}
+
+	public Boolean getShowGreetings() {
+		return mShowGreetings;
+	}
+
+	public void toggleShowGreetings() {
+		mShowGreetings = !mShowGreetings;
 	}
 
 	private void testDataBase() {

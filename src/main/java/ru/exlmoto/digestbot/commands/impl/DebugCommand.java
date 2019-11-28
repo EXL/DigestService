@@ -43,6 +43,9 @@ public class DebugCommand extends BotAdminCommand {
                     lCommandText = aLocalizationHelper.getLocalizedString("command.debug.values") + "\n";
                     lCommandText += "BFileDownloader: `" + aDigestBot.getUseFileLoader() + "`\n";
                     lCommandText += "BLogUpdates: `" + aDigestBot.getShowUpdatesInLog() + "`\n";
+                    lCommandText += "BStackForDelay: `" + aDigestBot.getUseStackForDelay() + "`\n";
+                    lCommandText += "BGreetings: `" + aDigestBot.getShowGreetings() + "`\n";
+                    lCommandText = lCommandText.trim();
                     break;
                 }
                 case "BFileDownloader": {
@@ -58,9 +61,15 @@ public class DebugCommand extends BotAdminCommand {
                     break;
                 }
                 case "BStackForDelay": {
+                    aDigestBot.toggleUseStackForDelay();
+                    lCommandText = String.format(aLocalizationHelper.getLocalizedString("command.debug.variable"),
+                            lCommand, aDigestBot.getUseStackForDelay());
                     break;
                 }
                 case "BGreetings": {
+                    aDigestBot.toggleShowGreetings();
+                    lCommandText = String.format(aLocalizationHelper.getLocalizedString("command.debug.variable"),
+                            lCommand, aDigestBot.getShowGreetings());
                     break;
                 }
             }

@@ -26,6 +26,7 @@ command.help.admin:
   - "/send <chat id> <message> — Отправить <message> в <chat id>."
   - "/sticker <chat id> <sticker id> — Отправить стикер в <chat id>."
   - "/image <chat id> <image url> — Отправить фото в <chat id>."
+  - "/debug — Показать команды для отладки."
   - "/hostip — IP-адрес хост-сервера."
 command.hostip:
   - "Войди в меня (по SSH). Мой IP:"
@@ -78,6 +79,17 @@ command.show.ellipsis:
   - "…"
 command.delete.ok:
   - "Запись под номером `%d` удалена из базы данных!"
+command.debug.help:
+  - "Выберите команду `/debug` с параметром:"
+  - "`/debug RefreshRates` — Обновить котировки."
+  - "`/debug UseUriInsteadFiles` — URL-cсылки вместо файлов."
+  - "`/debug EnableLogUpdates` — Выводить Updates в лог."
+  - "`/debug UseStackForDelay` — Использовать стэк для задержки."
+  - "`/debug DisableGreetings` — Отключить приветствия."
+command.debug.variable:
+  - "Переменная `%s` установлена в значение `%d`."
+command.debug.data:
+  - "Данные обновлены!"
 hashtag.digest.ok:
   - "Записала."
   - "Записано."

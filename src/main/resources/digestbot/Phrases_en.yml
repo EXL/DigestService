@@ -26,6 +26,7 @@ command.help.admin:
   - "/send <chat id> <message> — Send <message> into <chat id>."
   - "/sticker <chat id> <sticker id> — Send sticker into <chat id>."
   - "/image <chat id> <url> — Send photo into <chat id>."
+  - "/debug — Show debug commands."
   - "/hostip — Host server IP address."
 command.hostip:
   - "Come to me (via SSH). My IP address:"
@@ -78,6 +79,17 @@ command.show.ellipsis:
   - "…"
 command.delete.ok:
   - "Entry id `%d` has been deleted from the database!"
+command.debug.help:
+  - "Please choose `/debug` command with argument:"
+  - "`/debug RefreshRates` — Refresh exchanges."
+  - "`/debug UseUriInsteadFiles` — Use URL links instead files."
+  - "`/debug EnableLogUpdates` — Show Updates in system log."
+  - "`/debug UseStackForDelay` — Use stack for delay."
+  - "`/debug DisableGreetings` — Disable greetings."
+command.debug.variable:
+  - "Variable `%s` set to `%d`."
+command.debug.data:
+  - "Data updated!"
 hashtag.digest.ok:
   - "I recorded it."
   - "Recorded."

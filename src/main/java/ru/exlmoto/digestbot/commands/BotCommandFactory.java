@@ -49,6 +49,7 @@ public class BotCommandFactory {
 		addCommand("/digest", mApplicationContext.getBean(DigestCommand.class));
 		addCommand("/delete", mApplicationContext.getBean(DeleteCommand.class));
 		addCommand("/show", mApplicationContext.getBean(ShowCommand.class));
+		addCommand("/debug", mApplicationContext.getBean(DebugCommand.class));
 
 		addCommand("#digest", mApplicationContext.getBean(DigestHashTag.class));
 		addCommand("#news", mApplicationContext.getBean(DigestHashTag.class));

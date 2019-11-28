@@ -49,8 +49,8 @@
 14. `/image <chat id> <url>` +
 15. `/show` +
 16. `/debug` -
-17. `#digest` -
-18. `#news` -
+17. `#digest` +
+18. `#news` +
 
 С чего начать? С продумывания базовой архитектуры проекта, посмотреть примеры Spring-приложений, построенных с использованием этой библиотеки можно [здесь](https://github.com/rubenlagus/TelegramBots/network/dependents?package_id=UGFja2FnZS0zMTc5NTk2NjQ%3D). В частности, интересен проект [cat-girl-assistant](https://github.com/JackSmellyDog/cat-girl-assistant).
 

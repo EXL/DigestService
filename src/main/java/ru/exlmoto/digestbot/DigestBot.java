@@ -214,7 +214,9 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	private String getUsername(final User aUser) {
-		return (aUser.getUserName() != null) ? "@" + aUser.getUserName() : aUser.getFirstName();
+		return (aUser.getUserName() != null) ? '@' + aUser.getUserName() :
+				(aUser.getLastName() != null) ? aUser.getFirstName() + ' ' + aUser.getLastName() :
+						aUser.getFirstName();
 	}
 
 	private void onNewUsers(final Message aMessage) {

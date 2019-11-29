@@ -12,6 +12,7 @@ public class ReceivedMessage {
 	private final String mMessageText;
 	private final String mMessageUsername;
 	private final String mMessageUserFirstName;
+	private final String mMessageUserLastName;
 	private final boolean mIsMessageCommand;
 	private final boolean mIsUserAdmin;
 
@@ -23,6 +24,7 @@ public class ReceivedMessage {
 		mMessageText = aMessage.getText();
 		mMessageUsername = aMessage.getFrom().getUserName();
 		mMessageUserFirstName = aMessage.getFrom().getFirstName();
+		mMessageUserLastName = aMessage.getFrom().getLastName();
 		mMessageUsernameId = aMessage.getFrom().getId();
 		mIsMessageCommand = aMessage.isCommand();
 		mIsUserAdmin = isUserHasAdminRights(mMessageUsername, aAdministrators);
@@ -57,17 +59,19 @@ public class ReceivedMessage {
 		return mMessageUsername;
 	}
 
-	public String getMessageUserFirstName() {
-		return mMessageUserFirstName;
-	}
-
 	public Pair<Boolean, String> getAvailableUsername() {
-		return determineCorrectName(mMessageUsername, mMessageUserFirstName);
+		return determineCorrectName(mMessageUsername, mMessageUserFirstName, mMessageUserLastName);
 	}
 
-	public static Pair<Boolean, String> determineCorrectName(final String aUsername, final String aFirstName) {
+	// TODO: Something bad with this.
+	public static Pair<Boolean, String> determineCorrectName(final String aUsername,
+															 final String aFirstName,
+															 final String aLastName) {
 		if (aUsername == null || aUsername.equals("null")) {
-			return Pair.of(false, aFirstName);
+			if (aLastName == null || aLastName.equals("null")) {
+				return Pair.of(false, aFirstName);
+			}
+			return Pair.of(false, aFirstName + ' ' + aLastName);
 		} else {
 			return Pair.of(true, aUsername);
 		}

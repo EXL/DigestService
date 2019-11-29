@@ -74,8 +74,10 @@ public class DigestKeyboard {
 			mYamlLocalizationHelper.getLocalizedString("inline.digest.page") + ' ' + (lPage + 1));
 
 		final Pair<Boolean, String> lCorrectName =
-			ReceivedMessage.determineCorrectName(aCallbackQuery.getFrom().getUserName(),
-				aCallbackQuery.getFrom().getFirstName());
+			ReceivedMessage.determineCorrectName(
+					aCallbackQuery.getFrom().getUserName(),
+					aCallbackQuery.getFrom().getFirstName(),
+					aCallbackQuery.getFrom().getLastName());
 
 		final String lHello = mYamlLocalizationHelper.getRandomLocalizedString("command.digest.hello",
 			lCorrectName);

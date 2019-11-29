@@ -15,6 +15,10 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import org.thymeleaf.util.ArrayUtils;
+import ru.exlmoto.digestbot.entities.DigestEntity;
+import ru.exlmoto.digestbot.entities.DigestUserEntity;
+import ru.exlmoto.digestbot.repos.IDigestEntriesRepository;
+import ru.exlmoto.digestbot.repos.IDigestUsersRepository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,10 +31,10 @@ import java.util.TimeZone;
 @Controller
 public class DigestController {
     @Autowired
-    private IDigestRepository digestRepository;
+    private IDigestEntriesRepository digestRepository;
 
     @Autowired
-    private IDigestUserRepository digestUserRepository;
+    private IDigestUsersRepository digestUserRepository;
 
     @Autowired
     private MessageSource messageSource;
@@ -61,8 +65,11 @@ public class DigestController {
                          @RequestParam(name = "text", required = false) String search, Model model, SearchForm form) {
         int startPage = getValidHumanCurrentPageSearch(page);
         Iterable<DigestUserEntity> digestUserEntities = digestUserRepository.findByUsernameContainingIgnoreCase(search);
-        Page<DigestEntity> digestEntities = digestRepository.findByDigestContainingIgnoreCase(search,
+        Page<DigestEntity> digestEntities = digestRepository.findByHtmlIgnoreCaseContaining(search,
                 PageRequest.of(startPage, postPerPage));
+
+        digestEntities.forEach(digestEntity -> System.out.println(digestEntity.getDigest()));
+
         int pageCount = ((int) digestEntities.getTotalElements() - 1) / postPerPage;
 
         model.addAttribute("inNames", digestUserEntities);
@@ -143,13 +150,13 @@ public class DigestController {
         return messageSource.getMessage(path, null, LocaleContextHolder.getLocale());
     }
 
-    private String getUserNameOrAvatarById(Integer id, boolean isUsername, IDigestUserRepository repository) {
+    private String getUserNameOrAvatarById(Integer id, boolean isUsername, IDigestUsersRepository repository) {
         Optional<DigestUserEntity> digestUserEntityOptional = repository.findById(id);
         if (digestUserEntityOptional.isPresent()) {
             if (isUsername) {
                 return digestUserEntityOptional.get().getUsername();
             } else {
-                return digestUserEntityOptional.get().getAvatar();
+                return digestUserEntityOptional.get().getAvatarLink();
             }
         } else {
             return getI18nString("digest.name.unknown");

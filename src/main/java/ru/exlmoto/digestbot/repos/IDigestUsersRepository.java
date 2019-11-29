@@ -16,4 +16,6 @@ public interface IDigestUsersRepository extends CrudRepository<DigestUserEntity,
 	public ArrayList<Integer> findAllAuthorsId();
 
 	public ArrayList<DigestUserEntity> findAllByUsernameOkIsTrue();
+
+	public Iterable<DigestUserEntity> findByUsernameContainingIgnoreCase(final String aQuery);
 }

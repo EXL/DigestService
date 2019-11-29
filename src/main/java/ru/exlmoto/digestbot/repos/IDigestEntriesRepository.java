@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public interface IDigestEntriesRepository extends CrudRepository<DigestEntity, Integer> {
 	public Page<DigestEntity> findAll(Pageable pageable);
 	public Page<DigestEntity> findDigestEntitiesByChat(Pageable pageable, Long chat);
+	public Page<DigestEntity> findByHtmlIgnoreCaseContaining(String query, Pageable pageable);
 
 	@Query("select distinct digest_entity.author from DigestEntity digest_entity")
 	public ArrayList<Integer> findAllAuthorsId();

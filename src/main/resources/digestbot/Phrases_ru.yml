@@ -90,6 +90,7 @@ command.debug.help:
   - "/debug BLogUpdates — Выводить Updates в лог."
   - "/debug BStackForDelay — Использовать стэк для задержки."
   - "/debug BGreetings — Отключить приветствия."
+  - "/debug BMute — Отключить отправку событий в чат."
 command.debug.variable:
   - "Переменная `%s` установлена в значение `%b`."
 command.debug.data:

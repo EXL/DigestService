@@ -3,7 +3,7 @@ package ru.exlmoto.digestbot.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bot_subscriptions", uniqueConstraints={@UniqueConstraint(columnNames = {"subscription_id"})})
+@Table(name = "digestbot_subscriptions", uniqueConstraints={@UniqueConstraint(columnNames = {"subscription_id"})})
 public class MotoFanSubscriberEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -20,6 +20,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digestbot.commands.BotCommand;
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
+import ru.exlmoto.digestbot.entities.DigestBotSettings;
+import ru.exlmoto.digestbot.repos.IDigestBotSettingsRepository;
 import ru.exlmoto.digestbot.repos.IDigestEntriesRepository;
 import ru.exlmoto.digestbot.repos.IDigestUsersRepository;
 import ru.exlmoto.digestbot.repos.IMotoFanSubscribersRepository;
@@ -62,11 +64,13 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final IMotoFanSubscribersRepository mIMotoFanSubscribersRepository;
 	private final IDigestEntriesRepository mIDigestEntriesRepository;
 	private final IDigestUsersRepository mIDigestUsersRepository;
+	private final IDigestBotSettingsRepository mIDigestBotSettingsRepository;
 
 	private Boolean mShowUpdatesInLog;
 	private Boolean mUseFileLoader;
 	private Boolean mUseStackForDelay;
 	private Boolean mShowGreetings;
+	private Boolean mMute;
 
 	private enum MessageMode {
 		MESSAGE_SIMPLE,
@@ -85,6 +89,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 @Value("${digestbot.debug.fileloader}") final Boolean aUseFileLoader,
 	                 @Value("${digestbot.debug.stack}") final Boolean aUseStackForDelay,
 	                 @Value("${digestbot.debug.greetings}") final Boolean aShowGreetings,
+	                 @Value("${digestbot.debug.mute}") final Boolean aMute,
 	                 final BotCommandFactory aBotCommandFactory,
 	                 final YamlLocalizationHelper aLocalizationHelper,
 	                 final ChartsKeyboard aChartsKeyboard,
@@ -97,7 +102,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final AvatarUpdater aAvatarUpdater,
 	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository,
 	                 final IDigestEntriesRepository aIDigestEntriesRepository,
-	                 final IDigestUsersRepository aIDigestUsersRepository) {
+	                 final IDigestUsersRepository aIDigestUsersRepository,
+	                 final IDigestBotSettingsRepository aIDigestBotSettingsRepository) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -109,6 +115,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		mUseFileLoader = aUseFileLoader;
 		mUseStackForDelay = aUseStackForDelay;
 		mShowGreetings = aShowGreetings;
+		mMute = aMute;
 
 		mBotLogger = LoggerFactory.getLogger(DigestBot.class);
 		mBotCommandFactory = aBotCommandFactory;
@@ -123,6 +130,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		mIMotoFanSubscribersRepository = aIMotoFanSubscribersRepository;
 		mIDigestEntriesRepository = aIDigestEntriesRepository;
 		mIDigestUsersRepository = aIDigestUsersRepository;
+		mIDigestBotSettingsRepository = aIDigestBotSettingsRepository;
 
 		mBankWorker = aBankWorker;
 		mBankWorker.setBotLogger(mBotLogger);
@@ -135,6 +143,15 @@ public class DigestBot extends TelegramLongPollingBot {
 
 		mDigestShredder = aDigestShredder;
 		mDigestShredder.setBotLogger(mBotLogger);
+
+		final DigestBotSettings lDigestBotSettings = mIDigestBotSettingsRepository.findDigestBotSettingsById(1);
+		if (lDigestBotSettings != null) {
+			mShowUpdatesInLog = lDigestBotSettings.getShow_log_updates();
+			mUseFileLoader = lDigestBotSettings.getUse_file_loader();
+			mUseStackForDelay = lDigestBotSettings.getUse_stack_delay();
+			mShowGreetings = lDigestBotSettings.getShow_greetings();
+			mMute = lDigestBotSettings.getMute();
+		}
 
 		new Thread(() -> {
 			mBankWorker.updateAllBanks();
@@ -273,7 +290,9 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public void createAndSendAnswerCallbackQuery(final String aCallbackId, final String aText) {
 		try {
-			execute(createAnswerCallbackQuery(aCallbackId, aText));
+			if (!mMute) {
+				execute(createAnswerCallbackQuery(aCallbackId, aText));
+			}
 		} catch (TelegramApiException e) {
 			mBotLogger.error(String.format("Cannot send callback query answer: '%s'.", e.toString()));
 		}
@@ -318,7 +337,9 @@ public class DigestBot extends TelegramLongPollingBot {
 			if (mUseFileLoader) {
 				lEditMessageText.disableWebPagePreview();
 			}
-			execute(lEditMessageText);
+			if (!mMute) {
+				execute(lEditMessageText);
+			}
 		} catch (TelegramApiException e) {
 			mBotLogger.error(String.format("Cannot edit message in '%d' chat: '%s'.", aChatId, e.toString()));
 		}
@@ -366,7 +387,9 @@ public class DigestBot extends TelegramLongPollingBot {
 			if (mUseFileLoader) {
 				lSendMessage.disableWebPagePreview();
 			}
-			execute(lSendMessage);
+			if (!mMute) {
+				execute(lSendMessage);
+			}
 		} catch (TelegramApiException e) {
 			mBotLogger.error(String.format("Cannot send message into '%d' chat: '%s'.", aChatId, e.toString()));
 		}
@@ -420,7 +443,9 @@ public class DigestBot extends TelegramLongPollingBot {
 			}
 			lSendSticker.setChatId(aChatId);
 			lSendSticker.setSticker(aStickerId);
-			execute(lSendSticker);
+			if (!mMute) {
+				execute(lSendSticker);
+			}
 		} catch (TelegramApiException e) {
 			if (aOriginalChatId != null) {
 				sendMarkdownMessage(aOriginalChatId, aMessageId,
@@ -451,7 +476,9 @@ public class DigestBot extends TelegramLongPollingBot {
 			if (aCaption != null) {
 				lSendPhoto.setCaption(aCaption);
 			}
-			execute(lSendPhoto);
+			if (!mMute) {
+				execute(lSendPhoto);
+			}
 		} catch (TelegramApiException e) {
 			if (aOriginalSenderChatId != null) {
 				sendMarkdownMessage(aOriginalSenderChatId, aMessageId,
@@ -564,6 +591,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public void toggleShowUpdatesInLog() {
 		mShowUpdatesInLog = !mShowUpdatesInLog;
+		saveDigestBotSettingsToDataBase();
 	}
 
 	public Boolean getUseFileLoader() {
@@ -572,6 +600,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public void toggleUseFileLoader() {
 		mUseFileLoader = !mUseFileLoader;
+		saveDigestBotSettingsToDataBase();
 	}
 
 	public Boolean getUseStackForDelay() {
@@ -580,6 +609,7 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public void toggleUseStackForDelay() {
 		mUseStackForDelay = !mUseStackForDelay;
+		saveDigestBotSettingsToDataBase();
 	}
 
 	public Boolean getShowGreetings() {
@@ -588,6 +618,26 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public void toggleShowGreetings() {
 		mShowGreetings = !mShowGreetings;
+		saveDigestBotSettingsToDataBase();
+	}
+
+	public Boolean getMute() {
+		return mMute;
+	}
+
+	public void toggleMute() {
+		mMute = !mMute;
+		saveDigestBotSettingsToDataBase();
+	}
+
+	private void saveDigestBotSettingsToDataBase() {
+		final DigestBotSettings lDigestBotSettings = new DigestBotSettings();
+		lDigestBotSettings.setShow_log_updates(mShowUpdatesInLog);
+		lDigestBotSettings.setUse_file_loader(mUseFileLoader);
+		lDigestBotSettings.setUse_stack_delay(mUseStackForDelay);
+		lDigestBotSettings.setShow_greetings(mShowGreetings);
+		lDigestBotSettings.setMute(mMute);
+		mIDigestBotSettingsRepository.save(lDigestBotSettings);
 	}
 
 	private void testDataBase() {

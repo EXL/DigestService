@@ -90,6 +90,7 @@ command.debug.help:
   - "/debug BLogUpdates — Show Updates in system log."
   - "/debug BStackForDelay — Use stack for delay."
   - "/debug BGreetings — Disable greetings."
+  - "/debug BMute — Disable sending events to chat."
 command.debug.variable:
   - "Variable `%s` set to `%b`."
 command.debug.data:

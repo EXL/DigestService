@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bot_digest_entries")
+@Table(name = "digestbot_entries")
 public class DigestEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

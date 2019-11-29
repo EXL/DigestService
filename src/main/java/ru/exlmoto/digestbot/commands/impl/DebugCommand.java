@@ -45,6 +45,7 @@ public class DebugCommand extends BotAdminCommand {
                     lCommandText += "BLogUpdates: `" + aDigestBot.getShowUpdatesInLog() + "`\n";
                     lCommandText += "BStackForDelay: `" + aDigestBot.getUseStackForDelay() + "`\n";
                     lCommandText += "BGreetings: `" + aDigestBot.getShowGreetings() + "`\n";
+                    lCommandText += "BMute: `" + aDigestBot.getMute() + "`\n";
                     lCommandText = lCommandText.trim();
                     break;
                 }
@@ -70,6 +71,12 @@ public class DebugCommand extends BotAdminCommand {
                     aDigestBot.toggleShowGreetings();
                     lCommandText = String.format(aLocalizationHelper.getLocalizedString("command.debug.variable"),
                             lCommand, aDigestBot.getShowGreetings());
+                    break;
+                }
+                case "BMute": {
+                    aDigestBot.toggleMute();
+                    lCommandText = String.format(aLocalizationHelper.getLocalizedString("command.debug.variable"),
+                            lCommand, aDigestBot.getMute());
                     break;
                 }
             }

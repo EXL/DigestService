@@ -126,8 +126,7 @@ public class BankWorker {
 		if (aValue == null) {
 			return "\n";
 		}
-		return mYamlRatesIndexHelper.getTitleByKey("rate.change") +
-			       addSignAndIcon(aValue) + '\n';
+		return mYamlRatesIndexHelper.getTitleByKey("rate.change") + addSignAndIcon(aValue) + '\n';
 	}
 
 	private String addSignAndIcon(final BigDecimal aValue) {

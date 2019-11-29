@@ -159,3 +159,19 @@ crawler.motofan.writing:
   - "wrote"
 crawler.motofan.read:
   - "Read message in the topic:\n➡️"
+event.bot.added:
+  - "Hello! 😚"
+event.user.new:
+  - "Greetings, %usernames%! 😚"
+  - "Hello! :з"
+  - "I greet you in this cozy chat room! 😻"
+  - "Welcome %usernames%!"
+  - "Ardent greetings from our community! 👏"
+event.user.left:
+  - "Unfortunately, we left %username%…"
+  - "%username% got off this ship."
+  - "%username% left this chat."
+  - "User %username% left us…"
+  - "Good riddance, %username%! 😈"
+event.photo.change:
+  - "Hey you…! Return everything as it was! 😔"

@@ -187,9 +187,74 @@ public class DigestBot extends TelegramLongPollingBot {
 	private void handleMessage(final Message aMessage) {
 		if (aMessage.isCommand()) {
 			onCommand(aMessage);
-		} else {
+		} else if (checkNewUsers(aMessage)) {
+			onNewUsers(aMessage);
+		} else if (checkLeftUsers(aMessage)) {
+			onLeftUsers(aMessage);
+		} else if (checkNewChatPhoto(aMessage)) {
+			onNewChatPhoto(aMessage);
+		} else if (checkOnHashTag(aMessage)) {
 			onHashTag(aMessage);
 		}
+	}
+
+	private Boolean checkOnHashTag(final Message aMessage) {
+		final List<MessageEntity> lEntities = aMessage.getEntities();
+		return (lEntities != null && lEntities.size() > 0);
+	}
+
+	private void onLeftUsers(final Message aMessage) {
+		if (mShowGreetings) {
+			final String lUsername = getUsername(aMessage.getLeftChatMember());
+			sendSimpleMessage(aMessage.getChatId(),
+					aMessage.getMessageId(),
+					mLocalizationHelper.getRandomLocalizedString("event.user.left")
+							.replaceAll("%username%", lUsername));
+		}
+	}
+
+	private String getUsername(final User aUser) {
+		return (aUser.getUserName() != null) ? "@" + aUser.getUserName() : aUser.getFirstName();
+	}
+
+	private void onNewUsers(final Message aMessage) {
+		if (mShowGreetings) {
+			final List<User> lNewUsers = aMessage.getNewChatMembers();
+			final String lUsernames;
+			if (lNewUsers.size() == 1) {
+				lUsernames = getUsername(lNewUsers.get(0));
+			} else {
+				final List<String> lUserNameStrings = new ArrayList<>();
+				lNewUsers.forEach(iUser -> lUserNameStrings.add(getUsername(iUser)));
+				lUsernames = String.join(", ", lUserNameStrings);
+			}
+			final boolean lIsBotHere = lUsernames.contains(getBotUsername());
+			final String lAnswer = (lIsBotHere) ? mLocalizationHelper.getLocalizedString("event.bot.added") :
+					mLocalizationHelper.getRandomLocalizedString("event.user.new")
+							.replaceAll("%usernames%", lUsernames);
+			sendSimpleMessage(aMessage.getChatId(), aMessage.getMessageId(), lAnswer);
+		}
+	}
+
+	private void onNewChatPhoto(final Message aMessage) {
+		if (mShowGreetings) {
+			sendSimpleMessage(aMessage.getChatId(), aMessage.getMessageId(),
+					mLocalizationHelper.getLocalizedString("event.photo.change"));
+		}
+	}
+
+	private Boolean checkNewChatPhoto(final Message aMessage) {
+		final List<PhotoSize> lChatPhotos = aMessage.getNewChatPhoto();
+		return (lChatPhotos != null && lChatPhotos.size() > 0);
+	}
+
+	private Boolean checkNewUsers(final Message aMessage) {
+		final List<User> lUsers = aMessage.getNewChatMembers();
+		return (lUsers != null && lUsers.size() > 0);
+	}
+
+	private Boolean checkLeftUsers(final Message aMessage) {
+		return (aMessage.getLeftChatMember() != null);
 	}
 
 	private AnswerCallbackQuery createAnswerCallbackQuery(final String aCallbackId, final String aText) {
@@ -409,19 +474,16 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	// TODO: Only first hashtag is relevant
 	private void onHashTag(final Message aMessage) {
-		final List<MessageEntity> lEntities = aMessage.getEntities();
-		if (lEntities != null) {
-			final List<String> lHashTags = new ArrayList<>();
-			lEntities.stream().filter(aMessageEntity ->
-					aMessageEntity.getType().equals(EntityType.HASHTAG))
-					.forEach(hashTag -> lHashTags.add(hashTag.getText()));
+		final List<String> lHashTags = new ArrayList<>();
+		aMessage.getEntities().stream().filter(aMessageEntity ->
+				aMessageEntity.getType().equals(EntityType.HASHTAG))
+				.forEach(hashTag -> lHashTags.add(hashTag.getText()));
 
-			for (String iHashTag : lHashTags) {
-				Optional<BotCommand> lOptionalBotCommand = mBotCommandFactory.getCommand(iHashTag);
-				if (lOptionalBotCommand.isPresent()) {
-					lOptionalBotCommand.ifPresent(aCommand -> aCommand.prepare(this, aMessage));
-					break;
-				}
+		for (String iHashTag : lHashTags) {
+			Optional<BotCommand> lOptionalBotCommand = mBotCommandFactory.getCommand(iHashTag);
+			if (lOptionalBotCommand.isPresent()) {
+				lOptionalBotCommand.ifPresent(aCommand -> aCommand.prepare(this, aMessage));
+				break;
 			}
 		}
 	}

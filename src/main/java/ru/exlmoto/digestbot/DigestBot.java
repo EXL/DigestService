@@ -189,8 +189,8 @@ public class DigestBot extends TelegramLongPollingBot {
 			onCommand(aMessage);
 		} else if (checkNewUsers(aMessage)) {
 			onNewUsers(aMessage);
-		} else if (checkLeftUsers(aMessage)) {
-			onLeftUsers(aMessage);
+		} else if (checkLeftUser(aMessage)) {
+			onLeftUser(aMessage);
 		} else if (checkNewChatPhoto(aMessage)) {
 			onNewChatPhoto(aMessage);
 		} else if (checkOnHashTag(aMessage)) {
@@ -203,13 +203,19 @@ public class DigestBot extends TelegramLongPollingBot {
 		return (lEntities != null && lEntities.size() > 0);
 	}
 
-	private void onLeftUsers(final Message aMessage) {
+	private void onLeftUser(final Message aMessage) {
 		if (mShowGreetings) {
-			final String lUsername = getUsername(aMessage.getLeftChatMember());
-			sendSimpleMessage(aMessage.getChatId(),
-					aMessage.getMessageId(),
-					mLocalizationHelper.getRandomLocalizedString("event.user.left")
-							.replaceAll("%username%", lUsername));
+			String lUsername = aMessage.getLeftChatMember().getUserName();
+			if (lUsername != null && lUsername.equals(mBotUsername)) {
+				return;
+			}
+			lUsername = getUsername(aMessage.getLeftChatMember());
+			if (!lUsername.equals(mBotUsername)) {
+				sendSimpleMessage(aMessage.getChatId(),
+						aMessage.getMessageId(),
+						mLocalizationHelper.getRandomLocalizedString("event.user.left")
+								.replaceAll("%username%", lUsername));
+			}
 		}
 	}
 
@@ -255,7 +261,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		return (lUsers != null && lUsers.size() > 0);
 	}
 
-	private Boolean checkLeftUsers(final Message aMessage) {
+	private Boolean checkLeftUser(final Message aMessage) {
 		return (aMessage.getLeftChatMember() != null);
 	}
 

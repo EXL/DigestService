@@ -245,10 +245,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	}
 
 	private void onNewChatPhoto(final Message aMessage) {
-		if (mShowGreetings) {
-			sendSimpleMessage(aMessage.getChatId(), aMessage.getMessageId(),
-					mLocalizationHelper.getLocalizedString("event.photo.change"));
-		}
+		sendSimpleMessage(aMessage.getChatId(), aMessage.getMessageId(),
+				mLocalizationHelper.getLocalizedString("event.photo.change"));
 	}
 
 	private Boolean checkNewChatPhoto(final Message aMessage) {

@@ -13,11 +13,10 @@ public class ReceivedMessage {
 	private final String mMessageUsername;
 	private final String mMessageUserFirstName;
 	private final String mMessageUserLastName;
-	private final boolean mIsMessageCommand;
 	private final boolean mIsUserAdmin;
 
 	public ReceivedMessage(final Message aMessage,
-	                       final String[] aAdministrators) {
+						   final String[] aAdministrators) {
 		mChatId = aMessage.getChatId();
 		mMessageDate = aMessage.getDate();
 		mMessageId = aMessage.getMessageId();
@@ -26,7 +25,6 @@ public class ReceivedMessage {
 		mMessageUserFirstName = aMessage.getFrom().getFirstName();
 		mMessageUserLastName = aMessage.getFrom().getLastName();
 		mMessageUsernameId = aMessage.getFrom().getId();
-		mIsMessageCommand = aMessage.isCommand();
 		mIsUserAdmin = isUserHasAdminRights(mMessageUsername, aAdministrators);
 	}
 
@@ -77,10 +75,6 @@ public class ReceivedMessage {
 		}
 	}
 
-	public boolean isIsMessageCommand() {
-		return mIsMessageCommand;
-	}
-
 	public boolean isIsUserAdmin() {
 		return mIsUserAdmin;
 	}
@@ -88,14 +82,15 @@ public class ReceivedMessage {
 	@Override
 	public String toString() {
 		return "ReceivedMessage{" +
-			       "mChatId=" + mChatId +
-			       ", mMessageDate=" + mMessageDate +
-			       ", mMessageId=" + mMessageId +
-			       ", mMessageUsernameId=" + mMessageUsernameId +
-			       ", mMessageText='" + mMessageText + '\'' +
-			       ", mMessageUsername='" + mMessageUsername + '\'' +
-			       ", mIsMessageCommand=" + mIsMessageCommand +
-			       ", mIsUserAdmin=" + mIsUserAdmin +
-			       '}';
+				"mChatId=" + mChatId +
+				", mMessageDate=" + mMessageDate +
+				", mMessageId=" + mMessageId +
+				", mMessageUsernameId=" + mMessageUsernameId +
+				", mMessageText='" + mMessageText + '\'' +
+				", mMessageUsername='" + mMessageUsername + '\'' +
+				", mMessageUserFirstName='" + mMessageUserFirstName + '\'' +
+				", mMessageUserLastName='" + mMessageUserLastName + '\'' +
+				", mIsUserAdmin=" + mIsUserAdmin +
+				'}';
 	}
 }

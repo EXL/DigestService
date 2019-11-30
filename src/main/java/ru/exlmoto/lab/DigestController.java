@@ -65,10 +65,8 @@ public class DigestController {
                          @RequestParam(name = "text", required = false) String search, Model model, SearchForm form) {
         int startPage = getValidHumanCurrentPageSearch(page);
         Iterable<DigestUserEntity> digestUserEntities = digestUserRepository.findByUsernameContainingIgnoreCase(search);
-        Page<DigestEntity> digestEntities = digestRepository.findByHtmlIgnoreCaseContaining(search,
-                PageRequest.of(startPage, postPerPage));
-
-        digestEntities.forEach(digestEntity -> System.out.println(digestEntity.getDigest()));
+        Page<DigestEntity> digestEntities = digestRepository.findByDigestContainingIgnoreCase(
+                PageRequest.of(startPage - 1, postPerPage), search);
 
         int pageCount = ((int) digestEntities.getTotalElements() - 1) / postPerPage;
 
@@ -89,6 +87,8 @@ public class DigestController {
     @RequestMapping(path = "/digest")
     public String digest(@RequestParam(name = "page", required = false) String page, Model model) {
         int pageCount = ((int) digestRepository.count() - 1) / postPerPage;
+
+
         int startPage = getValidHumanCurrentPage(page, pageCount);
         Page<DigestEntity> digestEntities = digestRepository.findAll(PageRequest.of(startPage, postPerPage));
 

@@ -22,13 +22,17 @@ import java.util.regex.Pattern;
 @Component
 public class DigestHashTag extends BotCommand {
 	private final AvatarService mAvatarService;
+
 	private final Long mMotoFanChatId;
+	private final String mMotoFanSlug;
 
 	@Autowired
 	public DigestHashTag(final AvatarService aAvatarService,
-						 @Value("${digestbot.chat.motofan}") final Long aMotoFanChatId) {
+						 @Value("${digestbot.chat.motofan}") final Long aMotoFanChatId,
+						 @Value("${digestbot.chat.motofan.slug}") final String aMotoFanSlug) {
 		mAvatarService = aAvatarService;
 		mMotoFanChatId = aMotoFanChatId;
+		mMotoFanSlug = aMotoFanSlug;
 	}
 
 	@Override
@@ -146,9 +150,9 @@ public class DigestHashTag extends BotCommand {
 		return aYamlLocalizationHelper.getLocalizedString("hashtag.digest.subscribe.title") +
 				"\n\n<b>" + aUserName + "</b> " +
 				aYamlLocalizationHelper.getLocalizedString("hashtag.digest.subscribe.writing") +
-				" (" + getDateFromTimeStamp(Long.valueOf(aReceivedMessage.getMessageDate())) + "):\n<i>" + aDigest
-				+ "</i>\n\n" + aYamlLocalizationHelper.getLocalizedString("hashtag.digest.subscribe.read") +
-				" <a href=\"" + "https://t.me/motofan_ru/" + aReceivedMessage.getMessageId() + "\">" +
+				" (" + getDateFromTimeStamp(aReceivedMessage.getMessageDate().longValue()) + "):\n<i>" + aDigest +
+				"</i>\n\n" + aYamlLocalizationHelper.getLocalizedString("hashtag.digest.subscribe.read") +
+				" <a href=\"" + "https://t.me/" + mMotoFanSlug + "/" + aReceivedMessage.getMessageId() + "\">" +
 				aYamlLocalizationHelper.getLocalizedString("hashtag.digest.subscribe.link") + "</a>";
 	}
 

@@ -17,7 +17,7 @@ command.help:
   - "/start — Show start greeting."
   - "/coffee — Send sticker with coffee."
   - "/game — Show game server statistic."
-  - "/subscribe — Subscribe to MotoFan.Ru forum posts."
+  - "/subscribe — Subscribe to various MotoFan.Ru channels."
   - "/help — Show this help."
 command.help.admin:
   - "/hello or /hi  — Get greeting from bot."
@@ -91,7 +91,7 @@ command.delete.ok:
 command.debug.help:
   - "Please choose `/debug` command with argument:"
   - "/debug VRates — Refresh exchange rates."
-  - "/debug VPosts — Get latest MotoFan posts."
+  - "/debug VPosts — Get latest MotoFan.Ru posts."
   - "/debug VShredder — Run database shredder."
   - "/debug VAvatars — Update user avatars."
   - "/debug VStatus — Show variable values."

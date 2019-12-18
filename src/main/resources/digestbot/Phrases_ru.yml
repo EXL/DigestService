@@ -17,7 +17,7 @@ command.help:
   - "/start — Приветствие."
   - "/coffee — Стикер с кофе."
   - "/game — Статистика игровых серверов."
-  - "/subscribe — Подписаться на сообщения форума MotoFan.Ru."
+  - "/subscribe — Подписаться на различные каналы MotoFan.Ru."
   - "/help — Эта справка."
 command.help.admin:
   - "/hello или /hi  — Получить привет от бота."
@@ -91,7 +91,7 @@ command.delete.ok:
 command.debug.help:
   - "Выберите команду `/debug` с параметром:"
   - "/debug VRates — Обновить котировки валют."
-  - "/debug VPosts — Последние сообщения с MotoFan."
+  - "/debug VPosts — Последние сообщения с MotoFan.Ru."
   - "/debug VShredder — Запустить очистку базы данных."
   - "/debug VAvatars — Обновить аватары пользователей."
   - "/debug VStatus — Показать значения переменных."

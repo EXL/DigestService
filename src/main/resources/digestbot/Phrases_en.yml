@@ -36,19 +36,23 @@ command.charts:
   - "📈 Please select a chart 📉"
 command.subscribe:
   - "Chat `%d` subscriptions to various channels.\n"
-  - "New posts on the MotoFan.Ru forum"
+  - "1. New posts on the MotoFan.Ru forum"
   - "Status: %s\n"
-  - "Digests and News from MotoFan.Ru group in Telegram"
+  - "2. Digests and News from MotoFan.Ru group in Telegram"
   - "Status: %s\n"
   - "Please select an action:"
 command.subscribe.subscribed:
   - "✅ Subscribed."
 command.subscribe.unsubscribed:
   - "❌ Unsubscribed."
-command.subscribe.button.subscribe:
-  - "Subscribe"
-command.subscribe.button.unsubscribe:
-  - "Unsubscribe"
+command.subscribe.button.subscribe.motofan:
+  - "1. Subscribe"
+command.subscribe.button.unsubscribe.motofan:
+  - "1. Unsubscribe"
+command.subscribe.button.subscribe.digest:
+  - "2. Subscribe"
+command.subscribe.button.unsubscribe.digest:
+  - "2. Unsubscribe"
 command.digest.page:
   - "Page"
 command.digest.hello:

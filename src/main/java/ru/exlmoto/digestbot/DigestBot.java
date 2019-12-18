@@ -21,10 +21,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.exlmoto.digestbot.commands.BotCommand;
 import ru.exlmoto.digestbot.commands.BotCommandFactory;
 import ru.exlmoto.digestbot.entities.DigestBotSettings;
-import ru.exlmoto.digestbot.repos.IDigestBotSettingsRepository;
-import ru.exlmoto.digestbot.repos.IDigestEntriesRepository;
-import ru.exlmoto.digestbot.repos.IDigestUsersRepository;
-import ru.exlmoto.digestbot.repos.IMotoFanSubscribersRepository;
+import ru.exlmoto.digestbot.repos.*;
 import ru.exlmoto.digestbot.utils.*;
 import ru.exlmoto.digestbot.workers.AvatarUpdater;
 import ru.exlmoto.digestbot.workers.BankWorker;
@@ -65,6 +62,7 @@ public class DigestBot extends TelegramLongPollingBot {
 	private final IDigestEntriesRepository mIDigestEntriesRepository;
 	private final IDigestUsersRepository mIDigestUsersRepository;
 	private final IDigestBotSettingsRepository mIDigestBotSettingsRepository;
+	private final IDigestSubscribersRepository mIDigestSubscribersRepository;
 
 	private Boolean mShowUpdatesInLog;
 	private Boolean mUseFileLoader;
@@ -103,7 +101,8 @@ public class DigestBot extends TelegramLongPollingBot {
 	                 final IMotoFanSubscribersRepository aIMotoFanSubscribersRepository,
 	                 final IDigestEntriesRepository aIDigestEntriesRepository,
 	                 final IDigestUsersRepository aIDigestUsersRepository,
-	                 final IDigestBotSettingsRepository aIDigestBotSettingsRepository) {
+	                 final IDigestBotSettingsRepository aIDigestBotSettingsRepository,
+	                 final IDigestSubscribersRepository aIDigestSubscribersRepository) {
 		mBotUsername = aBotUsername;
 		mBotToken = aBotToken;
 		mBotAdmins = aBotAdmins;
@@ -131,6 +130,7 @@ public class DigestBot extends TelegramLongPollingBot {
 		mIDigestEntriesRepository = aIDigestEntriesRepository;
 		mIDigestUsersRepository = aIDigestUsersRepository;
 		mIDigestBotSettingsRepository = aIDigestBotSettingsRepository;
+		mIDigestSubscribersRepository = aIDigestSubscribersRepository;
 
 		mBankWorker = aBankWorker;
 		mBankWorker.setBotLogger(mBotLogger);
@@ -583,6 +583,10 @@ public class DigestBot extends TelegramLongPollingBot {
 
 	public IDigestUsersRepository getIDigestUsersRepository() {
 		return mIDigestUsersRepository;
+	}
+
+	public IDigestSubscribersRepository getIDigestSubscribersRepository() {
+		return mIDigestSubscribersRepository;
 	}
 
 	public Boolean getShowUpdatesInLog() {

@@ -1,5 +1,7 @@
 package ru.exlmoto.digestbot.commands.impl;
 
+import org.jsoup.Jsoup;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
@@ -40,8 +42,7 @@ public class DigestHashTag extends BotCommand {
 	                final YamlLocalizationHelper aLocalizationHelper,
 	                final ReceivedMessage aReceivedMessage) {
 		// Remove hash tags.
-		final String lMessageText =
-				aReceivedMessage.getMessageText().replaceAll("#digest|#news", "").trim();
+		final String lMessageText = handleMessageText(aReceivedMessage.getMessageText());
 		if (!lMessageText.isEmpty()) {
 			aDigestBot.sendSimpleMessage(aReceivedMessage.getChatId(), aReceivedMessage.getMessageId(),
 					aLocalizationHelper.getRandomLocalizedString("hashtag.digest.ok",
@@ -159,5 +160,10 @@ public class DigestHashTag extends BotCommand {
 	private String getDateFromTimeStamp(final Long aTimeStamp) {
 		return DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
 				.withZone(ZoneId.systemDefault()).format(Instant.ofEpochSecond(aTimeStamp));
+	}
+
+	private String handleMessageText(final String aMessageText) {
+		// Remove all HTML-tags.
+		return Jsoup.parse(aMessageText.replaceAll("#digest|#news", "").trim()).text();
 	}
 }

@@ -426,6 +426,13 @@ public class DigestBot extends TelegramLongPollingBot {
 		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN, aInlineKeyboardMarkup);
 	}
 
+	public void sendHtmlMessageWithKeyboard(final Long aChatId,
+												final Integer aMessageId,
+												final String aMessage,
+												final InlineKeyboardMarkup aInlineKeyboardMarkup) {
+		sendMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_HTML, aInlineKeyboardMarkup);
+	}
+
 	public void editMarkdownMessageWithKeyboard(final Long aChatId,
 	                                            final Integer aMessageId,
 	                                            final String aMessage,
@@ -433,6 +440,12 @@ public class DigestBot extends TelegramLongPollingBot {
 		editMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_MARKDOWN, aInlineKeyboardMarkup);
 	}
 
+	public void editHtmlMessageWithKeyboard(final Long aChatId,
+												final Integer aMessageId,
+												final String aMessage,
+												final InlineKeyboardMarkup aInlineKeyboardMarkup) {
+		editMessage(aChatId, aMessageId, aMessage, MessageMode.MESSAGE_HTML, aInlineKeyboardMarkup);
+	}
 
 	public void sendStickerToChat(final Long aChatId, final Integer aMessageId,
 	                              final Long aOriginalChatId, final String aStickerId) {

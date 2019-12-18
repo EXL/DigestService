@@ -17,6 +17,8 @@ public class DigestEntity {
 
 	private Long chat;
 
+	private Long message_id;
+
 	@Column(name = "digest", nullable = false, length = 2048)
 	@Length(max = 2048)
 	private String digest;
@@ -71,5 +73,13 @@ public class DigestEntity {
 
 	public void setChat(Long chat) {
 		this.chat = chat;
+	}
+
+	public Long getMessage_id() {
+		return message_id;
+	}
+
+	public void setMessage_id(Long message_id) {
+		this.message_id = message_id;
 	}
 }

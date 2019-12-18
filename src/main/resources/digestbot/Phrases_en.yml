@@ -80,6 +80,8 @@ command.digest.marker:
   - "•"
 command.digest.marker.new:
   - "🆕"
+command.digest.link:
+  - "➡️"
 command.show.header:
   - "Latest digests, use `/delete <id>` for deleting entry:"
 command.show.ellipsis:

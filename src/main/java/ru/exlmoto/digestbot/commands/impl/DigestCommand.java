@@ -16,11 +16,18 @@ import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
 @Component
 public class DigestCommand extends BotCommand {
-	private final Integer mDigestPerPage;
 	private final int K_FIRST_PAGE = 0;
 
-	public DigestCommand(@Value("${digestbot.digest.pages.posts}") final Integer aDigestPerPage) {
+	private final Integer mDigestPerPage;
+	private final Long mMotoFanChatId;
+	private final String mMotoFanSlug;
+
+	public DigestCommand(@Value("${digestbot.digest.pages.posts}") final Integer aDigestPerPage,
+						 @Value("${digestbot.chat.motofan}") final Long aMotoFanChatId,
+						 @Value("${digestbot.chat.motofan.slug}") final String aMotoFanSlug) {
 		mDigestPerPage = aDigestPerPage;
+		mMotoFanChatId = aMotoFanChatId;
+		mMotoFanSlug = aMotoFanSlug;
 	}
 
 	@Override
@@ -58,17 +65,24 @@ public class DigestCommand extends BotCommand {
 		final String lMarkerNew = lYamlLocalizationHelper.getLocalizedString("command.digest.marker.new");
 
 		int iNewCount = 3;
-		for (DigestEntity iDigestEntity:
-		     lDigestEntries) {
+		for (DigestEntity iDigestEntity : lDigestEntries) {
 			lAnswer.append(lMarker).append(' ');
 			if (lPage == K_FIRST_PAGE && iNewCount > 0) {
 				lAnswer.append(lMarkerNew).append(' ');
 			}
-			lAnswer.append(iDigestEntity.getDigest()).append("\n");
+			lAnswer.append(iDigestEntity.getDigest());
+			final Long lMessageEntityId = iDigestEntity.getMessage_id();
+			if (iDigestEntity.getChat().equals(mMotoFanChatId) &&
+					lMessageEntityId != null && lMessageEntityId != 0) {
+				lAnswer.append(" <a href=\"" + "https://t.me/").append(mMotoFanSlug).append("/")
+						.append(lMessageEntityId).append("\">")
+						.append(aLocalizationHelper.getLocalizedString("command.digest.link")).append("</a>");
+			}
+			lAnswer.append("\n");
 			--iNewCount;
 		}
 
-		aDigestBot.sendMarkdownMessageWithKeyboard(lChatId, lMessageId, lAnswer.toString(),
+		aDigestBot.sendHtmlMessageWithKeyboard(lChatId, lMessageId, lAnswer.toString(),
 			(!lIsDigestListEmpty) ?
 				aDigestBot.getDigestKeyboard().getDigestKeyboard(lDigestEntries.getTotalElements()) : null);
 	}

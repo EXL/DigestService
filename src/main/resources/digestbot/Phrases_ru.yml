@@ -80,6 +80,8 @@ command.digest.marker:
   - "•"
 command.digest.marker.new:
   - "🆕"
+command.digest.link:
+  - "➡️"
 command.show.header:
   - "Список дайджестов, для удаления отправьте `/delete <id>`:"
 command.show.ellipsis:

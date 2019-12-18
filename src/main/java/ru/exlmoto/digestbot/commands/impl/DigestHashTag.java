@@ -61,6 +61,7 @@ public class DigestHashTag extends BotCommand {
 		lDigestEntity.setHtml(activateUsersInDigest(activateLinksInDigest(aMessageText)));
 		lDigestEntity.setDate(aReceivedMessage.getMessageDate().longValue());
 		lDigestEntity.setChat(aReceivedMessage.getChatId());
+		lDigestEntity.setMessage_id(aReceivedMessage.getMessageId().longValue());
 
 		aDigestBot.getIDigestEntriesRepository().save(lDigestEntity);
 	}

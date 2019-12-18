@@ -20,17 +20,25 @@ import java.util.List;
 
 @Component
 public class DigestKeyboard {
-	private final YamlLocalizationHelper mYamlLocalizationHelper;
-	private final Long mPagesCount;
-	private final Integer mDigestPerPage;
 	private final int K_FIRST_PAGE = 0; // TODO: move this to Constants class like news markers count!
+
+	private final Long mPagesCount;
+	private final Long mMotoFanChatId;
+	private final String mMotoFanSlug;
+	private final Integer mDigestPerPage;
+
+	private final YamlLocalizationHelper mYamlLocalizationHelper;
 
 	public DigestKeyboard(final YamlLocalizationHelper aYamlLocalizationHelper,
 	                      @Value("${digestbot.digest.pages.max}") final Long aPagesCount,
-	                      @Value("${digestbot.digest.pages.posts}") final Integer aDigestPerPage) {
+	                      @Value("${digestbot.digest.pages.posts}") final Integer aDigestPerPage,
+	                      @Value("${digestbot.chat.motofan}") final Long aMotoFanChatId,
+	                      @Value("${digestbot.chat.motofan.slug}") final String aMotoFanSlug) {
 		mYamlLocalizationHelper = aYamlLocalizationHelper;
 		mPagesCount = aPagesCount;
 		mDigestPerPage = aDigestPerPage;
+		mMotoFanChatId = aMotoFanChatId;
+		mMotoFanSlug = aMotoFanSlug;
 	}
 
 	public InlineKeyboardMarkup getDigestKeyboard(final Long aTotalElements) {
@@ -108,11 +116,19 @@ public class DigestKeyboard {
 			if (lPage == K_FIRST_PAGE && iNewCount > 0) {
 				lAnswer.append(lMarkerNew).append(' ');
 			}
-			lAnswer.append(iDigestEntity.getDigest()).append("\n");
+			lAnswer.append(iDigestEntity.getDigest());
+			final Long lMessageEntityId = iDigestEntity.getMessage_id();
+			if (iDigestEntity.getChat().equals(mMotoFanChatId) &&
+					lMessageEntityId != null && lMessageEntityId != 0) {
+				lAnswer.append(" <a href=\"" + "https://t.me/").append(mMotoFanSlug).append("/")
+						.append(lMessageEntityId).append("\">")
+						.append(mYamlLocalizationHelper.getLocalizedString("command.digest.link")).append("</a>");
+			}
+			lAnswer.append("\n");
 			--iNewCount;
 		}
 
-		aDigestBot.editMarkdownMessageWithKeyboard(lChatId,
+		aDigestBot.editHtmlMessageWithKeyboard(lChatId,
 			aCallbackQuery.getMessage().getMessageId(), lAnswer.toString(),
 			getDigestKeyboard(lDigestEntries.getTotalElements()));
 	}

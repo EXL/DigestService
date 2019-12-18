@@ -22,14 +22,23 @@ public class SubscribeCommand extends BotCommand {
 			}
 		}));
 		 */
-		final boolean lChatInDataBase = aDigestBot.getIMotoFanSubscribersRepository()
+		final boolean lChatInDataBaseMotofan = aDigestBot.getIMotoFanSubscribersRepository()
 			                                .findOneMotoFanSubscriberEntityBySubscription(lChatId) != null;
+		final String lStatusMotofan = getStatusStringAux(lChatInDataBaseMotofan, aLocalizationHelper);
 
-		final String lStatus = (lChatInDataBase) ?
-			                       aLocalizationHelper.getLocalizedString("command.subscribe.subscribed") :
-			                       aLocalizationHelper.getLocalizedString("command.subscribe.unsubscribed");
+		final boolean lChatInDataBaseDigest = aDigestBot.getIDigestSubscribersRepository()
+				.findOneDigestSubscriberEntityBySubscription(lChatId) != null;
+		final String lStatusDigest = getStatusStringAux(lChatInDataBaseDigest, aLocalizationHelper);
+
 		aDigestBot.sendMarkdownMessageWithKeyboard(lChatId, aReceivedMessage.getMessageId(),
-			String.format(aLocalizationHelper.getLocalizedString("command.subscribe"), lChatId, lStatus),
+			String.format(aLocalizationHelper.getLocalizedString("command.subscribe"),
+					lChatId, lStatusMotofan, lStatusDigest),
 			aDigestBot.getSubscribeKeyboard().getSubscribeKeyboard());
+	}
+
+	private String getStatusStringAux(final boolean aStatus, final YamlLocalizationHelper aLocalizationHelper) {
+		return (aStatus) ?
+				aLocalizationHelper.getLocalizedString("command.subscribe.subscribed") :
+				aLocalizationHelper.getLocalizedString("command.subscribe.unsubscribed");
 	}
 }

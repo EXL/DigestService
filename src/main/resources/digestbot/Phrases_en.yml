@@ -35,8 +35,11 @@ command.game:
 command.charts:
   - "📈 Please select a chart 📉"
 command.subscribe:
-  - "Chat `%d` subscription to MotoFan.Ru posts."
-  - "Status: %s"
+  - "Chat `%d` subscriptions to various channels.\n"
+  - "New posts on the MotoFan.Ru forum"
+  - "Status: %s\n"
+  - "Digests and News from MotoFan.Ru group in Telegram"
+  - "Status: %s\n"
   - "Please select an action:"
 command.subscribe.subscribed:
   - "✅ Subscribed."

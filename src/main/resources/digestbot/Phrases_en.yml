@@ -110,6 +110,14 @@ hashtag.digest.ok:
   - "I recorded it, %username%."
   - "Recorded, %username%."
   - "Saved."
+hashtag.digest.subscribe.title:
+  - "New digest in the MotoFan.Ru chat from Telegram!"
+hashtag.digest.subscribe.writing:
+  - "writing"
+hashtag.digest.subscribe.read:
+  - "Read post in group:\n➡️"
+hashtag.digest.subscribe.link:
+  - "Link to message️"
 error.access:
   - "Unfortunately, %username%, you are not allowed to use this command. Only my creator can use it."
 error.chatid:

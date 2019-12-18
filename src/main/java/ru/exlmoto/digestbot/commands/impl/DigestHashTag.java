@@ -1,6 +1,7 @@
 package ru.exlmoto.digestbot.commands.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +13,22 @@ import ru.exlmoto.digestbot.services.impl.AvatarService;
 import ru.exlmoto.digestbot.utils.ReceivedMessage;
 import ru.exlmoto.digestbot.yaml.impl.YamlLocalizationHelper;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
 public class DigestHashTag extends BotCommand {
 	private final AvatarService mAvatarService;
+	private final Long mMotoFanChatId;
 
 	@Autowired
-	public DigestHashTag(final AvatarService aAvatarService) {
+	public DigestHashTag(final AvatarService aAvatarService,
+						 @Value("${digestbot.chat.motofan}") final Long aMotoFanChatId) {
 		mAvatarService = aAvatarService;
+		mMotoFanChatId = aMotoFanChatId;
 	}
 
 	@Override
@@ -29,7 +36,8 @@ public class DigestHashTag extends BotCommand {
 	                final YamlLocalizationHelper aLocalizationHelper,
 	                final ReceivedMessage aReceivedMessage) {
 		// Remove hash tags.
-		String lMessageText = aReceivedMessage.getMessageText().replaceAll("#digest|#news", "").trim();
+		final String lMessageText =
+				aReceivedMessage.getMessageText().replaceAll("#digest|#news", "").trim();
 		if (!lMessageText.isEmpty()) {
 			aDigestBot.sendSimpleMessage(aReceivedMessage.getChatId(), aReceivedMessage.getMessageId(),
 					aLocalizationHelper.getRandomLocalizedString("hashtag.digest.ok",
@@ -37,6 +45,10 @@ public class DigestHashTag extends BotCommand {
 
 			commitDigestToDataBase(aDigestBot, aReceivedMessage, lMessageText);
 			commitUserToDataBase(aDigestBot, aReceivedMessage);
+
+			if (aReceivedMessage.getChatId().equals(mMotoFanChatId)) {
+				sendDigestToSubscribers(aDigestBot, aLocalizationHelper, aReceivedMessage, lMessageText);
+			}
 		}
 	}
 
@@ -105,5 +117,42 @@ public class DigestHashTag extends BotCommand {
 		}
 		lMatcher.appendTail(lStringBuffer);
 		return lStringBuffer.toString();
+	}
+
+	private void sendDigestToSubscribers(final DigestBot aDigestBot,
+										 final YamlLocalizationHelper aYamlLocalizationHelper,
+										 final ReceivedMessage aReceivedMessage,
+										 final String aDigest) {
+		new Thread(() -> aDigestBot.getIDigestSubscribersRepository().findAll().forEach((aSubscriberEntity) -> {
+			aDigestBot.sendHtmlMessage(aSubscriberEntity.getSubscription(), null,
+					formatDigestSubscriberPost(aYamlLocalizationHelper, aReceivedMessage, aDigest));
+			try {
+				Thread.sleep(aDigestBot.getBotInlineCoolDown() * 1000);
+			} catch (InterruptedException e) {
+				aDigestBot.getBotLogger()
+						.error(String.format("Cannot delay sendDigestToSubscribers() thread: '%s'.", e.toString()));
+			}
+		})).start();
+	}
+
+	private String formatDigestSubscriberPost(final YamlLocalizationHelper aYamlLocalizationHelper,
+											  final ReceivedMessage aReceivedMessage,
+											  final String aDigest) {
+		String aUserName = aReceivedMessage.getAvailableUsername().getSecond();
+		if (aReceivedMessage.getAvailableUsername().getFirst()) {
+			aUserName = '@' + aUserName;
+		}
+		return aYamlLocalizationHelper.getLocalizedString("hashtag.digest.subscribe.title") +
+				"\n\n<b>" + aUserName + "</b> " +
+				aYamlLocalizationHelper.getLocalizedString("hashtag.digest.subscribe.writing") +
+				" (" + getDateFromTimeStamp(Long.valueOf(aReceivedMessage.getMessageDate())) + "):\n<i>" + aDigest
+				+ "</i>\n\n" + aYamlLocalizationHelper.getLocalizedString("hashtag.digest.subscribe.read") +
+				" <a href=\"" + "https://t.me/motofan_ru/" + aReceivedMessage.getMessageId() + "\">" +
+				aYamlLocalizationHelper.getLocalizedString("hashtag.digest.subscribe.link") + "</a>";
+	}
+
+	private String getDateFromTimeStamp(final Long aTimeStamp) {
+		return DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+				.withZone(ZoneId.systemDefault()).format(Instant.ofEpochSecond(aTimeStamp));
 	}
 }

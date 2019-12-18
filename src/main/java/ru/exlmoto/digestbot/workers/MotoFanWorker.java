@@ -114,7 +114,7 @@ public class MotoFanWorker {
 				try {
 					Thread.sleep(mDigestBot.getBotInlineCoolDown() * 1000);
 				} catch (InterruptedException e) {
-					mBotLogger.error(String.format("Cannot delay thread: '%s'.", e.toString()));
+					mBotLogger.error(String.format("Cannot delay sendLatestMessages() thread: '%s'.", e.toString()));
 				}
 			}))).start();
 		}

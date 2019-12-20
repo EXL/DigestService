@@ -34,6 +34,7 @@ public class AvatarUpdater {
 			final String lUsername = iDigestUserEntity.getUsername();
 			mBotLogger.info("==> Update avatar for: @" + lUsername);
 			iDigestUserEntity.setAvatarLink(mAvatarService.getAvatarUrlByUserName(lUsername).getSecond());
+			mIDigestUsersRepository.save(iDigestUserEntity);
 		});
 
 		mBotLogger.info("=> End updating user avatars.");

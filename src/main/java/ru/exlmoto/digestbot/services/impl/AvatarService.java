@@ -11,13 +11,19 @@ import ru.exlmoto.digestbot.services.RestTextService;
 @Service
 public class AvatarService extends RestTextService {
 	private final Boolean mUseNginxProxy;
+	private final String mNginxProxyUrl;
+	private final String mDefaultAvatarUrl;
 
 	@Autowired
 	public AvatarService(final RestTemplateBuilder aRestTemplateBuilder,
 	                     @Value("${digestbot.request.timeout}") final Integer aRequestTimeout,
-	                     @Value("${digestbot.nginx.proxy}") final Boolean aUseNginxProxy) {
+	                     @Value("${digestbot.nginx.proxy}") final Boolean aUseNginxProxy,
+	                     @Value("${digestbot.nginx.proxy.url}") final String aNginxProxyUrl,
+	                     @Value("${digestbot.default.avatar.url}") final String aDefaultAvatarUrl) {
 		super(aRestTemplateBuilder, aRequestTimeout);
 		mUseNginxProxy = aUseNginxProxy;
+		mNginxProxyUrl = aNginxProxyUrl;
+		mDefaultAvatarUrl = aDefaultAvatarUrl;
 	}
 
 	// TODO: Move hardcodes to Globals
@@ -27,12 +33,12 @@ public class AvatarService extends RestTextService {
 			if (lContentPage.getFirst()) {
 				final String lAvatarUrl = getAvatarLinkFromRawHtml(lContentPage.getSecond());
 				if (checkAvatarLinkExtension(lAvatarUrl)) {
-					final String lUrlPrefix = (mUseNginxProxy) ? "https://lab.exlmoto.ru/proxy/" : "https://";
+					final String lUrlPrefix = (mUseNginxProxy) ? mNginxProxyUrl : "https://";
 					return Pair.of(true, lUrlPrefix + lAvatarUrl);
 				}
 			}
 		}
-		return Pair.of(false, "https://exlmoto.ru/Images/DigestBot/Telegram_Logo_Orange.png");
+		return Pair.of(false, mDefaultAvatarUrl);
 	}
 
 	private String getAvatarLinkFromRawHtml(final String aPageContent) {

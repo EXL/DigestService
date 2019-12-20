@@ -1,13 +1,12 @@
 package ru.exlmoto.digestbot.yaml;
 
 import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.util.ResourceUtils;
+import org.springframework.core.io.ClassPathResource;
 
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -22,8 +21,9 @@ public class YamlLoader {
 
 	protected Map<String, ArrayList<String>> loadYamlFromResources(final String aGeneralFilename) {
 		try {
-			final File lYamlFile = ResourceUtils.getFile(getResourcePathToYamlFile(aGeneralFilename));
-			return new Yaml().load(new String(Files.readAllBytes(lYamlFile.toPath())));
+			final InputStream lInputStream =
+					new ClassPathResource(getResourcePathToYamlFile(aGeneralFilename)).getInputStream();
+			return new Yaml().load(lInputStream);
 		} catch (IOException e) {
 			throw new BeanCreationException("loadYamlFromResources", "Cannot create YamlLoader Bean!", e);
 		}

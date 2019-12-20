@@ -40,7 +40,9 @@ dependencies {
     compile 'org.python:jython-standalone:2.7.1'
     compile 'org.pygments:pygments:2.4.0'
 
-    compile 'mysql:mysql-connector-java'
+    compile 'org.postgresql:postgresql'
+
+    //compile 'mysql:mysql-connector-java:8.0.18'
 
     //compile group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '4.4.0.1'
     //compile group: 'org.telegram', name: 'telegrambots', version: '4.4.0.1'

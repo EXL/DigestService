@@ -1,6 +1,7 @@
 package ru.exlmoto.digestbot.workers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,13 +125,20 @@ public class MotoFanWorker {
 		return mYamlLocalizationHelper.getLocalizedString("crawler.motofan.title") + "\n\n<b>" +
 			       aMotoFanPost.getAuthor() + "</b> " +
 			       mYamlLocalizationHelper.getLocalizedString("crawler.motofan.writing") +
-			       " (" + aMotoFanPost.getTime() + "):\n<i>" + deleteBbCodesFromText(aMotoFanPost.getText()) +
+			       " (" + aMotoFanPost.getTime() + "):\n<i>" + cleanMotoFanPost(aMotoFanPost.getText()) +
 			       "</i>\n\n" + mYamlLocalizationHelper.getLocalizedString("crawler.motofan.read") +
 			       " <a href=\"" + aMotoFanPost.getPost_link() + "\">" + aMotoFanPost.getTitle() + "</a>";
 	}
 
-	// https://stackoverflow.com/questions/14445386/how-to-remove-text-in-brackets-from-the-start-of-a-string
-	private String deleteBbCodesFromText(final String aText) {
-		return aText.replaceAll("\\[.*?\\]", "");
+	private String cleanMotoFanPost(final String aText) {
+		// Remove all HTML-tags.
+		// TODO: Another one remove html function
+		// https://stackoverflow.com/questions/14445386/how-to-remove-text-in-brackets-from-the-start-of-a-string
+		return Jsoup.parse(aText).text()
+				.replaceAll("\\[.*?\\]", " ")
+				.replaceAll("\\[\\\\", " ")
+				.replaceAll("\\[", " ")
+				.trim()
+				.replaceAll(" +", " ");
 	}
 }

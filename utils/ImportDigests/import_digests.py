@@ -1,17 +1,22 @@
+#!/usr/bin/env python3
 ########################################################################################################################
 ## Install PIP packages:                                                                                              ##
 ##      # pip3 install psycopg2                                                                                       ##
 ##      # pip3 install telethon                                                                                       ##
 ##      # pip3 install mysql-connector-python                                                                         ##
 ########################################################################################################################
-#!/usr/bin/env python3
 
 import mysql.connector
 import psycopg2
 import time
 import subprocess
-import config_db
+from config_db import *
 from telethon import TelegramClient, events, sync
+
+
+def Debug(aString):
+    print(aString)
+    print(aString, file = log)
 
 def FormatDigestMessage(aDigest):
     digest = str(aDigest).replace("'", '"')
@@ -45,7 +50,7 @@ def DoingImport():
     cursor_first.execute(query_first_digest_users)
     cursor_second.execute(query_second_digest_users)
     db_second_connection.commit()
-    print('=> Commit digest users.')
+    Debug('=> Commit digest users.')
 
     # Commit users to database:
     users_without_id = 0
@@ -56,7 +61,7 @@ def DoingImport():
             user_id = users_without_id + 2
             users_without_id += 1
         time.sleep(2)
-        print('Commit {}: {}'.format(username, user_id))
+        Debug('Commit {}: {}'.format(username, user_id))
         cursor_second.execute('INSERT INTO digestbot_users (id, avatar_link, username, username_ok, username_html) '
                               'VALUES (%s, %s, %s, %s, %s)',
                 (user_id, avatar, username, True, ActivateUsersInDigest(username)))
@@ -66,7 +71,7 @@ def DoingImport():
     cursor_first.execute(query_first_digest)
     cursor_second.execute(query_second_digest)
     db_second_connection.commit()
-    print('=> Commit digests.')
+    Debug('=> Commit digests.')
 
     # Commit digests:
     digest_id = 1
@@ -76,7 +81,7 @@ def DoingImport():
         cursor_second.execute('INSERT INTO digestbot_entries (id, author, chat, date, digest, digest_html, message_id) '
                               'VALUES (%s, %s, %s, %s, %s, %s, %s)',
                 (digest_id, username_id, MOTOFAN_CHAT, date, msg, FormatDigestMessage(msg), None))
-        print('\nCommit digest {} date {} from {}:\nOrig: {}\nHtml: {}\n'
+        Debug('\nCommit digest {} date {} from {}:\nOrig: {}\nHtml: {}\n'
             .format(digest_id, date, username, msg, FormatDigestMessage(msg)))
         db_second_connection.commit()
         digest_id += 1
@@ -88,4 +93,7 @@ def DoingImport():
     db_second_connection.close()
 
 if __name__ == '__main__':
+    global log
+    log = open('import.log', 'w')
     DoingImport()
+    log.close()

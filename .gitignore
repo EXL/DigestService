@@ -177,3 +177,9 @@ cmake-build-debug/
 # Qt Creator builds
 build-*
 *.user*
+
+# Session files
+*.session
+
+# Format utility
+!/utils/FormatDigestMessage.jar

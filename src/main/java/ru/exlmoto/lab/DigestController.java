@@ -60,6 +60,7 @@ public class DigestController {
     @Value("${digest.site.lang}")
     private String siteLanguage;
 
+    // TODO: Find digest in chat id where id is not motofan id?
     @RequestMapping(path = "/digest/search")
     public String search(@RequestParam(name = "page", required = false) String page,
                          @RequestParam(name = "text", required = false) String search, Model model, SearchForm form) {

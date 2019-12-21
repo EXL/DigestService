@@ -182,4 +182,7 @@ build-*
 *.session
 
 # Format utility
-!/utils/FormatDigestMessage.jar
+!/utils/ImportDigests/FormatDigestMessage.jar
+
+# Python cache
+__pycache__

@@ -39,25 +39,22 @@ public class DigestController {
     @Autowired
     private MessageSource messageSource;
 
-    @Value("${digest.post.max}")
+    @Value("${digestbot.site.post.per.page}")
     private int postPerPage;
 
-    @Value("${digest.page.pagin}")
+    @Value("${digestbot.site.paginator.width}")
     private int pagePagin;
 
-    @Value("${digest.list.admins}")
+    @Value("${digestbot.admins}")
     private String[] digestAdmins;
 
-    @Value("${digest.list.coords}")
-    private String[] digestCoords;
-
-    @Value("${digest.list.moders}")
+    @Value("${digestbot.moderators}")
     private String[] digestModers;
 
-    @Value("${digest.chat.room}")
+    @Value("${digestbot.chat.motofan}")
     private long chatRoom;
 
-    @Value("${digest.site.lang}")
+    @Value("${general.lang}")
     private String siteLanguage;
 
     // TODO: Find digest in chat id where id is not motofan id?
@@ -76,7 +73,7 @@ public class DigestController {
 
         // Pagination routine.
         startPage += 1;
-        model.addAttribute("pageForm", new GoToPageForm("/digest/search"));
+        model.addAttribute("pageForm", new GoToPageForm("/digest/search?page=" + startPage));
         model.addAttribute("current", startPage);
         model.addAttribute("all", pageCount + 1);
         model.addAttribute("startAux", startPage - ((pagePagin / 2) + 1));
@@ -89,7 +86,6 @@ public class DigestController {
     public String digest(@RequestParam(name = "page", required = false) String page, Model model) {
         int pageCount = ((int) digestRepository.count() - 1) / postPerPage;
 
-
         int startPage = getValidHumanCurrentPage(page, pageCount);
         Page<DigestEntity> digestEntities = digestRepository.findAll(PageRequest.of(startPage, postPerPage));
 
@@ -99,7 +95,7 @@ public class DigestController {
             String avatar = getUserNameOrAvatarById(digestEntity.getAuthor(), false, digestUserRepository);
             String group = getUserGroup(username);
             String date = getDataAndTime(digestEntity.getDate());
-            digestModelFactory.addDigest(username, group, avatar, digestEntity.getDigest(), date);
+            digestModelFactory.addDigest(username, group, avatar, digestEntity.getHtml(), date);
         }
         model.addAttribute("digests", digestModelFactory.getItems());
         model.addAttribute("count", digestModelFactory.getSize());
@@ -116,20 +112,16 @@ public class DigestController {
         return "digest";
     }
 
-    /*
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
         sessionLocaleResolver.setDefaultLocale(Locale.forLanguageTag(siteLanguage));
         return sessionLocaleResolver;
     }
-    */
 
     private String getUserGroup(String username) {
         if (ArrayUtils.contains(digestAdmins, username)) {
             return getI18nString("digest.group.admins");
-        } else if (ArrayUtils.contains(digestCoords, username)) {
-            return getI18nString("digest.group.coords");
         } else if (ArrayUtils.contains(digestModers, username)) {
             return getI18nString("digest.group.moders");
         } else {
@@ -155,7 +147,7 @@ public class DigestController {
         Optional<DigestUserEntity> digestUserEntityOptional = repository.findById(id);
         if (digestUserEntityOptional.isPresent()) {
             if (isUsername) {
-                return digestUserEntityOptional.get().getUsername();
+                return digestUserEntityOptional.get().getUsername_html();
             } else {
                 return digestUserEntityOptional.get().getAvatarLink();
             }

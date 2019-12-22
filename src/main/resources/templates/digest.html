@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:lang="${@environment.getProperty('digest.site.lang')}">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${@environment.getProperty('general.lang')}">
     <head>
         <meta charset="utf-8"/>
         <title th:text="#{digest.title}"></title>
@@ -13,11 +13,11 @@
         <table th:if="${count gt 0}">
             <tbody th:remove="all-but-first">
             <tr th:each="digest : ${digests}">
-                <td th:text="${digest.username}">Username</td>
+                <td th:utext="${digest.username}">Username</td>
                 <td th:text="${digest.group}">Group</td>
                 <td><img width="128px" height="128px" th:title="${digest.username}" th:src="${digest.avatar}" /></td>
                 <td th:text="${digest.date}">Date</td>
-                <td th:text="${digest.message}">Digest</td>
+                <td th:utext="${digest.message}">Digest</td>
             </tr>
             </tbody>
         </table>

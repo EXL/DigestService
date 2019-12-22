@@ -12,18 +12,21 @@ import ru.exlmoto.digestbot.services.RestTextService;
 public class AvatarService extends RestTextService {
 	private final Boolean mUseNginxProxy;
 	private final String mNginxProxyUrl;
-	private final String mDefaultAvatarUrl;
+	private final String mNginxCdnUrl;
+	private final String mDefaultAvatarPath;
 
 	@Autowired
 	public AvatarService(final RestTemplateBuilder aRestTemplateBuilder,
 	                     @Value("${digestbot.request.timeout}") final Integer aRequestTimeout,
 	                     @Value("${digestbot.nginx.proxy}") final Boolean aUseNginxProxy,
-	                     @Value("${digestbot.nginx.proxy.url}") final String aNginxProxyUrl,
-	                     @Value("${digestbot.default.avatar.url}") final String aDefaultAvatarUrl) {
+	                     @Value("${general.nginx.proxy}") final String aNginxProxyUrl,
+	                     @Value("${general.nginx.cdn}") final String aNginxCdnUrl,
+	                     @Value("${digestbot.default.avatar.cdn.path}") final String aDefaultAvatarPath) {
 		super(aRestTemplateBuilder, aRequestTimeout);
 		mUseNginxProxy = aUseNginxProxy;
 		mNginxProxyUrl = aNginxProxyUrl;
-		mDefaultAvatarUrl = aDefaultAvatarUrl;
+		mDefaultAvatarPath = aDefaultAvatarPath;
+		mNginxCdnUrl = aNginxCdnUrl;
 	}
 
 	// TODO: Move hardcodes to Globals
@@ -38,7 +41,7 @@ public class AvatarService extends RestTextService {
 				}
 			}
 		}
-		return Pair.of(false, mDefaultAvatarUrl);
+		return Pair.of(false, mNginxCdnUrl + mDefaultAvatarPath);
 	}
 
 	private String getAvatarLinkFromRawHtml(final String aPageContent) {

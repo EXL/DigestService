@@ -5,9 +5,12 @@
         <title th:text="#{digest.search.title}"></title>
     </head>
     <body>
+        <a href="digest" th:href="@{/digest}" th:text="#{digest.search.digest.link}"></a>
+        <span th:text="#{digest.search.search}"></span>
         <form action="#" th:action="@{/digest/search}" th:object="${searchForm}" method="get">
             <input type="text" th:field="*{text}" size="10" th:placeholder="#{digest.search.placeholder}" />
             <input type="submit" th:value="#{digest.search.button}" />
+<!--            <input type="button" th:value="#{digest.back.button}" onclick="history.back()"/>-->
         </form>
         <div th:replace="~{paginator :: pg}"></div>
         <h1 th:if="${all gt 0}" th:text="#{digest.search.results}"></h1>

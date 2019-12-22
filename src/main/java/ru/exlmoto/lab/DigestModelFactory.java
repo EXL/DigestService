@@ -3,7 +3,6 @@ package ru.exlmoto.lab;
 import java.util.ArrayList;
 
 public class DigestModelFactory {
-    private Integer startWith;
     private ArrayList<DigestItem> items;
 
     public DigestModelFactory() {

@@ -18,6 +18,7 @@
             <span th:if="${end lt all}">
                 <a href="#" th:href="@{__${pageForm.path}__(page=${all})}" th:text="'>>'" th:title="#{digest.paginator.page} + ' ' + ${all}"></a>
             </span>
+            <input th:if="*{text != null}" type="hidden" th:field="*{text}"/>
             <input type="text" th:field="*{page}" size="3" th:placeholder="#{digest.paginator.placeholder}" />
             <input type="submit" th:value="#{digest.paginator.ok}" />
         </form>

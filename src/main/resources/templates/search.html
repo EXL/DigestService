@@ -10,22 +10,23 @@
             <input type="submit" th:value="#{digest.search.button}" />
         </form>
         <div th:replace="~{paginator :: pg}"></div>
-        <h1 th:text="#{digest.search.results}"></h1>
-        <h1 th:text="#{digest.search.username}"></h1>
-        <table>
+        <h1 th:if="${all gt 0}" th:text="#{digest.search.results}"></h1>
+        <h1 th:if="${all gt 0}" th:text="#{digest.search.username}"></h1>
+        <table th:if="${all gt 0}">
             <tbody th:remove="all-but-first">
             <tr th:each="el : ${inNames}">
                 <td th:text="${el.username}">Username</td>
             </tr>
             </tbody>
         </table>
-        <h1 th:text="#{digest.search.digest}"></h1>
-        <table>
+        <h1 th:if="${all gt 0}" th:text="#{digest.search.digest}"></h1>
+        <table th:if="${all gt 0}">
             <tbody th:remove="all-but-first">
             <tr th:each="el : ${inDigests}">
                 <td th:text="${el.digest}">Username</td>
             </tr>
             </tbody>
         </table>
+        <h1 th:unless="${all gt 0}" th:text="#{digest.list.empty}"></h1>
     </body>
 </html>

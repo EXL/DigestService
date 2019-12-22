@@ -2,6 +2,16 @@ package ru.exlmoto.lab;
 
 public class GoToPageForm {
     private String page;
+    private String path;
+    private String text;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 
     public String getPath() {
         return path;
@@ -11,8 +21,6 @@ public class GoToPageForm {
         this.path = path;
     }
 
-    private String path;
-
     public String getPage() {
         return page;
     }
@@ -21,7 +29,8 @@ public class GoToPageForm {
         this.page = page;
     }
 
-    public GoToPageForm(String path) {
+    public GoToPageForm(String path, String text) {
         this.path = path;
+        this.text = text;
     }
 }

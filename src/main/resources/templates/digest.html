@@ -13,7 +13,7 @@
         <table th:if="${count gt 0}">
             <tbody th:remove="all-but-first">
             <tr th:each="digest : ${digests}">
-                <td th:utext="${digest.username}">Username</td>
+                <td th:utext="${digest.html}">Username</td>
                 <td th:text="${digest.group}">Group</td>
                 <td><img width="128px" height="128px" th:title="${digest.username}" th:src="${digest.avatar}" /></td>
                 <td th:text="${digest.date}">Date</td>

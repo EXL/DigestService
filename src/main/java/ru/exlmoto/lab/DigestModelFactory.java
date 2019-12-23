@@ -11,17 +11,27 @@ public class DigestModelFactory {
 
     private class DigestItem {
         private String username;
+        private String html;
         private String group;
         private String avatar;
         private String message;
         private String date;
 
-        public DigestItem(String username, String group, String avatar, String message, String date) {
+        public DigestItem(String username, String group, String avatar, String message, String date, String html) {
             this.username = username;
             this.group = group;
             this.avatar = avatar;
             this.message = message;
             this.date = date;
+            this.html = html;
+        }
+
+        public String getHtml() {
+            return html;
+        }
+
+        public void setHtml(String html) {
+            this.html = html;
         }
 
         public String getUsername() {
@@ -65,8 +75,8 @@ public class DigestModelFactory {
         }
     }
 
-    public void addDigest(String username, String group, String avatar, String message, String date) {
-        items.add(new DigestItem(username, group, avatar, message, date));
+    public void addDigest(String username, String group, String avatar, String message, String date, String html) {
+        items.add(new DigestItem(username, group, avatar, message, date, html));
     }
 
     public ArrayList<DigestItem> getItems() {

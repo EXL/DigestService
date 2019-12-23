@@ -96,11 +96,12 @@ public class DigestController {
 
         DigestModelFactory digestModelFactory = new DigestModelFactory();
         for (DigestEntity digestEntity : digestEntities) {
-            String username = getUserNameOrAvatarById(digestEntity.getAuthor(), true, digestUserRepository);
-            String avatar = getUserNameOrAvatarById(digestEntity.getAuthor(), false, digestUserRepository);
+            String username = getUserNameOrAvatarById(digestEntity.getAuthor(), true, digestUserRepository, false);
+            String avatar = getUserNameOrAvatarById(digestEntity.getAuthor(), false, digestUserRepository, false);
             String group = getUserGroup(username);
             String date = getDataAndTime(digestEntity.getDate());
-            digestModelFactory.addDigest(username, group, avatar, digestEntity.getHtml(), date);
+            String html = getUserNameOrAvatarById(digestEntity.getAuthor(), true, digestUserRepository, true);
+            digestModelFactory.addDigest(username, group, avatar, digestEntity.getHtml(), date, html);
         }
         model.addAttribute("digests", digestModelFactory.getItems());
         model.addAttribute("count", digestModelFactory.getSize());
@@ -148,11 +149,12 @@ public class DigestController {
         return messageSource.getMessage(path, null, LocaleContextHolder.getLocale());
     }
 
-    private String getUserNameOrAvatarById(Integer id, boolean isUsername, IDigestUsersRepository repository) {
+    private String getUserNameOrAvatarById(Integer id, boolean isUsername, IDigestUsersRepository repository, boolean html) {
         Optional<DigestUserEntity> digestUserEntityOptional = repository.findById(id);
         if (digestUserEntityOptional.isPresent()) {
             if (isUsername) {
-                return digestUserEntityOptional.get().getUsername_html();
+                return (html) ? digestUserEntityOptional.get().getUsername_html() :
+                        digestUserEntityOptional.get().getUsername();
             } else {
                 return digestUserEntityOptional.get().getAvatarLink();
             }

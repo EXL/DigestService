@@ -3,18 +3,18 @@ package ru.exlmoto.exchange.service;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
-import ru.exlmoto.exchange.config.ExchangeConfig;
+import ru.exlmoto.exchange.configuration.ExchangeConfiguration;
 
 @Service
-@EnableConfigurationProperties(ExchangeConfig.class)
+@EnableConfigurationProperties(ExchangeConfiguration.class)
 public class ExchangeService {
-	private final ExchangeConfig exchangeConfig;
+	private final ExchangeConfiguration exchangeConfiguration;
 
-	public ExchangeService(ExchangeConfig exchangeConfig) {
-		this.exchangeConfig = exchangeConfig;
+	public ExchangeService(ExchangeConfiguration exchangeConfiguration) {
+		this.exchangeConfiguration = exchangeConfiguration;
 	}
 
 	public String message() {
-		return exchangeConfig.getMessage();
+		return exchangeConfiguration.getBankBy();
 	}
 }

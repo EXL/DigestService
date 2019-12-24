@@ -29,6 +29,11 @@ public class ExchangeService {
 		if (!new BankUa().process(exchangeConfiguration.getBankUa(), rest)) {
 			new BankUaMirror().process(exchangeConfiguration.getBankUaMirror(), rest);
 		}
+		new BankBy().process(exchangeConfiguration.getBankBy(), rest);
+		new BankKz().process(exchangeConfiguration.getBankKz(), rest);
+		if (!new MetalRu().process(exchangeConfiguration.getMetalRu(), rest)) {
+			new MetalRuMirror().process(exchangeConfiguration.getMetalRuMirror(), rest);
+		}
 	}
 
 	private void testAllRates() {

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import ru.exlmoto.exchange.configuration.ExchangeConfiguration;
 import ru.exlmoto.exchange.rate.impl.BankRu;
+import ru.exlmoto.exchange.rate.impl.BankUa;
+import ru.exlmoto.exchange.rate.impl.BankUaMirror;
 
 @Service
 @EnableConfigurationProperties(ExchangeConfiguration.class)
@@ -15,9 +17,26 @@ public class ExchangeService {
 		this.exchangeConfiguration = exchangeConfiguration;
 	}
 
+	private void updateAllValues() {
+		boolean rest = exchangeConfiguration.useSpringRestTemplate();
+		if (!new BankRu().process(exchangeConfiguration.getBankRu(), rest)) {
+			new BankRu().process(exchangeConfiguration.getBankRuMirror(), rest);
+		}
+		if (!new BankUa().process(exchangeConfiguration.getBankUa(), rest)) {
+			new BankUaMirror().process(exchangeConfiguration.getBankUaMirror(), rest);
+		}
+	}
+
+	private void testAllRates() {
+		boolean rest = exchangeConfiguration.useSpringRestTemplate();
+		new BankRu().process(exchangeConfiguration.getBankRu(), rest);
+		new BankRu().process(exchangeConfiguration.getBankRuMirror(), rest);
+		new BankUa().process(exchangeConfiguration.getBankUa(), rest);
+		new BankUaMirror().process(exchangeConfiguration.getBankUaMirror(), rest);
+	}
+
 	public String message() {
-		new BankRu(exchangeConfiguration.getBankRu());
-		return exchangeConfiguration.getBankBy();
-		// return new BankRu(exchangeConfiguration.getBankRu()).getXmlData();
+		testAllRates();
+		return "Hello, World!";
 	}
 }

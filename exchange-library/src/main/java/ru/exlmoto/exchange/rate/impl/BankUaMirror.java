@@ -10,18 +10,18 @@ import ru.exlmoto.exchange.rate.BankEntity;
 
 import java.math.BigDecimal;
 
-public class BankRu extends BankEntity {
-	private final Logger LOG = LoggerFactory.getLogger(BankRu.class);
+public class BankUaMirror extends BankEntity {
+	private final Logger LOG = LoggerFactory.getLogger(BankUaMirror.class);
 
 	@Override
 	protected void parseDocument(Document document) {
 		date = parseDate(document);
-		usd = parseValue(document, "R01235");
-		eur = parseValue(document, "R01239");
-		kzt = parseValue(document, "R01335");
-		byn = parseValue(document, "R01090B");
-		uah = parseValue(document, "R01720");
-		gbp = parseValue(document, "R01035");
+		usd = parseValue(document, "6");
+		eur = parseValue(document, "8");
+		kzt = parseValue(document, "10");
+		byn = parseValue(document, "48");
+		rub = parseValue(document, "17");
+		gbp = parseValue(document, "3");
 	}
 
 	@Override
@@ -39,14 +39,14 @@ public class BankRu extends BankEntity {
 
 	@Override
 	protected boolean testParsedValues() {
-		return date != null && usd != null && eur != null && kzt != null && byn != null && uah != null && gbp != null;
+		return date != null && usd != null && eur != null && kzt != null && byn != null && rub != null && gbp != null;
 	}
 
 	@Override
 	protected void logParsedValues() {
 		LOG.info(String.format(
-				"Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, UAH: %s, GBP: %s, DIFF: %s",
-				date, usd, eur, kzt, byn, uah, gbp, prev
+				"Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, GBP: %s, DIFF: %s",
+				date, usd, eur, kzt, byn, rub, gbp, prev
 			)
 		);
 	}

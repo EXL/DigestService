@@ -10,8 +10,4 @@ public abstract class BankEntity extends RateEntity {
 	protected BigDecimal uah = null;
 	protected BigDecimal gbp = null;
 	protected BigDecimal rub = null;
-
-	public BankEntity(String url) {
-		super(url);
-	}
 }

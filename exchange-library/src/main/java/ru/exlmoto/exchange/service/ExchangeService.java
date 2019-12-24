@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.exchange.configuration.ExchangeConfiguration;
+import ru.exlmoto.exchange.rate.impl.BankRu;
 
 @Service
 @EnableConfigurationProperties(ExchangeConfiguration.class)
@@ -15,6 +16,8 @@ public class ExchangeService {
 	}
 
 	public String message() {
+		new BankRu(exchangeConfiguration.getBankRu());
 		return exchangeConfiguration.getBankBy();
+		// return new BankRu(exchangeConfiguration.getBankRu()).getXmlData();
 	}
 }

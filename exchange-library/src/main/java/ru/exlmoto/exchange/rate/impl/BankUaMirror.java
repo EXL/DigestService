@@ -14,8 +14,7 @@ public class BankUaMirror extends BankEntity {
 	private final Logger LOG = LoggerFactory.getLogger(BankUaMirror.class);
 
 	@Override
-	protected void parseDocument(Document document) {
-		date = parseDate(document);
+	protected void parseDocumentAux(Document document) {
 		usd = parseValue(document, "6");
 		eur = parseValue(document, "8");
 		kzt = parseValue(document, "10");
@@ -45,7 +44,7 @@ public class BankUaMirror extends BankEntity {
 	@Override
 	protected void logParsedValues() {
 		LOG.info(String.format(
-				"Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, GBP: %s, DIFF: %s",
+				"Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, GBP: %s, Prev: %s",
 				date, usd, eur, kzt, byn, rub, gbp, prev
 			)
 		);

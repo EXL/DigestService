@@ -55,11 +55,16 @@ public abstract class RateEntity {
 		}
 	}
 
-	protected abstract void parseDocument(Document document);
-	protected abstract void logParsedValues();
+	private void parseDocument(Document document) {
+		date = parseDate(document);
+		parseDocumentAux(document);
+	}
+
+	protected abstract void parseDocumentAux(Document document);
 	protected abstract BigDecimal parseValueAux(Document document, String valueId);
 	protected abstract String parseDate(Document document);
 	protected abstract boolean testParsedValues();
+	protected abstract void logParsedValues();
 
 	protected String filterCommas(String value) {
 		return value.replaceAll(",", ".");

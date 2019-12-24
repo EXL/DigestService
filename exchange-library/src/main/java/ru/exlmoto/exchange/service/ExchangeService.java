@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.exchange.configuration.ExchangeConfiguration;
+import ru.exlmoto.exchange.rate.impl.BankBy;
 import ru.exlmoto.exchange.rate.impl.BankRu;
 import ru.exlmoto.exchange.rate.impl.BankUa;
 import ru.exlmoto.exchange.rate.impl.BankUaMirror;
@@ -33,6 +34,7 @@ public class ExchangeService {
 		new BankRu().process(exchangeConfiguration.getBankRuMirror(), rest);
 		new BankUa().process(exchangeConfiguration.getBankUa(), rest);
 		new BankUaMirror().process(exchangeConfiguration.getBankUaMirror(), rest);
+		new BankBy().process(exchangeConfiguration.getBankBy(), rest);
 	}
 
 	public String message() {

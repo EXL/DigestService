@@ -14,8 +14,7 @@ public class BankUa extends BankEntity {
 	private final Logger LOG = LoggerFactory.getLogger(BankUa.class);
 
 	@Override
-	protected void parseDocument(Document document) {
-		date = parseDate(document);
+	protected void parseDocumentAux(Document document) {
 		usd = parseValue(document, "840");
 		eur = parseValue(document, "978");
 		kzt = parseValue(document, "398");
@@ -44,7 +43,7 @@ public class BankUa extends BankEntity {
 	@Override
 	protected void logParsedValues() {
 		LOG.info(String.format(
-				"Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, GBP: %s, DIFF: %s",
+				"Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, GBP: %s, Prev: %s",
 				date, usd, eur, kzt, byn, rub, gbp, prev
 			)
 		);

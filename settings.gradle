@@ -8,3 +8,6 @@
  */
 
 rootProject.name = 'JMotoEngine'
+
+include 'exchange-library'
+include 'engine'

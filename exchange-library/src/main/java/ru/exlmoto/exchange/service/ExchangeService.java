@@ -4,7 +4,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.exchange.configuration.ExchangeConfiguration;
-import ru.exlmoto.exchange.rate.impl.*;
+import ru.exlmoto.exchange.rate.impl.BankRu;
+import ru.exlmoto.exchange.rate.impl.BankUa;
+import ru.exlmoto.exchange.rate.impl.BankUaMirror;
+import ru.exlmoto.exchange.rate.impl.BankBy;
+import ru.exlmoto.exchange.rate.impl.BankKz;
+import ru.exlmoto.exchange.rate.impl.MetalRu;
+import ru.exlmoto.exchange.rate.impl.MetalRuMirror;
 
 @Service
 @EnableConfigurationProperties(ExchangeConfiguration.class)
@@ -34,6 +40,7 @@ public class ExchangeService {
 		new BankBy().process(exchangeConfiguration.getBankBy(), rest);
 		new BankKz().process(exchangeConfiguration.getBankKz(), rest);
 		new MetalRu().process(exchangeConfiguration.getMetalRu(), rest);
+		new MetalRuMirror().process(exchangeConfiguration.getMetalRuMirror(), rest);
 	}
 
 	public String message() {

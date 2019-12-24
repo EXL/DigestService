@@ -11,9 +11,7 @@ public class ExchangeConfiguration {
 	private String bankUa;
 	private String bankUaMirror;
 	private String bankBy;
-	private String bankByMirror;
 	private String bankKz;
-	private String bankKzMirror;
 	private String metalRu;
 	private String metalRuMirror;
 	private boolean useSpringRestTemplate;
@@ -58,28 +56,12 @@ public class ExchangeConfiguration {
 		this.bankBy = bankBy;
 	}
 
-	public String getBankByMirror() {
-		return bankByMirror;
-	}
-
-	public void setBankByMirror(String bankByMirror) {
-		this.bankByMirror = bankByMirror;
-	}
-
 	public String getBankKz() {
 		return bankKz;
 	}
 
 	public void setBankKz(String bankKz) {
 		this.bankKz = bankKz;
-	}
-
-	public String getBankKzMirror() {
-		return bankKzMirror;
-	}
-
-	public void setBankKzMirror(String bankKzMirror) {
-		this.bankKzMirror = bankKzMirror;
 	}
 
 	public String getMetalRu() {

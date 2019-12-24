@@ -33,6 +33,7 @@ public class ExchangeService {
 		new BankUaMirror().process(exchangeConfiguration.getBankUaMirror(), rest);
 		new BankBy().process(exchangeConfiguration.getBankBy(), rest);
 		new BankKz().process(exchangeConfiguration.getBankKz(), rest);
+		new MetalRu().process(exchangeConfiguration.getMetalRu(), rest);
 	}
 
 	public String message() {

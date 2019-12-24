@@ -28,7 +28,7 @@ public class BankKz extends BankEntity {
 		Element element = document.selectFirst("title:contains(" + valueId + ")").parent();
 		BigDecimal quant = new BigDecimal(filterCommas(element.selectFirst("quant").text()));;
 		BigDecimal value = new BigDecimal(filterCommas(element.selectFirst("description").text()));
-		return  value.divide(quant, BigDecimal.ROUND_FLOOR);
+		return value.divide(quant, BigDecimal.ROUND_FLOOR);
 	}
 
 	@Override

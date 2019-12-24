@@ -67,4 +67,8 @@ public abstract class RateEntity {
 	protected String filterCommas(String value) {
 		return value.replaceAll(",", ".");
 	}
+
+	protected String filterSpaces(String value) {
+		return value.replaceAll(" ", "");
+	}
 }

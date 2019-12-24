@@ -44,8 +44,8 @@ public class BankUaMirror extends BankEntity {
 	@Override
 	protected void logParsedValues() {
 		LOG.info(String.format(
-				"Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, GBP: %s, Prev: %s",
-				date, usd, eur, kzt, byn, rub, gbp, prev
+				"Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, GBP: %s",
+				date, usd, eur, kzt, byn, rub, gbp
 			)
 		);
 	}

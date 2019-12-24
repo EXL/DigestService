@@ -17,7 +17,6 @@ public abstract class RateEntity {
 	private final Logger LOG = LoggerFactory.getLogger(RateEntity.class);
 	private final int TIMEOUT = 10;
 
-	protected BigDecimal prev = null;
 	protected String date = null;
 
 	public boolean process(String url, boolean useSpringBootRestTemplate) {
@@ -26,7 +25,6 @@ public abstract class RateEntity {
 			logParsedValues();
 			return testParsedValues();
 		} catch (Exception e) {
-			prev = null;
 			LOG.error(String.format("Error while parsing document: '%s'", e.toString()));
 			return false;
 		}

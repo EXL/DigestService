@@ -15,6 +15,7 @@ public class EngineRestController {
 
 	@GetMapping("/")
 	public String home() {
-		return exchangeService.message();
+		exchangeService.updateAllRates();
+		return "Hello World";
 	}
 }

@@ -1,4 +1,4 @@
-package ru.exlmoto.exchange.entity;
+package ru.exlmoto.exchange.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +17,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "exchange_bank_kz")
-public class BankKzEntity {
+@Table(name = "exchange_bank_ua")
+public class BankUaEntity {
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
 	@Id
@@ -26,8 +26,8 @@ public class BankKzEntity {
 	private String date;
 	private BigDecimal usd;
 	private BigDecimal eur;
+	private BigDecimal kzt;
 	private BigDecimal byn;
-	private BigDecimal uah;
 	private BigDecimal rub;
 	private BigDecimal gbp;
 	private BigDecimal prev;

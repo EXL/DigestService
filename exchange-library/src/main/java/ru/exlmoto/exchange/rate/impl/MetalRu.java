@@ -8,7 +8,7 @@ import org.jsoup.nodes.Element;
 
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.exchange.entity.MetalRuEntity;
+import ru.exlmoto.exchange.domain.MetalRuEntity;
 import ru.exlmoto.exchange.rate.Metal;
 import ru.exlmoto.exchange.repository.MetalRuRepository;
 

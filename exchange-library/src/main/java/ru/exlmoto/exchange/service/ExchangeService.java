@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
-import ru.exlmoto.exchange.configuration.ExchangeConfiguration;
+import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.rate.impl.BankRu;
 import ru.exlmoto.exchange.rate.impl.BankUa;
 import ru.exlmoto.exchange.rate.impl.BankUaMirror;

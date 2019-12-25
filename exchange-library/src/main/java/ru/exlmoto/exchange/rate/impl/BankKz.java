@@ -8,7 +8,7 @@ import org.jsoup.nodes.Element;
 
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.exchange.entity.BankKzEntity;
+import ru.exlmoto.exchange.domain.BankKzEntity;
 import ru.exlmoto.exchange.rate.Bank;
 import ru.exlmoto.exchange.repository.BankKzRepository;
 

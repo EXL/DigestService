@@ -1,4 +1,4 @@
-package ru.exlmoto.exchange.configuration;
+package ru.exlmoto.exchange;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import ru.exlmoto.exchange.entity.BankRuEntity;
+import ru.exlmoto.exchange.domain.BankRuEntity;
 import ru.exlmoto.exchange.repository.BankRuRepository;
 
 @Setter

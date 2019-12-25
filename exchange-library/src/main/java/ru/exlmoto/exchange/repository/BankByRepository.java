@@ -2,7 +2,7 @@ package ru.exlmoto.exchange.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import ru.exlmoto.exchange.entity.BankByEntity;
+import ru.exlmoto.exchange.domain.BankByEntity;
 
 public interface BankByRepository extends CrudRepository<BankByEntity, Integer> {
 	BankByEntity getById(int id);

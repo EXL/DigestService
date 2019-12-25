@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -15,45 +16,43 @@ import java.time.Duration;
 
 public abstract class RateEntity {
 	private final Logger LOG = LoggerFactory.getLogger(RateEntity.class);
-	private final int TIMEOUT = 10;
+	private final int TIMEOUT = 15;
 
 	protected String date = null;
 
-	public boolean process(String url, boolean useSpringBootRestTemplate) {
+	public boolean process(String url, boolean spring) {
 		try {
-			parseDocument((useSpringBootRestTemplate) ? getDocumentRest(url) : getDocument(url));
+			parseDocument((spring) ? getDocumentSpring(url) : getDocumentSoup(url));
 			logParsedValues();
 			return testParsedValues();
 		} catch (Exception e) {
-			LOG.error(String.format("Error while parsing document: '%s'", e.toString()));
+			LOG.error("Error while connect or parsing document.", e);
 			return false;
 		}
 	}
 
-	private Document getDocument(String url) throws IOException {
+	private Document getDocumentSoup(String url) throws IOException {
 		return Jsoup.connect(url).timeout(TIMEOUT * 1000).get();
 	}
 
-	private Document getDocumentRest(String url) throws IOException {
+	private Document getDocumentSpring(String url) {
 		RestTemplate restTemplate = new RestTemplateBuilder().setConnectTimeout(Duration.ofSeconds(TIMEOUT)).build();
 		String rawData = restTemplate.getForObject(url, String.class);
-		if (rawData != null) {
-			return Jsoup.parse(rawData);
-		} else {
-			throw new IOException("Received raw data is null.");
-		}
+		Assert.notNull(rawData, "Received raw data is null");
+		return Jsoup.parse(rawData);
 	}
 
 	protected BigDecimal parseValue(Document document, String valueId) {
 		try {
 			return parseValueAux(document, valueId);
 		} catch (NumberFormatException nfe) {
-			LOG.error(String.format("Error parsing some value from document: '%s'", nfe.toString()));
+			LOG.error("Error parsing some value from document.", nfe);
 			return null;
 		}
 	}
 
 	private void parseDocument(Document document) {
+		Assert.notNull(document,"Document must not be null.");
 		date = parseDate(document);
 		parseDocumentAux(document);
 	}
@@ -70,5 +69,9 @@ public abstract class RateEntity {
 
 	protected String filterSpaces(String value) {
 		return value.replaceAll(" ", "");
+	}
+
+	public String getDate() {
+		return date;
 	}
 }

@@ -3,15 +3,17 @@ package ru.exlmoto.exchange.rate.impl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import ru.exlmoto.exchange.rate.Metal;
+import ru.exlmoto.exchange.repository.MetalRuRepository;
 
 import java.math.BigDecimal;
 
-public class MetalRuMirror extends Metal {
-	private final Logger LOG = LoggerFactory.getLogger(MetalRuMirror.class);
+@Component
+public class MetalRuMirror extends MetalRu {
+	public MetalRuMirror(MetalRuRepository repository) {
+		super(repository);
+	}
 
 	@Override
 	protected void parseDocumentAux(Document document) {
@@ -37,19 +39,5 @@ public class MetalRuMirror extends Metal {
 	protected String parseDate(Document document) {
 		Element element = document.getElementsByClass("mfd-table").first();
 		return element.getElementsByClass("mfd-item-date").first().text();
-	}
-
-	@Override
-	protected boolean testParsedValues() {
-		return date != null && gold != null && silver != null && platinum != null && palladium != null;
-	}
-
-	@Override
-	protected void logParsedValues() {
-		LOG.info(String.format(
-				"Date: %s, Gold: %s, Silver: %s, Platinum: %s, Palladium: %s",
-				date, gold, silver, platinum, palladium
-			)
-		);
 	}
 }

@@ -3,15 +3,18 @@ package ru.exlmoto.exchange.rate.impl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import ru.exlmoto.exchange.rate.Bank;
+import ru.exlmoto.exchange.repository.BankUaRepository;
 
 import java.math.BigDecimal;
 
-public class BankUaMirror extends Bank {
-	private final Logger LOG = LoggerFactory.getLogger(BankUaMirror.class);
+@Component
+public class BankUaMirror extends BankUa {
+
+	public BankUaMirror(BankUaRepository repository) {
+		super(repository);
+	}
 
 	@Override
 	protected void parseDocumentAux(Document document) {
@@ -34,19 +37,5 @@ public class BankUaMirror extends Bank {
 	@Override
 	protected String parseDate(Document document) {
 		return document.selectFirst("ValCurs").attr("Date");
-	}
-
-	@Override
-	protected boolean testParsedValues() {
-		return date != null && usd != null && eur != null && kzt != null && byn != null && rub != null && gbp != null;
-	}
-
-	@Override
-	protected void logParsedValues() {
-		LOG.info(String.format(
-				"Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, GBP: %s",
-				date, usd, eur, kzt, byn, rub, gbp
-			)
-		);
 	}
 }

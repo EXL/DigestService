@@ -1,11 +1,15 @@
-package ru.exlmoto.exchange.config;
+package ru.exlmoto.exchange.configuration;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @ConfigurationProperties("exchange")
-public class ExchangeConfig {
+@EnableJpaRepositories("ru.exlmoto.exchange.repository")
+@EntityScan("ru.exlmoto.exchange.entity")
+public class ExchangeConfiguration {
 	private String bankRu;
 	private String bankRuMirror;
 	private String bankUa;

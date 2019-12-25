@@ -1,4 +1,4 @@
-package ru.exlmoto.bridge.entity;
+package ru.exlmoto.exchange.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "exchange_metal_ru")
-public class ExchangeMetalRuEntity {
+public class MetalRuEntity {
 	@Id
 	private final Long id = 1L;
 
@@ -63,6 +63,16 @@ public class ExchangeMetalRuEntity {
 	}
 
 	public void setPrev(BigDecimal prev) {
+		this.prev = prev;
+	}
+
+	public void determineAll(String date, BigDecimal gold, BigDecimal silver,
+	                         BigDecimal platinum, BigDecimal palladium, BigDecimal prev) {
+		this.date = date;
+		this.gold = gold;
+		this.silver = silver;
+		this.platinum = platinum;
+		this.palladium = palladium;
 		this.prev = prev;
 	}
 }

@@ -10,32 +10,4 @@ public abstract class Bank extends Rate {
 	protected BigDecimal uah = null;
 	protected BigDecimal gbp = null;
 	protected BigDecimal rub = null;
-
-	public BigDecimal getUsd() {
-		return usd;
-	}
-
-	public BigDecimal getEur() {
-		return eur;
-	}
-
-	public BigDecimal getKzt() {
-		return kzt;
-	}
-
-	public BigDecimal getByn() {
-		return byn;
-	}
-
-	public BigDecimal getUah() {
-		return uah;
-	}
-
-	public BigDecimal getGbp() {
-		return gbp;
-	}
-
-	public BigDecimal getRub() {
-		return rub;
-	}
 }

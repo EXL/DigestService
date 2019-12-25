@@ -6,12 +6,23 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.stereotype.Component;
+
+import ru.exlmoto.exchange.entity.MetalRuEntity;
 import ru.exlmoto.exchange.rate.Metal;
+import ru.exlmoto.exchange.repository.MetalRuRepository;
 
 import java.math.BigDecimal;
 
+@Component
 public class MetalRu extends Metal {
 	private final Logger LOG = LoggerFactory.getLogger(MetalRu.class);
+
+	private final MetalRuRepository repository;
+
+	public MetalRu(MetalRuRepository repository) {
+		this.repository = repository;
+	}
 
 	@Override
 	protected void parseDocumentAux(Document document) {
@@ -40,8 +51,15 @@ public class MetalRu extends Metal {
 	}
 
 	@Override
-	protected boolean testParsedValues() {
-		return date != null && gold != null && silver != null && platinum != null && palladium != null;
+	protected void commitParsedValues() {
+		BigDecimal prevGold = null;
+		MetalRuEntity metalRuEntityFromDb = repository.getMetalRu();
+		if (metalRuEntityFromDb != null) {
+			prevGold = metalRuEntityFromDb.getGold();
+		}
+		MetalRuEntity metalRuEntity = new MetalRuEntity();
+		metalRuEntity.determineAll(date, gold, silver, platinum, palladium, (prevGold == null) ? gold : prevGold);
+		repository.save(metalRuEntity);
 	}
 
 	@Override

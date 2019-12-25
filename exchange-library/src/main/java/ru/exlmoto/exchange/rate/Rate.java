@@ -22,22 +22,23 @@ public abstract class Rate {
 
 	public boolean process(String url) {
 		try {
-			return processAux(url, false);
+			processAux(url, false);
 		} catch (Exception e) {
 			LOG.error("Error while connect or parsing document. Jsoup connection. Attempt #1.", e);
 			try {
-				return processAux(url, true);
+				processAux(url, true);
 			} catch (Exception ex) {
 				LOG.error("Error while connect or parsing document. Spring RestTemplate connection. Attempt #2.", ex);
 				return false;
 			}
 		}
+		return true;
 	}
 
-	private boolean processAux(String url, boolean spring) throws IOException {
+	private void processAux(String url, boolean spring) throws IOException {
 		parseDocument((spring) ? getDocumentSpring(url) : getDocumentSoup(url));
 		logParsedValues();
-		return testParsedValues();
+		commitParsedValues();
 	}
 
 	private Document getDocumentSoup(String url) throws IOException {
@@ -69,7 +70,7 @@ public abstract class Rate {
 	protected abstract void parseDocumentAux(Document document);
 	protected abstract BigDecimal parseValueAux(Document document, String valueId);
 	protected abstract String parseDate(Document document);
-	protected abstract boolean testParsedValues();
+	protected abstract void commitParsedValues();
 	protected abstract void logParsedValues();
 
 	protected String filterCommas(String value) {

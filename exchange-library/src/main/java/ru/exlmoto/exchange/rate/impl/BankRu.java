@@ -6,12 +6,23 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.stereotype.Component;
+
+import ru.exlmoto.exchange.entity.BankRuEntity;
 import ru.exlmoto.exchange.rate.Bank;
+import ru.exlmoto.exchange.repository.BankRuRepository;
 
 import java.math.BigDecimal;
 
+@Component
 public class BankRu extends Bank {
 	private final Logger LOG = LoggerFactory.getLogger(BankRu.class);
+
+	private final BankRuRepository repository;
+
+	public BankRu(BankRuRepository repository) {
+		this.repository = repository;
+	}
 
 	@Override
 	protected void parseDocumentAux(Document document) {
@@ -37,8 +48,15 @@ public class BankRu extends Bank {
 	}
 
 	@Override
-	protected boolean testParsedValues() {
-		return date != null && usd != null && eur != null && kzt != null && byn != null && uah != null && gbp != null;
+	protected void commitParsedValues() {
+		BigDecimal prevUsd = null;
+		BankRuEntity bankRuEntityFromDb = repository.getBankRu();
+		if (bankRuEntityFromDb != null) {
+			prevUsd = bankRuEntityFromDb.getUsd();
+		}
+		BankRuEntity bankRuEntity = new BankRuEntity();
+		bankRuEntity.determineAll(date, usd, eur, kzt, byn, uah, gbp, (prevUsd == null) ? usd : prevUsd);
+		repository.save(bankRuEntity);
 	}
 
 	@Override

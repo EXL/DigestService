@@ -6,12 +6,23 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.stereotype.Component;
+
+import ru.exlmoto.exchange.entity.BankKzEntity;
 import ru.exlmoto.exchange.rate.Bank;
+import ru.exlmoto.exchange.repository.BankKzRepository;
 
 import java.math.BigDecimal;
 
+@Component
 public class BankKz extends Bank {
 	private final Logger LOG = LoggerFactory.getLogger(BankKz.class);
+
+	private final BankKzRepository repository;
+
+	public BankKz(BankKzRepository repository) {
+		this.repository = repository;
+	}
 
 	@Override
 	protected void parseDocumentAux(Document document) {
@@ -26,7 +37,7 @@ public class BankKz extends Bank {
 	@Override
 	protected BigDecimal parseValueAux(Document document, String valueId) {
 		Element element = document.selectFirst("title:contains(" + valueId + ")").parent();
-		BigDecimal quant = new BigDecimal(filterCommas(element.selectFirst("quant").text()));;
+		BigDecimal quant = new BigDecimal(filterCommas(element.selectFirst("quant").text()));
 		BigDecimal value = new BigDecimal(filterCommas(element.selectFirst("description").text()));
 		return value.divide(quant, BigDecimal.ROUND_FLOOR);
 	}
@@ -38,8 +49,15 @@ public class BankKz extends Bank {
 	}
 
 	@Override
-	protected boolean testParsedValues() {
-		return date != null && usd != null && eur != null && kzt != null && byn != null && uah != null && gbp != null;
+	protected void commitParsedValues() {
+		BigDecimal prevUsd = null;
+		BankKzEntity bankKzEntityFromDb = repository.getBankKz();
+		if (bankKzEntityFromDb != null) {
+			prevUsd = bankKzEntityFromDb.getUsd();
+		}
+		BankKzEntity bankKzEntity = new BankKzEntity();
+		bankKzEntity.determineAll(date, usd, eur, rub, byn, uah, gbp, (prevUsd == null) ? usd : prevUsd);
+		repository.save(bankKzEntity);
 	}
 
 	@Override

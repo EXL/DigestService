@@ -21,6 +21,22 @@ public class BankKzEntity {
 	private BigDecimal gbp;
 	private BigDecimal prev;
 
+	public BankKzEntity() {
+
+	}
+
+	public BankKzEntity(String date, BigDecimal usd, BigDecimal eur, BigDecimal rub,
+	                    BigDecimal byn, BigDecimal uah, BigDecimal gbp, BigDecimal prev) {
+		this.date = date;
+		this.usd = usd;
+		this.eur = eur;
+		this.rub = rub;
+		this.byn = byn;
+		this.uah = uah;
+		this.gbp = gbp;
+		this.prev = prev;
+	}
+
 	public String getDate() {
 		return date;
 	}
@@ -82,18 +98,6 @@ public class BankKzEntity {
 	}
 
 	public void setPrev(BigDecimal prev) {
-		this.prev = prev;
-	}
-
-	public void determineAll(String date, BigDecimal usd, BigDecimal eur, BigDecimal rub,
-	                         BigDecimal byn, BigDecimal uah, BigDecimal gbp, BigDecimal prev) {
-		this.date = date;
-		this.usd = usd;
-		this.eur = eur;
-		this.rub = rub;
-		this.byn = byn;
-		this.uah = uah;
-		this.gbp = gbp;
 		this.prev = prev;
 	}
 }

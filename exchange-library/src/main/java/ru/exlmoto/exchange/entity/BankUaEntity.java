@@ -21,6 +21,22 @@ public class BankUaEntity {
 	private BigDecimal gbp;
 	private BigDecimal prev;
 
+	public BankUaEntity() {
+
+	}
+
+	public BankUaEntity(String date, BigDecimal usd, BigDecimal eur, BigDecimal kzt,
+	                    BigDecimal byn, BigDecimal rub, BigDecimal gbp, BigDecimal prev) {
+		this.date = date;
+		this.usd = usd;
+		this.eur = eur;
+		this.kzt = kzt;
+		this.byn = byn;
+		this.rub = rub;
+		this.gbp = gbp;
+		this.prev = prev;
+	}
+
 	public String getDate() {
 		return date;
 	}
@@ -82,18 +98,6 @@ public class BankUaEntity {
 	}
 
 	public void setPrev(BigDecimal prev) {
-		this.prev = prev;
-	}
-
-	public void determineAll(String date, BigDecimal usd, BigDecimal eur, BigDecimal kzt,
-	                         BigDecimal byn, BigDecimal rub, BigDecimal gbp, BigDecimal prev) {
-		this.date = date;
-		this.usd = usd;
-		this.eur = eur;
-		this.kzt = kzt;
-		this.byn = byn;
-		this.rub = rub;
-		this.gbp = gbp;
 		this.prev = prev;
 	}
 }

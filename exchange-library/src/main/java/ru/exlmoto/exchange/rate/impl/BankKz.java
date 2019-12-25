@@ -55,9 +55,7 @@ public class BankKz extends Bank {
 		if (bankKzEntityFromDb != null) {
 			prevUsd = bankKzEntityFromDb.getUsd();
 		}
-		BankKzEntity bankKzEntity = new BankKzEntity();
-		bankKzEntity.determineAll(date, usd, eur, rub, byn, uah, gbp, (prevUsd == null) ? usd : prevUsd);
-		repository.save(bankKzEntity);
+		repository.save(new BankKzEntity(date, usd, eur, rub, byn, uah, gbp, (prevUsd == null) ? usd : prevUsd));
 	}
 
 	@Override

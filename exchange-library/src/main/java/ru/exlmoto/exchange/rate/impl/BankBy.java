@@ -54,9 +54,7 @@ public class BankBy extends Bank {
 		if (bankByEntityFromDb != null) {
 			prevUsd = bankByEntityFromDb.getUsd();
 		}
-		BankByEntity bankByEntity = new BankByEntity();
-		bankByEntity.determineAll(date, usd, eur, kzt, rub, uah, gbp, (prevUsd == null) ? usd : prevUsd);
-		repository.save(bankByEntity);
+		repository.save(new BankByEntity(date, usd, eur, kzt, rub, uah, gbp, (prevUsd == null) ? usd : prevUsd));
 	}
 
 	@Override

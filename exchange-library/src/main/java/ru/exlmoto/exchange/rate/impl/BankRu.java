@@ -54,9 +54,7 @@ public class BankRu extends Bank {
 		if (bankRuEntityFromDb != null) {
 			prevUsd = bankRuEntityFromDb.getUsd();
 		}
-		BankRuEntity bankRuEntity = new BankRuEntity();
-		bankRuEntity.determineAll(date, usd, eur, kzt, byn, uah, gbp, (prevUsd == null) ? usd : prevUsd);
-		repository.save(bankRuEntity);
+		repository.save(new BankRuEntity(date, usd, eur, kzt, byn, uah, gbp, (prevUsd == null) ? usd : prevUsd));
 	}
 
 	@Override

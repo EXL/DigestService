@@ -18,6 +18,20 @@ public class MetalRuEntity {
 	private BigDecimal palladium;
 	private BigDecimal prev;
 
+	public MetalRuEntity() {
+
+	}
+
+	public MetalRuEntity(String date, BigDecimal gold, BigDecimal silver,
+	                     BigDecimal platinum, BigDecimal palladium, BigDecimal prev) {
+		this.date = date;
+		this.gold = gold;
+		this.silver = silver;
+		this.platinum = platinum;
+		this.palladium = palladium;
+		this.prev = prev;
+	}
+
 	public String getDate() {
 		return date;
 	}
@@ -63,16 +77,6 @@ public class MetalRuEntity {
 	}
 
 	public void setPrev(BigDecimal prev) {
-		this.prev = prev;
-	}
-
-	public void determineAll(String date, BigDecimal gold, BigDecimal silver,
-	                         BigDecimal platinum, BigDecimal palladium, BigDecimal prev) {
-		this.date = date;
-		this.gold = gold;
-		this.silver = silver;
-		this.platinum = platinum;
-		this.palladium = palladium;
 		this.prev = prev;
 	}
 }

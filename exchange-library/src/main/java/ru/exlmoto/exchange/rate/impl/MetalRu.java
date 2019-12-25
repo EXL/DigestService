@@ -57,9 +57,8 @@ public class MetalRu extends Metal {
 		if (metalRuEntityFromDb != null) {
 			prevGold = metalRuEntityFromDb.getGold();
 		}
-		MetalRuEntity metalRuEntity = new MetalRuEntity();
-		metalRuEntity.determineAll(date, gold, silver, platinum, palladium, (prevGold == null) ? gold : prevGold);
-		repository.save(metalRuEntity);
+		repository.save(new MetalRuEntity(date, gold, silver, platinum, palladium,
+			(prevGold == null) ? gold : prevGold));
 	}
 
 	@Override

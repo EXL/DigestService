@@ -6,11 +6,11 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.exlmoto.exchange.rate.MetalEntity;
+import ru.exlmoto.exchange.rate.Metal;
 
 import java.math.BigDecimal;
 
-public class MetalRuMirror extends MetalEntity {
+public class MetalRuMirror extends Metal {
 	private final Logger LOG = LoggerFactory.getLogger(MetalRuMirror.class);
 
 	@Override

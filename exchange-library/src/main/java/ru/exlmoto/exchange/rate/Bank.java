@@ -2,7 +2,7 @@ package ru.exlmoto.exchange.rate;
 
 import java.math.BigDecimal;
 
-public abstract class BankEntity extends RateEntity {
+public abstract class Bank extends Rate {
 	protected BigDecimal usd = null;
 	protected BigDecimal eur = null;
 	protected BigDecimal kzt = null;

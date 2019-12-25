@@ -1,11 +1,11 @@
-package ru.exlmoto.exchange.configuration;
+package ru.exlmoto.exchange.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties("exchange")
-public class ExchangeConfiguration {
+public class ExchangeConfig {
 	private String bankRu;
 	private String bankRuMirror;
 	private String bankUa;

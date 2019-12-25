@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Duration;
 
-public abstract class RateEntity {
-	private final Logger LOG = LoggerFactory.getLogger(RateEntity.class);
+public abstract class Rate {
+	private final Logger LOG = LoggerFactory.getLogger(Rate.class);
 	private final int TIMEOUT = 15;
 
 	protected String date = null;

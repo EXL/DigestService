@@ -6,11 +6,11 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.exlmoto.exchange.rate.BankEntity;
+import ru.exlmoto.exchange.rate.Bank;
 
 import java.math.BigDecimal;
 
-public class BankRu extends BankEntity {
+public class BankRu extends Bank {
 	private final Logger LOG = LoggerFactory.getLogger(BankRu.class);
 
 	@Override

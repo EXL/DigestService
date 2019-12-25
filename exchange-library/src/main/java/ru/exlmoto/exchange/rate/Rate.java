@@ -1,10 +1,9 @@
 package ru.exlmoto.exchange.rate;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.util.Assert;
@@ -14,8 +13,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Duration;
 
+@Slf4j
 public abstract class Rate {
-	private final Logger LOG = LoggerFactory.getLogger(Rate.class);
 	private final int TIMEOUT = 15;
 
 	protected String date = null;
@@ -24,11 +23,11 @@ public abstract class Rate {
 		try {
 			processAux(url, false);
 		} catch (Exception e) {
-			LOG.error("Error while connect or parsing document. Jsoup connection. Attempt #1.", e);
+			log.error("Error while connect or parsing document. Jsoup connection. Attempt #1.", e);
 			try {
 				processAux(url, true);
 			} catch (Exception ex) {
-				LOG.error("Error while connect or parsing document. Spring RestTemplate connection. Attempt #2.", ex);
+				log.error("Error while connect or parsing document. Spring RestTemplate connection. Attempt #2.", ex);
 				return false;
 			}
 		}
@@ -56,7 +55,7 @@ public abstract class Rate {
 		try {
 			return parseValueAux(document, valueId);
 		} catch (NumberFormatException nfe) {
-			LOG.error("Error parsing some value from document.", nfe);
+			log.error("Error parsing some value from document.", nfe);
 			return null;
 		}
 	}
@@ -79,9 +78,5 @@ public abstract class Rate {
 
 	protected String filterSpaces(String value) {
 		return value.replaceAll(" ", "");
-	}
-
-	public String getDate() {
-		return date;
 	}
 }

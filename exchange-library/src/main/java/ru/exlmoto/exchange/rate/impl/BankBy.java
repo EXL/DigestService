@@ -1,10 +1,10 @@
 package ru.exlmoto.exchange.rate.impl;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Component;
 
@@ -14,15 +14,11 @@ import ru.exlmoto.exchange.repository.BankByRepository;
 
 import java.math.BigDecimal;
 
+@Slf4j
+@RequiredArgsConstructor
 @Component
 public class BankBy extends Bank {
-	private final Logger LOG = LoggerFactory.getLogger(BankBy.class);
-
 	private final BankByRepository repository;
-
-	public BankBy(BankByRepository repository) {
-		this.repository = repository;
-	}
 
 	@Override
 	protected void parseDocumentAux(Document document) {
@@ -59,7 +55,7 @@ public class BankBy extends Bank {
 
 	@Override
 	protected void logParsedValues() {
-		LOG.info(String.format(
+		log.info(String.format(
 				"===> Date: %s, USD: %s, EUR: %s, KZT: %s, RUB: %s, UAH: %s, GBP: %s",
 				date, usd, eur, kzt, rub, uah, gbp
 			)

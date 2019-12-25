@@ -1,10 +1,10 @@
 package ru.exlmoto.exchange.rate.impl;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Component;
 
@@ -14,15 +14,11 @@ import ru.exlmoto.exchange.repository.MetalRuRepository;
 
 import java.math.BigDecimal;
 
+@Slf4j
+@RequiredArgsConstructor
 @Component
 public class MetalRu extends Metal {
-	private final Logger LOG = LoggerFactory.getLogger(MetalRu.class);
-
 	private final MetalRuRepository repository;
-
-	public MetalRu(MetalRuRepository repository) {
-		this.repository = repository;
-	}
 
 	@Override
 	protected void parseDocumentAux(Document document) {
@@ -63,7 +59,7 @@ public class MetalRu extends Metal {
 
 	@Override
 	protected void logParsedValues() {
-		LOG.info(String.format(
+		log.info(String.format(
 				"===> Date: %s, Gold: %s, Silver: %s, Platinum: %s, Palladium: %s",
 				date, gold, silver, platinum, palladium
 			)

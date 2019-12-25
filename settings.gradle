@@ -9,5 +9,6 @@
 
 rootProject.name = 'JMotoEngine'
 
+include 'bridge-library'
 include 'exchange-library'
 include 'engine'

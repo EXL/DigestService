@@ -20,15 +20,24 @@ public abstract class RateEntity {
 
 	protected String date = null;
 
-	public boolean process(String url, boolean spring) {
+	public boolean process(String url) {
 		try {
-			parseDocument((spring) ? getDocumentSpring(url) : getDocumentSoup(url));
-			logParsedValues();
-			return testParsedValues();
+			return processAux(url, false);
 		} catch (Exception e) {
-			LOG.error("Error while connect or parsing document.", e);
-			return false;
+			LOG.error("Error while connect or parsing document. Jsoup connection. Attempt #1.", e);
+			try {
+				return processAux(url, true);
+			} catch (Exception ex) {
+				LOG.error("Error while connect or parsing document. Spring RestTemplate connection. Attempt #2.", ex);
+				return false;
+			}
 		}
+	}
+
+	private boolean processAux(String url, boolean spring) throws IOException {
+		parseDocument((spring) ? getDocumentSpring(url) : getDocumentSoup(url));
+		logParsedValues();
+		return testParsedValues();
 	}
 
 	private Document getDocumentSoup(String url) throws IOException {

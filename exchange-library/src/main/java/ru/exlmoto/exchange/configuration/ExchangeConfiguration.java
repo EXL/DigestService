@@ -14,7 +14,6 @@ public class ExchangeConfiguration {
 	private String bankKz;
 	private String metalRu;
 	private String metalRuMirror;
-	private boolean useSpringRestTemplate;
 
 	public String getBankRu() {
 		return bankRu;
@@ -78,13 +77,5 @@ public class ExchangeConfiguration {
 
 	public void setMetalRuMirror(String metalRuMirror) {
 		this.metalRuMirror = metalRuMirror;
-	}
-
-	public boolean useSpringRestTemplate() {
-		return useSpringRestTemplate;
-	}
-
-	public void setUseSpringRestTemplate(boolean useSpringRestTemplate) {
-		this.useSpringRestTemplate = useSpringRestTemplate;
 	}
 }

@@ -22,30 +22,28 @@ public class ExchangeService {
 	}
 
 	private void updateAllValues() {
-		boolean rest = exchangeConfiguration.useSpringRestTemplate();
-		if (!new BankRu().process(exchangeConfiguration.getBankRu(), rest)) {
-			new BankRu().process(exchangeConfiguration.getBankRuMirror(), rest);
+		if (!new BankRu().process(exchangeConfiguration.getBankRu())) {
+			new BankRu().process(exchangeConfiguration.getBankRuMirror());
 		}
-		if (!new BankUa().process(exchangeConfiguration.getBankUa(), rest)) {
-			new BankUaMirror().process(exchangeConfiguration.getBankUaMirror(), rest);
+		if (!new BankUa().process(exchangeConfiguration.getBankUa())) {
+			new BankUaMirror().process(exchangeConfiguration.getBankUaMirror());
 		}
-		new BankBy().process(exchangeConfiguration.getBankBy(), rest);
-		new BankKz().process(exchangeConfiguration.getBankKz(), rest);
-		if (!new MetalRu().process(exchangeConfiguration.getMetalRu(), rest)) {
-			new MetalRuMirror().process(exchangeConfiguration.getMetalRuMirror(), rest);
+		new BankBy().process(exchangeConfiguration.getBankBy());
+		new BankKz().process(exchangeConfiguration.getBankKz());
+		if (!new MetalRu().process(exchangeConfiguration.getMetalRu())) {
+			new MetalRuMirror().process(exchangeConfiguration.getMetalRuMirror());
 		}
 	}
 
 	private void testAllRates() {
-		boolean rest = exchangeConfiguration.useSpringRestTemplate();
-		new BankRu().process(exchangeConfiguration.getBankRu(), rest);
-		new BankRu().process(exchangeConfiguration.getBankRuMirror(), rest);
-		new BankUa().process(exchangeConfiguration.getBankUa(), rest);
-		new BankUaMirror().process(exchangeConfiguration.getBankUaMirror(), rest);
-		new BankBy().process(exchangeConfiguration.getBankBy(), rest);
-		new BankKz().process(exchangeConfiguration.getBankKz(), rest);
-		new MetalRu().process(exchangeConfiguration.getMetalRu(), rest);
-		new MetalRuMirror().process(exchangeConfiguration.getMetalRuMirror(), rest);
+		new BankRu().process(exchangeConfiguration.getBankRu());
+		new BankRu().process(exchangeConfiguration.getBankRuMirror());
+		new BankUa().process(exchangeConfiguration.getBankUa());
+		new BankUaMirror().process(exchangeConfiguration.getBankUaMirror());
+		new BankBy().process(exchangeConfiguration.getBankBy());
+		new BankKz().process(exchangeConfiguration.getBankKz());
+		new MetalRu().process(exchangeConfiguration.getMetalRu());
+		new MetalRuMirror().process(exchangeConfiguration.getMetalRuMirror());
 	}
 
 	public String message() {

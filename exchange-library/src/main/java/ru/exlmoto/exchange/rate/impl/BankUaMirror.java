@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 
 @Component
 public class BankUaMirror extends BankUa {
-
 	public BankUaMirror(BankUaRepository repository) {
 		super(repository);
 	}

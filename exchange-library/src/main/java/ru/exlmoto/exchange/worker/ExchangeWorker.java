@@ -1,5 +1,7 @@
 package ru.exlmoto.exchange.worker;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,8 @@ import ru.exlmoto.exchange.rate.impl.MetalRuMirror;
 
 @EnableConfigurationProperties(ExchangeConfiguration.class)
 public class ExchangeWorker {
+	private final Logger LOG = LoggerFactory.getLogger(ExchangeWorker.class);
+
 	private final ExchangeConfiguration exchangeConfiguration;
 
 	private final BankRu bankRu;
@@ -45,16 +49,32 @@ public class ExchangeWorker {
 	}
 
 	public void updateAllRates() {
+		LOG.info("=> Start update exchanging rates.");
 		if (!bankRu.process(exchangeConfiguration.getBankRu())) {
+			LOG.info("==> Using BankRuMirror.");
 			bankRu.process(exchangeConfiguration.getBankRuMirror());
 		}
 		if (!bankUa.process(exchangeConfiguration.getBankUa())) {
+			LOG.info("==> Using BankUaMirror.");
 			bankUaMirror.process(exchangeConfiguration.getBankUaMirror());
 		}
 		bankBy.process(exchangeConfiguration.getBankBy());
 		bankKz.process(exchangeConfiguration.getBankKz());
 		if (!metalRu.process(exchangeConfiguration.getMetalRu())) {
+			LOG.info("==> Using MetalRuMirror.");
 			metalRuMirror.process(exchangeConfiguration.getMetalRuMirror());
 		}
+		LOG.info("=> End update exchanging rates.");
+	}
+
+	public void testAllSources() {
+		bankRu.process(exchangeConfiguration.getBankRu());
+		bankRu.process(exchangeConfiguration.getBankRuMirror());
+		bankUa.process(exchangeConfiguration.getBankUa());
+		bankUaMirror.process(exchangeConfiguration.getBankUaMirror());
+		bankBy.process(exchangeConfiguration.getBankBy());
+		bankKz.process(exchangeConfiguration.getBankKz());
+		metalRu.process(exchangeConfiguration.getMetalRu());
+		metalRuMirror.process(exchangeConfiguration.getMetalRuMirror());
 	}
 }

@@ -13,7 +13,8 @@ public class ExchangeService {
 	}
 
 	public String message() {
-		exchangeWorker.updateAllRates();
+		// exchangeWorker.updateAllRates();
+		exchangeWorker.testAllSources();
 		return "Hello, World!";
 	}
 }

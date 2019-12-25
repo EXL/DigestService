@@ -61,7 +61,7 @@ public class BankKz extends Bank {
 	@Override
 	protected void logParsedValues() {
 		LOG.info(String.format(
-				"Date: %s, USD: %s, EUR: %s, RUB: %s, BYN: %s, UAH: %s, GBP: %s",
+				"===> Date: %s, USD: %s, EUR: %s, RUB: %s, BYN: %s, UAH: %s, GBP: %s",
 				date, usd, eur, rub, byn, uah, gbp
 			)
 		);

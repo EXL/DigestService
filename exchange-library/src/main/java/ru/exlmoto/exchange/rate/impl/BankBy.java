@@ -60,7 +60,7 @@ public class BankBy extends Bank {
 	@Override
 	protected void logParsedValues() {
 		LOG.info(String.format(
-				"Date: %s, USD: %s, EUR: %s, KZT: %s, RUB: %s, UAH: %s, GBP: %s",
+				"===> Date: %s, USD: %s, EUR: %s, KZT: %s, RUB: %s, UAH: %s, GBP: %s",
 				date, usd, eur, kzt, rub, uah, gbp
 			)
 		);

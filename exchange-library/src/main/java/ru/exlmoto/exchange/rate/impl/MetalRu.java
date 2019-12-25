@@ -64,7 +64,7 @@ public class MetalRu extends Metal {
 	@Override
 	protected void logParsedValues() {
 		LOG.info(String.format(
-				"Date: %s, Gold: %s, Silver: %s, Platinum: %s, Palladium: %s",
+				"===> Date: %s, Gold: %s, Silver: %s, Platinum: %s, Palladium: %s",
 				date, gold, silver, platinum, palladium
 			)
 		);

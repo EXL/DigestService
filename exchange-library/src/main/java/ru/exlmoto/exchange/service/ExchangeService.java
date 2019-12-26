@@ -21,6 +21,7 @@ import ru.exlmoto.exchange.rate.impl.MetalRuMirror;
 @EnableConfigurationProperties(ExchangeConfiguration.class)
 public class ExchangeService {
 	private final ExchangeConfiguration exchangeConfiguration;
+	private final LanguageService lang;
 
 	private final BankRu bankRu;
 	private final BankUa bankUa;
@@ -47,6 +48,8 @@ public class ExchangeService {
 			metalRuMirror.process(exchangeConfiguration.getMetalRuMirror());
 		}
 		log.info("=> End update exchanging rates.");
+
+		log.info(lang.i18n("test"));
 	}
 
 	public void testAllSources() {

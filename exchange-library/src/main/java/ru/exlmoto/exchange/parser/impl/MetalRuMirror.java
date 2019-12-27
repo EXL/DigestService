@@ -1,4 +1,4 @@
-package ru.exlmoto.exchange.rate.impl;
+package ru.exlmoto.exchange.parser.impl;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

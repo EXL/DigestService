@@ -1,4 +1,4 @@
-package ru.exlmoto.exchange.rate;
+package ru.exlmoto.exchange.parser;
 
 import lombok.extern.slf4j.Slf4j;
 

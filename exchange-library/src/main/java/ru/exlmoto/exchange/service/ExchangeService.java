@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.generator.MarkdownGenerator;
-import ru.exlmoto.exchange.rate.impl.BankRu;
-import ru.exlmoto.exchange.rate.impl.BankUa;
-import ru.exlmoto.exchange.rate.impl.BankUaMirror;
-import ru.exlmoto.exchange.rate.impl.BankBy;
-import ru.exlmoto.exchange.rate.impl.BankKz;
-import ru.exlmoto.exchange.rate.impl.MetalRu;
-import ru.exlmoto.exchange.rate.impl.MetalRuMirror;
+import ru.exlmoto.exchange.parser.impl.BankRu;
+import ru.exlmoto.exchange.parser.impl.BankUa;
+import ru.exlmoto.exchange.parser.impl.BankUaMirror;
+import ru.exlmoto.exchange.parser.impl.BankBy;
+import ru.exlmoto.exchange.parser.impl.BankKz;
+import ru.exlmoto.exchange.parser.impl.MetalRu;
+import ru.exlmoto.exchange.parser.impl.MetalRuMirror;
 
 @Slf4j
 @RequiredArgsConstructor

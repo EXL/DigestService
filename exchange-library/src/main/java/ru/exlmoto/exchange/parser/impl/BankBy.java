@@ -1,4 +1,4 @@
-package ru.exlmoto.exchange.rate.impl;
+package ru.exlmoto.exchange.parser.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,7 @@ import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.exchange.domain.BankByEntity;
-import ru.exlmoto.exchange.rate.Bank;
+import ru.exlmoto.exchange.parser.Bank;
 import ru.exlmoto.exchange.repository.BankByRepository;
 
 import java.math.BigDecimal;

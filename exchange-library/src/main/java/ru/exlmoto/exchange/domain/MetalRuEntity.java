@@ -28,4 +28,8 @@ public class MetalRuEntity {
 	private BigDecimal platinum;
 	private BigDecimal palladium;
 	private BigDecimal prev;
+
+	public boolean checkAllValues() {
+		return gold != null || silver != null || platinum != null || palladium != null;
+	}
 }

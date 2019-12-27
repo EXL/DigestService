@@ -23,17 +23,22 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class MarkdownGenerator {
 	@Value("${general.lang}")
-	private final String langTag;
+	private String langTag;
+
 	private final MessageSource messageSource;
 
-	protected final BankRuRepository bankRuRepository;
-	protected final BankUaRepository bankUaRepository;
-	protected final BankByRepository bankByRepository;
-	protected final BankKzRepository bankKzRepository;
-	protected final MetalRuRepository metalRuRepository;
+	private final BankRuRepository bankRuRepository;
+	private final BankUaRepository bankUaRepository;
+	private final BankByRepository bankByRepository;
+	private final BankKzRepository bankKzRepository;
+	private final MetalRuRepository metalRuRepository;
 
 	public String bankRuReport() {
 		BankRuEntity bankRuEntity = bankRuRepository.getBankRu();
+		return (bankRuEntity.checkAllValues()) ? bankRuReportAux(bankRuEntity) : i18n("error.report");
+	}
+
+	private String bankRuReportAux(BankRuEntity bankRuEntity) {
 		String report = generalData(
 			i18n("bank.ru"), "RUB", bankRuEntity.getDate(),
 			bankRuEntity.getUsd(), bankRuEntity.getEur(), bankRuEntity.getGbp(), bankRuEntity.getPrev()
@@ -46,6 +51,10 @@ public class MarkdownGenerator {
 
 	public String bankUaReport() {
 		BankUaEntity bankUaEntity = bankUaRepository.getBankUa();
+		return bankUaEntity.checkAllValues() ? bankUaReportAux(bankUaEntity) : i18n("error.report");
+	}
+
+	private String bankUaReportAux(BankUaEntity bankUaEntity) {
 		String report = generalData(
 			i18n("bank.ua"), "UAH", bankUaEntity.getDate(),
 			bankUaEntity.getUsd(), bankUaEntity.getEur(), bankUaEntity.getGbp(), bankUaEntity.getPrev()
@@ -58,6 +67,10 @@ public class MarkdownGenerator {
 
 	public String bankByReport() {
 		BankByEntity bankByEntity = bankByRepository.getBankBy();
+		return bankByEntity.checkAllValues() ? bankByReportAux(bankByEntity) : i18n("error.report");
+	}
+
+	public String bankByReportAux(BankByEntity bankByEntity) {
 		String report = generalData(
 			i18n("bank.by"), "BYN", bankByEntity.getDate(),
 			bankByEntity.getUsd(), bankByEntity.getEur(), bankByEntity.getGbp(), bankByEntity.getPrev()
@@ -70,6 +83,10 @@ public class MarkdownGenerator {
 
 	public String bankKzReport() {
 		BankKzEntity bankKzEntity = bankKzRepository.getBankKz();
+		return bankKzEntity.checkAllValues() ? bankKzReportAux(bankKzEntity) : i18n("error.report");
+	}
+
+	public String bankKzReportAux(BankKzEntity bankKzEntity) {
 		String report = generalData(
 			i18n("bank.kz"), "KZT", bankKzEntity.getDate(),
 			bankKzEntity.getUsd(), bankKzEntity.getEur(), bankKzEntity.getGbp(), bankKzEntity.getPrev()
@@ -103,14 +120,14 @@ public class MarkdownGenerator {
 
 	private String filterValue(BigDecimal value) {
 		if (value == null) {
-			return i18n("error");
+			return i18n("error.value");
 		}
 
 		return value.toString();
 	}
 
 	private String filterDate(String date) {
-		return (date == null || date.isEmpty() || date.equals("null")) ? "`" + i18n("error") + "`" : date;
+		return (date == null || date.isEmpty() || date.equals("null")) ? "`" + i18n("error.value") + "`" : date;
 	}
 
 	private String i18n(String key) {

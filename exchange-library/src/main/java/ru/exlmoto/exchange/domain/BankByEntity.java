@@ -30,5 +30,9 @@ public class BankByEntity {
 	private BigDecimal rub;
 	private BigDecimal gbp;
 	private BigDecimal prev;
+
+	public boolean checkAllValues() {
+		return usd != null || eur != null || kzt != null || uah != null || rub != null || gbp != null;
+	}
 }
 

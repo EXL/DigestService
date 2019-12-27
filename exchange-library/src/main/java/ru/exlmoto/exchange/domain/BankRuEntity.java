@@ -31,4 +31,8 @@ public class BankRuEntity {
 	private BigDecimal uah;
 	private BigDecimal gbp;
 	private BigDecimal prev;
+
+	public boolean checkAllValues() {
+		return usd != null || eur != null || byn != null || uah != null || kzt != null || gbp != null;
+	}
 }

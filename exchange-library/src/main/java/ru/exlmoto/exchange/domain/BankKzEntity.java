@@ -31,4 +31,8 @@ public class BankKzEntity {
 	private BigDecimal rub;
 	private BigDecimal gbp;
 	private BigDecimal prev;
+
+	public boolean checkAllValues() {
+		return usd != null || eur != null || byn != null || uah != null || rub != null || gbp != null;
+	}
 }

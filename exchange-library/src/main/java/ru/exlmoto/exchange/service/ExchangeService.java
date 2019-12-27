@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.exchange.ExchangeConfiguration;
-import ru.exlmoto.exchange.generator.GeneratorMarkdown;
+import ru.exlmoto.exchange.generator.MarkdownGenerator;
 import ru.exlmoto.exchange.rate.impl.BankRu;
 import ru.exlmoto.exchange.rate.impl.BankUa;
 import ru.exlmoto.exchange.rate.impl.BankUaMirror;
@@ -23,7 +23,7 @@ import ru.exlmoto.exchange.rate.impl.MetalRuMirror;
 public class ExchangeService {
 	private final ExchangeConfiguration exchangeConfiguration;
 
-	private final GeneratorMarkdown generatorMarkdown;
+	private final MarkdownGenerator markdownGenerator;
 
 	private final BankRu bankRu;
 	private final BankUa bankUa;
@@ -53,7 +53,7 @@ public class ExchangeService {
 	}
 
 	public String mdBankRu() {
-		return generatorMarkdown.bankRuReport();
+		return markdownGenerator.bankRuReport();
 	}
 
 	public void testAllSources() {

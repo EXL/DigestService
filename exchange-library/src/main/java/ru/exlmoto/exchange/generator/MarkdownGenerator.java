@@ -38,9 +38,9 @@ public class MarkdownGenerator {
 			i18n("bank.ru"), "RUB", bankRuEntity.getDate(),
 			bankRuEntity.getUsd(), bankRuEntity.getEur(), bankRuEntity.getGbp(), bankRuEntity.getPrev()
 		);
-		report += String.format("1 UAH = %s RUB.\n", bankRuEntity.getUah());
-		report += String.format("1 BYN = %s RUB.\n", bankRuEntity.getByn());
-		report += String.format("1 KZT = %s RUB.\n", bankRuEntity.getKzt());
+		report += String.format("1 UAH = %s RUB.\n", filterValue(bankRuEntity.getUah()));
+		report += String.format("1 BYN = %s RUB.\n", filterValue(bankRuEntity.getByn()));
+		report += String.format("1 KZT = %s RUB.\n", filterValue(bankRuEntity.getKzt()));
 		return report + "```";
 	}
 
@@ -50,9 +50,9 @@ public class MarkdownGenerator {
 			i18n("bank.ua"), "UAH", bankUaEntity.getDate(),
 			bankUaEntity.getUsd(), bankUaEntity.getEur(), bankUaEntity.getGbp(), bankUaEntity.getPrev()
 		);
-		report += String.format("1 RUB = %s UAH.\n", bankUaEntity.getRub());
-		report += String.format("1 BYN = %s UAH.\n", bankUaEntity.getByn());
-		report += String.format("1 KZT = %s UAH.\n", bankUaEntity.getKzt());
+		report += String.format("1 RUB = %s UAH.\n", filterValue(bankUaEntity.getRub()));
+		report += String.format("1 BYN = %s UAH.\n", filterValue(bankUaEntity.getByn()));
+		report += String.format("1 KZT = %s UAH.\n", filterValue(bankUaEntity.getKzt()));
 		return report + "```";
 	}
 
@@ -62,9 +62,9 @@ public class MarkdownGenerator {
 			i18n("bank.by"), "BYN", bankByEntity.getDate(),
 			bankByEntity.getUsd(), bankByEntity.getEur(), bankByEntity.getGbp(), bankByEntity.getPrev()
 		);
-		report += String.format("1 RUB = %s BYN.\n", bankByEntity.getRub());
-		report += String.format("1 UAH = %s BYN.\n", bankByEntity.getUah());
-		report += String.format("1 KZT = %s BYN.\n", bankByEntity.getKzt());
+		report += String.format("1 RUB = %s BYN.\n", filterValue(bankByEntity.getRub()));
+		report += String.format("1 UAH = %s BYN.\n", filterValue(bankByEntity.getUah()));
+		report += String.format("1 KZT = %s BYN.\n", filterValue(bankByEntity.getKzt()));
 		return report + "```";
 	}
 
@@ -74,9 +74,9 @@ public class MarkdownGenerator {
 			i18n("bank.kz"), "KZT", bankKzEntity.getDate(),
 			bankKzEntity.getUsd(), bankKzEntity.getEur(), bankKzEntity.getGbp(), bankKzEntity.getPrev()
 		);
-		report += String.format("1 RUB = %s KZT.\n", bankKzEntity.getRub());
-		report += String.format("1 UAH = %s KZT.\n", bankKzEntity.getUah());
-		report += String.format("1 BYN = %s KZT.\n", bankKzEntity.getByn());
+		report += String.format("1 RUB = %s KZT.\n", filterValue(bankKzEntity.getRub()));
+		report += String.format("1 UAH = %s KZT.\n", filterValue(bankKzEntity.getUah()));
+		report += String.format("1 BYN = %s KZT.\n", filterValue(bankKzEntity.getByn()));
 		return report + "```";
 	}
 
@@ -84,14 +84,33 @@ public class MarkdownGenerator {
 	                           BigDecimal usd, BigDecimal eur, BigDecimal gbp, BigDecimal prev) {
 		String general = header;
 		if (true) {
-			general += " " + i18n("change") + " " + prev;
+			general += " " + i18n("change") + " " + getDifference(prev, usd);
 		}
-		general += "\n" + String.format(i18n("header"), date);
+		general += "\n" + String.format(i18n("header"), filterDate(date));
 		general += "\n```\n";
-		general += String.format("1 USD = %s %s.\n", usd, currency);
-		general += String.format("1 EUR = %s %s.\n", eur, currency);
-		general += String.format("1 GBP = %s %s.\n", gbp, currency);
+		general += String.format("1 USD = %s %s.\n", filterValue(usd), currency);
+		general += String.format("1 EUR = %s %s.\n", filterValue(eur), currency);
+		general += String.format("1 GBP = %s %s.\n", filterValue(gbp), currency);
 		return general;
+	}
+
+	private String getDifference(BigDecimal prev, BigDecimal current) {
+		// Prev == null
+		// Prev == Current
+		// Prev == 0
+		return prev.toString();
+	}
+
+	private String filterValue(BigDecimal value) {
+		if (value == null) {
+			return i18n("error");
+		}
+
+		return value.toString();
+	}
+
+	private String filterDate(String date) {
+		return (date == null || date.isEmpty() || date.equals("null")) ? "`" + i18n("error") + "`" : date;
 	}
 
 	private String i18n(String key) {

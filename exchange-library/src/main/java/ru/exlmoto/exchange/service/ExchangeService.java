@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.exchange.ExchangeConfiguration;
+import ru.exlmoto.exchange.generator.GeneratorMarkdown;
 import ru.exlmoto.exchange.rate.impl.BankRu;
 import ru.exlmoto.exchange.rate.impl.BankUa;
 import ru.exlmoto.exchange.rate.impl.BankUaMirror;
@@ -21,7 +22,8 @@ import ru.exlmoto.exchange.rate.impl.MetalRuMirror;
 @EnableConfigurationProperties(ExchangeConfiguration.class)
 public class ExchangeService {
 	private final ExchangeConfiguration exchangeConfiguration;
-	private final LanguageService lang;
+
+	private final GeneratorMarkdown generatorMarkdown;
 
 	private final BankRu bankRu;
 	private final BankUa bankUa;
@@ -48,8 +50,10 @@ public class ExchangeService {
 			metalRuMirror.process(exchangeConfiguration.getMetalRuMirror());
 		}
 		log.info("=> End update exchanging rates.");
+	}
 
-		log.info(lang.i18n("test"));
+	public String mdBankRu() {
+		return generatorMarkdown.bankRuReport();
 	}
 
 	public void testAllSources() {

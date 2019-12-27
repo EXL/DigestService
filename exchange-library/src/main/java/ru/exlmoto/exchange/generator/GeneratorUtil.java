@@ -1,15 +1,16 @@
-package ru.exlmoto.exchange.service;
+package ru.exlmoto.exchange.generator;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class LanguageService {
+public class GeneratorUtil {
 	private final MessageSource messageSource;
 
 	@Value("${general.lang}")

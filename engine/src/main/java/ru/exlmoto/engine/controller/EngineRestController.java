@@ -15,7 +15,12 @@ public class EngineRestController {
 
 	@GetMapping("/")
 	public String home() {
-		return exchangeService.mdBankRu();
+		return
+			exchangeService.markdownBankRuReport() + "<br><br>" +
+			exchangeService.markdownBankUaReport() + "<br><br>" +
+			exchangeService.markdownBankByReport() + "<br><br>" +
+			exchangeService.markdownBankKzReport() + "<br><br>" +
+			exchangeService.markdownMetalRuReport() + "<br>";
 	}
 
 	@GetMapping("/refresh")

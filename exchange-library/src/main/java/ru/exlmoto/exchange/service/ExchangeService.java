@@ -52,8 +52,24 @@ public class ExchangeService {
 		log.info("=> End update exchanging rates.");
 	}
 
-	public String mdBankRu() {
+	public String markdownBankRuReport() {
 		return markdownGenerator.bankRuReport();
+	}
+
+	public String markdownBankUaReport() {
+		return markdownGenerator.bankUaReport();
+	}
+
+	public String markdownBankByReport() {
+		return markdownGenerator.bankByReport();
+	}
+
+	public String markdownBankKzReport() {
+		return markdownGenerator.bankKzReport();
+	}
+
+	public String markdownMetalRuReport() {
+		return markdownGenerator.metalRuReport();
 	}
 
 	public void testAllSources() {

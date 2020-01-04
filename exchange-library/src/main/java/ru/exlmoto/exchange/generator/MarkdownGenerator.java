@@ -39,7 +39,7 @@ public class MarkdownGenerator {
 		return (metalRuEntity.checkAllValues()) ? metalRuReportAux(metalRuEntity) : i18n("error.report");
 	}
 
-	public String metalRuReportAux(MetalRuEntity metalRuEntity) {
+	private String metalRuReportAux(MetalRuEntity metalRuEntity) {
 		String report = i18n("bank.ru");
 		String difference = getDifference(metalRuEntity.getPrev(), metalRuEntity.getGold());
 		if (difference != null) {
@@ -95,7 +95,7 @@ public class MarkdownGenerator {
 		return bankByEntity.checkAllValues() ? bankByReportAux(bankByEntity) : i18n("error.report");
 	}
 
-	public String bankByReportAux(BankByEntity bankByEntity) {
+	private String bankByReportAux(BankByEntity bankByEntity) {
 		String report = generalData(
 			i18n("bank.by"), "BYN", bankByEntity.getDate(),
 			bankByEntity.getUsd(), bankByEntity.getEur(), bankByEntity.getGbp(), bankByEntity.getPrev()
@@ -111,7 +111,7 @@ public class MarkdownGenerator {
 		return bankKzEntity.checkAllValues() ? bankKzReportAux(bankKzEntity) : i18n("error.report");
 	}
 
-	public String bankKzReportAux(BankKzEntity bankKzEntity) {
+	private String bankKzReportAux(BankKzEntity bankKzEntity) {
 		String report = generalData(
 			i18n("bank.kz"), "KZT", bankKzEntity.getDate(),
 			bankKzEntity.getUsd(), bankKzEntity.getEur(), bankKzEntity.getGbp(), bankKzEntity.getPrev()

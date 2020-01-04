@@ -100,8 +100,9 @@ public class MarkdownGenerator {
 	private String generalData(String header, String currency, String date,
 	                           BigDecimal usd, BigDecimal eur, BigDecimal gbp, BigDecimal prev) {
 		String general = header;
-		if (true) {
-			general += " " + i18n("change") + " " + getDifference(prev, usd);
+		String difference = getDifference(prev, usd);
+		if (difference != null) {
+			general += " " + i18n("change") + " " + difference;
 		}
 		general += "\n" + String.format(i18n("header"), filterDate(date));
 		general += "\n```\n";
@@ -112,10 +113,22 @@ public class MarkdownGenerator {
 	}
 
 	private String getDifference(BigDecimal prev, BigDecimal current) {
-		// Prev == null
-		// Prev == Current
-		// Prev == 0
-		return prev.toString();
+		if (prev == null || current == null) {
+			return null;
+		}
+		if ((prev.compareTo(BigDecimal.ZERO) == 0) || (current.compareTo(BigDecimal.ZERO) == 0)) {
+			return null;
+		}
+		if (prev.compareTo(current) == 0) {
+			return null;
+		}
+		return getDifferenceSign(prev.subtract(current));
+	}
+
+	private String getDifferenceSign(BigDecimal difference) {
+		return (difference.compareTo(BigDecimal.ZERO) < 0) ?
+			String.format("%.4f", difference) + " " + i18n("change.down") :
+			"+" + String.format("%.4f", difference) + " " + i18n("change.up");
 	}
 
 	private String filterValue(BigDecimal value) {

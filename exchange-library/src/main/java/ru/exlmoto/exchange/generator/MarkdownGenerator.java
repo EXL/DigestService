@@ -47,13 +47,13 @@ public class MarkdownGenerator {
 		}
 		report += "\n" + String.format(i18n("metal.header"), filterDate(metalRuEntity.getDate()));
 		report += "\n```\n";
-		report += String.format("%s %s RUB.", filterMetalName(i18n("metal.gold")),
+		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.gold")),
 			filterValue(metalRuEntity.getGold()));
-		report += String.format("%s %s RUB.", filterMetalName(i18n("metal.silver")),
+		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.silver")),
 			filterValue(metalRuEntity.getSilver()));
-		report += String.format("%s %s RUB.", filterMetalName(i18n("metal.platinum")),
+		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.platinum")),
 			filterValue(metalRuEntity.getPlatinum()));
-		report += String.format("%s %s RUB.", filterMetalName(i18n("metal.palladium")),
+		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.palladium")),
 			filterValue(metalRuEntity.getPalladium()));
 		return report + "```";
 	}
@@ -151,16 +151,17 @@ public class MarkdownGenerator {
 	}
 
 	private String getDifferenceSign(BigDecimal difference) {
+		String normalized = difference.toString();
 		return (difference.compareTo(BigDecimal.ZERO) < 0) ?
-			String.format("%.4f", difference) + " " + i18n("change.down") :
-			"+" + String.format("%.4f", difference) + " " + i18n("change.up");
+			normalized + " " + i18n("change.down") :
+			"+" + normalized + " " + i18n("change.up");
 	}
 
 	private String filterValue(BigDecimal value) {
 		if (value == null) {
 			return i18n("error.value");
 		}
-		return addTrailingSigns(String.format("%.4f", value), "0", 8);
+		return addTrailingSigns(String.format("%.4f", value), "0", 9);
 	}
 
 	private String filterMetalName(String name) {

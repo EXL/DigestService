@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.exchange.ExchangeConfiguration;
@@ -33,6 +34,7 @@ public class ExchangeService {
 	private final MetalRu metalRu;
 	private final MetalRuMirror metalRuMirror;
 
+	@Scheduled(cron = "${cron.exchange.update}")
 	public void updateAllRates() {
 		log.info("=> Start update exchanging rates.");
 		if (!bankRu.process(exchangeConfiguration.getBankRu())) {

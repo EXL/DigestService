@@ -153,8 +153,8 @@ public class MarkdownGenerator {
 	private String getDifferenceSign(BigDecimal difference) {
 		String normalized = difference.toString();
 		return (difference.compareTo(BigDecimal.ZERO) < 0) ?
-			normalized + " " + i18n("change.down") :
-			"+" + normalized + " " + i18n("change.up");
+			       normalized + " " + i18n("change.down") :
+			       "+" + normalized + " " + i18n("change.up");
 	}
 
 	private String filterValue(BigDecimal value) {

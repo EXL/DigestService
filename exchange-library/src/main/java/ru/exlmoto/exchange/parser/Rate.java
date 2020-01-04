@@ -61,15 +61,19 @@ public abstract class Rate {
 	}
 
 	private void parseDocument(Document document) {
-		Assert.notNull(document,"Document must not be null.");
+		Assert.notNull(document, "Document must not be null.");
 		date = parseDate(document);
 		parseDocumentAux(document);
 	}
 
 	protected abstract void parseDocumentAux(Document document);
+
 	protected abstract BigDecimal parseValueAux(Document document, String valueId);
+
 	protected abstract String parseDate(Document document);
+
 	protected abstract void commitParsedValues();
+
 	protected abstract void logParsedValues();
 
 	protected String filterCommas(String value) {

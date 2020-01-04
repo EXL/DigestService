@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.exchange.domain.BankByEntity;
-import ru.exlmoto.exchange.domain.BankKzEntity;
 import ru.exlmoto.exchange.domain.BankRuEntity;
 import ru.exlmoto.exchange.domain.BankUaEntity;
+import ru.exlmoto.exchange.domain.BankByEntity;
+import ru.exlmoto.exchange.domain.BankKzEntity;
+import ru.exlmoto.exchange.domain.MetalRuEntity;
 import ru.exlmoto.exchange.repository.BankRuRepository;
 import ru.exlmoto.exchange.repository.BankUaRepository;
 import ru.exlmoto.exchange.repository.BankByRepository;
@@ -32,6 +33,30 @@ public class MarkdownGenerator {
 	private final BankByRepository bankByRepository;
 	private final BankKzRepository bankKzRepository;
 	private final MetalRuRepository metalRuRepository;
+
+	public String metalRuReport() {
+		MetalRuEntity metalRuEntity = metalRuRepository.getMetalRu();
+		return (metalRuEntity.checkAllValues()) ? metalRuReportAux(metalRuEntity) : i18n("error.report");
+	}
+
+	public String metalRuReportAux(MetalRuEntity metalRuEntity) {
+		String report = i18n("bank.ru");
+		String difference = getDifference(metalRuEntity.getPrev(), metalRuEntity.getGold());
+		if (difference != null) {
+			report += " " + i18n("change") + " " + difference;
+		}
+		report += "\n" + String.format(i18n("metal.header"), filterDate(metalRuEntity.getDate()));
+		report += "\n```\n";
+		report += String.format("%s %s RUB.", filterMetalName(i18n("metal.gold")),
+			filterValue(metalRuEntity.getGold()));
+		report += String.format("%s %s RUB.", filterMetalName(i18n("metal.silver")),
+			filterValue(metalRuEntity.getSilver()));
+		report += String.format("%s %s RUB.", filterMetalName(i18n("metal.platinum")),
+			filterValue(metalRuEntity.getPlatinum()));
+		report += String.format("%s %s RUB.", filterMetalName(i18n("metal.palladium")),
+			filterValue(metalRuEntity.getPalladium()));
+		return report + "```";
+	}
 
 	public String bankRuReport() {
 		BankRuEntity bankRuEntity = bankRuRepository.getBankRu();
@@ -104,7 +129,7 @@ public class MarkdownGenerator {
 		if (difference != null) {
 			general += " " + i18n("change") + " " + difference;
 		}
-		general += "\n" + String.format(i18n("header"), filterDate(date));
+		general += "\n" + String.format(i18n("bank.header"), filterDate(date));
 		general += "\n```\n";
 		general += String.format("1 USD = %s %s.\n", filterValue(usd), currency);
 		general += String.format("1 EUR = %s %s.\n", filterValue(eur), currency);
@@ -135,8 +160,20 @@ public class MarkdownGenerator {
 		if (value == null) {
 			return i18n("error.value");
 		}
+		return addTrailingSigns(String.format("%.4f", value), "0", 8);
+	}
 
-		return value.toString();
+	private String filterMetalName(String name) {
+		return addTrailingSigns(name, " ", 10);
+	}
+
+	private String addTrailingSigns(String value, String sign, int limit) {
+		StringBuilder stringBuilder = new StringBuilder(value);
+		int start = value.length();
+		for (int i = start; i < limit; i++) {
+			stringBuilder.append(sign);
+		}
+		return stringBuilder.toString();
 	}
 
 	private String filterDate(String date) {

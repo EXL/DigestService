@@ -73,15 +73,4 @@ public class ExchangeService {
 	public String markdownMetalRuReport() {
 		return markdownGenerator.metalRuReport();
 	}
-
-	public void testAllSources() {
-		bankRu.process(exchangeConfiguration.getBankRu());
-		bankRu.process(exchangeConfiguration.getBankRuMirror());
-		bankUa.process(exchangeConfiguration.getBankUa());
-		bankUaMirror.process(exchangeConfiguration.getBankUaMirror());
-		bankBy.process(exchangeConfiguration.getBankBy());
-		bankKz.process(exchangeConfiguration.getBankKz());
-		metalRu.process(exchangeConfiguration.getMetalRu());
-		metalRuMirror.process(exchangeConfiguration.getMetalRuMirror());
-	}
 }

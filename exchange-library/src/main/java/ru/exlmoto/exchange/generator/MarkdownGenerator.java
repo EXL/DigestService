@@ -34,33 +34,34 @@ public class MarkdownGenerator {
 	private final BankKzRepository bankKzRepository;
 	private final MetalRuRepository metalRuRepository;
 
-	public String metalRuReport() {
-		MetalRuEntity metalRuEntity = metalRuRepository.getMetalRu();
-		return (metalRuEntity.checkAllValues()) ? metalRuReportAux(metalRuEntity) : i18n("error.report");
-	}
-
-	private String metalRuReportAux(MetalRuEntity metalRuEntity) {
-		String report = i18n("bank.ru");
-		String difference = getDifference(metalRuEntity.getPrev(), metalRuEntity.getGold());
-		if (difference != null) {
-			report += " " + i18n("change") + " " + difference;
-		}
-		report += "\n" + String.format(i18n("metal.header"), filterDate(metalRuEntity.getDate()));
-		report += "\n```\n";
-		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.gold")),
-			filterValue(metalRuEntity.getGold()));
-		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.silver")),
-			filterValue(metalRuEntity.getSilver()));
-		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.platinum")),
-			filterValue(metalRuEntity.getPlatinum()));
-		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.palladium")),
-			filterValue(metalRuEntity.getPalladium()));
-		return report + "```";
-	}
-
 	public String bankRuReport() {
 		BankRuEntity bankRuEntity = bankRuRepository.getBankRu();
-		return (bankRuEntity.checkAllValues()) ? bankRuReportAux(bankRuEntity) : i18n("error.report");
+		return (bankRuEntity != null && bankRuEntity.checkAllValues()) ?
+			bankRuReportAux(bankRuEntity) : i18n("error.report");
+	}
+
+	public String bankUaReport() {
+		BankUaEntity bankUaEntity = bankUaRepository.getBankUa();
+		return (bankUaEntity != null && bankUaEntity.checkAllValues()) ?
+			bankUaReportAux(bankUaEntity) : i18n("error.report");
+	}
+
+	public String metalRuReport() {
+		MetalRuEntity metalRuEntity = metalRuRepository.getMetalRu();
+		return (metalRuEntity != null && metalRuEntity.checkAllValues()) ?
+			metalRuReportAux(metalRuEntity) : i18n("error.report");
+	}
+
+	public String bankByReport() {
+		BankByEntity bankByEntity = bankByRepository.getBankBy();
+		return (bankByEntity != null && bankByEntity.checkAllValues()) ?
+			bankByReportAux(bankByEntity) : i18n("error.report");
+	}
+
+	public String bankKzReport() {
+		BankKzEntity bankKzEntity = bankKzRepository.getBankKz();
+		return (bankKzEntity != null && bankKzEntity.checkAllValues()) ?
+			bankKzReportAux(bankKzEntity) : i18n("error.report");
 	}
 
 	private String bankRuReportAux(BankRuEntity bankRuEntity) {
@@ -74,11 +75,6 @@ public class MarkdownGenerator {
 		return report + "```";
 	}
 
-	public String bankUaReport() {
-		BankUaEntity bankUaEntity = bankUaRepository.getBankUa();
-		return bankUaEntity.checkAllValues() ? bankUaReportAux(bankUaEntity) : i18n("error.report");
-	}
-
 	private String bankUaReportAux(BankUaEntity bankUaEntity) {
 		String report = generalData(
 			i18n("bank.ua"), "UAH", bankUaEntity.getDate(),
@@ -90,11 +86,6 @@ public class MarkdownGenerator {
 		return report + "```";
 	}
 
-	public String bankByReport() {
-		BankByEntity bankByEntity = bankByRepository.getBankBy();
-		return bankByEntity.checkAllValues() ? bankByReportAux(bankByEntity) : i18n("error.report");
-	}
-
 	private String bankByReportAux(BankByEntity bankByEntity) {
 		String report = generalData(
 			i18n("bank.by"), "BYN", bankByEntity.getDate(),
@@ -104,11 +95,6 @@ public class MarkdownGenerator {
 		report += String.format("1 UAH = %s BYN.\n", filterValue(bankByEntity.getUah()));
 		report += String.format("1 KZT = %s BYN.\n", filterValue(bankByEntity.getKzt()));
 		return report + "```";
-	}
-
-	public String bankKzReport() {
-		BankKzEntity bankKzEntity = bankKzRepository.getBankKz();
-		return bankKzEntity.checkAllValues() ? bankKzReportAux(bankKzEntity) : i18n("error.report");
 	}
 
 	private String bankKzReportAux(BankKzEntity bankKzEntity) {
@@ -137,6 +123,25 @@ public class MarkdownGenerator {
 		return general;
 	}
 
+	private String metalRuReportAux(MetalRuEntity metalRuEntity) {
+		String report = i18n("bank.ru");
+		String difference = getDifference(metalRuEntity.getPrev(), metalRuEntity.getGold());
+		if (difference != null) {
+			report += " " + i18n("change") + " " + difference;
+		}
+		report += "\n" + String.format(i18n("metal.header"), filterDate(metalRuEntity.getDate()));
+		report += "\n```\n";
+		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.gold")),
+			filterValue(metalRuEntity.getGold()));
+		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.silver")),
+			filterValue(metalRuEntity.getSilver()));
+		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.platinum")),
+			filterValue(metalRuEntity.getPlatinum()));
+		report += String.format("%s %s RUB.\n", filterMetalName(i18n("metal.palladium")),
+			filterValue(metalRuEntity.getPalladium()));
+		return report + "```";
+	}
+
 	private String getDifference(BigDecimal prev, BigDecimal current) {
 		if (prev == null || current == null) {
 			return null;
@@ -153,8 +158,8 @@ public class MarkdownGenerator {
 	private String getDifferenceSign(BigDecimal difference) {
 		String normalized = difference.toString();
 		return (difference.compareTo(BigDecimal.ZERO) < 0) ?
-			       normalized + " " + i18n("change.down") :
-			       "+" + normalized + " " + i18n("change.up");
+			normalized + " " + i18n("change.down") :
+			"+" + normalized + " " + i18n("change.up");
 	}
 
 	private String filterValue(BigDecimal value) {

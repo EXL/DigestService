@@ -1,4 +1,4 @@
-package ru.exlmoto.exchange.domain;
+package ru.exlmoto.exchange.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,4 +36,3 @@ public class BankByEntity {
 		return usd != null || eur != null || kzt != null || uah != null || rub != null || gbp != null;
 	}
 }
-

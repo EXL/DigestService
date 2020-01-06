@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.exchange.domain.BankRuEntity;
-import ru.exlmoto.exchange.domain.BankUaEntity;
-import ru.exlmoto.exchange.domain.BankByEntity;
-import ru.exlmoto.exchange.domain.BankKzEntity;
-import ru.exlmoto.exchange.domain.MetalRuEntity;
+import ru.exlmoto.exchange.entity.BankRuEntity;
+import ru.exlmoto.exchange.entity.BankUaEntity;
+import ru.exlmoto.exchange.entity.BankByEntity;
+import ru.exlmoto.exchange.entity.BankKzEntity;
+import ru.exlmoto.exchange.entity.MetalRuEntity;
 import ru.exlmoto.exchange.repository.BankRuRepository;
 import ru.exlmoto.exchange.repository.BankUaRepository;
 import ru.exlmoto.exchange.repository.BankByRepository;

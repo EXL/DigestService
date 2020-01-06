@@ -1,4 +1,4 @@
-package ru.exlmoto.exchange.domain;
+package ru.exlmoto.exchange.entity;
 
 import lombok.Getter;
 import lombok.Setter;

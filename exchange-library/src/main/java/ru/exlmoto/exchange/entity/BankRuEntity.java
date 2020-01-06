@@ -1,4 +1,4 @@
-package ru.exlmoto.exchange.domain;
+package ru.exlmoto.exchange.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,20 +17,22 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "exchange_metal_ru")
-public class MetalRuEntity {
+@Table(name = "exchange_bank_ru")
+public class BankRuEntity {
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
 	@Id
 	private final int id = 1;
 	private String date;
-	private BigDecimal gold;
-	private BigDecimal silver;
-	private BigDecimal platinum;
-	private BigDecimal palladium;
+	private BigDecimal usd;
+	private BigDecimal eur;
+	private BigDecimal kzt;
+	private BigDecimal byn;
+	private BigDecimal uah;
+	private BigDecimal gbp;
 	private BigDecimal prev;
 
 	public boolean checkAllValues() {
-		return gold != null || silver != null || platinum != null || palladium != null;
+		return usd != null || eur != null || byn != null || uah != null || kzt != null || gbp != null;
 	}
 }

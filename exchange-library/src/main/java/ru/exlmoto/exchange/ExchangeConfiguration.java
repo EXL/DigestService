@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import ru.exlmoto.exchange.domain.BankRuEntity;
+import ru.exlmoto.exchange.entity.BankRuEntity;
 import ru.exlmoto.exchange.repository.BankRuRepository;
 
 @Setter

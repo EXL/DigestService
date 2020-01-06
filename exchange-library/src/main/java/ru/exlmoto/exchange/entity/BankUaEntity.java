@@ -1,4 +1,4 @@
-package ru.exlmoto.exchange.domain;
+package ru.exlmoto.exchange.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +17,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "exchange_bank_ru")
-public class BankRuEntity {
+@Table(name = "exchange_bank_ua")
+public class BankUaEntity {
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
 	@Id
@@ -28,11 +28,11 @@ public class BankRuEntity {
 	private BigDecimal eur;
 	private BigDecimal kzt;
 	private BigDecimal byn;
-	private BigDecimal uah;
+	private BigDecimal rub;
 	private BigDecimal gbp;
 	private BigDecimal prev;
 
 	public boolean checkAllValues() {
-		return usd != null || eur != null || byn != null || uah != null || kzt != null || gbp != null;
+		return usd != null || eur != null || byn != null || kzt != null || rub != null || gbp != null;
 	}
 }

@@ -22,7 +22,7 @@ import ru.exlmoto.exchange.parser.impl.MetalRuMirror;
 @Service
 @EnableConfigurationProperties(ExchangeConfiguration.class)
 public class ExchangeService {
-	private final ExchangeConfiguration exchangeConfiguration;
+	private final ExchangeConfiguration configuration;
 
 	private final MarkdownGenerator markdownGenerator;
 
@@ -37,19 +37,19 @@ public class ExchangeService {
 	@Scheduled(cron = "${cron.exchange.update}")
 	public void updateAllRates() {
 		log.info("=> Start update exchanging rates.");
-		if (!bankRu.process(exchangeConfiguration.getBankRu())) {
+		if (!bankRu.process(configuration.getBankRu())) {
 			log.info("==> Using BankRuMirror.");
-			bankRu.process(exchangeConfiguration.getBankRuMirror());
+			bankRu.process(configuration.getBankRuMirror());
 		}
-		if (!bankUa.process(exchangeConfiguration.getBankUa())) {
+		if (!bankUa.process(configuration.getBankUa())) {
 			log.info("==> Using BankUaMirror.");
-			bankUaMirror.process(exchangeConfiguration.getBankUaMirror());
+			bankUaMirror.process(configuration.getBankUaMirror());
 		}
-		bankBy.process(exchangeConfiguration.getBankBy());
-		bankKz.process(exchangeConfiguration.getBankKz());
-		if (!metalRu.process(exchangeConfiguration.getMetalRu())) {
+		bankBy.process(configuration.getBankBy());
+		bankKz.process(configuration.getBankKz());
+		if (!metalRu.process(configuration.getMetalRu())) {
 			log.info("==> Using MetalRuMirror.");
-			metalRuMirror.process(exchangeConfiguration.getMetalRuMirror());
+			metalRuMirror.process(configuration.getMetalRuMirror());
 		}
 		log.info("=> End update exchanging rates.");
 	}

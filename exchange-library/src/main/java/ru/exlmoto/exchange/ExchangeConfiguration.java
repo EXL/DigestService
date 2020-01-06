@@ -5,7 +5,6 @@ import lombok.Setter;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import ru.exlmoto.exchange.domain.BankRuEntity;
@@ -13,7 +12,6 @@ import ru.exlmoto.exchange.repository.BankRuRepository;
 
 @Setter
 @Getter
-@Configuration
 @ConfigurationProperties("exchange")
 @EnableJpaRepositories(basePackageClasses = BankRuRepository.class)
 @EntityScan(basePackageClasses = BankRuEntity.class)

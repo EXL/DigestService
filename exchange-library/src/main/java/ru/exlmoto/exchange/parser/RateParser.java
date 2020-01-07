@@ -1,6 +1,8 @@
 package ru.exlmoto.exchange.parser;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.jsoup.Jsoup;
@@ -13,12 +15,16 @@ import java.math.BigDecimal;
 
 @Slf4j
 @Getter
+@Setter
 public abstract class RateParser {
+	@Setter(AccessLevel.NONE)
 	protected String date = null;
+	protected boolean mirror = false;
 
 	public boolean parse(String content) {
 		try {
-			processAux(content);
+			Assert.isTrue(StringUtils.isEmpty(content), "Processing: Received content is null/empty.");
+			parseDocument(Jsoup.parse(content));
 		} catch (Exception e) {
 			log.error(String.format("Error while parsing document. Start: '%s'.", chopString(content)));
 			return false;
@@ -32,12 +38,6 @@ public abstract class RateParser {
 			return StringUtils.trimAllWhitespace(content);
 		}
 		return StringUtils.trimAllWhitespace(content.substring(0, SMALL_STRING_SIZE));
-	}
-
-	private void processAux(String content) {
-		Assert.isTrue(StringUtils.isEmpty(content), "Processing: Received content is null/empty.");
-		parseDocument(Jsoup.parse(content));
-		logParsedValues();
 	}
 
 	protected BigDecimal parseValue(Document document, String valueId) {
@@ -61,7 +61,7 @@ public abstract class RateParser {
 
 	protected abstract String parseDate(Document document);
 
-	protected abstract void logParsedValues();
+	public abstract void logParsedValues();
 
 	protected String filterCommas(String value) {
 		return value.replaceAll(",", ".");

@@ -36,7 +36,7 @@ public class BankKzParser extends BankParser {
 	}
 
 	@Override
-	protected void logParsedValues() {
+	public void logParsedValues() {
 		log.info(String.format(
 				"===> Date: %s, USD: %s, EUR: %s, RUB: %s, BYN: %s, UAH: %s, GBP: %s",
 				date, usd, eur, rub, byn, uah, gbp

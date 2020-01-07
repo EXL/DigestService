@@ -6,17 +6,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.exchange.generator.MarkdownGenerator;
-import ru.exlmoto.exchange.manager.RateManager;
+import ru.exlmoto.exchange.manager.RateGeneralManager;
 
 @RequiredArgsConstructor
 @Service
 public class ExchangeService {
 	private final MarkdownGenerator markdownGenerator;
-	private final RateManager rateManager;
+	private final RateGeneralManager rateGeneralManager;
 
 	@Scheduled(cron = "${cron.exchange.update}")
 	public void updateAllRates() {
-		rateManager.commitAllRates();
+		rateGeneralManager.commitAllRates();
 	}
 
 	public String markdownBankRuReport() {

@@ -38,7 +38,7 @@ public class MetalRuParser extends MetalParser {
 	}
 
 	@Override
-	protected void logParsedValues() {
+	public void logParsedValues() {
 		log.info(String.format(
 				"===> Date: %s, Gold: %s, Silver: %s, Platinum: %s, Palladium: %s",
 				date, gold, silver, platinum, palladium

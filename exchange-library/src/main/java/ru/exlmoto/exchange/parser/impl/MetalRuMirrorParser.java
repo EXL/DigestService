@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class MetalRuMirrorParser extends MetalRuParser {
 	@Override
 	protected void parseDocumentAux(Document document) {
+		mirror = true;
 		gold = parseValue(document, "1");
 		silver = parseValue(document, "2");
 		platinum = parseValue(document, "3");

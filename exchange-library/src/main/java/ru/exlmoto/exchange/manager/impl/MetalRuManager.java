@@ -1,7 +1,6 @@
 package ru.exlmoto.exchange.manager.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
 
@@ -10,30 +9,30 @@ import ru.exlmoto.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.exchange.repository.MetalRuRepository;
 import ru.exlmoto.exchange.manager.RestManager;
+import ru.exlmoto.exchange.manager.RateManager;
 
 import java.math.BigDecimal;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
-public class MetalRuManager {
+public class MetalRuManager extends RateManager {
 	private final MetalRuRepository metalRuRepository;
 
+	@Override
 	public void commitRates(String url, String mirror) {
 		MetalRuParser metalRuParser = new MetalRuParser();
 		if (metalRuParser.parse(new RestManager().getRawContent(url))) {
-			log.info("==> Using MetalRuParser.");
 			commitAux(metalRuParser);
 		} else {
 			MetalRuMirrorParser metalRuMirrorParser = new MetalRuMirrorParser();
 			if (metalRuMirrorParser.parse(new RestManager().getRawContent(mirror))) {
-				log.info("==> Using mirror MetalRuMirrorParser.");
 				commitAux(metalRuMirrorParser);
 			}
 		}
 	}
 
 	private void commitAux(MetalRuParser parser) {
+		logRates(parser);
 		BigDecimal prevGold = null;
 		MetalRuEntity metalRuEntityFromDb = metalRuRepository.getMetalRu();
 		if (metalRuEntityFromDb != null) {

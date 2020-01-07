@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class BankUaMirrorParser extends BankUaParser {
 	@Override
 	protected void parseDocumentAux(Document document) {
+		mirror = true;
 		usd = parseValue(document, "6");
 		eur = parseValue(document, "8");
 		kzt = parseValue(document, "10");

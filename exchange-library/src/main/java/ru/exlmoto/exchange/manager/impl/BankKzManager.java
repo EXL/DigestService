@@ -1,7 +1,6 @@
 package ru.exlmoto.exchange.manager.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
 
@@ -9,36 +8,41 @@ import ru.exlmoto.exchange.entity.BankKzEntity;
 import ru.exlmoto.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.exchange.repository.BankKzRepository;
 import ru.exlmoto.exchange.manager.RestManager;
+import ru.exlmoto.exchange.manager.RateManager;
 
 import java.math.BigDecimal;
 
-@Slf4j
-@Component
 @RequiredArgsConstructor
-public class BankKzManager {
+@Component
+public class BankKzManager extends RateManager {
 	private final BankKzRepository bankKzRepository;
 
-	public void commitRates(String url) {
+	@Override
+	public void commitRates(String url, String mirror) {
 		BankKzParser bankKzParser = new BankKzParser();
 		if (bankKzParser.parse(new RestManager().getRawContent(url))) {
-			log.info("==> Using BankKzParser.");
-			BigDecimal prevUsd = null;
-			BankKzEntity bankKzEntityFromDb = bankKzRepository.getBankKz();
-			if (bankKzEntityFromDb != null) {
-				prevUsd = bankKzEntityFromDb.getUsd();
-			}
-			bankKzRepository.save(
-				new BankKzEntity(
-					bankKzParser.getDate(),
-					bankKzParser.getUsd(),
-					bankKzParser.getEur(),
-					bankKzParser.getRub(),
-					bankKzParser.getByn(),
-					bankKzParser.getUah(),
-					bankKzParser.getGbp(),
-					(prevUsd == null) ? bankKzParser.getUsd() : prevUsd
-				)
-			);
+			commitAux(bankKzParser);
 		}
+	}
+
+	private void commitAux(BankKzParser parser) {
+		logRates(parser);
+		BigDecimal prevUsd = null;
+		BankKzEntity bankKzEntityFromDb = bankKzRepository.getBankKz();
+		if (bankKzEntityFromDb != null) {
+			prevUsd = bankKzEntityFromDb.getUsd();
+		}
+		bankKzRepository.save(
+			new BankKzEntity(
+				parser.getDate(),
+				parser.getUsd(),
+				parser.getEur(),
+				parser.getRub(),
+				parser.getByn(),
+				parser.getUah(),
+				parser.getGbp(),
+				(prevUsd == null) ? parser.getUsd() : prevUsd
+			)
+		);
 	}
 }

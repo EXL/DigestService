@@ -16,11 +16,12 @@ import java.math.BigDecimal;
 @Component
 public class BankKzManager extends RateManager {
 	private final BankKzRepository bankKzRepository;
+	private final RestManager restManager;
 
 	@Override
 	public void commitRates(String url, String mirror) {
 		BankKzParser bankKzParser = new BankKzParser();
-		if (bankKzParser.parse(new RestManager().getRawContent(url))) {
+		if (bankKzParser.parse(restManager.getContent(url))) {
 			commitAux(bankKzParser);
 		}
 	}

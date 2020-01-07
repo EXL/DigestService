@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,10 +13,11 @@ import java.io.IOException;
 import java.time.Duration;
 
 @Slf4j
+@Component
 public class RestManager {
 	private final int TIMEOUT = 15;
 
-	public String getRawContent(String url) {
+	public String getContent(String url) {
 		try {
 			return getRawContentJsoup(url);
 		} catch (Exception e) {

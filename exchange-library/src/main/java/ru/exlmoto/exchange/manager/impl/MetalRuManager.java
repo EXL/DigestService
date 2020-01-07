@@ -13,19 +13,20 @@ import ru.exlmoto.exchange.manager.RateManager;
 
 import java.math.BigDecimal;
 
-@Component
 @RequiredArgsConstructor
+@Component
 public class MetalRuManager extends RateManager {
 	private final MetalRuRepository metalRuRepository;
+	private final RestManager restManager;
 
 	@Override
 	public void commitRates(String url, String mirror) {
 		MetalRuParser metalRuParser = new MetalRuParser();
-		if (metalRuParser.parse(new RestManager().getRawContent(url))) {
+		if (metalRuParser.parse(restManager.getContent(url))) {
 			commitAux(metalRuParser);
 		} else {
 			MetalRuMirrorParser metalRuMirrorParser = new MetalRuMirrorParser();
-			if (metalRuMirrorParser.parse(new RestManager().getRawContent(mirror))) {
+			if (metalRuMirrorParser.parse(restManager.getContent(mirror))) {
 				commitAux(metalRuMirrorParser);
 			}
 		}

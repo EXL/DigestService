@@ -14,8 +14,8 @@ import ru.exlmoto.exchange.manager.impl.BankUaManager;
 import ru.exlmoto.exchange.manager.impl.MetalRuManager;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
+@Component
 @EnableConfigurationProperties(ExchangeConfiguration.class)
 public class RateGeneralManager {
 	private final ExchangeConfiguration config;

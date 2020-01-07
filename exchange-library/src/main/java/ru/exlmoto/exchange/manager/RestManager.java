@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.time.Duration;
 
 @Slf4j
@@ -40,7 +39,7 @@ public class RestManager {
 		return rawData;
 	}
 
-	private String getRawContentJsoup(String url) throws IOException {
+	private String getRawContentJsoup(String url) throws Exception {
 		String rawData = Jsoup.connect(url).timeout(TIMEOUT_SEC * 1000).get().outerHtml();
 		Assert.notNull(rawData, "Jsoup: Received raw data is null.");
 		return rawData;

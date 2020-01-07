@@ -14,7 +14,7 @@ public class ExchangeService {
 	private final MarkdownGenerator markdownGenerator;
 	private final RateGeneralManager rateGeneralManager;
 
-	@Scheduled(cron = "${cron.exchange.update}")
+	@Scheduled(cron = "${exchange.cron.update}")
 	public void updateAllRates() {
 		rateGeneralManager.commitAllRates();
 	}

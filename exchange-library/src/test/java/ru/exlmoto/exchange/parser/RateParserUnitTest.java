@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.exlmoto.exchange.parser.helper.InnerFileHelper;
 import ru.exlmoto.exchange.parser.helper.RateParserHelper;
 import ru.exlmoto.exchange.parser.impl.BankRuParser;
+import ru.exlmoto.exchange.parser.impl.BankUaMirrorParser;
 import ru.exlmoto.exchange.parser.impl.BankUaParser;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,6 +42,17 @@ public class RateParserUnitTest {
 		assertFalse(p.test(new BankUaParser(), f.content("bankUaIncomplete.xml")));
 
 		generalTests(new BankUaParser());
+	}
+
+	@Test
+	public void testBankUaMirrorParser() {
+		assertTrue(p.test(new BankUaMirrorParser(), f.content("bankUaAlt.xml", "Windows-1251")));
+		assertTrue(p.test(new BankUaMirrorParser(), f.content("bankUaAlt.xml")));
+		assertFalse(p.test(new BankUaMirrorParser(), f.content("bankUaAltChunk.xml", "Windows-1251")));
+		assertTrue(p.test(new BankUaMirrorParser(), f.content("bankUaAltError.xml", "Windows-1251")));
+		assertFalse(p.test(new BankUaMirrorParser(), f.content("bankUaAltErrors.xml", "Windows-1251")));
+
+		generalTests(new BankUaMirrorParser());
 	}
 
 	private void generalTests(RateParser parser) {

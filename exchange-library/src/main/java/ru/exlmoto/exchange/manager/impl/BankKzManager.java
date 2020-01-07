@@ -1,6 +1,7 @@
 package ru.exlmoto.exchange.manager.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import ru.exlmoto.exchange.manager.RestManager;
 
 import java.math.BigDecimal;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class BankKzManager {
@@ -19,6 +21,7 @@ public class BankKzManager {
 	public void commitRates(String url) {
 		BankKzParser bankKzParser = new BankKzParser();
 		if (bankKzParser.parse(new RestManager().getRawContent(url))) {
+			log.info("==> Using BankKzParser.");
 			BigDecimal prevUsd = null;
 			BankKzEntity bankKzEntityFromDb = bankKzRepository.getBankKz();
 			if (bankKzEntityFromDb != null) {

@@ -1,6 +1,7 @@
 package ru.exlmoto.exchange.manager.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import ru.exlmoto.exchange.manager.RestManager;
 
 import java.math.BigDecimal;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class BankRuManager {
@@ -18,25 +20,35 @@ public class BankRuManager {
 
 	public void commitRates(String url, String mirror) {
 		BankRuParser bankRuParser = new BankRuParser();
-		if (bankRuParser.parse(new RestManager().getRawContent(url)) ||
-			bankRuParser.parse(new RestManager().getRawContent(mirror))) {
-			BigDecimal prevUsd = null;
-			BankRuEntity bankRuEntityFromDb = bankRuRepository.getBankRu();
-			if (bankRuEntityFromDb != null) {
-				prevUsd = bankRuEntityFromDb.getUsd();
+		if (bankRuParser.parse(new RestManager().getRawContent(url))) {
+			log.info("==> Using BankRuParser.");
+			commitAux(bankRuParser);
+		} else {
+			BankRuParser bankRuMirrorParser = new BankRuParser();
+			if (bankRuMirrorParser.parse(new RestManager().getRawContent(mirror))) {
+				log.info("==> Using mirror BankRuParser.");
+				commitAux(bankRuMirrorParser);
 			}
-			bankRuRepository.save(
-				new BankRuEntity(
-					bankRuParser.getDate(),
-					bankRuParser.getUsd(),
-					bankRuParser.getEur(),
-					bankRuParser.getKzt(),
-					bankRuParser.getKzt(),
-					bankRuParser.getUah(),
-					bankRuParser.getGbp(),
-					(prevUsd == null) ? bankRuParser.getUsd() : prevUsd
-				)
-			);
 		}
+	}
+
+	private void commitAux(BankRuParser parser) {
+		BigDecimal prevUsd = null;
+		BankRuEntity bankRuEntityFromDb = bankRuRepository.getBankRu();
+		if (bankRuEntityFromDb != null) {
+			prevUsd = bankRuEntityFromDb.getUsd();
+		}
+		bankRuRepository.save(
+			new BankRuEntity(
+				parser.getDate(),
+				parser.getUsd(),
+				parser.getEur(),
+				parser.getKzt(),
+				parser.getKzt(),
+				parser.getUah(),
+				parser.getGbp(),
+				(prevUsd == null) ? parser.getUsd() : prevUsd
+			)
+		);
 	}
 }

@@ -1,6 +1,7 @@
 package ru.exlmoto.exchange.manager.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import ru.exlmoto.exchange.manager.RestManager;
 
 import java.math.BigDecimal;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MetalRuManager {
@@ -20,10 +22,12 @@ public class MetalRuManager {
 	public void commitRates(String url, String mirror) {
 		MetalRuParser metalRuParser = new MetalRuParser();
 		if (metalRuParser.parse(new RestManager().getRawContent(url))) {
+			log.info("==> Using MetalRuParser.");
 			commitAux(metalRuParser);
 		} else {
 			MetalRuMirrorParser metalRuMirrorParser = new MetalRuMirrorParser();
 			if (metalRuMirrorParser.parse(new RestManager().getRawContent(mirror))) {
+				log.info("==> Using mirror MetalRuMirrorParser.");
 				commitAux(metalRuMirrorParser);
 			}
 		}

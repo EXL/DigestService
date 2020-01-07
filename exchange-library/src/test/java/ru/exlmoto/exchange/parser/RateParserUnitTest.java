@@ -15,18 +15,28 @@ public class RateParserUnitTest {
 
 	@Test
 	public void testBankRuParser() {
-		assertTrue(p.process(new BankRuParser(), f.content("bankRu.xml", "Windows-1251")));
-		assertTrue(p.process(new BankRuParser(), f.content("bankRu.xml")));
-		assertFalse(p.process(new BankRuParser(), f.content("bankRuChunk.xml", "Windows-1251")));
-		assertTrue(p.process(new BankRuParser(), f.content("bankRuError.xml", "Windows-1251")));
-		assertFalse(p.process(new BankRuParser(), f.content("bankRuErrorAll.xml", "Windows-1251")));
+		assertTrue(p.test(new BankRuParser(), f.content("bankRu.xml", "Windows-1251")));
+		assertTrue(p.test(new BankRuParser(), f.content("bankRu.xml")));
+		assertFalse(p.test(new BankRuParser(), f.content("bankRuChunk.xml", "Windows-1251")));
+		assertTrue(p.test(new BankRuParser(), f.content("bankRuError.xml", "Windows-1251")));
+		assertFalse(p.test(new BankRuParser(), f.content("bankRuErrors.xml", "Windows-1251")));
 
-		assertFalse(p.process(new BankRuParser(), "mulfunction data"));
-		// assertFalse(p.process(new BankRuParser(), "mulfunction\ndata"));
-		// assertFalse(p.process(new BankRuParser(), "mulfunction\t\ndata"));
-		// assertFalse(p.process(new BankRuParser(), "mulfunction\t\r\ndata"));
-		// assertFalse(p.process(new BankRuParser(), "mulfunction\t\t\t\t\n\r\n\r\ndata"));
-		assertFalse(p.process(new BankRuParser(), ""));
-		assertFalse(p.process(new BankRuParser(), null));
+		assertTrue(p.test(new BankRuParser(), f.content("bankRuAlt.xml", "Windows-1251")));
+		assertTrue(p.test(new BankRuParser(), f.content("bankRuAlt.xml")));
+		assertFalse(p.test(new BankRuParser(), f.content("bankRuAltChunk.xml", "Windows-1251")));
+		assertTrue(p.test(new BankRuParser(), f.content("bankRuAltError.xml", "Windows-1251")));
+		assertFalse(p.test(new BankRuParser(), f.content("bankRuAltErrors.xml", "Windows-1251")));
+
+		generalTests(new BankRuParser());
+	}
+
+	private void generalTests(RateParser parser) {
+		assertFalse(p.test(parser, "mulfunction data"));
+		assertFalse(p.test(parser, "mulfunction\ndata"));
+		assertFalse(p.test(parser, "mulfunction\t\ndata"));
+		assertFalse(p.test(parser, "mulfunction\t\r\ndata"));
+		assertFalse(p.test(parser, "mulfunction\t\t\t\t\n\r\n\r\ndata"));
+		assertFalse(p.test(parser, ""));
+		assertFalse(p.test(parser, null));
 	}
 }

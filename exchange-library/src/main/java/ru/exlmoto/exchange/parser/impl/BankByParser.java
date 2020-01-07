@@ -25,7 +25,7 @@ public class BankByParser extends BankParser {
 	protected BigDecimal parseValueAux(Document document, String valueId) {
 		Element element = document.selectFirst("Currency[Id=" + valueId + "]");
 		BigDecimal nominal = new BigDecimal(filterCommas(element.selectFirst("Scale").text()));
-		BigDecimal value = new BigDecimal(filterCommas(element.selectFirst("RateParser").text()));
+		BigDecimal value = new BigDecimal(filterCommas(element.selectFirst("Rate").text()));
 		return value.divide(nominal, BigDecimal.ROUND_FLOOR);
 	}
 

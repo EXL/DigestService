@@ -23,21 +23,23 @@ public abstract class RateParser {
 
 	public boolean parse(String content) {
 		try {
-			Assert.isTrue(StringUtils.isEmpty(content), "Processing: Received content is null/empty.");
 			parseDocument(Jsoup.parse(content));
 		} catch (Exception e) {
-			log.error(String.format("Error while parsing document. Start: '%s'.", chopString(content)));
+			log.error(String.format("Error while parsing document. Chunk: '%s'.", chopContent(content)), e);
 			return false;
 		}
 		return true;
 	}
 
-	private String chopString(String content) {
-		int SMALL_STRING_SIZE = 40;
-		if (content.length() < SMALL_STRING_SIZE) {
-			return StringUtils.trimAllWhitespace(content);
+	private String chopContent(String content) {
+		if (!StringUtils.isEmpty(content)) {
+			int SMALL_STRING_SIZE = 40;
+			if (content.length() < SMALL_STRING_SIZE) {
+				return StringUtils.trimAllWhitespace(content);
+			}
+			return StringUtils.trimAllWhitespace(content.substring(0, SMALL_STRING_SIZE));
 		}
-		return StringUtils.trimAllWhitespace(content.substring(0, SMALL_STRING_SIZE));
+		return "Received content is null/empty";
 	}
 
 	protected BigDecimal parseValue(Document document, String valueId) {

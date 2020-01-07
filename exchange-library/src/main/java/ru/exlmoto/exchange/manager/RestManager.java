@@ -15,7 +15,7 @@ import java.time.Duration;
 @Slf4j
 @Component
 public class RestManager {
-	private final int TIMEOUT = 15;
+	private final int TIMEOUT_SEC = 15;
 
 	public String getContent(String url) {
 		try {
@@ -32,14 +32,16 @@ public class RestManager {
 	}
 
 	private String getRawContentSpring(String url) {
-		RestTemplate restTemplate = new RestTemplateBuilder().setConnectTimeout(Duration.ofSeconds(TIMEOUT)).build();
+		RestTemplate restTemplate = new RestTemplateBuilder().setConnectTimeout(
+			Duration.ofSeconds(TIMEOUT_SEC)
+		).build();
 		String rawData = restTemplate.getForObject(url, String.class);
 		Assert.notNull(rawData, "Spring RestTemplate: Received raw data is null.");
 		return rawData;
 	}
 
 	private String getRawContentJsoup(String url) throws IOException {
-		String rawData = Jsoup.connect(url).timeout(TIMEOUT).get().outerHtml();
+		String rawData = Jsoup.connect(url).timeout(TIMEOUT_SEC * 1000).get().outerHtml();
 		Assert.notNull(rawData, "Jsoup: Received raw data is null.");
 		return rawData;
 	}

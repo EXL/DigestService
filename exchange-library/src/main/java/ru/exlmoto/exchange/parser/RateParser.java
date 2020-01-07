@@ -36,9 +36,9 @@ public abstract class RateParser {
 	private String chopContent(String content) {
 		int SMALL_STRING_SIZE = 40;
 		if (content.length() < SMALL_STRING_SIZE) {
-			return StringUtils.trimAllWhitespace(content);
+			return filterLines(content);
 		}
-		return StringUtils.trimAllWhitespace(content.substring(0, SMALL_STRING_SIZE));
+		return filterLines(content.substring(0, SMALL_STRING_SIZE));
 	}
 
 	protected BigDecimal parseValue(Document document, String valueId) {
@@ -64,6 +64,10 @@ public abstract class RateParser {
 	protected abstract String parseDate(Document document);
 
 	public abstract void logParsedValues();
+
+	private String filterLines(String value) {
+		return value.replaceAll("[\\t\\n\\r]+"," ").trim();
+	}
 
 	protected String filterCommas(String value) {
 		return value.replaceAll(",", ".");

@@ -27,7 +27,11 @@ public abstract class RateParser {
 				return parseDocument(Jsoup.parse(content));
 			} catch (Exception e) {
 				log.error(String.format("Error while parsing document. Chunk: '%s'.", chopContent(content)), e);
-				return false;
+				/*
+				 * Uncomment the line below to be able to get values from part of the document. It may be dangerous
+				 * because some services give you a chunk of data, while on the mirror you can get all the values.
+				 */
+				// return checkParsedValues();
 			}
 		}
 		return false;

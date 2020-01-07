@@ -1,25 +1,16 @@
 package ru.exlmoto.exchange.parser.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import org.springframework.stereotype.Component;
-
-import ru.exlmoto.exchange.entity.BankKzEntity;
-import ru.exlmoto.exchange.parser.Bank;
-import ru.exlmoto.exchange.repository.BankKzRepository;
+import ru.exlmoto.exchange.parser.BankParser;
 
 import java.math.BigDecimal;
 
 @Slf4j
-@RequiredArgsConstructor
-@Component
-public class BankKz extends Bank {
-	private final BankKzRepository repository;
-
+public class BankKzParser extends BankParser {
 	@Override
 	protected void parseDocumentAux(Document document) {
 		usd = parseValue(document, "USD");
@@ -42,16 +33,6 @@ public class BankKz extends Bank {
 	protected String parseDate(Document document) {
 		Element element = document.selectFirst("title:contains(USD)").parent();
 		return element.selectFirst("pubDate").text();
-	}
-
-	@Override
-	protected void commitParsedValues() {
-		BigDecimal prevUsd = null;
-		BankKzEntity bankKzEntityFromDb = repository.getBankKz();
-		if (bankKzEntityFromDb != null) {
-			prevUsd = bankKzEntityFromDb.getUsd();
-		}
-		repository.save(new BankKzEntity(date, usd, eur, rub, byn, uah, gbp, (prevUsd == null) ? usd : prevUsd));
 	}
 
 	@Override

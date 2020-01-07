@@ -1,25 +1,16 @@
 package ru.exlmoto.exchange.parser.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import org.springframework.stereotype.Component;
-
-import ru.exlmoto.exchange.entity.MetalRuEntity;
-import ru.exlmoto.exchange.parser.Metal;
-import ru.exlmoto.exchange.repository.MetalRuRepository;
+import ru.exlmoto.exchange.parser.MetalParser;
 
 import java.math.BigDecimal;
 
 @Slf4j
-@RequiredArgsConstructor
-@Component
-public class MetalRu extends Metal {
-	private final MetalRuRepository repository;
-
+public class MetalRuParser extends MetalParser {
 	@Override
 	protected void parseDocumentAux(Document document) {
 		gold = parseValue(document, "1");
@@ -44,17 +35,6 @@ public class MetalRu extends Metal {
 	protected String parseDate(Document document) {
 		Element element = document.getElementsByClass("table").first();
 		return element.select("tr").get(1).selectFirst("td").text();
-	}
-
-	@Override
-	protected void commitParsedValues() {
-		BigDecimal prevGold = null;
-		MetalRuEntity metalRuEntityFromDb = repository.getMetalRu();
-		if (metalRuEntityFromDb != null) {
-			prevGold = metalRuEntityFromDb.getGold();
-		}
-		repository.save(new MetalRuEntity(date, gold, silver, platinum, palladium,
-			(prevGold == null) ? gold : prevGold));
 	}
 
 	@Override

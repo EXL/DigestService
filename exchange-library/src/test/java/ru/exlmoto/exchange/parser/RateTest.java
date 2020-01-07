@@ -9,13 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import ru.exlmoto.exchange.ExchangeConfiguration;
-import ru.exlmoto.exchange.parser.impl.BankRu;
-import ru.exlmoto.exchange.parser.impl.BankUa;
-import ru.exlmoto.exchange.parser.impl.BankBy;
-import ru.exlmoto.exchange.parser.impl.BankKz;
-import ru.exlmoto.exchange.parser.impl.BankUaMirror;
-import ru.exlmoto.exchange.parser.impl.MetalRu;
-import ru.exlmoto.exchange.parser.impl.MetalRuMirror;
+import ru.exlmoto.exchange.parser.impl.BankRuParser;
+import ru.exlmoto.exchange.parser.impl.BankUaParser;
+import ru.exlmoto.exchange.parser.impl.BankByParser;
+import ru.exlmoto.exchange.parser.impl.BankKzParser;
+import ru.exlmoto.exchange.parser.impl.BankUaMirrorParser;
+import ru.exlmoto.exchange.parser.impl.MetalRuParser;
+import ru.exlmoto.exchange.parser.impl.MetalRuMirrorParser;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -25,27 +25,27 @@ public class RateTest {
 	@Autowired
 	private ExchangeConfiguration configuration;
 
-	@Autowired private BankRu bankRu;
-	@Autowired private BankUa bankUa;
-	@Autowired private BankUaMirror bankUaMirror;
-	@Autowired private BankBy bankBy;
-	@Autowired private BankKz bankKz;
-	@Autowired private MetalRu metalRu;
-	@Autowired private MetalRuMirror metalRuMirror;
+	@Autowired private BankRuParser bankRuParser;
+	@Autowired private BankUaParser bankUaParser;
+	@Autowired private BankUaMirrorParser bankUaMirror;
+	@Autowired private BankByParser bankByParser;
+	@Autowired private BankKzParser bankKzParser;
+	@Autowired private MetalRuParser metalRuParser;
+	@Autowired private MetalRuMirrorParser metalRuMirror;
 
 	@Test
 	public void testBankRu() {
-		bankRu.process(configuration.getBankRu());
+		bankRuParser.process(configuration.getBankRu());
 	}
 
 	@Test
 	public void testBankRuMirror() {
-		bankRu.process(configuration.getBankRuMirror());
+		bankRuParser.process(configuration.getBankRuMirror());
 	}
 
 	@Test
 	public void testBankUa() {
-		bankUa.process(configuration.getBankUa());
+		bankUaParser.process(configuration.getBankUa());
 	}
 
 	@Test
@@ -55,17 +55,17 @@ public class RateTest {
 
 	@Test
 	public void testBankBy() {
-		bankBy.process(configuration.getBankBy());
+		bankByParser.process(configuration.getBankBy());
 	}
 
 	@Test
 	public void testBankKz() {
-		bankKz.process(configuration.getBankKz());
+		bankKzParser.process(configuration.getBankKz());
 	}
 
 	@Test
 	public void testMetalRu() {
-		metalRu.process(configuration.getMetalRu());
+		metalRuParser.process(configuration.getMetalRu());
 	}
 
 	@Test

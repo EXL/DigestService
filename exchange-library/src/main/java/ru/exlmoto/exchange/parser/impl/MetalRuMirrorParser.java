@@ -3,18 +3,9 @@ package ru.exlmoto.exchange.parser.impl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import org.springframework.stereotype.Component;
-
-import ru.exlmoto.exchange.repository.MetalRuRepository;
-
 import java.math.BigDecimal;
 
-@Component
-public class MetalRuMirror extends MetalRu {
-	public MetalRuMirror(MetalRuRepository repository) {
-		super(repository);
-	}
-
+public class MetalRuMirrorParser extends MetalRuParser {
 	@Override
 	protected void parseDocumentAux(Document document) {
 		gold = parseValue(document, "1");

@@ -1,8 +1,11 @@
 package ru.exlmoto.exchange.parser;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 
-public abstract class Bank extends Rate {
+@Getter
+public abstract class BankParser extends RateParser {
 	protected BigDecimal usd = null;
 	protected BigDecimal eur = null;
 	protected BigDecimal kzt = null;

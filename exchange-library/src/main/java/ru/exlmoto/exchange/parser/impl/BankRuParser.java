@@ -1,25 +1,16 @@
 package ru.exlmoto.exchange.parser.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import org.springframework.stereotype.Component;
-
-import ru.exlmoto.exchange.entity.BankRuEntity;
-import ru.exlmoto.exchange.parser.Bank;
-import ru.exlmoto.exchange.repository.BankRuRepository;
+import ru.exlmoto.exchange.parser.BankParser;
 
 import java.math.BigDecimal;
 
 @Slf4j
-@RequiredArgsConstructor
-@Component
-public class BankRu extends Bank {
-	private final BankRuRepository repository;
-
+public class BankRuParser extends BankParser {
 	@Override
 	protected void parseDocumentAux(Document document) {
 		usd = parseValue(document, "R01235");
@@ -41,16 +32,6 @@ public class BankRu extends Bank {
 	@Override
 	protected String parseDate(Document document) {
 		return document.selectFirst("ValCurs").attr("Date");
-	}
-
-	@Override
-	protected void commitParsedValues() {
-		BigDecimal prevUsd = null;
-		BankRuEntity bankRuEntityFromDb = repository.getBankRu();
-		if (bankRuEntityFromDb != null) {
-			prevUsd = bankRuEntityFromDb.getUsd();
-		}
-		repository.save(new BankRuEntity(date, usd, eur, kzt, byn, uah, gbp, (prevUsd == null) ? usd : prevUsd));
 	}
 
 	@Override

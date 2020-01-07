@@ -1,57 +1,22 @@
 package ru.exlmoto.exchange.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.generator.MarkdownGenerator;
-import ru.exlmoto.exchange.parser.impl.BankRu;
-import ru.exlmoto.exchange.parser.impl.BankUa;
-import ru.exlmoto.exchange.parser.impl.BankUaMirror;
-import ru.exlmoto.exchange.parser.impl.BankBy;
-import ru.exlmoto.exchange.parser.impl.BankKz;
-import ru.exlmoto.exchange.parser.impl.MetalRu;
-import ru.exlmoto.exchange.parser.impl.MetalRuMirror;
+import ru.exlmoto.exchange.manager.RateManager;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
-@EnableConfigurationProperties(ExchangeConfiguration.class)
 public class ExchangeService {
-	private final ExchangeConfiguration configuration;
-
 	private final MarkdownGenerator markdownGenerator;
-
-	private final BankRu bankRu;
-	private final BankUa bankUa;
-	private final BankUaMirror bankUaMirror;
-	private final BankBy bankBy;
-	private final BankKz bankKz;
-	private final MetalRu metalRu;
-	private final MetalRuMirror metalRuMirror;
+	private final RateManager rateManager;
 
 	@Scheduled(cron = "${cron.exchange.update}")
 	public void updateAllRates() {
-		log.info("=> Start update exchanging rates.");
-		if (!bankRu.process(configuration.getBankRu())) {
-			log.info("==> Using BankRuMirror.");
-			bankRu.process(configuration.getBankRuMirror());
-		}
-		if (!bankUa.process(configuration.getBankUa())) {
-			log.info("==> Using BankUaMirror.");
-			bankUaMirror.process(configuration.getBankUaMirror());
-		}
-		bankBy.process(configuration.getBankBy());
-		bankKz.process(configuration.getBankKz());
-		if (!metalRu.process(configuration.getMetalRu())) {
-			log.info("==> Using MetalRuMirror.");
-			metalRuMirror.process(configuration.getMetalRuMirror());
-		}
-		log.info("=> End update exchanging rates.");
+		rateManager.commitAllRates();
 	}
 
 	public String markdownBankRuReport() {

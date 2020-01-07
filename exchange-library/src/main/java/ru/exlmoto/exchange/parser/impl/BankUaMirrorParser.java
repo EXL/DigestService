@@ -3,18 +3,9 @@ package ru.exlmoto.exchange.parser.impl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import org.springframework.stereotype.Component;
-
-import ru.exlmoto.exchange.repository.BankUaRepository;
-
 import java.math.BigDecimal;
 
-@Component
-public class BankUaMirror extends BankUa {
-	public BankUaMirror(BankUaRepository repository) {
-		super(repository);
-	}
-
+public class BankUaMirrorParser extends BankUaParser {
 	@Override
 	protected void parseDocumentAux(Document document) {
 		usd = parseValue(document, "6");

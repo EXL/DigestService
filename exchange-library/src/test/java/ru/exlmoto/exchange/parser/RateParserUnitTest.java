@@ -17,6 +17,10 @@ public class RateParserUnitTest {
 	public void testBankRuParser() {
 		assertTrue(p.process(new BankRuParser(), f.content("bankRu.xml", "Windows-1251")));
 		assertTrue(p.process(new BankRuParser(), f.content("bankRu.xml")));
+		assertFalse(p.process(new BankRuParser(), f.content("bankRuChunk.xml", "Windows-1251")));
+		assertTrue(p.process(new BankRuParser(), f.content("bankRuError.xml", "Windows-1251")));
+		assertFalse(p.process(new BankRuParser(), f.content("bankRuErrorAll.xml", "Windows-1251")));
+
 		assertFalse(p.process(new BankRuParser(), "mulfunction data"));
 		// assertFalse(p.process(new BankRuParser(), "mulfunction\ndata"));
 		// assertFalse(p.process(new BankRuParser(), "mulfunction\t\ndata"));

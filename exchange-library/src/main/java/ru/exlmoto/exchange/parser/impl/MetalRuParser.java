@@ -38,6 +38,11 @@ public class MetalRuParser extends MetalParser {
 	}
 
 	@Override
+	protected boolean checkParsedValues() {
+		return gold != null || silver != null || platinum != null || palladium != null;
+	}
+
+	@Override
 	public void logParsedValues() {
 		log.info(String.format(
 				"===> Date: %s, Gold: %s, Silver: %s, Platinum: %s, Palladium: %s",

@@ -54,10 +54,12 @@ public abstract class RateParser {
 		Assert.notNull(document, "Document must not be null.");
 		date = parseDate(document);
 		parseDocumentAux(document);
-		return true;
+		return checkParsedValues();
 	}
 
 	protected abstract void parseDocumentAux(Document document);
+
+	protected abstract boolean checkParsedValues();
 
 	protected abstract BigDecimal parseValueAux(Document document, String valueId);
 

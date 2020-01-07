@@ -15,7 +15,7 @@ public abstract class RateManager {
 		if (parser.isMirror()) {
 			message += "mirror ";
 		}
-		message += parser.getClass().getName() + ".";
+		message += parser.getClass().getSimpleName() + ".";
 		log.info(message);
 		parser.logParsedValues();
 	}

@@ -22,24 +22,23 @@ public abstract class RateParser {
 	protected boolean mirror = false;
 
 	public boolean parse(String content) {
-		try {
-			parseDocument(Jsoup.parse(content));
-		} catch (Exception e) {
-			log.error(String.format("Error while parsing document. Chunk: '%s'.", chopContent(content)), e);
-			return false;
+		if (!StringUtils.isEmpty(content)) {
+			try {
+				return parseDocument(Jsoup.parse(content));
+			} catch (Exception e) {
+				log.error(String.format("Error while parsing document. Chunk: '%s'.", chopContent(content)), e);
+				return false;
+			}
 		}
-		return true;
+		return false;
 	}
 
 	private String chopContent(String content) {
-		if (!StringUtils.isEmpty(content)) {
-			int SMALL_STRING_SIZE = 40;
-			if (content.length() < SMALL_STRING_SIZE) {
-				return StringUtils.trimAllWhitespace(content);
-			}
-			return StringUtils.trimAllWhitespace(content.substring(0, SMALL_STRING_SIZE));
+		int SMALL_STRING_SIZE = 40;
+		if (content.length() < SMALL_STRING_SIZE) {
+			return StringUtils.trimAllWhitespace(content);
 		}
-		return "Received content is null/empty";
+		return StringUtils.trimAllWhitespace(content.substring(0, SMALL_STRING_SIZE));
 	}
 
 	protected BigDecimal parseValue(Document document, String valueId) {
@@ -51,10 +50,11 @@ public abstract class RateParser {
 		}
 	}
 
-	private void parseDocument(Document document) {
+	private boolean parseDocument(Document document) {
 		Assert.notNull(document, "Document must not be null.");
 		date = parseDate(document);
 		parseDocumentAux(document);
+		return true;
 	}
 
 	protected abstract void parseDocumentAux(Document document);

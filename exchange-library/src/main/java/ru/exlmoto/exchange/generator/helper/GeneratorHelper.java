@@ -34,12 +34,24 @@ public class GeneratorHelper {
 		return prev.subtract(current);
 	}
 
-	public boolean isDifferenceGreaterThanZero(BigDecimal difference) {
-		return difference.compareTo(BigDecimal.ZERO) > 0;
+	public boolean isDifferencePositive(BigDecimal difference) {
+		return difference.signum() == 1;
 	}
 
-	public String normalizeBigDecimal(BigDecimal value) {
-		return value.toString();
+	public String normalizeDifference(BigDecimal difference) {
+		return String.format("%.4f", difference);
+	}
+
+	public String normalizeValue(BigDecimal value) {
+		final int MAX_NUMBER_SIZE = 7;
+		int integers = value.precision() - value.scale();
+		if (integers <= 0) {
+			integers = 1;
+		}
+		if (integers < MAX_NUMBER_SIZE) {
+			return String.format("%." + (MAX_NUMBER_SIZE - integers) + "f", value);
+		}
+		return String.format("%.1f", value);
 	}
 
 	public String addTrailingSigns(String value, String sign, int limit) {
@@ -52,6 +64,6 @@ public class GeneratorHelper {
 	}
 
 	public boolean isDateNotEmpty(String date) {
-		return date == null || date.isEmpty() || date.equals("null");
+		return date != null && !date.isEmpty() && !date.equals("null");
 	}
 }

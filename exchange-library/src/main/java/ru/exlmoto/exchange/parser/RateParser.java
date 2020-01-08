@@ -38,7 +38,7 @@ public abstract class RateParser {
 	}
 
 	private String chopContent(String content) {
-		int SMALL_STRING_SIZE = 40;
+		int SMALL_STRING_SIZE = 50;
 		if (content.length() < SMALL_STRING_SIZE) {
 			return filterLines(content);
 		}

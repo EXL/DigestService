@@ -3,8 +3,6 @@ package ru.exlmoto.exchange.generator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +17,8 @@ import ru.exlmoto.exchange.repository.BankUaRepository;
 import ru.exlmoto.exchange.repository.MetalRuRepository;
 
 import java.math.BigDecimal;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -64,9 +64,9 @@ public class MarkdownGeneratorTest {
 			new BigDecimal("3031.15")
 		);
 
-		Mockito.when(bankRuRepository.getBankRu()).thenReturn(bankRuEntity);
-		Mockito.when(bankUaRepository.getBankUa()).thenReturn(bankUaEntity);
-		Mockito.when(metalRuRepository.getMetalRu()).thenReturn(metalRuEntity);
+		when(bankRuRepository.getBankRu()).thenReturn(bankRuEntity);
+		when(bankUaRepository.getBankUa()).thenReturn(bankUaEntity);
+		when(metalRuRepository.getMetalRu()).thenReturn(metalRuEntity);
 	}
 
 	@Test

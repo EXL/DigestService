@@ -12,6 +12,10 @@ import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.manager.impl.BankRuManager;
 import ru.exlmoto.exchange.manager.impl.BankUaManager;
 import ru.exlmoto.exchange.manager.impl.MetalRuManager;
+import ru.exlmoto.exchange.parser.impl.BankRuParser;
+import ru.exlmoto.exchange.parser.impl.MetalRuParser;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -25,10 +29,18 @@ public class RateGeneralManagerTest {
 	@Autowired private BankUaManager bankUaManager;
 	@Autowired private MetalRuManager metalRuManager;
 
+	@Autowired private RestManager restManager;
+
 	@Test
 	public void testRateMirrors() {
 		bankRuManager.commitRates(null, config.getBankRuMirror());
 		bankUaManager.commitRates(null, config.getBankUaMirror());
 		metalRuManager.commitRates(null, config.getMetalRuMirror());
+	}
+
+	@Test
+	public void testIncorrectPages() {
+		assertFalse(new BankRuParser().parse(restManager.getContent("https://exlmoto.ru")));
+		assertFalse(new MetalRuParser().parse(restManager.getContent("https://exlmoto.ru")));
 	}
 }

@@ -10,53 +10,35 @@ import ru.exlmoto.exchange.entity.BankByEntity;
 import ru.exlmoto.exchange.entity.BankKzEntity;
 import ru.exlmoto.exchange.entity.MetalRuEntity;
 import ru.exlmoto.exchange.generator.helper.GeneratorHelper;
-import ru.exlmoto.exchange.repository.BankRuRepository;
-import ru.exlmoto.exchange.repository.BankUaRepository;
-import ru.exlmoto.exchange.repository.BankByRepository;
-import ru.exlmoto.exchange.repository.BankKzRepository;
-import ru.exlmoto.exchange.repository.MetalRuRepository;
+import ru.exlmoto.exchange.generator.helper.RepositoryHelper;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
 public class MarkdownGenerator {
 	private final GeneratorHelper helper;
-
-	private final BankRuRepository bankRuRepository;
-	private final BankUaRepository bankUaRepository;
-	private final BankByRepository bankByRepository;
-	private final BankKzRepository bankKzRepository;
-	private final MetalRuRepository metalRuRepository;
+	private final RepositoryHelper repos;
 
 	public String bankRuReport() {
-		BankRuEntity bankRuEntity = bankRuRepository.getBankRu();
-		return (bankRuEntity != null && bankRuEntity.checkAllValues()) ?
-			bankRuReportAux(bankRuEntity) : helper.i18n("error.report");
+		return Optional.ofNullable(repos.getBankRu()).map(this::bankRuReportAux).orElse(errorReport());
 	}
 
 	public String bankUaReport() {
-		BankUaEntity bankUaEntity = bankUaRepository.getBankUa();
-		return (bankUaEntity != null && bankUaEntity.checkAllValues()) ?
-			bankUaReportAux(bankUaEntity) : helper.i18n("error.report");
-	}
-
-	public String metalRuReport() {
-		MetalRuEntity metalRuEntity = metalRuRepository.getMetalRu();
-		return (metalRuEntity != null && metalRuEntity.checkAllValues()) ?
-			metalRuReportAux(metalRuEntity) : helper.i18n("error.report");
+		return Optional.ofNullable(repos.getBankUa()).map(this::bankUaReportAux).orElse(errorReport());
 	}
 
 	public String bankByReport() {
-		BankByEntity bankByEntity = bankByRepository.getBankBy();
-		return (bankByEntity != null && bankByEntity.checkAllValues()) ?
-			bankByReportAux(bankByEntity) : helper.i18n("error.report");
+		return Optional.ofNullable(repos.getBankBy()).map(this::bankByReportAux).orElse(errorReport());
 	}
 
 	public String bankKzReport() {
-		BankKzEntity bankKzEntity = bankKzRepository.getBankKz();
-		return (bankKzEntity != null && bankKzEntity.checkAllValues()) ?
-			bankKzReportAux(bankKzEntity) : helper.i18n("error.report");
+		return Optional.ofNullable(repos.getBankKz()).map(this::bankKzReportAux).orElse(errorReport());
+	}
+
+	public String metalRuReport() {
+		return Optional.ofNullable(repos.getMetalRu()).map(this::metalRuReportAux).orElse(errorReport());
 	}
 
 	private String bankRuReportAux(BankRuEntity bankRuEntity) {
@@ -157,5 +139,9 @@ public class MarkdownGenerator {
 
 	private String filterDate(String date) {
 		return helper.isDateNotEmpty(date) ? date : "`" + helper.i18n("error.value") + "`";
+	}
+
+	private String errorReport() {
+		return helper.i18n("error.report");
 	}
 }

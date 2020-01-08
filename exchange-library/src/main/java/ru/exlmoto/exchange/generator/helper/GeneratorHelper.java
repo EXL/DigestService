@@ -43,7 +43,7 @@ public class GeneratorHelper {
 	}
 
 	public String normalizeValue(BigDecimal value) {
-		final int MAX_NUMBER_SIZE = 7;
+		final int MAX_NUMBER_SIZE = 6;
 		int integers = value.precision() - value.scale();
 		if (integers <= 0) {
 			integers = 1;

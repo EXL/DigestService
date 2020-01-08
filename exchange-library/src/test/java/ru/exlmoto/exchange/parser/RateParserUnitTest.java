@@ -12,56 +12,77 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class RateParserUnitTest {
-	private final InnerFileHelper f = new InnerFileHelper();
-	private final RateParserHelper p = new RateParserHelper();
+	private final InnerFileHelper fileHelper = new InnerFileHelper();
+	private final RateParserHelper parserHelper = new RateParserHelper();
 
 	@Test
 	public void testBankRuParser() {
-		assertTrue(p.test(new BankRuParser(), f.content("bankRu.xml", "Windows-1251")));
-		assertTrue(p.test(new BankRuParser(), f.content("bankRu.xml")));
-		assertFalse(p.test(new BankRuParser(), f.content("bankRuChunk.xml", "Windows-1251")));
-		assertTrue(p.test(new BankRuParser(), f.content("bankRuError.xml", "Windows-1251")));
-		assertFalse(p.test(new BankRuParser(), f.content("bankRuErrors.xml", "Windows-1251")));
+		assertTrue(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRu.xml", "Windows-1251")));
+		assertTrue(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRu.xml")));
+		assertFalse(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRuChunk.xml", "Windows-1251")));
+		assertTrue(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRuError.xml", "Windows-1251")));
+		assertFalse(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRuErrors.xml", "Windows-1251")));
 
-		assertTrue(p.test(new BankRuParser(), f.content("bankRuAlt.xml", "Windows-1251")));
-		assertTrue(p.test(new BankRuParser(), f.content("bankRuAlt.xml")));
-		assertFalse(p.test(new BankRuParser(), f.content("bankRuAltChunk.xml", "Windows-1251")));
-		assertTrue(p.test(new BankRuParser(), f.content("bankRuAltError.xml", "Windows-1251")));
-		assertFalse(p.test(new BankRuParser(), f.content("bankRuAltErrors.xml", "Windows-1251")));
+		assertTrue(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRuAlt.xml", "Windows-1251")));
+		assertTrue(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRuAlt.xml")));
+		assertFalse(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRuAltChunk.xml", "Windows-1251")));
+		assertTrue(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRuAltError.xml", "Windows-1251")));
+		assertFalse(parserHelper.process(new BankRuParser(),
+			fileHelper.getFileContent("bankRuAltErrors.xml", "Windows-1251")));
 
 		generalTests(new BankRuParser());
 	}
 
 	@Test
 	public void testBankUaParser() {
-		assertTrue(p.test(new BankUaParser(), f.content("bankUa.xml")));
-		assertTrue(p.test(new BankUaParser(), f.content("bankUa.xml", "Windows-1251")));
-		assertFalse(p.test(new BankUaParser(), f.content("bankUaChunk.xml")));
-		assertTrue(p.test(new BankUaParser(), f.content("bankUaError.xml")));
-		assertFalse(p.test(new BankUaParser(), f.content("bankUaErrors.xml")));
-		assertFalse(p.test(new BankUaParser(), f.content("bankUaIncomplete.xml")));
+		assertTrue(parserHelper.process(new BankUaParser(),
+			fileHelper.getFileContent("bankUa.xml")));
+		assertTrue(parserHelper.process(new BankUaParser(),
+			fileHelper.getFileContent("bankUa.xml", "Windows-1251")));
+		assertFalse(parserHelper.process(new BankUaParser(),
+			fileHelper.getFileContent("bankUaChunk.xml")));
+		assertTrue(parserHelper.process(new BankUaParser(),
+			fileHelper.getFileContent("bankUaError.xml")));
+		assertFalse(parserHelper.process(new BankUaParser(),
+			fileHelper.getFileContent("bankUaErrors.xml")));
+		assertFalse(parserHelper.process(new BankUaParser(),
+			fileHelper.getFileContent("bankUaIncomplete.xml")));
 
 		generalTests(new BankUaParser());
 	}
 
 	@Test
 	public void testBankUaMirrorParser() {
-		assertTrue(p.test(new BankUaMirrorParser(), f.content("bankUaAlt.xml", "Windows-1251")));
-		assertTrue(p.test(new BankUaMirrorParser(), f.content("bankUaAlt.xml")));
-		assertFalse(p.test(new BankUaMirrorParser(), f.content("bankUaAltChunk.xml", "Windows-1251")));
-		assertTrue(p.test(new BankUaMirrorParser(), f.content("bankUaAltError.xml", "Windows-1251")));
-		assertFalse(p.test(new BankUaMirrorParser(), f.content("bankUaAltErrors.xml", "Windows-1251")));
+		assertTrue(parserHelper.process(new BankUaMirrorParser(),
+			fileHelper.getFileContent("bankUaAlt.xml", "Windows-1251")));
+		assertTrue(parserHelper.process(new BankUaMirrorParser(),
+			fileHelper.getFileContent("bankUaAlt.xml")));
+		assertFalse(parserHelper.process(new BankUaMirrorParser(),
+			fileHelper.getFileContent("bankUaAltChunk.xml", "Windows-1251")));
+		assertTrue(parserHelper.process(new BankUaMirrorParser(),
+			fileHelper.getFileContent("bankUaAltError.xml", "Windows-1251")));
+		assertFalse(parserHelper.process(new BankUaMirrorParser(),
+			fileHelper.getFileContent("bankUaAltErrors.xml", "Windows-1251")));
 
 		generalTests(new BankUaMirrorParser());
 	}
 
 	private void generalTests(RateParser parser) {
-		assertFalse(p.test(parser, "mulfunction data"));
-		assertFalse(p.test(parser, "mulfunction\ndata"));
-		assertFalse(p.test(parser, "mulfunction\t\ndata"));
-		assertFalse(p.test(parser, "mulfunction\t\r\ndata"));
-		assertFalse(p.test(parser, "mulfunction\t\t\t\t\n\r\n\r\ndata"));
-		assertFalse(p.test(parser, ""));
-		assertFalse(p.test(parser, null));
+		assertFalse(parserHelper.process(parser, "mulfunction data"));
+		assertFalse(parserHelper.process(parser, "mulfunction\ndata"));
+		assertFalse(parserHelper.process(parser, "mulfunction\t\ndata"));
+		assertFalse(parserHelper.process(parser, "mulfunction\t\r\ndata"));
+		assertFalse(parserHelper.process(parser, "mulfunction\t\t\t\t\n\r\n\r\ndata"));
+		assertFalse(parserHelper.process(parser, ""));
+		assertFalse(parserHelper.process(parser, null));
 	}
 }

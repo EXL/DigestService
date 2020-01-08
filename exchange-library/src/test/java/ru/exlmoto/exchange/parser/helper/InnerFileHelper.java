@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 public class InnerFileHelper {
-	public String content(String filename, String charsetName) {
+	public String getFileContent(String filename, String charsetName) {
 		try {
 			return new String(
 				Files.readAllBytes(
@@ -26,7 +26,7 @@ public class InnerFileHelper {
 		return null;
 	}
 
-	public String content(String filename) {
-		return content(filename, Charset.defaultCharset().name());
+	public String getFileContent(String filename) {
+		return getFileContent(filename, Charset.defaultCharset().name());
 	}
 }

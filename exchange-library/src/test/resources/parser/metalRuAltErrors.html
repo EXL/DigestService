@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Курсы драгметаллов ЦБ РФ</title>
+            <meta name="description" content="Официальные учетные цены драгоценных металлов устанавливаются ЦБ РФ каждый рабочий день. Цены рассчитываются на основе фиксинга на золото, серебро, платину и палладий на лондонском рынке наличного металла спот, и пересчитываются в рубли по официальному курсу доллара США к российскому рублю, действующему на день, следующий за днем установления учетных цен. Учетные цены применяются для целей бухгалтерского учета в кредитных организациях." />
+                <link rel="shortcut icon" href="/static/styles/favicons/mfd.ru.ico" />
+                
+
+    <link rel="alternate" type="application/rss+xml" href="/rss/news/handler.ashx" title="Финансовые новости" />
+    <link rel="alternate" type="application/rss+xml" href="/rss/comments/handler.ashx" title="Комментарии аналитиков" />
+        <meta name="viewport" content="width=1024,initial-scale=1">
+                <link rel="stylesheet" type="text/css" href="/static/styles/mfd.css?v=0.10.7302.32378" />
+        <script src="/static/scripts/bundle.js?v=0.10.7302.32378"></script>
+
+    <script>
+        Mfd.viewData.userId = 4;
+    </script>
+
+
+
+    
+    
+    
+    <script>
+        //<![CDATA[
+        $(function ()
+        {
+            var calendarSettings = { "startDate": new Date(Date.UTC(1997,2,25)), "endDate": Mfd.Calendar.Tomorrow };
+            $("[name=from], [name=till]").mfdCalendar(calendarSettings);
+
+            $("[name=cancel]").click(Mfd.cancel_onClick);
+            $("[name=export]").click(Mfd.export_onClick);
+            $("[name=exportMetastock]").click(Mfd.exportMetastock_onClick);
+        });
+
+        Mfd.cancel_onClick = function ()
+        {
+            Mfd.goTo("/centrobank/preciousmetals/");
+        };
+
+        Mfd.export_onClick = function ()
+        {
+            Mfd.goTo("/preciousmetal/export/mfdexport.csv?" + $("[name=from], [name=till]").toQueryString());
+        };
+
+        Mfd.exportMetastock_onClick = function()
+        {
+            var params = {};
+            params.groupId = 36;
+            params.selectedTickers = $('option:selected', "[name='left']").attr('data-id');
+            params.from = $("[name='from']").val();
+            params.till = $("[name='till']").val();
+            params.period = 7;
+
+            var currencyCompare = $('option:selected', "[name='right']").attr('data-id');
+            if (currencyCompare)
+            {
+                params.selectedTickers+="," + currencyCompare;
+            }
+
+            Mfd.goTo("/export/?"+ Mfd.toQueryString(params));
+        };
+        //]]>
+    </script>
+    <script src="/static/scripts/bundle.charting.js?v=0.9.7302.32372"></script>
+
+    <style type="text/css">
+        .mfd-table { margin: 0; }
+        .mfd-table td { text-align: right; }
+    </style>
+
+
+
+
+    </head>
+    <body>
+        
+
+
+
+
+
+
+
+<div class="mfd-body-container"><div class="mfd-body-container-inner">
+<div class='mfd-banner-banner100pctx90-container'><div class='mfd-banner mfd-banner-banner100pctx90'><script>
+google_ad_client = "ca-pub-8980300939565371";
+google_ad_slot = "5647848644";
+google_ad_width = 728;
+google_ad_height = 90;
+</script>
+<script src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script></div></div>
+<div class="mfd-master-header-left"><a href='/currency/?currency=USD'>Курс доллара <strong>61.9057</strong></a> &nbsp; <a href='/currency/?currency=EUR'>Курс евро <strong>69.3777</strong></a> &nbsp; </div><div class='mfd-master-header-right'><a href='http://m.mfd.ru/centrobank/preciousmetals/'>Мобильная версия</a> &nbsp; </div><div class='mfd-master-header-children'><a href='/18plus/' rel='nofollow'>18+</a></div>
+<!--noindex--><div class="mfd-logon-form-modal">
+        <div id="mfd-logon-dialog" style="display: none;">
+            <div class="mfd-logon-form-modal-header">
+                <h2><button class="m-button-link mfd-selected" data-mode="logon" name="openLogonDialog" type="button">Вход</button> &ensp;•&ensp; <button class="m-button-link" data-mode="password" name="openLogonDialog" type="button">Забыли пароль?</button> &ensp;•&ensp; <button class="m-button-link" data-mode="register" name="openLogonDialog" type="button">Регистрация</button></h2>
+            </div>
+            <form accept-charset="utf-8" action="/secure/logon/" class="mfd-form-simple-v" id="mfd-logon-form-modal" method="post">
+                <div>
+                    <div>
+                        <div>Email: <span class="d">*</span></div>
+                        <input name="username" title="Email" type="text">
+                    </div>
+                    <div>
+                        <div>Пароль: <span class="d">*</span></div>
+                        <input name="password" title="Пароль" type="password">
+                        <label><input name="togglePasswordVisibility" type="checkbox"> показать пароль</label>
+                    </div>
+                    <div>
+                        <label><input   checked="checked" name="rememberMe" type="checkbox" value="true"> запомнить меня</label><input name="rememberMe" type="hidden" value="false">
+                    </div>
+                    <div>
+                        <button type="submit">Войти</button> &ensp; <button name="closeLogonDialog" type="button">Отмена</button>
+                    </div>
+                </div>
+            </form>
+            <div class="mfd-form-simple-v" id="mfd-password-form-modal" style="display: none;">
+                <div>
+                    <div>
+                        <div>Адрес электронной почты или логин: <span class="d">*</span></div>
+                        <input name="usernameOrEmail" type="text" />
+                    </div>
+                    <div>
+                        При возникновении трудностей обращайтесь к нам по адресу <a href="mailto:service@mfd.ru">service@mfd.ru</a>
+                    </div>
+                    <div>
+                        <button class="mfd-button-submit" onclick="Mfd.next_onClick();" type="button">Далee</button> &ensp; <button name="closeLogonDialog" type="button">Отмена</button>
+                    </div>
+                </div>
+            </div>
+            <form class="mfd-form-simple-v" id="mfd-register-form-modal" method="post" style="display: none;">
+                <div>
+                    <input name="__RequestVerificationToken" type="hidden" value="dfKWMIywXiLVVcp-WKM-6xwIr3jmiCxtm83VFSnt8yVoII2koGp5S0Poy9IGlb6hPKLQRqv362LKUZCMd-8pSUefh7U1" />
+                    <div class="d" id="mfd-register-form-modal-vkontakte" style="display: none;">
+                        Для завершения регистрации необходимо указать адрес электронной почты.
+                    </div>
+                    <div>
+                        <div><span class="mfd-form-label-comment">не будет отображаться на сайте</span> Email: <span class="d">*</span></div>
+                        <input name="email" type="text">
+                    </div>
+                    <div id="mfd-register-form-modal-password">
+                        <div>Пароль: <span class="d">*</span></div>
+                        <input name="password" type="password">
+                        <label><input name="togglePasswordVisibility" type="checkbox"> показать пароль</label>
+                    </div>
+                    <div>
+                        <div><span class="mfd-form-label-comment">можно изменить после регистрации</span> Никнейм:</div>
+                        <input name="nickname" type="text">
+                    </div>
+                    <div>
+                        <label><input name="acceptTermsAndPolicies" type="checkbox" value="true"> Подтверждаю своё согласие с <a href="https://mfd.ru/forum/rules/" target="_blank">правилами</a> и <a href="https://mfd.ru/privacy/" target="_blank">политикой конфиденциальности</a></label>
+                    </div>
+                    <div>
+                        На ваш email будет выслано письмо с подтверждением для завершения регистрации. Если письмо не дойдет, попробуйте <a href="/user/register/re/" rel="nofollow">получить его повторно</a>.
+                    </div>
+                    <div>
+                        При возникновении трудностей обращайтесь к нам по адресу <a href="mailto:service@mfd.ru">service@mfd.ru</a>
+                    </div>
+                    <div>
+                        <button type="submit">Зарегистрироваться</button> &ensp; <button name="closeLogonDialog" type="button">Отмена</button>
+                    </div>
+                </div>
+            </form>
+            <div class="m-message-attention" id="mfd-register-form-modal-success" style="display: none;">
+                Письмо для активации аккаунта было выслано на <span id="mfd-registration-email"></span>.<br />
+                При возникновении трудностей с регистрацией обращайтесь к нам по адресу <a href="mailto:service@mfd.ru">service@mfd.ru</a>
+            </div>
+            <script>
+                Mfd.registration_onSuccess = function (result)
+                {
+                    $("#mfd-register-form-modal").hide();
+                    $("#mfd-registration-email").text($("[name='email']", "#mfd-register-form-modal").val());
+                    $("#mfd-register-form-modal-success").show();
+                };
+
+                $("#mfd-register-form-modal").prop("action", "/registration/save").mfdForm(Mfd.registration_onSuccess);
+            </script>
+                <div class="mfd-form-simple-v mfd-logon-form-modal-oauth" id="mfd-oauth-selector">
+                    <div>
+                        <div>
+                            <h2>Или воспользуйтесь аккаунтом</h2>
+                        </div>
+                        <div class="d mfd-oauth-error"></div>
+                        <div class="mfd-logon-form-modal-oauth-item">
+                            <button class="mfd-icon-yandex" name="yandex" title="Войти через Яндекс" type="button"></button>
+                        </div>
+                        <div class="mfd-logon-form-modal-oauth-item">
+                            <button class="mfd-icon-google" name="google" title="Войти через Google" type="button"></button>
+                        </div>
+                        <div class="mfd-logon-form-modal-oauth-item">
+                            <button class="mfd-icon-mailru" name="mailru" title="Войти через Mail.Ru" type="button"></button>
+                        </div>
+                        <div class="mfd-clear"></div>
+                        <div class="mfd-logon-form-modal-oauth-item">
+                            <button class="mfd-icon-facebook" name="facebook" title="Войти через Facebook" type="button"></button>
+                        </div>
+                        <div class="mfd-logon-form-modal-oauth-item">
+                            <button class="mfd-icon-vkontakte" name="vkontakte" title="Войти через ВКонтакте" type="button"></button>
+                        </div>
+                        <div class="mfd-clear"></div>
+                    </div>
+                </div>
+        </div>
+        <button class="m-button-link-dotted" data-mode="logon" name="openLogonDialog" type="button">Вход на сайт</button>
+        &ensp;
+        <button class="m-button-link-dotted" data-mode="password" name="openLogonDialog" type="button">Забыли пароль?</button>
+        &ensp;
+        <button class="m-button-link-dotted" data-mode="register" name="openLogonDialog" type="button">Регистрация</button>
+        <script>
+            (function ()
+            {
+                "use strict";
+
+                var logonDialogOptions = { "autoResize": true, "minWidth": 200 };
+
+                if (document.domain.match(/mfd\.ru$/i))
+                {
+                    try
+                    {
+                        document.domain = "mfd.ru";
+                    }
+                    catch (ex)
+                    {
+                        // Catch possible security exception.
+                    }
+                }
+
+                Mfd.closeLogonDialog_onClick = function ()
+                {
+                    $.modal.close();
+                };
+
+                Mfd.next_onClick = function ()
+                {
+                    $.mfdPageMethod({
+                        "address": "/user/password/reset/send",
+                        "context": $("#mfd-password-form-modal"),
+                        "successCallback": Mfd.passwordRecovery_onSuccess
+                    });
+                };
+
+                Mfd.openAuthCallback = function (ajaxResult)
+                {
+                    if (ajaxResult.Success)
+                    {
+                        $(".mfd-oauth-error").hide();
+                        if (ajaxResult.Data && ajaxResult.Data.nonce)
+                        {
+                            $("#mfd-register-form-modal-password").hide();
+                            $("#mfd-register-form-modal-vkontakte").show();
+                            var $nonce = $("[name='nonce']", "#mfd-register-form-modal");
+                            if ($nonce.length === 0)
+                            {
+                                $nonce = $("<input/>", { "name": "nonce", "type": "hidden", "value": ajaxResult.Data.nonce }).appendTo("#mfd-register-form-modal");
+                            }
+                            else
+                            {
+                                $nonce.val(ajaxResult.Data.nonce);
+                            }
+
+                            Mfd.openLogonDialog("register");
+                        }
+                        else
+                        {
+                            window.location.reload(true);
+                        }
+                    }
+                    else
+                    {
+                        $(".mfd-oauth-error").text(ajaxResult.Message).show();
+                    }
+                };
+
+                Mfd.openLogonDialog = function (mode)
+                {
+                    $(".mfd-oauth-error").hide();
+
+                    $("button", ".mfd-logon-form-modal-header").each(function ()
+                    {
+                        $(this).toggleClass("mfd-selected", $(this).attr("data-mode") === mode);
+                    });
+                    $("#mfd-logon-form-modal, #mfd-password-form-modal, #mfd-register-form-modal, #mfd-logon-dialog .m-message-attention").hide();
+                    $("#mfd-" + mode + "-form-modal").show();
+
+                    $.modal.close();
+                    $("#mfd-logon-dialog").modal(logonDialogOptions);
+
+                    if (mode === "logon")
+                    {
+                        $("[name='username']", "#mfd-logon-form-modal").focus();
+                    }
+                    else if (mode === "password")
+                    {
+                        $("[name='usernameOrEmail']", "#mfd-password-form-modal").focus();
+                    }
+                    else if (mode === "register")
+                    {
+                        $("[name='email']", "#mfd-register-form-modal").focus();
+                    }
+                };
+
+                Mfd.openLogonDialog_onClick = function ()
+                {
+                    Mfd.openLogonDialog($(this).attr("data-mode"));
+                };
+
+                Mfd.passwordRecovery_onSuccess = function (result)
+                {
+                    alert(result.Message);
+                };
+
+                function window_onMessage(e)
+                {
+                    if (event.origin === "http://mfd.ru" || event.origin === "https://mfd.ru")
+                    {
+                        Mfd.openAuthCallback(e.data);
+                    }
+                }
+
+                $("#mfd-oauth-selector button").click(function ()
+                {
+                    var providerCode;
+                    var popupAddress;
+
+                    providerCode = this.name.toLowerCase();
+                    popupAddress = (providerCode === "facebook" ? "https" : "http") + "://mfd.ru/secure/oauth/" + providerCode + "/";
+
+                    $(".mfd-oauth-error").hide();
+                    window.open(popupAddress, null, "left=40,top=40,height=600,width=800,status=0,toolbar=0");
+                });
+
+                $("#mfd-logon-form-modal").mfdForm();
+
+
+                $(document).on("click", "[name='closeLogonDialog']", Mfd.closeLogonDialog_onClick)
+                           .on("click", "[name='openLogonDialog']", Mfd.openLogonDialog_onClick);
+
+                window.addEventListener("message", window_onMessage);
+            })();
+        </script>
+</div><!--/noindex-->
+<table><tr><td class='mfd-logo-container'><a href='/' title='На главную'><img alt='' class='mfd-logo-newyear' src='/static/styles/logos/logonewyear.gif' /></a><td class='mfd-menu-horizontal-container'><div class='mfd-menu-horizontal-container-inner'><ul class='mfd-menu'><li><a href='/'>Главная</a><ul class='mfd-submenu'><li><a href='/advertise/pricelist/'>Реклама на сайте</a><li><a href='/calendar/'>Календарь макростатистики</a><li><a href='/news/'>Новости</a><li><a href='/comments/'>Аналитика</a><li><a href='/marketdata/?id=5'>Котировки акций</a><li><a href='/marketdata/?id=7'>Котировки валюты</a><li><a href='/export/'>Экспорт в MetaStock</a><li><a href='http://forum.mfd.ru/forum/'>Форум</a></ul><li><a href='/products/'>Продукты и услуги</a><ul class='mfd-submenu'><li><a href='/advertise'>Реклама и маркетинг</a><li><a href='/products/netinvestor/'>NetInvestor</a><li><a href='/currency-exchange/'>Валютный обмен</a><li><a href='/products/dixi/'>Дикси+</a><li><a href='/products/ticktrack/'>TickTrack</a><li><a href='/advertise/webstudio/'>Разработка и сопровождение сайтов</a><li><a href='/services/informers/'>Информеры</a><li><a href='/products/issuers/'>Информеры для эмитентов</a><li><a href='/shop/marketdata/robots/'>Котировки для роботописателей</a><li class='mfd-submenu-header'>Обучение<li class='mfd-submenu-subheader'><a href='/red-circule/'>Красный Циркуль</a><li class='mfd-submenu-subheader'><a href='/finstart/'>ФинСтарт</a></ul><li><a href='/news/'>Новости</a><ul class='mfd-submenu'><li><a href='/news/'>Финансовые новости</a><li><a href='/news/company/'>Новости эмитентов</a><li><a href='/calendar/'>Календарь макростатистики</a><li><a href='/calendar/rates/'>Ключевые ставки</a><li><a href='/calendar/earnings/'>Отчёты корпораций</a><li><a href='/news/portal/'>Новости портала</a><li><a href='/news/events/'>События и мероприятия</a><li><a href='/news/articles/?other=true'>Доп. материалы</a></ul><li><a href='/comments/'>Аналитика</a><ul class='mfd-submenu'><li><a href='/comments/'>Комментарии</a><li><a href='/comments/predictionandreality/'>Прогноз и реальность</a><li><a href='/news/articles/'>Статьи</a><li><a href='/analysis/egar/'>Анализ рисков</a><li><a href='/marketdata/patterns/'>Портрет рынка</a><li><a href='/marketdata/barometer/'>Фрактальный барометр</a></ul><li class='mfd-selected'><a href='/marketdata/' class='mfd-selected'>Котировки</a><ul class='mfd-submenu'><li class='mfd-submenu-header'>Ценные бумаги<li class='mfd-submenu-subheader'><a href='/marketdata/?id=5'>МосБиржа Основной</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=8'>FORTS</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=1'>ADR</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=31'>Рынок акций SPB</a><li class='mfd-submenu-header'>Валюта<li class='mfd-submenu-subheader'><a href='/currency/'>Официальные курсы ЦБ</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=7'>МосБиржа Валютный</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=3'>Forex</a><li class='mfd-submenu-header'>Кредиты<li class='mfd-submenu-subheader'><a href='/credits/instar/'>INSTAR</a><li class='mfd-submenu-subheader'><a href='/credits/centrobank/'>MIBID, MIBOR, MIACR</a><li class='mfd-submenu-header mfd-selected'>Данные ЦБ РФ<li class='mfd-submenu-subheader mfd-selected'><a href='/centrobank/preciousmetals/' class='mfd-selected'>Курсы драгметаллов</a><li class='mfd-submenu-subheader'><a href='/centrobank/depositrates/'>Ставки привлечения по депозитам</a><li class='mfd-submenu-subheader'><a href='/centrobank/correspondentaccountbalances/'>Остатки на корсчетах</a><li class='mfd-submenu-header'>Мировые рынки<li class='mfd-submenu-subheader'><a href='/marketdata/?id=4'>Мировые фондовые индексы</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=2'>Товары и фьючерсы</a><li><a href='/marketdata/other/'>Другие рынки</a><li><a href='/marketdata/?id=5&amp;mode=4&amp;sortHeader=Last&amp;sortOrder=Descending'>Лидеры роста и падения</a><li><a href='/marketdata/search/'>Поиск котировок</a><li><a href='/export/'>Экспорт в MetaStock</a></ul><li><a href='/tradingsignals/'>Сигналы</a><ul class='mfd-submenu'><li><a href='/tradingsignals/strategies/'>Портфели</a><li><a href='/tradingsignals/managers/'>Трейдеры</a><li><a href='/tradingsignals/investaccount/'>ИИС</a><li><a href='/tradingsignals/register/manager/'>Стань трейдером</a><li><a href='/tradingsignals/register/investor/'>Подписка на сигналы</a><li><a href='/tradingsignals/vps'>Виртуальные сервера</a><li><a href='http://forum.mfd.ru/forum/subforum/?id=648'>Форум</a><li><a href='http://forum.mfd.ru/blogs/view/?id=29'>Блог</a><li class='mfd-submenu-header'>Рейтинг управляющих<li class='mfd-submenu-subheader'><a href='/tradingsignals/contest/global/'>Глобальный конкурс</a><li class='mfd-submenu-subheader'><a href='/tradingsignals/contest/rating/spot/'>Рейтинг стратегий</a><li class='mfd-submenu-subheader'><a href='/tradingsignals/rating/'>Как попасть в рейтинг</a><li class='mfd-submenu-subheader'><a href='/tradingsignals/contest/participants/'>Участники</a><li class='mfd-submenu-header'>Мероприятия<li class='mfd-submenu-subheader'><a href='/tradingsignals/events/2017/autumn/'>Осенний инвестбрифинг 2017</a><li class='mfd-submenu-subheader'><a href='/tradingsignals/contest/event/'>Награждение 2016</a><li class='mfd-submenu-subheader'><a href='/roundtables/2014/'>Круглый стол аналитиков 2014</a><li class='mfd-submenu-subheader'><a href='/analysts2013/'>Круглый стол аналитиков 2013</a><li class='mfd-submenu-subheader'><a href='/traders2013/'>Круглый стол управляющих 2013</a></ul><li><a href='http://forum.mfd.ru/forum/'>Форум</a><ul class='mfd-submenu'><li><a href='http://forum.mfd.ru/forum/toprated/'>Лучшие сообщения</a><li class='mfd-submenu-header'>Игры<li class='mfd-submenu-subheader'><a href='http://forum.mfd.ru/forum/chartgames/1'>Подними рейтинг</a><li class='mfd-submenu-subheader'><a href='http://forum.mfd.ru/forum/chartgames/2'>Примени теханализ</a><li class='mfd-submenu-header'>Рейтинг пользователей<li class='mfd-submenu-subheader'><a href='http://forum.mfd.ru/forum/users/toprated/?period=AllTime'>общий</a><li class='mfd-submenu-subheader'><a href='http://forum.mfd.ru/forum/forecasters/'>за прогнозы</a><li class='mfd-submenu-subheader'><a href='http://forum.mfd.ru/blogs/authors/'>за блоги</a><li class='mfd-submenu-subheader'><a href='http://forum.mfd.ru/forum/gamers/'>за игру</a><li><a href='http://forum.mfd.ru/forum/users/'>Пользователи</a><li><a href='http://forum.mfd.ru/forum/rules/'>Правила</a><li><a href='http://forum.mfd.ru/forum/search/'>Поиск по форуму</a><li><a href='http://forum.mfd.ru/conferences/'>Конференции</a></ul><li><a href='http://forum.mfd.ru/blogs/'>Блоги</a><ul class='mfd-submenu'><li><a href='http://forum.mfd.ru/blogs/'>Популярное</a><li><a href='http://forum.mfd.ru/blogs/latest/'>Последнее</a><li><a href='http://forum.mfd.ru/blogs/authors/'>Блогеры</a><li><a href='http://forum.mfd.ru/blogs/about/'>Стань блогером</a><li><a href='http://forum.mfd.ru/blogs/search/'>Поиск по блогам</a><li><a href='http://forum.mfd.ru/blogs/contest/winners/'>Победители конкурса</a><li><a href='http://forum.mfd.ru/blogs/battles/'>Поединки</a></ul><li><a href='/about/'>О нас</a><ul class='mfd-submenu'><li><a href='/about/'>МФД-ИнфоЦентр</a><li><a href='/about/contacts/'>Контакты</a></ul></ul>&nbsp;</div><script>Mfd.initMenu();</script>
+
+<tr>    <td class="mfd-col0">
+
+<div class='mfd-menu'><ul class='mfd-submenu'><li class='mfd-submenu-header'>Ценные бумаги<li class='mfd-submenu-subheader'><a href='/marketdata/?id=5'>МосБиржа Основной</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=8'>FORTS</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=1'>ADR</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=31'>Рынок акций SPB</a><li class='mfd-submenu-header'>Валюта<li class='mfd-submenu-subheader'><a href='/currency/'>Официальные курсы ЦБ</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=7'>МосБиржа Валютный</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=3'>Forex</a><li class='mfd-submenu-header'>Кредиты<li class='mfd-submenu-subheader'><a href='/credits/instar/'>INSTAR</a><li class='mfd-submenu-subheader'><a href='/credits/centrobank/'>MIBID, MIBOR, MIACR</a><li class='mfd-submenu-header mfd-selected'>Данные ЦБ РФ<li class='mfd-submenu-subheader mfd-selected'><a href='/centrobank/preciousmetals/' class='mfd-selected'>Курсы драгметаллов</a><li class='mfd-submenu-subheader'><a href='/centrobank/depositrates/'>Ставки привлечения по депозитам</a><li class='mfd-submenu-subheader'><a href='/centrobank/correspondentaccountbalances/'>Остатки на корсчетах</a><li class='mfd-submenu-header'>Мировые рынки<li class='mfd-submenu-subheader'><a href='/marketdata/?id=4'>Мировые фондовые индексы</a><li class='mfd-submenu-subheader'><a href='/marketdata/?id=2'>Товары и фьючерсы</a><li><a href='/marketdata/other/'>Другие рынки</a><li><a href='/marketdata/?id=5&amp;mode=4&amp;sortHeader=Last&amp;sortOrder=Descending'>Лидеры роста и падения</a><li><a href='/marketdata/search/'>Поиск котировок</a><li><a href='/export/'>Экспорт в MetaStock</a></ul></div>
+        <div class="mfd-search mfd-form">
+            <h3>Поиск котировок:</h3>
+            <form accept-charset="utf-8" action="/marketdata/search/" method="get">
+                <input id="mfdSearch" name="ticker_search" type="text" /><button class="mfd-button-search" type="submit"></button>
+            </form>
+            <div>Например: Газпром</div>
+        </div>
+        <div class="mfd-column-left-block">
+<div class='mfd-products-menu'><div><h3>Новости портала:</h3></div><div class='mfd-info-block' id='latestPortalNews'><ul><li><div class='mfd-info-date'>8 ноября</div><a href='/news/portal/view/?id=606'>14 декабря в Москве состоится Третья конференция &#171;Портфельные инвестиции для частных лиц&#187;</a><li><div class='mfd-info-date'>4 октября</div><a href='/news/portal/view/?id=605'>6-16 октября 2019 года. &#171;Мир искусства: финансисты творят&#187; в арт-пространстве &#171;квАРТира 10&#187;, Москва</a><li><div class='mfd-info-date'>5 июня</div><a href='/news/portal/view/?id=604'>100 работ или путь из финансиста в художники</a></ul></div></div>
+        </div>
+        <div class="mfd-column-left-block">
+<div class='mfd-banner-banner120x90bottom-container'><div class='mfd-banner mfd-banner-banner120x90bottom'><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 120*240 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:120px;height:240px"
+     data-ad-client="ca-pub-8980300939565371"
+     data-ad-slot="2063741449"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div></div>
+        </div>
+    </td>
+    <td class="mfd-content-container">
+
+
+
+
+
+
+<div class='mfd-breadcrumbs mfd-form'><a href='/'>mfd.ru</a> &rarr; <a href='/marketdata/'>Котировки</a> &rarr; Данные ЦБ РФ &rarr; <span class='mfd-breadcrumbs-current'><a href='/centrobank/preciousmetals/'>Курсы драгметаллов</a></span></div>
+
+
+
+
+
+
+<div class="mfd-header">
+    <h1>ЦБ РФ – Курсы драгметаллов</h1>
+    <div>
+        <a href="/currency/">Курсы валют</a>
+        <a href="/centrobank/preciousmetals/" class="mfd-selected">Курсы драгметаллов</a>
+        <a href="/centrobank/depositrates/">Ставки привлечения по депозитам</a>
+        <a href="/centrobank/correspondentaccountbalances/">Остатки на корсчетах</a>
+    </div>
+</div>
+
+<form action="/centrobank/preciousmetals/" class="mfd-form-simple-h" method="get">
+        <div>
+            <select name="left">
+                    <option value="0" selected="selected" data-id="1m">Золото</option>
+                    <option value="1" data-id="4m">Серебро</option>
+                    <option value="2" data-id="3m">Платина</option>
+                    <option value="3" data-id="2m">Палладий</option>
+            </select>
+        </div>
+        <div>сравнить с</div>
+        <div>
+            <select name="right">
+                <option value="-1" selected="selected">&nbsp;</option>
+                    <option value="0" data-id="1m">Золото</option>
+                    <option value="1" data-id="4m">Серебро</option>
+                    <option value="2" data-id="3m">Платина</option>
+                    <option value="3" data-id="2m">Палладий</option>
+            </select>
+        </div>
+    <div>
+        <input class="mfd-input-date" name="from" placeholder="ДД.ММ.ГГГГ" type="text" value="08.07.2019" />
+        &ndash;
+        <input class="mfd-input-date" name="till" placeholder="ДД.ММ.ГГГГ" type="text" value="" />
+    </div>
+    <br>
+    <div>
+        <button type="submit">Показать</button>
+    </div>
+    <div>
+        <button name="cancel" type="button" class="m-button-link">Сбросить</button>
+    </div>
+    <div>
+        <button name="export" type="button" class="m-button-link">Экспорт в csv</button>
+    </div>
+    <div>
+        <button name="exportMetastock" type="button" class="m-button-link">Экспорт в Metastock</button>
+    </div>
+    <div class="mfd-clear"></div>
+</form>
+<div class="m-content">
+<div class="m-chart-container"><img alt="График" id="Chart1" src="/temp/chart/2020010805/63714057839832986906488f2deed3416f9ac8bed617d0ff72.png" width="825" height="400" /><script>$(function () { $('#Chart1').crosshair({"areas":[{"offset":{"left":0,"top":0},"innerOffset":{"left":58,"top":24},"innerWidth":709,"innerHeight":350,"axisY":{"min":2800,"max":3300,"scale":0.7},"name":"ChartArea1","ySeries":[{"decimalPlaces":null,"dotColor":"#FF660A","index":0,"labels":[["0","\u003cspan class=\"mfd-chart-series-icon\" style=\"background: #FF660A;\"\u003e\u0026nbsp;\u003c/span\u003e\u003cspan class=\"mfd-chart-series-name\" style=\"color: #FF660A;\"\u003eЗолото\u003c/span\u003e \u0026nbsp; "]]}]}],"pointMap":{"62":{"x":"09.07.2019","y":[[{"p":315,"v":"2 884.91"}]]},"66":{"x":"10.07.2019","y":[[{"p":343,"v":"2 845.37"}]]},"70":{"x":"11.07.2019","y":[[{"p":331,"v":"2 862.32"}]]},"74":{"x":"12.07.2019","y":[[{"p":317,"v":"2 882.23"}]]},"78":{"x":"13.07.2019","y":[[{"p":341,"v":"2 847.96"}]]},"90":{"x":"16.07.2019","y":[[{"p":332,"v":"2 860.78"}]]},"94":{"x":"17.07.2019","y":[[{"p":333,"v":"2 859.79"}]]},"97":{"x":"18.07.2019","y":[[{"p":351,"v":"2 834.84"}]]},"101":{"x":"19.07.2019","y":[[{"p":326,"v":"2 870.2"}]]},"105":{"x":"20.07.2019","y":[[{"p":302,"v":"2 904.57"}]]},"117":{"x":"23.07.2019","y":[[{"p":316,"v":"2 884.19"}]]},"121":{"x":"24.07.2019","y":[[{"p":321,"v":"2 877.12"}]]},"125":{"x":"25.07.2019","y":[[{"p":310,"v":"2 892.77"}]]},"129":{"x":"26.07.2019","y":[[{"p":307,"v":"2 896.27"}]]},"133":{"x":"27.07.2019","y":[[{"p":320,"v":"2 878.45"}]]},"145":{"x":"30.07.2019","y":[[{"p":306,"v":"2 897.85"}]]},"149":{"x":"31.07.2019","y":[[{"p":297,"v":"2 910.73"}]]},"153":{"x":"01.08.2019","y":[[{"p":293,"v":"2 916.76"}]]},"157":{"x":"02.08.2019","y":[[{"p":314,"v":"2 886.37"}]]},"161":{"x":"03.08.2019","y":[[{"p":245,"v":"2 984.54"}]]},"173":{"x":"06.08.2019","y":[[{"p":201,"v":"3 048.33"}]]},"177":{"x":"07.08.2019","y":[[{"p":189,"v":"3 064.51"}]]},"181":{"x":"08.08.2019","y":[[{"p":155,"v":"3 113.34"}]]},"185":{"x":"09.08.2019","y":[[{"p":139,"v":"3 135.52"}]]},"189":{"x":"10.08.2019","y":[[{"p":126,"v":"3 154.3"}]]},"201":{"x":"13.08.2019","y":[[{"p":123,"v":"3 159.47"}]]},"205":{"x":"14.08.2019","y":[[{"p":79,"v":"3 221.08"}]]},"209":{"x":"15.08.2019","y":[[{"p":133,"v":"3 145.23"}]]},"213":{"x":"16.08.2019","y":[[{"p":84,"v":"3 215.04"}]]},"217":{"x":"17.08.2019","y":[[{"p":93,"v":"3 201.94"}]]},"229":{"x":"20.08.2019","y":[[{"p":87,"v":"3 210.86"}]]},"233":{"x":"21.08.2019","y":[[{"p":76,"v":"3 226.42"}]]},"237":{"x":"22.08.2019","y":[[{"p":98,"v":"3 194.86"}]]},"241":{"x":"23.08.2019","y":[[{"p":121,"v":"3 161.83"}]]},"245":{"x":"24.08.2019","y":[[{"p":126,"v":"3 154.36"}]]},"257":{"x":"27.08.2019","y":[[{"p":101,"v":"3 189.7"}]]},"261":{"x":"28.08.2019","y":[[{"p":50,"v":"3 263.35"}]]},"265":{"x":"29.08.2019","y":[[{"p":30,"v":"3 291.97"}]]},"269":{"x":"30.08.2019","y":[[{"p":26,"v":"3 297.6"}]]},"273":{"x":"31.08.2019","y":[[{"p":50,"v":"3 263.29"}]]},"285":{"x":"03.09.2019","y":[[{"p":50,"v":"3 263.01"}]]},"289":{"x":"04.09.2019","y":[[{"p":26,"v":"3 296.48"}]]},"293":{"x":"05.09.2019","y":[[{"p":31,"v":"3 290"}]]},"297":{"x":"06.09.2019","y":[[{"p":41,"v":"3 275.94"}]]},"301":{"x":"07.09.2019","y":[[{"p":99,"v":"3 193.33"}]]},"312":{"x":"10.09.2019","y":[[{"p":106,"v":"3 183.15"}]]},"316":{"x":"11.09.2019","y":[[{"p":133,"v":"3 144.52"}]]},"320":{"x":"12.09.2019","y":[[{"p":135,"v":"3 142.18"}]]},"324":{"x":"13.09.2019","y":[[{"p":129,"v":"3 150.08"}]]},"328":{"x":"14.09.2019","y":[[{"p":149,"v":"3 122.25"}]]},"340":{"x":"17.09.2019","y":[[{"p":177,"v":"3 082.34"}]]},"344":{"x":"18.09.2019","y":[[{"p":171,"v":"3 090.88"}]]},"348":{"x":"19.09.2019","y":[[{"p":156,"v":"3 111.72"}]]},"352":{"x":"20.09.2019","y":[[{"p":169,"v":"3 093.77"}]]},"356":{"x":"21.09.2019","y":[[{"p":173,"v":"3 087.59"}]]},"368":{"x":"24.09.2019","y":[[{"p":148,"v":"3 123.92"}]]},"372":{"x":"25.09.2019","y":[[{"p":155,"v":"3 113.77"}]]},"376":{"x":"26.09.2019","y":[[{"p":123,"v":"3 159.17"}]]},"380":{"x":"27.09.2019","y":[[{"p":154,"v":"3 114.97"}]]},"384":{"x":"28.09.2019","y":[[{"p":165,"v":"3 098.54"}]]},"396":{"x":"01.10.2019","y":[[{"p":170,"v":"3 091.6"}]]},"400":{"x":"02.10.2019","y":[[{"p":188,"v":"3 067.01"}]]},"404":{"x":"03.10.2019","y":[[{"p":149,"v":"3 122.35"}]]},"408":{"x":"04.10.2019","y":[[{"p":130,"v":"3 149.4"}]]},"412":{"x":"05.10.2019","y":[[{"p":125,"v":"3 156"}]]},"424":{"x":"08.10.2019","y":[[{"p":143,"v":"3 130.78"}]]},"428":{"x":"09.10.2019","y":[[{"p":145,"v":"3 128.29"}]]},"432":{"x":"10.10.2019","y":[[{"p":132,"v":"3 146.52"}]]},"436":{"x":"11.10.2019","y":[[{"p":137,"v":"3 139.3"}]]},"440":{"x":"12.10.2019","y":[[{"p":169,"v":"3 093.85"}]]},"452":{"x":"15.10.2019","y":[[{"p":170,"v":"3 092.08"}]]},"456":{"x":"16.10.2019","y":[[{"p":173,"v":"3 087.91"}]]},"460":{"x":"17.10.2019","y":[[{"p":188,"v":"3 067.03"}]]},"464":{"x":"18.10.2019","y":[[{"p":196,"v":"3 055.16"}]]},"468":{"x":"19.10.2019","y":[[{"p":193,"v":"3 058.56"}]]},"480":{"x":"22.10.2019","y":[[{"p":195,"v":"3 056.17"}]]},"484":{"x":"23.10.2019","y":[[{"p":204,"v":"3 043.12"}]]},"488":{"x":"24.10.2019","y":[[{"p":189,"v":"3 065.02"}]]},"492":{"x":"25.10.2019","y":[[{"p":195,"v":"3 056.83"}]]},"496":{"x":"26.10.2019","y":[[{"p":167,"v":"3 095.87"}]]},"508":{"x":"29.10.2019","y":[[{"p":171,"v":"3 090.57"}]]},"512":{"x":"30.10.2019","y":[[{"p":190,"v":"3 063.49"}]]},"516":{"x":"31.10.2019","y":[[{"p":192,"v":"3 060.14"}]]},"519":{"x":"01.11.2019","y":[[{"p":172,"v":"3 088.73"}]]},"523":{"x":"02.11.2019","y":[[{"p":159,"v":"3 108.27"}]]},"539":{"x":"06.11.2019","y":[[{"p":193,"v":"3 059.56"}]]},"543":{"x":"07.11.2019","y":[[{"p":204,"v":"3 043.19"}]]},"547":{"x":"08.11.2019","y":[[{"p":206,"v":"3 040.86"}]]},"551":{"x":"09.11.2019","y":[[{"p":231,"v":"3 005.5"}]]},"563":{"x":"12.11.2019","y":[[{"p":227,"v":"3 011.34"}]]},"567":{"x":"13.11.2019","y":[[{"p":244,"v":"2 987"}]]},"571":{"x":"14.11.2019","y":[[{"p":220,"v":"3 020.71"}]]},"575":{"x":"15.11.2019","y":[[{"p":214,"v":"3 029.82"}]]},"579":{"x":"16.11.2019","y":[[{"p":227,"v":"3 010.41"}]]},"591":{"x":"19.11.2019","y":[[{"p":242,"v":"2 989.35"}]]},"595":{"x":"20.11.2019","y":[[{"p":232,"v":"3 003.55"}]]},"599":{"x":"21.11.2019","y":[[{"p":208,"v":"3 037.48"}]]},"603":{"x":"22.11.2019","y":[[{"p":224,"v":"3 015.06"}]]},"607":{"x":"23.11.2019","y":[[{"p":225,"v":"3 013.7"}]]},"619":{"x":"26.11.2019","y":[[{"p":240,"v":"2 991.94"}]]},"623":{"x":"27.11.2019","y":[[{"p":234,"v":"3 000.45"}]]},"627":{"x":"28.11.2019","y":[[{"p":233,"v":"3 002.45"}]]},"631":{"x":"29.11.2019","y":[[{"p":232,"v":"3 003.83"}]]},"635":{"x":"30.11.2019","y":[[{"p":234,"v":"3 000.48"}]]},"647":{"x":"03.12.2019","y":[[{"p":222,"v":"3 018.22"}]]},"651":{"x":"04.12.2019","y":[[{"p":212,"v":"3 032.19"}]]},"655":{"x":"05.12.2019","y":[[{"p":202,"v":"3 046.02"}]]},"659":{"x":"06.12.2019","y":[[{"p":217,"v":"3 025.36"}]]},"663":{"x":"07.12.2019","y":[[{"p":220,"v":"3 021.37"}]]},"675":{"x":"10.12.2019","y":[[{"p":236,"v":"2 998.6"}]]},"679":{"x":"11.12.2019","y":[[{"p":239,"v":"2 993.49"}]]},"683":{"x":"12.12.2019","y":[[{"p":234,"v":"3 000.21"}]]},"687":{"x":"13.12.2019","y":[[{"p":236,"v":"2 997.7"}]]},"691":{"x":"14.12.2019","y":[[{"p":264,"v":"2 957.63"}]]},"703":{"x":"17.12.2019","y":[[{"p":248,"v":"2 981.48"}]]},"707":{"x":"18.12.2019","y":[[{"p":254,"v":"2 972.28"}]]},"711":{"x":"19.12.2019","y":[[{"p":252,"v":"2 975.68"}]]},"715":{"x":"20.12.2019","y":[[{"p":260,"v":"2 964.03"}]]},"719":{"x":"21.12.2019","y":[[{"p":260,"v":"2 963.3"}]]},"730":{"x":"24.12.2019","y":[[{"p":256,"v":"2 969.95"}]]},"734":{"x":"25.12.2019","y":[[{"p":249,"v":"2 979.8"}]]},"738":{"x":"26.12.2019","y":[[{"p":264,"v":"2 958.18"}]]},"742":{"x":"27.12.2019","y":[[{"p":262,"v":"2 960.64"}]]},"746":{"x":"28.12.2019","y":[[{"p":226,"v":"3 012.68"}]]},"758":{"x":"31.12.2019","y":[[{"p":229,"v":"3 008.36"}]]},"762":{"x":"01.01.2020","y":[[{"p":213,"v":"3 031.25"}]]}}}); });</script></div>    <p>Официальные учетные цены драгоценных металлов устанавливаются ЦБ РФ каждый рабочий день. Цены рассчитываются на основе фиксинга на золото, серебро, платину и палладий на лондонском рынке наличного металла "спот", и пересчитываются в рубли по официальному курсу доллара США к российскому рублю, действующему на день, следующий за днем установления учетных цен. Учетные цены применяются для целей бухгалтерского учета в кредитных организациях.</p>
+<table class='mfd-table'><thead><tr><th class='mfdSortDescending'>Дата<th>Золото
+<br>руб./грамм<th>Серебро
+<br>руб./грамм<th>Платина
+<br>руб./грамм<th>Палладий
+<br>руб./грамм<tbody><tr><td class='mfd-item-date'>01.01.2020<td>StringValue<td>StringValue<td>StringValue<td>StringValue<tr><td class='mfd-item-date'>31.12.2019<td>3008.36<td>35.48<td>1896.77<td>3795.53<tr><td class='mfd-item-date'>28.12.2019<td>3012.68<td>35.07<td>1894.64<td>3785.29<tr><td class='mfd-item-date'>27.12.2019<td>2960.64<td>34.92<td>1856.79<td>3725.50<tr><td class='mfd-item-date'>26.12.2019<td>2958.18<td>34.89<td>1855.25<td>3722.41<tr><td class='mfd-item-date'>25.12.2019<td>2979.80<td>34.73<td>1868.81<td>3749.61<tr><td class='mfd-item-date'>24.12.2019<td>2969.95<td>34.09<td>1845.27<td>3764.59<tr><td class='mfd-item-date'>21.12.2019<td>2963.30<td>33.99<td>1867.99<td>3890.47<tr><td class='mfd-item-date'>20.12.2019<td>2964.03<td>34.17<td>1863.58<td>3871.90<tr><td class='mfd-item-date'>19.12.2019<td>2975.68<td>34.33<td>1871.25<td>3895.41<tr><td class='mfd-item-date'>18.12.2019<td>2972.28<td>34.22<td>1869.74<td>4000.83<tr><td class='mfd-item-date'>17.12.2019<td>2981.48<td>34.18<td>1880.83<td>3957.41<tr><td class='mfd-item-date'>14.12.2019<td>2957.63<td>33.92<td>1886.48<td>3959.99<tr><td class='mfd-item-date'>13.12.2019<td>2997.70<td>33.87<td>1910.79<td>3917.11<tr><td class='mfd-item-date'>12.12.2019<td>3000.21<td>34.08<td>1878.13<td>3880.93<tr><td class='mfd-item-date'>11.12.2019<td>2993.49<td>33.97<td>1843.78<td>3842.92<tr><td class='mfd-item-date'>10.12.2019<td>2998.60<td>34.71<td>1823.42<td>3845.57<tr><td class='mfd-item-date'>07.12.2019<td>3021.37<td>34.56<td>1837.59<td>3826.78<tr><td class='mfd-item-date'>06.12.2019<td>3025.36<td>35.14<td>1823.92<td>3816.07<tr><td class='mfd-item-date'>05.12.2019<td>3046.02<td>35.11<td>1874.03<td>3836.81<tr><td class='mfd-item-date'>04.12.2019<td>3032.19<td>34.80<td>1858.00<td>3837.66<tr><td class='mfd-item-date'>03.12.2019<td>3018.22<td>35.13<td>1853.38<td>3812.38<tr><td class='mfd-item-date'>30.11.2019<td>3000.48<td>34.91<td>1843.94<td>3790.90<tr><td class='mfd-item-date'>29.11.2019<td>3003.83<td>35.15<td>1838.30<td>3777.59<tr><td class='mfd-item-date'>28.11.2019<td>3002.45<td>34.83<td>1853.13<td>3710.38<tr><td class='mfd-item-date'>27.11.2019<td>3000.45<td>34.73<td>1850.51<td>3717.50<tr><td class='mfd-item-date'>26.11.2019<td>2991.94<td>35.21<td>1830.69<td>3661.39<tr><td class='mfd-item-date'>23.11.2019<td>3013.70<td>35.01<td>1866.02<td>3625.54<tr><td class='mfd-item-date'>22.11.2019<td>3015.06<td>35.13<td>1871.97<td>3620.78<tr><td class='mfd-item-date'>21.11.2019<td>3037.48<td>35.25<td>1877.20<td>3635.01<tr><td class='mfd-item-date'>20.11.2019<td>3003.55<td>34.44<td>1835.06<td>3528.65<tr><td class='mfd-item-date'>19.11.2019<td>2989.35<td>34.58<td>1807.87<td>3509.16<tr><td class='mfd-item-date'>16.11.2019<td>3010.41<td>34.99<td>1799.35<td>3557.61<tr><td class='mfd-item-date'>15.11.2019<td>3029.82<td>34.99<td>1806.35<td>3573.48<tr><td class='mfd-item-date'>14.11.2019<td>3020.71<td>34.54<td>1804.03<td>3539.94<tr><td class='mfd-item-date'>13.11.2019<td>2987.00<td>34.65<td>1802.46<td>3492.02<tr><td class='mfd-item-date'>12.11.2019<td>3011.34<td>34.54<td>1816.46<td>3534.29<tr><td class='mfd-item-date'>09.11.2019<td>3005.50<td>35.92<td>1831.76<td>3663.52<tr><td class='mfd-item-date'>08.11.2019<td>3040.86<td>35.94<td>1909.63<td>3681.98<tr><td class='mfd-item-date'>07.11.2019<td>3043.19<td>36.89<td>1897.20<td>3632.90<tr><td class='mfd-item-date'>06.11.2019<td>3059.56<td>36.98<td>1903.33<td>3631.78<tr><td class='mfd-item-date'>02.11.2019<td>3108.27<td>37.17<td>1918.67<td>3689.12<tr><td class='mfd-item-date'>01.11.2019<td>3088.73<td>36.82<td>1898.68<td>3696.88<tr><td class='mfd-item-date'>31.10.2019<td>3060.14<td>36.27<td>1891.34<td>3665.63<tr><td class='mfd-item-date'>30.10.2019<td>3063.49<td>37.05<td>1879.86<td>3694.04<tr><td class='mfd-item-date'>29.10.2019<td>3090.57<td>37.22<td>1905.62<td>3661.33<tr><td class='mfd-item-date'>26.10.2019<td>3095.87<td>37.29<td>1909.39<td>3652.13<tr><td class='mfd-item-date'>25.10.2019<td>3056.83<td>35.99<td>1886.84<td>3580.69<tr><td class='mfd-item-date'>24.10.2019<td>3065.02<td>35.97<td>1835.83<td>3595.76<tr><td class='mfd-item-date'>23.10.2019<td>3043.12<td>36.06<td>1816.73<td>3592.54<tr><td class='mfd-item-date'>22.10.2019<td>3056.17<td>36.34<td>1830.60<td>3612.01<tr><td class='mfd-item-date'>19.10.2019<td>3058.56<td>35.85<td>1815.60<td>3606.53<tr><td class='mfd-item-date'>18.10.2019<td>3055.16<td>35.91<td>1815.25<td>3640.80<tr><td class='mfd-item-date'>17.10.2019<td>3067.03<td>35.70<td>1830.85<td>3603.77<tr><td class='mfd-item-date'>16.10.2019<td>3087.91<td>36.50<td>1842.73<td>3565.64<tr><td class='mfd-item-date'>15.10.2019<td>3092.08<td>36.43<td>1843.82<td>3520.03<tr><td class='mfd-item-date'>12.10.2019<td>3093.85<td>36.34<td>1862.48<td>3522.61<tr><td class='mfd-item-date'>11.10.2019<td>3139.30<td>36.95<td>1852.53<td>3505.23<tr><td class='mfd-item-date'>10.10.2019<td>3146.52<td>37.21<td>1856.43<td>3472.18<tr><td class='mfd-item-date'>09.10.2019<td>3128.29<td>36.61<td>1837.35<td>3397.32<tr><td class='mfd-item-date'>08.10.2019<td>3130.78<td>36.32<td>1823.67<td>3443.10<tr><td class='mfd-item-date'>05.10.2019<td>3156.00<td>36.81<td>1848.23<td>3472.75<tr><td class='mfd-item-date'>04.10.2019<td>3149.40<td>36.85<td>1863.67<td>3545.17<tr><td class='mfd-item-date'>03.10.2019<td>3122.35<td>36.31<td>1838.84<td>3460.98<tr><td class='mfd-item-date'>02.10.2019<td>3067.01<td>35.79<td>1843.01<td>3487.28<tr><td class='mfd-item-date'>01.10.2019<td>3091.60<td>35.86<td>1922.38<td>3514.31<tr><td class='mfd-item-date'>28.09.2019<td>3098.54<td>36.28<td>1923.97<td>3427.52<tr><td class='mfd-item-date'>27.09.2019<td>3114.97<td>37.14<td>1918.11<td>3406.30<tr><td class='mfd-item-date'>26.09.2019<td>3159.17<td>38.32<td>1968.74<td>3450.45<tr><td class='mfd-item-date'>25.09.2019<td>3113.77<td>38.01<td>1960.12<td>3391.81<tr><td class='mfd-item-date'>24.09.2019<td>3123.92<td>37.79<td>1963.37<td>3408.66<tr><td class='mfd-item-date'>21.09.2019<td>3087.59<td>36.70<td>1939.88<td>3380.93<tr><td class='mfd-item-date'>20.09.2019<td>3093.77<td>36.66<td>1916.06<td>3278.77<tr><td class='mfd-item-date'>19.09.2019<td>3111.72<td>36.98<td>1943.01<td>3308.09<tr><td class='mfd-item-date'>18.09.2019<td>3090.88<td>36.78<td>1921.36<td>3279.92<tr><td class='mfd-item-date'>17.09.2019<td>3082.34<td>36.60<td>1955.64<td>3320.28<tr><td class='mfd-item-date'>14.09.2019<td>3122.25<td>37.61<td>1979.52<td>3333.05<tr><td class='mfd-item-date'>13.09.2019<td>3150.08<td>38.13<td>1999.52<td>3349.30<tr><td class='mfd-item-date'>12.09.2019<td>3142.18<td>38.21<td>1975.36<td>3285.96<tr><td class='mfd-item-date'>11.09.2019<td>3144.52<td>37.85<td>1973.48<td>3248.45<tr><td class='mfd-item-date'>10.09.2019<td>3183.15<td>38.30<td>1996.39<td>3265.47<tr><td class='mfd-item-date'>07.09.2019<td>3193.33<td>38.50<td>1994.57<td>3299.53<tr><td class='mfd-item-date'>06.09.2019<td>3275.94<td>40.82<td>2085.42<td>3312.89<tr><td class='mfd-item-date'>05.09.2019<td>3290.00<td>41.27<td>2069.61<td>3303.26<tr><td class='mfd-item-date'>04.09.2019<td>3296.48<td>39.74<td>2013.44<td>3304.11<tr><td class='mfd-item-date'>03.09.2019<td>3263.01<td>39.31<td>2004.91<td>3287.96<tr><td class='mfd-item-date'>31.08.2019<td>3263.29<td>39.30<td>1998.74<td>3206.54<tr><td class='mfd-item-date'>30.08.2019<td>3297.60<td>39.66<td>1965.71<td>3186.76<tr><td class='mfd-item-date'>29.08.2019<td>3291.97<td>39.21<td>1853.37<td>3155.85<tr><td class='mfd-item-date'>28.08.2019<td>3263.35<td>37.76<td>1823.56<td>3148.63<tr><td class='mfd-item-date'>27.08.2019<td>3189.70<td>36.16<td>1805.05<td>3096.80<tr><td class='mfd-item-date'>24.08.2019<td>3154.36<td>35.96<td>1813.94<td>3125.89<tr><td class='mfd-item-date'>23.08.2019<td>3161.83<td>35.78<td>1793.26<td>3094.96<tr><td class='mfd-item-date'>22.08.2019<td>3194.86<td>36.45<td>1798.06<td>3178.56<tr><td class='mfd-item-date'>21.08.2019<td>3226.42<td>36.54<td>1833.67<td>3186.38<tr><td class='mfd-item-date'>20.08.2019<td>3210.86<td>36.24<td>1807.43<td>3115.89<tr><td class='mfd-item-date'>17.08.2019<td>3201.94<td>36.41<td>1769.60<td>3070.28<tr><td class='mfd-item-date'>16.08.2019<td>3215.04<td>36.63<td>1779.48<td>3031.48<tr><td class='mfd-item-date'>15.08.2019<td>3145.23<td>35.88<td>1779.78<td>3025.00<tr><td class='mfd-item-date'>14.08.2019<td>3221.08<td>36.79<td>1824.41<td>3037.16<tr><td class='mfd-item-date'>13.08.2019<td>3159.47<td>35.67<td>1798.56<td>2995.50<tr><td class='mfd-item-date'>10.08.2019<td>3154.30<td>35.67<td>1810.55<td>2998.00<tr><td class='mfd-item-date'>09.08.2019<td>3135.52<td>35.64<td>1794.54<td>2965.07<tr><td class='mfd-item-date'>08.08.2019<td>3113.34<td>35.20<td>1787.25<td>2990.60<tr><td class='mfd-item-date'>07.08.2019<td>3064.51<td>34.35<td>1792.36<td>3004.03<tr><td class='mfd-item-date'>06.08.2019<td>3048.33<td>34.48<td>1782.00<td>2953.27<tr><td class='mfd-item-date'>03.08.2019<td>2984.54<td>33.66<td>1756.16<td>2953.26<tr><td class='mfd-item-date'>02.08.2019<td>2886.37<td>32.85<td>1748.57<td>3107.20<tr><td class='mfd-item-date'>01.08.2019<td>2916.76<td>33.59<td>1782.01<td>3117.49<tr><td class='mfd-item-date'>31.07.2019<td>2910.73<td>33.53<td>1795.20<td>3152.30<tr><td class='mfd-item-date'>30.07.2019<td>2897.85<td>33.47<td>1770.63<td>3128.72<tr><td class='mfd-item-date'>27.07.2019<td>2878.45<td>33.37<td>1751.53<td>3109.32<tr><td class='mfd-item-date'>26.07.2019<td>2896.27<td>33.58<td>1788.91<td>3125.02<tr><td class='mfd-item-date'>25.07.2019<td>2892.77<td>33.55<td>1749.20<td>3104.72<tr><td class='mfd-item-date'>24.07.2019<td>2877.12<td>33.35<td>1713.02<td>3070.85<tr><td class='mfd-item-date'>23.07.2019<td>2884.19<td>33.18<td>1719.03<td>3037.16<tr><td class='mfd-item-date'>20.07.2019<td>2904.57<td>32.98<td>1732.17<td>3076.28<tr><td class='mfd-item-date'>19.07.2019<td>2870.20<td>32.38<td>1714.97<td>3096.64<tr><td class='mfd-item-date'>18.07.2019<td>2834.84<td>31.59<td>1689.81<td>3076.07<tr><td class='mfd-item-date'>17.07.2019<td>2859.79<td>31.09<td>1702.42<td>3134.23<tr><td class='mfd-item-date'>16.07.2019<td>2860.78<td>30.95<td>1694.75<td>3151.15<tr><td class='mfd-item-date'>13.07.2019<td>2847.96<td>30.68<td>1669.55<td>3154.72<tr><td class='mfd-item-date'>12.07.2019<td>2882.23<td>30.92<td>1681.01<td>3242.53<tr><td class='mfd-item-date'>11.07.2019<td>2862.32<td>30.96<td>1667.61<td>3179.33<tr><td class='mfd-item-date'>10.07.2019<td>2845.37<td>30.80<td>1656.50<td>3185.89<tr><td class='mfd-item-date'>09.07.2019<td>2884.91<td>30.95<td>1669.47<td>3225.99</table></div>
+
+
+
+<script>
+    $(".mfd-form select, .mfd-form-simple-h select, .mfd-form-simple-v select").customizeSelect();
+</script>
+
+    </td>
+    </tr>
+    </table>
+
+<div class='mfd-bottom'><div class='mfd-bottom-copyright'>© 2020 <a href='/about/contacts/'>«МФД-ИнфоЦентр»</a></div><div id='mfd-bottom-logos'><div><div><a class='mfd-bottom-logo-3xweb' href='http://www.3xweb.ru/' target='_blank' title='Создание сайтов, оптимизация, продвижение, поддержка - 3xWEB'></a></div><div><a class='mfd-bottom-logo-arfi' href='http://www.arfi.ru/' rel='nofollow' target='_blank'></a></div><div><a class='mfd-bottom-logo-ruvds' href='https://ruvds.com/ru-rub' rel='nofollow' target='blank' title='VPS VDS для трейдеров'></a><div><a href='https://ruvds.com/ru-rub' target='blank'>VPS</a> <a href='https://ruvds.com/ru-rub' target='blank'>VDS</a> для трейдеров</div><div><a href='https://bigd.host/' target='_blank'>Виртуальный сервер</a></div></div><div><a class='mfd-bottom-logo-liveinternet' id='mfd-liveinternet' href='http://www.liveinternet.ru/?mfd.ru' rel='nofollow'></a></div></div></div><div class='mfd-clear'></div></div><script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-15583455-1', 'mfd.ru');
+    ga('send', 'pageview');
+
+    $('#mfd-liveinternet').html('<img src="//counter.yadro.ru/hit?t39.6;r'+escape(document.referrer)+((typeof(screen)=='undefined')?'':';s'+screen.width+'*'+screen.height+'*'+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+';u'+escape(document.URL)+';'+Math.random()+'" />');
+</script>
+
+
+    </div>
+    </div>
+
+
+
+
+
+    </body>
+</html>

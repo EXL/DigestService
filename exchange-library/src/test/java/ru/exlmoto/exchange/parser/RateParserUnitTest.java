@@ -130,6 +130,24 @@ public class RateParserUnitTest {
 		generalTests(new MetalRuParser());
 	}
 
+	@Test
+	public void testMetalRuMirrorParser() {
+		assertTrue(parserHelper.process(new MetalRuMirrorParser(),
+			fileHelper.getFileContent("metalRuAlt.html")));
+		assertTrue(parserHelper.process(new MetalRuMirrorParser(),
+			fileHelper.getFileContent("metalRuAlt.html", "Windows-1251")));
+		assertFalse(parserHelper.process(new MetalRuMirrorParser(),
+			fileHelper.getFileContent("metalRuAltChunk.html")));
+		assertTrue(parserHelper.process(new MetalRuMirrorParser(),
+			fileHelper.getFileContent("metalRuAltError.html")));
+		assertFalse(parserHelper.process(new MetalRuMirrorParser(),
+			fileHelper.getFileContent("metalRuAltErrors.html")));
+		assertFalse(parserHelper.process(new MetalRuMirrorParser(),
+			fileHelper.getFileContent("metalOtherSite.html")));
+
+		generalTests(new MetalRuMirrorParser());
+	}
+	
 	private void generalTests(RateParser parser) {
 		assertFalse(parserHelper.process(parser, "mulfunction data"));
 		assertFalse(parserHelper.process(parser, "mulfunction\ndata"));

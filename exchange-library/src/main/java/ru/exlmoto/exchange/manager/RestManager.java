@@ -14,7 +14,7 @@ import java.time.Duration;
 @Slf4j
 @Component
 public class RestManager {
-	private final int TIMEOUT_SEC = 15;
+	private final int TIMEOUT_SEC = 5;
 
 	public String getContent(String url) {
 		try {
@@ -31,9 +31,11 @@ public class RestManager {
 	}
 
 	private String getRawContentSpring(String url) {
-		RestTemplate restTemplate = new RestTemplateBuilder().setConnectTimeout(
-			Duration.ofSeconds(TIMEOUT_SEC)
-		).build();
+		RestTemplate restTemplate =
+			new RestTemplateBuilder()
+				.setConnectTimeout(Duration.ofSeconds(TIMEOUT_SEC))
+				.setReadTimeout(Duration.ofSeconds(TIMEOUT_SEC))
+				.build();
 		String rawData = restTemplate.getForObject(url, String.class);
 		Assert.notNull(rawData, "Spring RestTemplate: Received raw data is null.");
 		return rawData;

@@ -3,7 +3,6 @@ package ru.exlmoto.exchange.generator.helper;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.test.context.ActiveProfiles;
@@ -19,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@SpringBootApplication(scanBasePackages = "ru.exlmoto.exchange")
 public class GeneratorHelperTest {
 	@Autowired
 	private GeneratorHelper helper;

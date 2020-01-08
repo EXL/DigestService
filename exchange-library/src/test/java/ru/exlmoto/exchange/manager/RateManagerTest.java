@@ -17,7 +17,6 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@EnableConfigurationProperties(ExchangeConfiguration.class)
 public class RateManagerTest {
 	@Autowired
 	private ExchangeConfiguration configuration;

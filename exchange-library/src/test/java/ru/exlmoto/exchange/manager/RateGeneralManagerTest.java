@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @EnableConfigurationProperties(ExchangeConfiguration.class)
 public class RateGeneralManagerTest {
 	@Autowired
-	private ExchangeConfiguration config;
+	private ExchangeConfiguration configuration;
 
 	@Autowired private BankRuManager bankRuManager;
 	@Autowired private BankUaManager bankUaManager;
@@ -33,9 +33,9 @@ public class RateGeneralManagerTest {
 
 	@Test
 	public void testRateMirrors() {
-		bankRuManager.commitRates(null, config.getBankRuMirror());
-		bankUaManager.commitRates(null, config.getBankUaMirror());
-		metalRuManager.commitRates(null, config.getMetalRuMirror());
+		bankRuManager.commitRates(null, configuration.getBankRuMirror());
+		bankUaManager.commitRates(null, configuration.getBankUaMirror());
+		metalRuManager.commitRates(null, configuration.getMetalRuMirror());
 	}
 
 	@Test

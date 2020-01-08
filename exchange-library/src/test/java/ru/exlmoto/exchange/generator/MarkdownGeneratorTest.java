@@ -1,6 +1,5 @@
 package ru.exlmoto.exchange.generator;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +30,8 @@ public class MarkdownGeneratorTest {
 	@MockBean private BankUaRepository bankUaRepository;
 	@MockBean private MetalRuRepository metalRuRepository;
 
-	@BeforeEach
-	public void setUpFakeData() {
+	@Test
+	public void testBankRuMarkdownReport() {
 		BankRuEntity bankRuEntity = new BankRuEntity(
 			"08/01/2020",
 			new BigDecimal("78"),
@@ -43,7 +42,12 @@ public class MarkdownGeneratorTest {
 			new BigDecimal("13456.45566"),
 			new BigDecimal("88.100000000000000001")
 		);
+		when(bankRuRepository.getBankRu()).thenReturn(bankRuEntity);
+		System.out.println(generator.bankRuReport());
+	}
 
+	@Test
+	public void testBankUaMarkdownReport() {
 		BankUaEntity bankUaEntity = new BankUaEntity(
 			"08-JAN-2020",
 			new BigDecimal("1235"),
@@ -54,7 +58,12 @@ public class MarkdownGeneratorTest {
 			null,
 			new BigDecimal("1233")
 		);
+		when(bankUaRepository.getBankUa()).thenReturn(bankUaEntity);
+		System.out.println(generator.bankUaReport());
+	}
 
+	@Test
+	public void testMetalRuMarkdownReport() {
 		MetalRuEntity metalRuEntity = new MetalRuEntity(
 			"08.01.2020",
 			new BigDecimal("3031.25"),
@@ -63,24 +72,7 @@ public class MarkdownGeneratorTest {
 			new BigDecimal("35.48"),
 			new BigDecimal("3031.15")
 		);
-
-		when(bankRuRepository.getBankRu()).thenReturn(bankRuEntity);
-		when(bankUaRepository.getBankUa()).thenReturn(bankUaEntity);
 		when(metalRuRepository.getMetalRu()).thenReturn(metalRuEntity);
-	}
-
-	@Test
-	public void testBankRuMarkdownReport() {
-		System.out.println(generator.bankRuReport());
-	}
-
-	@Test
-	public void testBankUaMarkdownReport() {
-		System.out.println(generator.bankUaReport());
-	}
-
-	@Test
-	public void testMetalRuMarkdownReport() {
 		System.out.println(generator.metalRuReport());
 	}
 }

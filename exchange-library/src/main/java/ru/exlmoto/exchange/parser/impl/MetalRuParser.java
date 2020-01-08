@@ -36,18 +36,4 @@ public class MetalRuParser extends MetalParser {
 		Element element = document.getElementsByClass("table").first();
 		return element.select("tr").get(1).selectFirst("td").text();
 	}
-
-	@Override
-	protected boolean checkParsedValues() {
-		return gold != null || silver != null || platinum != null || palladium != null;
-	}
-
-	@Override
-	public void logParsedValues() {
-		log.info(String.format(
-				"===> Date: %s, Gold: %s, Silver: %s, Platinum: %s, Palladium: %s",
-				date, gold, silver, platinum, palladium
-			)
-		);
-	}
 }

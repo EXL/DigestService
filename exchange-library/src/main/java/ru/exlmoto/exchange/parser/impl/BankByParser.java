@@ -33,18 +33,4 @@ public class BankByParser extends BankParser {
 	protected String parseDate(Document document) {
 		return document.selectFirst("DailyExRates").attr("Date");
 	}
-
-	@Override
-	protected boolean checkParsedValues() {
-		return usd != null || eur != null || kzt != null || rub != null || uah != null || gbp != null;
-	}
-
-	@Override
-	public void logParsedValues() {
-		log.info(String.format(
-				"===> Date: %s, USD: %s, EUR: %s, KZT: %s, RUB: %s, UAH: %s, GBP: %s",
-				date, usd, eur, kzt, rub, uah, gbp
-			)
-		);
-	}
 }

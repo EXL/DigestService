@@ -32,18 +32,4 @@ public class BankUaParser extends BankParser {
 		Element element = document.selectFirst("r030:contains(840)").parent();
 		return element.selectFirst("exchangedate").text();
 	}
-
-	@Override
-	protected boolean checkParsedValues() {
-		return usd != null || eur != null || kzt != null || byn != null || rub != null || gbp != null;
-	}
-
-	@Override
-	public void logParsedValues() {
-		log.info(String.format(
-				"===> Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, GBP: %s",
-				date, usd, eur, kzt, byn, rub, gbp
-			)
-		);
-	}
 }

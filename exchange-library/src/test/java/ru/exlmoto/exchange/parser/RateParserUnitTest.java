@@ -8,6 +8,7 @@ import ru.exlmoto.exchange.parser.impl.BankByParser;
 import ru.exlmoto.exchange.parser.impl.BankRuParser;
 import ru.exlmoto.exchange.parser.impl.BankUaMirrorParser;
 import ru.exlmoto.exchange.parser.impl.BankUaParser;
+import ru.exlmoto.exchange.parser.impl.BankKzParser;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -91,6 +92,22 @@ public class RateParserUnitTest {
 			fileHelper.getFileContent("bankByErrors.xml")));
 
 		generalTests(new BankByParser());
+	}
+
+	@Test
+	public void testBankKzParser() {
+		assertTrue(parserHelper.process(new BankKzParser(),
+			fileHelper.getFileContent("bankKz.xml")));
+		assertTrue(parserHelper.process(new BankKzParser(),
+			fileHelper.getFileContent("bankKz.xml", "Windows-1251")));
+		assertFalse(parserHelper.process(new BankKzParser(),
+			fileHelper.getFileContent("bankKzChunk.xml")));
+		assertTrue(parserHelper.process(new BankKzParser(),
+			fileHelper.getFileContent("bankKzError.xml")));
+		assertFalse(parserHelper.process(new BankKzParser(),
+			fileHelper.getFileContent("bankKzErrors.xml")));
+
+		generalTests(new BankKzParser());
 	}
 
 	private void generalTests(RateParser parser) {

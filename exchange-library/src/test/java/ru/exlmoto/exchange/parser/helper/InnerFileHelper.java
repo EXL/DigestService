@@ -8,13 +8,13 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 public class InnerFileHelper {
-	public String getFileContent(String filename, String charsetName) {
+	public String getFileContent(String filename, String prefix, String charsetName) {
 		try {
 			return new String(
 				Files.readAllBytes(
 					Paths.get(
 						Objects.requireNonNull(
-							getClass().getClassLoader().getResource("parser/" + filename)
+							getClass().getClassLoader().getResource(prefix + filename)
 						).toURI()
 					)
 				),
@@ -26,7 +26,11 @@ public class InnerFileHelper {
 		return null;
 	}
 
+	public String getFileContent(String filename, String charsetName) {
+		return getFileContent(filename, "parser/", charsetName);
+	}
+
 	public String getFileContent(String filename) {
-		return getFileContent(filename, Charset.defaultCharset().name());
+		return getFileContent(filename, "parser/", Charset.defaultCharset().name());
 	}
 }

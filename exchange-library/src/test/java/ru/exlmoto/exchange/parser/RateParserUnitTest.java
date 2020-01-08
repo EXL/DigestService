@@ -9,6 +9,8 @@ import ru.exlmoto.exchange.parser.impl.BankRuParser;
 import ru.exlmoto.exchange.parser.impl.BankUaMirrorParser;
 import ru.exlmoto.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.exchange.parser.impl.BankKzParser;
+import ru.exlmoto.exchange.parser.impl.MetalRuParser;
+import ru.exlmoto.exchange.parser.impl.MetalRuMirrorParser;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -108,6 +110,24 @@ public class RateParserUnitTest {
 			fileHelper.getFileContent("bankKzErrors.xml")));
 
 		generalTests(new BankKzParser());
+	}
+
+	@Test
+	public void testMetalRuParser() {
+		assertTrue(parserHelper.process(new MetalRuParser(),
+			fileHelper.getFileContent("metalRu.html")));
+		assertTrue(parserHelper.process(new MetalRuParser(),
+			fileHelper.getFileContent("metalRu.html", "Windows-1251")));
+		assertFalse(parserHelper.process(new MetalRuParser(),
+			fileHelper.getFileContent("metalRuChunk.html")));
+		assertTrue(parserHelper.process(new MetalRuParser(),
+			fileHelper.getFileContent("metalRuError.html")));
+		assertFalse(parserHelper.process(new MetalRuParser(),
+			fileHelper.getFileContent("metalRuErrors.html")));
+		assertFalse(parserHelper.process(new MetalRuParser(),
+			fileHelper.getFileContent("metalOtherSite.html")));
+
+		generalTests(new MetalRuParser());
 	}
 
 	private void generalTests(RateParser parser) {

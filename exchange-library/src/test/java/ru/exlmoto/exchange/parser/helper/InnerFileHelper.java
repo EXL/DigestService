@@ -31,6 +31,7 @@ public class InnerFileHelper {
 	}
 
 	public String getFileContent(String filename) {
-		return getFileContent(filename, "parser/", Charset.defaultCharset().name());
+		// Charset.defaultCharset().name() will not work as excepted on Windows OS.
+		return getFileContent(filename, "parser/", "UTF-8");
 	}
 }

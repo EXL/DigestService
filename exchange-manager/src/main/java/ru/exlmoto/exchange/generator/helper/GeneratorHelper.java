@@ -21,25 +21,21 @@ public class GeneratorHelper {
 		return messageSource.getMessage(key, null, Locale.forLanguageTag(langTag));
 	}
 
-	public BigDecimal getDifference(BigDecimal prev, BigDecimal current) {
+	public String getDifference(BigDecimal prev, BigDecimal current) {
 		if (prev == null || current == null) {
 			return null;
 		}
-		if ((prev.compareTo(BigDecimal.ZERO) == 0) || (current.compareTo(BigDecimal.ZERO) == 0)) {
+		if ((prev.signum() == 0) || (current.signum() == 0)) {
 			return null;
 		}
 		if (prev.compareTo(current) == 0) {
 			return null;
 		}
-		return prev.subtract(current);
-	}
-
-	public boolean isDifferencePositive(BigDecimal difference) {
-		return difference.signum() == 1;
-	}
-
-	public String normalizeDifference(BigDecimal difference) {
-		return String.format("%.2f", difference);
+		BigDecimal difference = new BigDecimal(String.format("%.2f", prev.subtract(current)));
+		if (difference.signum() == 0) {
+			return null;
+		}
+		return difference.toString();
 	}
 
 	public String normalizeValue(BigDecimal value) {

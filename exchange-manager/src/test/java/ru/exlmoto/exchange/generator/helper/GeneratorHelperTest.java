@@ -38,39 +38,11 @@ public class GeneratorHelperTest extends ExchangeConfigurationTest {
 		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("0.0"))).isNull();
 		assertThat(helper.getDifference(new BigDecimal("0.0"), new BigDecimal("0.0"))).isNull();
 		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0"))).isNull();
-		assertThat(
-			helper.getDifference(
-				new BigDecimal("4.0"),
-				new BigDecimal("3.0")
-			)
-		).isEqualTo("1.0");
-	}
-
-	@Test
-	public void testIsDifferencePositive() {
-		assertTrue(helper.isDifferencePositive(new BigDecimal("1.0")));
-		assertTrue(helper.isDifferencePositive(new BigDecimal("0.0000001")));
-		assertFalse(helper.isDifferencePositive(new BigDecimal("0.0")));
-		assertFalse(helper.isDifferencePositive(new BigDecimal("-0.0000001")));
-		assertFalse(helper.isDifferencePositive(new BigDecimal("-1.0")));
-	}
-
-	@Test
-	public void testNormalizeDifference() {
-		assertEquals("-1.00", helper.normalizeDifference(new BigDecimal("-1")));
-		assertEquals("-1.00", helper.normalizeDifference(new BigDecimal("-1.0")));
-		assertEquals("-0.90", helper.normalizeDifference(new BigDecimal("-0.9")));
-		assertEquals("0.00", helper.normalizeDifference(new BigDecimal("-0.0")));
-		assertEquals("0.00", helper.normalizeDifference(new BigDecimal("0")));
-		assertEquals("0.00", helper.normalizeDifference(new BigDecimal("0.0")));
-		assertEquals("0.90", helper.normalizeDifference(new BigDecimal("0.9")));
-		assertEquals("1.00", helper.normalizeDifference(new BigDecimal("1.0")));
-
-		assertEquals("1234.12", helper.normalizeDifference(new BigDecimal("1234.1234")));
-		assertEquals("1234.12", helper.normalizeDifference(new BigDecimal("1234.12340")));
-		assertEquals("1234.12", helper.normalizeDifference(new BigDecimal("1234.12343")));
-		assertEquals("1234.12", helper.normalizeDifference(new BigDecimal("1234.12345")));
-		assertEquals("1234.13", helper.normalizeDifference(new BigDecimal("1234.12949")));
+		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0001"))).isNull();
+		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.001"))).isNull();
+		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.005"))).isEqualTo("-0.01");
+		assertThat(helper.getDifference(new BigDecimal("1.005"), new BigDecimal("1.0"))).isEqualTo("0.01");
+		assertThat(helper.getDifference(new BigDecimal("4.0"), new BigDecimal("3.0"))).isEqualTo("1.00");
 	}
 	
 	@Test

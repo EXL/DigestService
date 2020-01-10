@@ -8,9 +8,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.ExchangeConfigurationTest;
+import ru.exlmoto.exchange.entity.BankByEntity;
 import ru.exlmoto.exchange.entity.BankRuEntity;
 import ru.exlmoto.exchange.entity.BankUaEntity;
 import ru.exlmoto.exchange.entity.MetalRuEntity;
+import ru.exlmoto.exchange.repository.BankByRepository;
 import ru.exlmoto.exchange.repository.BankRuRepository;
 import ru.exlmoto.exchange.repository.BankUaRepository;
 import ru.exlmoto.exchange.repository.MetalRuRepository;
@@ -23,9 +25,10 @@ public class MarkdownGeneratorTest extends ExchangeConfigurationTest {
 	@Autowired
 	private MarkdownGenerator generator;
 
-	@MockBean private BankRuRepository bankRuRepositoryMock;
-	@MockBean private BankUaRepository bankUaRepositoryMock;
-	@MockBean private MetalRuRepository metalRuRepositoryMock;
+	@MockBean private BankRuRepository bankRuRepository;
+	@MockBean private BankUaRepository bankUaRepository;
+	@MockBean private BankByRepository bankByRepository;
+	@MockBean private MetalRuRepository metalRuRepository;
 
 	@Test
 	public void testBankRuMarkdownReport() {
@@ -39,7 +42,7 @@ public class MarkdownGeneratorTest extends ExchangeConfigurationTest {
 			new BigDecimal("13456.45566"),
 			new BigDecimal("88.100000000000000001")
 		);
-		when(bankRuRepositoryMock.getBankRu()).thenReturn(bankRuEntity);
+		when(bankRuRepository.getBankRu()).thenReturn(bankRuEntity);
 		System.out.println(generator.bankRuReport());
 	}
 
@@ -55,8 +58,24 @@ public class MarkdownGeneratorTest extends ExchangeConfigurationTest {
 			null,
 			new BigDecimal("1233")
 		);
-		when(bankUaRepositoryMock.getBankUa()).thenReturn(bankUaEntity);
+		when(bankUaRepository.getBankUa()).thenReturn(bankUaEntity);
 		System.out.println(generator.bankUaReport());
+	}
+
+	@Test
+	public void testBankByMarkdownReport() {
+		BankByEntity bankByEntity = new BankByEntity(
+			"10.01.2020",
+			new BigDecimal("1235.0001"),
+			new BigDecimal("013113"),
+			new BigDecimal("-0.12"),
+			new BigDecimal("1.234"),
+			null,
+			new BigDecimal("1000.1"),
+			new BigDecimal("1235.0002")
+		);
+		when(bankByRepository.getBankBy()).thenReturn(bankByEntity);
+		System.out.println(generator.bankByReport());
 	}
 
 	@Test
@@ -69,7 +88,7 @@ public class MarkdownGeneratorTest extends ExchangeConfigurationTest {
 			new BigDecimal("35.48"),
 			new BigDecimal("3031.15")
 		);
-		when(metalRuRepositoryMock.getMetalRu()).thenReturn(metalRuEntity);
+		when(metalRuRepository.getMetalRu()).thenReturn(metalRuEntity);
 		System.out.println(generator.metalRuReport());
 	}
 

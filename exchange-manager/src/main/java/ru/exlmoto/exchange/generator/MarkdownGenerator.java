@@ -120,17 +120,17 @@ public class MarkdownGenerator {
 	}
 
 	private String filterDifference(BigDecimal prev, BigDecimal current) {
-		BigDecimal difference = helper.getDifference(prev, current);
+		String difference = helper.getDifference(prev, current);
 		if (difference != null) {
-			return helper.isDifferencePositive(difference) ?
-				"+" + helper.normalizeDifference(difference) + " " + helper.i18n("change.up") :
-				helper.normalizeDifference(difference) + " " + helper.i18n("change.down");
+			return difference.startsWith("-") ?
+					difference + " " + helper.i18n("change.down") :
+					"+" + difference + " " + helper.i18n("change.up");
 		}
 		return null;
 	}
 
 	private String filterValue(BigDecimal value) {
-		return (value != null) ? helper.normalizeValue(value) : helper.i18n("error.value");
+		return (value != null && value.signum() != -1) ? helper.normalizeValue(value) : helper.i18n("error.value");
 	}
 
 	private String filterMetalName(String name) {

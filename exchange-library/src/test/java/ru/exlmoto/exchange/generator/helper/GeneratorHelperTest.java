@@ -3,9 +3,8 @@ package ru.exlmoto.exchange.generator.helper;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.test.context.ActiveProfiles;
+import ru.exlmoto.exchange.ExchangeConfigurationTest;
 
 import java.math.BigDecimal;
 
@@ -16,9 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-@ActiveProfiles("test")
-public class GeneratorHelperTest {
+public class GeneratorHelperTest extends ExchangeConfigurationTest {
 	@Autowired
 	private GeneratorHelper helper;
 

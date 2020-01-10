@@ -3,11 +3,9 @@ package ru.exlmoto.exchange.generator;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 
+import ru.exlmoto.exchange.ExchangeConfigurationTest;
 import ru.exlmoto.exchange.entity.BankRuEntity;
 import ru.exlmoto.exchange.entity.BankUaEntity;
 import ru.exlmoto.exchange.entity.MetalRuEntity;
@@ -19,16 +17,13 @@ import java.math.BigDecimal;
 
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test")
-@SpringBootApplication(scanBasePackages = "ru.exlmoto.exchange")
-public class MarkdownGeneratorTest {
+public class MarkdownGeneratorTest extends ExchangeConfigurationTest {
 	@Autowired
 	private MarkdownGenerator generator;
 
-	@MockBean private BankRuRepository bankRuRepository;
-	@MockBean private BankUaRepository bankUaRepository;
-	@MockBean private MetalRuRepository metalRuRepository;
+	@MockBean private BankRuRepository bankRuRepositoryMock;
+	@MockBean private BankUaRepository bankUaRepositoryMock;
+	@MockBean private MetalRuRepository metalRuRepositoryMock;
 
 	@Test
 	public void testBankRuMarkdownReport() {
@@ -42,7 +37,7 @@ public class MarkdownGeneratorTest {
 			new BigDecimal("13456.45566"),
 			new BigDecimal("88.100000000000000001")
 		);
-		when(bankRuRepository.getBankRu()).thenReturn(bankRuEntity);
+		when(bankRuRepositoryMock.getBankRu()).thenReturn(bankRuEntity);
 		System.out.println(generator.bankRuReport());
 	}
 
@@ -58,7 +53,7 @@ public class MarkdownGeneratorTest {
 			null,
 			new BigDecimal("1233")
 		);
-		when(bankUaRepository.getBankUa()).thenReturn(bankUaEntity);
+		when(bankUaRepositoryMock.getBankUa()).thenReturn(bankUaEntity);
 		System.out.println(generator.bankUaReport());
 	}
 
@@ -72,7 +67,7 @@ public class MarkdownGeneratorTest {
 			new BigDecimal("35.48"),
 			new BigDecimal("3031.15")
 		);
-		when(metalRuRepository.getMetalRu()).thenReturn(metalRuEntity);
+		when(metalRuRepositoryMock.getMetalRu()).thenReturn(metalRuEntity);
 		System.out.println(generator.metalRuReport());
 	}
 }

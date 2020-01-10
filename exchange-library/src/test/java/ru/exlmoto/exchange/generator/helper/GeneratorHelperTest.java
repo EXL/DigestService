@@ -55,20 +55,20 @@ public class GeneratorHelperTest extends ExchangeConfigurationTest {
 
 	@Test
 	public void testNormalizeDifference() {
-		assertEquals("-1.0000", helper.normalizeDifference(new BigDecimal("-1")));
-		assertEquals("-1.0000", helper.normalizeDifference(new BigDecimal("-1.0")));
-		assertEquals("-0.9000", helper.normalizeDifference(new BigDecimal("-0.9")));
-		assertEquals("0.0000", helper.normalizeDifference(new BigDecimal("-0.0")));
-		assertEquals("0.0000", helper.normalizeDifference(new BigDecimal("0")));
-		assertEquals("0.0000", helper.normalizeDifference(new BigDecimal("0.0")));
-		assertEquals("0.9000", helper.normalizeDifference(new BigDecimal("0.9")));
-		assertEquals("1.0000", helper.normalizeDifference(new BigDecimal("1.0")));
+		assertEquals("-1.00", helper.normalizeDifference(new BigDecimal("-1")));
+		assertEquals("-1.00", helper.normalizeDifference(new BigDecimal("-1.0")));
+		assertEquals("-0.90", helper.normalizeDifference(new BigDecimal("-0.9")));
+		assertEquals("0.00", helper.normalizeDifference(new BigDecimal("-0.0")));
+		assertEquals("0.00", helper.normalizeDifference(new BigDecimal("0")));
+		assertEquals("0.00", helper.normalizeDifference(new BigDecimal("0.0")));
+		assertEquals("0.90", helper.normalizeDifference(new BigDecimal("0.9")));
+		assertEquals("1.00", helper.normalizeDifference(new BigDecimal("1.0")));
 
-		assertEquals("1234.1234", helper.normalizeDifference(new BigDecimal("1234.1234")));
-		assertEquals("1234.1234", helper.normalizeDifference(new BigDecimal("1234.12340")));
-		assertEquals("1234.1234", helper.normalizeDifference(new BigDecimal("1234.12343")));
-		assertEquals("1234.1235", helper.normalizeDifference(new BigDecimal("1234.12345")));
-		assertEquals("1234.1235", helper.normalizeDifference(new BigDecimal("1234.12349")));
+		assertEquals("1234.12", helper.normalizeDifference(new BigDecimal("1234.1234")));
+		assertEquals("1234.12", helper.normalizeDifference(new BigDecimal("1234.12340")));
+		assertEquals("1234.12", helper.normalizeDifference(new BigDecimal("1234.12343")));
+		assertEquals("1234.12", helper.normalizeDifference(new BigDecimal("1234.12345")));
+		assertEquals("1234.13", helper.normalizeDifference(new BigDecimal("1234.12949")));
 	}
 	
 	@Test

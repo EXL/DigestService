@@ -39,7 +39,7 @@ public class GeneratorHelper {
 	}
 
 	public String normalizeDifference(BigDecimal difference) {
-		return String.format("%.4f", difference);
+		return String.format("%.2f", difference);
 	}
 
 	public String normalizeValue(BigDecimal value) {

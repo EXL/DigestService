@@ -3,7 +3,6 @@ package ru.exlmoto.exchange.manager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.exchange.ExchangeConfiguration;
@@ -16,7 +15,6 @@ import ru.exlmoto.exchange.manager.impl.MetalRuManager;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-@EnableConfigurationProperties(ExchangeConfiguration.class)
 public class RateGeneralManager {
 	private final ExchangeConfiguration config;
 

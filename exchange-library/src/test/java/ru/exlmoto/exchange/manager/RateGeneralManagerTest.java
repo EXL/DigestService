@@ -3,6 +3,7 @@ package ru.exlmoto.exchange.manager;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.ExchangeConfigurationTest;
@@ -35,5 +36,10 @@ public class RateGeneralManagerTest extends ExchangeConfigurationTest {
 	public void testIncorrectPages() {
 		assertFalse(new BankRuParser().parse(restManager.getContent("https://exlmoto.ru")));
 		assertFalse(new MetalRuParser().parse(restManager.getContent("https://exlmoto.ru")));
+	}
+
+	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class })
+	public static class ExchangeConfigurationCommon {
+
 	}
 }

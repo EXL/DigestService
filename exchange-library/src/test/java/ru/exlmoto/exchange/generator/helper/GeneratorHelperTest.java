@@ -3,7 +3,9 @@ package ru.exlmoto.exchange.generator.helper;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.NoSuchMessageException;
+import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.ExchangeConfigurationTest;
 
 import java.math.BigDecimal;
@@ -125,5 +127,10 @@ public class GeneratorHelperTest extends ExchangeConfigurationTest {
 		assertTrue(helper.isDateNotEmpty("08-JAN-2020"));
 		assertTrue(helper.isDateNotEmpty("08/01/20"));
 		assertTrue(helper.isDateNotEmpty("StringValue"));
+	}
+
+	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class })
+	public static class ExchangeConfigurationCommon {
+
 	}
 }

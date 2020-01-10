@@ -3,8 +3,10 @@ package ru.exlmoto.exchange.generator;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.ExchangeConfigurationTest;
 import ru.exlmoto.exchange.entity.BankRuEntity;
 import ru.exlmoto.exchange.entity.BankUaEntity;
@@ -69,5 +71,10 @@ public class MarkdownGeneratorTest extends ExchangeConfigurationTest {
 		);
 		when(metalRuRepositoryMock.getMetalRu()).thenReturn(metalRuEntity);
 		System.out.println(generator.metalRuReport());
+	}
+
+	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class })
+	public static class ExchangeConfigurationCommon {
+
 	}
 }

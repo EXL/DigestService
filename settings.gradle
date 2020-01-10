@@ -10,5 +10,6 @@
 rootProject.name = 'JDigestBot'
 
 include 'exchange-manager'
+include 'motofan-crawler'
 include 'digest-site'
 include 'starter'

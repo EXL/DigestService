@@ -10,4 +10,5 @@
 rootProject.name = 'JDigestBot'
 
 include 'exchange-manager'
-include 'engine'
+include 'digest-site'
+include 'starter'

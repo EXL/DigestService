@@ -1,13 +1,13 @@
-package ru.exlmoto.engine;
+package ru.exlmoto.starter;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EngineApplicationTests {
+public class DigestApplicationTest {
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 
 	}
 }

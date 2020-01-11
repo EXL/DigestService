@@ -1,6 +1,7 @@
 package ru.exlmoto.motofan.manager;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import ru.exlmoto.motofan.manager.json.MotofanPost;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class MotofanManager {
@@ -28,7 +30,9 @@ public class MotofanManager {
 	}
 
 	public List<String> getLastMotofanPostsInHtml() {
+		log.info("=> Start crawling MotoFan.Ru last posts.");
 		List<MotofanPost> motofanPosts = getLastMotofanPosts();
+		log.info("=> End crawling MotoFan.Ru last posts.");
 		if (motofanPosts != null) {
 			List<String> motofanPostsInHtml = new ArrayList<>();
 			for (MotofanPost post : motofanPosts) {

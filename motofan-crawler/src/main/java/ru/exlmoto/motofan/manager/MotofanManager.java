@@ -27,6 +27,18 @@ public class MotofanManager {
 		return restManager.getLastMotofanPosts(config.getLastPostUrl());
 	}
 
+	public List<String> getLastMotofanPostsInHtml() {
+		List<MotofanPost> motofanPosts = getLastMotofanPosts();
+		if (motofanPosts != null) {
+			List<String> motofanPostsInHtml = new ArrayList<>();
+			for (MotofanPost post : motofanPosts) {
+				motofanPostsInHtml.add(htmlGenerator.generateHtmlReport(post));
+			}
+			return motofanPostsInHtml;
+		}
+		return new ArrayList<>();
+	}
+
 	public List<MotofanPost> getLastMotofanPosts() {
 		MotofanPost[] motofanPosts = getMotofanPostObjects();
 		if (motofanPosts != null) {

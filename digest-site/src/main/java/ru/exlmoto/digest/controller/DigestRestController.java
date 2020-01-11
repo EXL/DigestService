@@ -32,6 +32,6 @@ public class DigestRestController {
 
 	@GetMapping("/motofan")
 	public String motofan() {
-		return motofanService.getData();
+		return motofanService.htmlMotofanPostsReport().toString();
 	}
 }

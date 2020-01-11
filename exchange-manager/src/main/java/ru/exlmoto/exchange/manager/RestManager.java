@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.jsoup.Jsoup;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -14,7 +15,8 @@ import java.time.Duration;
 @Slf4j
 @Component
 public class RestManager {
-	private final int TIMEOUT_SEC = 5;
+	@Value("${general.connection.timeout}")
+	private int timeOutSec;
 
 	public String getContent(String url) {
 		try {
@@ -33,8 +35,8 @@ public class RestManager {
 	private String getRawContentSpring(String url) {
 		RestTemplate restTemplate =
 			new RestTemplateBuilder()
-				.setConnectTimeout(Duration.ofSeconds(TIMEOUT_SEC))
-				.setReadTimeout(Duration.ofSeconds(TIMEOUT_SEC))
+				.setConnectTimeout(Duration.ofSeconds(timeOutSec))
+				.setReadTimeout(Duration.ofSeconds(timeOutSec))
 				.build();
 		String rawData = restTemplate.getForObject(url, String.class);
 		Assert.notNull(rawData, "Spring RestTemplate: Received raw data is null.");
@@ -42,7 +44,7 @@ public class RestManager {
 	}
 
 	private String getRawContentJsoup(String url) throws Exception {
-		String rawData = Jsoup.connect(url).timeout(TIMEOUT_SEC * 1000).get().outerHtml();
+		String rawData = Jsoup.connect(url).timeout(timeOutSec * 1000).get().outerHtml();
 		Assert.notNull(rawData, "Jsoup: Received raw data is null.");
 		return rawData;
 	}

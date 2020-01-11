@@ -8,4 +8,4 @@
 # https://github.com/github/linguist
 #
 # Drop HTML and XML test files from statistics
-exchange-library/src/test/resources/parser/* linguist-vendored
+exchange-manager/src/test/resources/parser/* linguist-vendored

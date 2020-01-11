@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.launcher;
+package ru.exlmoto.digest.boot;
 
 import org.junit.jupiter.api.Test;
 

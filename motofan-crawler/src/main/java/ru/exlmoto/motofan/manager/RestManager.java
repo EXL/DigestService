@@ -10,8 +10,6 @@ import org.springframework.web.client.RestTemplate;
 import ru.exlmoto.motofan.manager.json.MotofanPost;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @Component
@@ -26,11 +24,11 @@ public class RestManager {
 			.build();
 	}
 
-	public List<MotofanPost> getLastMotofanPosts(String url) {
+	public MotofanPost[] getLastMotofanPosts(String url) {
 		try {
 			MotofanPost[] motofanPosts = getRestTemplate().getForObject(url, MotofanPost[].class);
 			if (motofanPosts != null && motofanPosts.length > 0 && checkMotofanPosts(motofanPosts)) {
-				return Arrays.asList(motofanPosts);
+				return motofanPosts;
 			}
 		} catch (Exception e) {
 			log.error(String.format("Spring RestTemplate: Error while connect to '%s'.", url), e);

@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.controller;
+package ru.exlmoto.digest.site.controller;
 
 import lombok.RequiredArgsConstructor;
 

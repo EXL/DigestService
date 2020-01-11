@@ -59,7 +59,7 @@ public class MotofanManagerTest extends MotofanConfigurationTest {
 	}
 
 	@SpringBootApplication(scanBasePackageClasses = { MotofanConfiguration.class })
-	public static class ExchangeConfigurationCommon {
+	public static class MotofanConfigurationCommon {
 
 	}
 }

@@ -17,7 +17,7 @@ public class MotofanServiceTest extends MotofanConfigurationTest {
 	}
 
 	@SpringBootApplication
-	public static class ExchangeConfigurationCommon {
+	public static class MotofanConfigurationCommon {
 
 	}
 }

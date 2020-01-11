@@ -24,7 +24,7 @@ public class HtmlGenerator {
 	// https://stackoverflow.com/questions/14445386/how-to-remove-text-in-brackets-from-the-start-of-a-string
 	public String removeHtmlAndBbTags(final String aText) {
 		return Jsoup.parse(aText).text()
-			.replaceAll("\\[.*?\\]", " ")
+			.replaceAll("\\[.*?]", " ")
 			.replaceAll("\\[\\\\", " ")
 			.replaceAll("\\[", " ").trim()
 			.replaceAll(" +", " ");

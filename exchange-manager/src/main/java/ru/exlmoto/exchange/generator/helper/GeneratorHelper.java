@@ -1,21 +1,26 @@
 package ru.exlmoto.exchange.generator.helper;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 import java.math.BigDecimal;
 import java.util.Locale;
 
-@RequiredArgsConstructor
 @Component("generatorHelperExchange")
 public class GeneratorHelper {
 	@Value("${general.lang}")
 	private String langTag;
 
-	private final MessageSource messageSource;
+	private ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+
+	@PostConstruct
+	private void setUp() {
+		messageSource.setBasenames("classpath:/exchange-manager/messages");
+		messageSource.setDefaultEncoding("UTF-8");
+	}
 
 	public String i18n(String key) {
 		return messageSource.getMessage(key, null, Locale.forLanguageTag(langTag));

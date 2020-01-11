@@ -62,7 +62,7 @@ public class MotofanManager {
 			if (postTimestamp > timestamp) {
 				String postAuthor = posts[i].getAuthor();
 				// HACK: Drop automatic congratulation forum messages.
-				if (!author.equals("palach")) {
+				if (!postAuthor.equals("palach")) {
 					Long postTopic = posts[i].getTopic();
 					String postText = posts[i].getText();
 					// HACK: Drop "added later" messages.

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.annotation.DirtiesContext;
 
 import ru.exlmoto.motofan.MotofanConfiguration;
 import ru.exlmoto.motofan.MotofanConfigurationTest;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.Mockito.when;
 
 public class MotofanManagerTest extends MotofanConfigurationTest {
@@ -21,6 +24,7 @@ public class MotofanManagerTest extends MotofanConfigurationTest {
 	private MotofanManager motofanManager;
 
 	@Test
+	@DirtiesContext
 	public void testGetLastMotofanPostsNull() {
 		List<MotofanPost> firstStep = motofanManager.getLastMotofanPosts();
 		List<MotofanPost> secondStep = motofanManager.getLastMotofanPosts();
@@ -29,6 +33,20 @@ public class MotofanManagerTest extends MotofanConfigurationTest {
 	}
 
 	@Test
+	@DirtiesContext
+	public void testGetLastMotofanPostsBugWithWrongArraySize() {
+		List<MotofanPost> firstStep = motofanManager.getLastMotofanPosts();
+		assertThat(firstStep).isNull();
+		MotofanPost[] posts = new MotofanPost[2];
+		when(motofanManager.getMotofanPostObjects()).thenReturn(posts);
+		posts[0] = new MotofanPostHelper().getRandomMotofanPost(4000000000000000000L);
+		posts[1] = new MotofanPostHelper().getRandomMotofanPost(3000000000000000000L);
+		List<MotofanPost> secondStep = motofanManager.getLastMotofanPosts();
+		assertEquals(2, secondStep.size());
+	}
+
+	@Test
+	@DirtiesContext
 	public void testGetLastMotofanPostsFake() {
 		MotofanPost[] posts = new MotofanPost[3];
 		posts[0] = new MotofanPostHelper().getRandomMotofanPost(2L);
@@ -42,10 +60,12 @@ public class MotofanManagerTest extends MotofanConfigurationTest {
 		List<MotofanPost> secondStep = motofanManager.getLastMotofanPosts();
 		assertThat(firstStep).isNull();
 		assertThat(secondStep).isNotEmpty();
+		assertEquals(2, secondStep.size());
 		System.out.println(secondStep);
 	}
 
 	@Test
+	@DirtiesContext
 	public void testGetLastMotofanPostsInHtml() {
 		MotofanPost[] posts = new MotofanPost[3];
 		posts[0] = new MotofanPostHelper().getRandomMotofanPost(2L);
@@ -59,6 +79,7 @@ public class MotofanManagerTest extends MotofanConfigurationTest {
 		List<String> secondStep = motofanManager.getLastMotofanPostsInHtml();
 		assertThat(firstStep).isEmpty();
 		assertThat(secondStep).isNotEmpty();
+		assertEquals(2, secondStep.size());
 		System.out.println(secondStep);
 	}
 

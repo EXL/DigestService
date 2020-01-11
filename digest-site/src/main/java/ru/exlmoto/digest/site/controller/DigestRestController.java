@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.exlmoto.exchange.service.ExchangeService;
 import ru.exlmoto.motofan.service.MotofanService;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 public class DigestRestController {
@@ -32,6 +34,11 @@ public class DigestRestController {
 
 	@GetMapping("/motofan")
 	public String motofan() {
-		return motofanService.htmlMotofanPostsReport().toString();
+		List<String> newMessages = motofanService.htmlMotofanPostsReport();
+		StringBuilder stringBuilder = new StringBuilder();
+		for (String message : newMessages) {
+			stringBuilder.append(message).append("<br><br>");
+		}
+		return stringBuilder.toString();
 	}
 }

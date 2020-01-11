@@ -3,7 +3,9 @@ package ru.exlmoto.motofan.manager;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Component;
+
 import ru.exlmoto.motofan.MotofanConfiguration;
+import ru.exlmoto.motofan.generator.HtmlGenerator;
 import ru.exlmoto.motofan.manager.json.MotofanPost;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
 @Component
 public class MotofanManager {
 	private final RestManager restManager;
+	private final HtmlGenerator htmlGenerator;
 	private final MotofanConfiguration config;
 
 	private Long timestamp = 0L;

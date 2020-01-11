@@ -16,7 +16,7 @@ public class MotofanServiceTest extends MotofanConfigurationTest {
 		System.out.println(motofanService.getData());
 	}
 
-	@SpringBootApplication(scanBasePackageClasses = { MotofanConfigurationTest.class })
+	@SpringBootApplication
 	public static class ExchangeConfigurationCommon {
 
 	}

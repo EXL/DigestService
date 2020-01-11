@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 @RequiredArgsConstructor
-@Component
+@Component("generatorHelperExchange")
 public class GeneratorHelper {
 	@Value("${general.lang}")
 	private String langTag;

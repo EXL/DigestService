@@ -12,7 +12,7 @@ import ru.exlmoto.motofan.manager.json.MotofanPost;
 import java.time.Duration;
 
 @Slf4j
-@Component
+@Component("restManagerMotofan")
 public class RestManager {
 	@Value("${general.connection.timeout}")
 	private int timeOutSec;

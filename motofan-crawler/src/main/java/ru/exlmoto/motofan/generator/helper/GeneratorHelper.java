@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Locale;
 
 @RequiredArgsConstructor
-@Component
+@Component("generatorHelperMotofan")
 public class GeneratorHelper {
 	@Value("${general.lang}")
 	private String langTag;

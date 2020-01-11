@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Duration;
 
 @Slf4j
-@Component
+@Component("restManagerExchange")
 public class RestManager {
 	@Value("${general.connection.timeout}")
 	private int timeOutSec;

@@ -19,18 +19,32 @@ public class RestManager {
 	@Value("${general.connection.timeout}")
 	private int timeOutSec;
 
+	public RestTemplate getRestTemplate() {
+		return new RestTemplateBuilder()
+			.setConnectTimeout(Duration.ofSeconds(timeOutSec))
+			.setReadTimeout(Duration.ofSeconds(timeOutSec))
+			.build();
+	}
+
 	public List<MotofanPost> getLastMotofanPosts(String url) {
 		try {
-			RestTemplate restTemplate =
-				new RestTemplateBuilder()
-					.setConnectTimeout(Duration.ofSeconds(timeOutSec))
-					.setReadTimeout(Duration.ofSeconds(timeOutSec))
-					.build();
-			MotofanPost[] motofanPosts = restTemplate.getForObject(url, MotofanPost[].class);
-			return (motofanPosts == null || motofanPosts.length == 0) ? null : Arrays.asList(motofanPosts);
+			MotofanPost[] motofanPosts = getRestTemplate().getForObject(url, MotofanPost[].class);
+			if (motofanPosts != null && motofanPosts.length > 0 && checkMotofanPosts(motofanPosts)) {
+				return Arrays.asList(motofanPosts);
+			}
 		} catch (Exception e) {
 			log.error(String.format("Spring RestTemplate: Error while connect to '%s'.", url), e);
 		}
 		return null;
+	}
+
+	private boolean checkMotofanPosts(MotofanPost[] posts) {
+		for (MotofanPost post : posts) {
+			if (!post.isValid()) {
+				log.error("MotofanPost JSON object fails validation.");
+				return false;
+			}
+		}
+		return true;
 	}
 }

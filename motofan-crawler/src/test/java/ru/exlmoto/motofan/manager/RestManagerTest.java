@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import ru.exlmoto.motofan.MotofanConfiguration;
 import ru.exlmoto.motofan.MotofanConfigurationTest;
@@ -29,14 +28,13 @@ public class RestManagerTest extends MotofanConfigurationTest {
 	}
 
 	@Test
-	public void testGetLastMotofanPostsOnWrongData() {
+	public void testGetLastMotofanPostsOnWrongNetwork() {
 		assertThat(restManager.getLastMotofanPosts("fake-url")).isNull();
 		assertThat(restManager.getLastMotofanPosts("https://exlmoto.ru")).isNull();
 		assertThat(restManager.getLastMotofanPosts("https://exlmotor.ru")).isNull();
 	}
 
-	@SpringBootApplication
-	@EnableConfigurationProperties(MotofanConfiguration.class)
+	@SpringBootApplication(scanBasePackageClasses = { MotofanConfiguration.class })
 	public static class ExchangeConfigurationCommon {
 
 	}

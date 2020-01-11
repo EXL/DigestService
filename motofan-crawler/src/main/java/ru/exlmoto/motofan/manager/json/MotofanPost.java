@@ -1,8 +1,12 @@
 package ru.exlmoto.motofan.manager.json;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Setter
+@Getter
+@ToString
 public class MotofanPost {
 	private Long timestamp;
 	private String time;
@@ -13,4 +17,9 @@ public class MotofanPost {
 	private String author;
 	private String title;
 	private String text;
+
+	public boolean isValid() {
+		return timestamp != null && time != null && topic != null && post != null &&
+			topic_link != null && post_link != null && author != null && title != null && text != null;
+	}
 }

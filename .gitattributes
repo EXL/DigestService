@@ -7,5 +7,6 @@
 #
 # https://github.com/github/linguist
 #
-# Drop HTML and XML test files from statistics
+# Drop HTML, XML, JSON test files from GitHub statistics
 exchange-manager/src/test/resources/parser/* linguist-vendored
+motofan-crawler/src/test/resources/parser/* linguist-vendored

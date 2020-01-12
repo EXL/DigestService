@@ -30,6 +30,7 @@ dependencies {
 
 	implementation project(':exchange-manager')
 	implementation project(':motofan-crawler')
+	implementation project(':chart-manager')
 
 	compileOnly 'org.projectlombok:lombok:1.18.10'
 	annotationProcessor 'org.projectlombok:lombok:1.18.10'

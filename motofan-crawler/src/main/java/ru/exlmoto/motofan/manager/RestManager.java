@@ -26,23 +26,22 @@ public class RestManager {
 
 	public MotofanPost[] getLastMotofanPosts(String url) {
 		try {
-			MotofanPost[] motofanPosts = getRestTemplate().getForObject(url, MotofanPost[].class);
-			if (motofanPosts != null && motofanPosts.length > 0 && checkMotofanPosts(motofanPosts)) {
-				return motofanPosts;
-			}
+			return checkMotofanPosts(getRestTemplate().getForObject(url, MotofanPost[].class));
 		} catch (Exception e) {
-			log.error(String.format("Spring RestTemplate: Error while connect to '%s'.", url), e);
+			log.error(String.format("Spring RestTemplate: Error while connect to '%s' or parsing.", url), e);
 		}
 		return null;
 	}
 
-	private boolean checkMotofanPosts(MotofanPost[] posts) {
+	private MotofanPost[] checkMotofanPosts(MotofanPost[] posts) throws Exception {
+		if (posts == null || posts.length == 0) {
+			throw new Exception("MotofanPost JSON object array is null or empty.");
+		}
 		for (MotofanPost post : posts) {
 			if (!post.isValid()) {
-				log.error("MotofanPost JSON object fails validation.");
-				return false;
+				throw new Exception("MotofanPost JSON object fails validation.");
 			}
 		}
-		return true;
+		return posts;
 	}
 }

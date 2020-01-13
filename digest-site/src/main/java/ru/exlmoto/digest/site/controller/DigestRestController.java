@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ru.exlmoto.chart.service.ChartService;
 import ru.exlmoto.exchange.service.ExchangeService;
 import ru.exlmoto.motofan.service.MotofanService;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class DigestRestController {
 	private final ExchangeService exchangeService;
 	private final MotofanService motofanService;
+	private final ChartService chartService;
 
 	@GetMapping("/")
 	public String home() {
@@ -24,6 +26,11 @@ public class DigestRestController {
 				exchangeService.markdownBankByReport() + "\n\n" +
 				exchangeService.markdownBankKzReport() + "\n\n" +
 				exchangeService.markdownMetalRuReport();
+	}
+
+	@GetMapping("/chart")
+	public String chart() {
+		return chartService.getChartHelp();
 	}
 
 	@GetMapping("/refresh")

@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(properties = "general.lang=en")
 class LocalizationServiceTest {
 	@Autowired
-	private LocalizationService l;
+	private LocalizationService locale;
 
 	@Test
 	public void testLocalizationService() {
-		assertEquals("wrote", l.i18n("motofan.wrote"));
-		assertTrue(l.i18n("unknown.key").startsWith("No message found under code"));
+		assertEquals("wrote", locale.i18n("motofan.wrote"));
+		assertTrue(locale.i18n("unknown.key").startsWith("No message found under code"));
 	}
 }

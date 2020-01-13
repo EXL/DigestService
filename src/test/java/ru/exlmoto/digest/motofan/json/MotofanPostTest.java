@@ -29,5 +29,7 @@ class MotofanPostTest {
 
 		motofanPostThird.setTopic(1L);
 		assertTrue(motofanPostThird.isValid());
+
+		assertTrue(new MotofanPostHelper().getRandomMotofanPost(1L).isValid());
 	}
 }

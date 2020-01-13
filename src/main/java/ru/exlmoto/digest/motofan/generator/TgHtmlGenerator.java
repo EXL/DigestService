@@ -2,6 +2,7 @@ package ru.exlmoto.digest.motofan.generator;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.i18n.LocalizationService;
@@ -14,15 +15,15 @@ public class TgHtmlGenerator {
 	private final LocalizationService locale;
 	private final Utils utils;
 
-	public String generateHtmlReport(MotofanPost post) {
+	public String generateHtmlReport(@NonNull MotofanPost post) {
 		return
-			locale.i18n("title") + "\n\n" +
-			"<b>" + post.getAuthor() + "</b> " + locale.i18n("wrote") + " (" + post.getTime() + "):\n" +
+			locale.i18n("motofan.title") + "\n\n" +
+			"<b>" + post.getAuthor() + "</b> " + locale.i18n("motofan.wrote") + " (" + post.getTime() + "):\n" +
 			"<i>" + filterMotofanPost(post.getText()) + "</i>\n\n" +
-			locale.i18n("read") + " <a href=\"" + post.getPost_link() + "\">" + post.getTitle() + "</a>";
+			locale.i18n("motofan.read") + " <a href=\"" + post.getPost_link() + "\">" + post.getTitle() + "</a>";
 	}
 
-	private String removeBbCodes(String text) {
+	private String removeBbCodes(@NonNull String text) {
 		return text
 			.replaceAll("\\[.*?]", " ")
 			.replaceAll("\\[\\\\", " ")
@@ -30,7 +31,7 @@ public class TgHtmlGenerator {
 			.replaceAll(" +", " ");
 	}
 
-	public String filterMotofanPost(final String text) {
+	public String filterMotofanPost(@NonNull String text) {
 		return removeBbCodes(utils.removeHtmlTags(text));
 	}
 }

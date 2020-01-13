@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
@@ -21,7 +22,7 @@ public class RestService {
 	@Value("${rest.max-body-size}")
 	private long maxBodySize;
 
-	public Answer getRawContent(String url) {
+	public Answer getRawContent(@NonNull String url) {
 		String contentOrError;
 		boolean isContent = false;
 		try {
@@ -41,7 +42,7 @@ public class RestService {
 			.build();
 	}
 
-	private String getRawContentSpring(RestTemplate restTemplate, String url) throws Exception {
+	private String getRawContentSpring(@NonNull RestTemplate restTemplate, @NonNull String url) throws Exception {
 		if (checkForLength(restTemplate, url)) {
 			String content = restTemplate.getForObject(url, String.class);
 			Assert.hasText(content, "Received raw data is null or empty.");
@@ -50,7 +51,7 @@ public class RestService {
 		throw new Exception(String.format("Response data is too large (> %d bytes).", maxBodySize));
 	}
 
-	private boolean checkForLength(RestTemplate restTemplate, String url) {
+	private boolean checkForLength(@NonNull RestTemplate restTemplate, @NonNull String url) {
 		return restTemplate.headForHeaders(url).getContentLength() <= maxBodySize;
 	}
 }

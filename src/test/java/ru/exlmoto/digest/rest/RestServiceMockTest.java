@@ -32,7 +32,7 @@ class RestServiceMockTest {
 
 	@BeforeEach
 	public void setUp() {
-		when(rest.createRestTemplate()).thenReturn(restTemplate);
+		when(rest.getRestTemplate()).thenReturn(restTemplate);
 	}
 
 	@Test

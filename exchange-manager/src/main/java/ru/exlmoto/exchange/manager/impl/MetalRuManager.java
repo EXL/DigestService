@@ -8,8 +8,8 @@ import ru.exlmoto.exchange.entity.MetalRuEntity;
 import ru.exlmoto.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.exchange.repository.MetalRuRepository;
-import ru.exlmoto.exchange.manager.RestManager;
 import ru.exlmoto.exchange.manager.RateManager;
+import ru.exlmoto.rest.service.RestService;
 
 import java.math.BigDecimal;
 
@@ -17,16 +17,16 @@ import java.math.BigDecimal;
 @Component
 public class MetalRuManager extends RateManager {
 	private final MetalRuRepository metalRuRepository;
-	private final RestManager restManager;
+	private final RestService restService;
 
 	@Override
 	public void commitRates(String url, String mirror) {
 		MetalRuParser metalRuParser = new MetalRuParser();
-		if (metalRuParser.parse(restManager.getContent(url))) {
+		if (metalRuParser.parse(restService.getRawContent(url))) {
 			commitAux(metalRuParser);
 		} else {
 			MetalRuMirrorParser metalRuMirrorParser = new MetalRuMirrorParser();
-			if (metalRuMirrorParser.parse(restManager.getContent(mirror))) {
+			if (metalRuMirrorParser.parse(restService.getRawContent(mirror))) {
 				commitAux(metalRuMirrorParser);
 			}
 		}

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
@@ -11,6 +12,7 @@ import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.ExchangeConfigurationTest;
 import ru.exlmoto.exchange.manager.impl.BankUaManager;
 import ru.exlmoto.exchange.repository.BankUaRepository;
+import ru.exlmoto.rest.RestConfiguration;
 
 import static org.mockito.Mockito.when;
 
@@ -30,7 +32,8 @@ public class RateManagerTest extends ExchangeConfigurationTest {
 		bankUaManager.commitRates(configuration.getBankUa());
 	}
 
-	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class })
+	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class, RestConfiguration.class })
+	@EnableConfigurationProperties(RestConfiguration.class)
 	public static class ExchangeConfigurationCommon {
 
 	}

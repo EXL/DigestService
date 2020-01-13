@@ -8,8 +8,8 @@ import ru.exlmoto.exchange.entity.BankUaEntity;
 import ru.exlmoto.exchange.parser.impl.BankUaMirrorParser;
 import ru.exlmoto.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.exchange.repository.BankUaRepository;
-import ru.exlmoto.exchange.manager.RestManager;
 import ru.exlmoto.exchange.manager.RateManager;
+import ru.exlmoto.rest.service.RestService;
 
 import java.math.BigDecimal;
 
@@ -17,16 +17,16 @@ import java.math.BigDecimal;
 @Component
 public class BankUaManager extends RateManager {
 	private final BankUaRepository bankUaRepository;
-	private final RestManager restManager;
+	private final RestService restService;
 
 	@Override
 	public void commitRates(String url, String mirror) {
 		BankUaParser bankUaParser = new BankUaParser();
-		if (bankUaParser.parse(restManager.getContent(url))) {
+		if (bankUaParser.parse(restService.getRawContent(url))) {
 			commitAux(bankUaParser);
 		} else {
 			BankUaMirrorParser bankUaMirrorParser = new BankUaMirrorParser();
-			if (bankUaMirrorParser.parse(restManager.getContent(mirror))) {
+			if (bankUaMirrorParser.parse(restService.getRawContent(mirror))) {
 				commitAux(bankUaMirrorParser);
 			}
 		}

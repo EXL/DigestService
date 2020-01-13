@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 @Getter
 @ConfigurationProperties("rate")
-public class RestConfig {
+public class RestConfiguration {
 	private long timeOut;
 	private long maxBodySize;
 }

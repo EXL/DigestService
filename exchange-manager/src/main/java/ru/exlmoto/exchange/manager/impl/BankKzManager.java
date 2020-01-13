@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.exchange.entity.BankKzEntity;
 import ru.exlmoto.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.exchange.repository.BankKzRepository;
-import ru.exlmoto.exchange.manager.RestManager;
 import ru.exlmoto.exchange.manager.RateManager;
+import ru.exlmoto.rest.service.RestService;
 
 import java.math.BigDecimal;
 
@@ -16,12 +16,12 @@ import java.math.BigDecimal;
 @Component
 public class BankKzManager extends RateManager {
 	private final BankKzRepository bankKzRepository;
-	private final RestManager restManager;
+	private final RestService restService;
 
 	@Override
 	public void commitRates(String url, String mirror) {
 		BankKzParser bankKzParser = new BankKzParser();
-		if (bankKzParser.parse(restManager.getContent(url))) {
+		if (bankKzParser.parse(restService.getRawContent(url))) {
 			commitAux(bankKzParser);
 		}
 	}

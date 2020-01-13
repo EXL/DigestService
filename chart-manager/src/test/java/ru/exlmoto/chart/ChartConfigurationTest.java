@@ -1,10 +1,10 @@
-package ru.exlmoto.rest;
+package ru.exlmoto.chart;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class RestConfigTest {
+public class ChartConfigurationTest {
 
 }

@@ -8,18 +8,16 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.client.RestTemplate;
-import ru.exlmoto.rest.RestConfig;
+import ru.exlmoto.rest.RestConfiguration;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
-@EnableConfigurationProperties(RestConfig.class)
+@EnableConfigurationProperties(RestConfiguration.class)
 public class RestService {
-	private final RestConfig config;
+	private final RestConfiguration config;
 
 	public String getRawContent(String url) {
 		String content = null;
@@ -32,10 +30,11 @@ public class RestService {
 	}
 
 	private RestTemplate createRestTemplate() {
+		System.out.println(config.getMaxBodySize() + ":" + config.getTimeOut());
 		return new RestTemplateBuilder()
-			       .setConnectTimeout(Duration.ofSeconds(config.getTimeOut()))
-			       .setReadTimeout(Duration.ofSeconds(config.getTimeOut()))
-			       .build();
+			.setConnectTimeout(Duration.ofSeconds(config.getTimeOut()))
+			.setReadTimeout(Duration.ofSeconds(config.getTimeOut()))
+			.build();
 	}
 
 	private String getRawContentSpring(RestTemplate restTemplate, String url) throws Exception {

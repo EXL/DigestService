@@ -3,10 +3,11 @@ package ru.exlmoto.exchange.service;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.ExchangeConfigurationTest;
+import ru.exlmoto.rest.RestConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,7 +29,7 @@ public class ExchangeServiceTest extends ExchangeConfigurationTest {
 		assertThat(exchangeService.markdownMetalRuReport()).isNotBlank();
 	}
 
-	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class })
+	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class, RestConfiguration.class })
 	public static class ExchangeConfigurationCommon {
 
 	}

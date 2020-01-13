@@ -5,17 +5,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.NoSuchMessageException;
+
 import ru.exlmoto.exchange.ExchangeConfiguration;
 import ru.exlmoto.exchange.ExchangeConfigurationTest;
+import ru.exlmoto.rest.RestConfiguration;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GeneratorHelperTest extends ExchangeConfigurationTest {
 	@Autowired
@@ -30,16 +33,17 @@ public class GeneratorHelperTest extends ExchangeConfigurationTest {
 
 	@Test
 	public void testGetDifference() {
-		assertThat(helper.getDifference(null, null)).isNull();
-		assertThat(helper.getDifference(new BigDecimal("1.0"), null)).isNull();
-		assertThat(helper.getDifference(null, new BigDecimal("1.0"))).isNull();
-		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0"))).isNull();
-		assertThat(helper.getDifference(new BigDecimal("0.0"), new BigDecimal("1.0"))).isNull();
-		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("0.0"))).isNull();
-		assertThat(helper.getDifference(new BigDecimal("0.0"), new BigDecimal("0.0"))).isNull();
-		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0"))).isNull();
-		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0001"))).isNull();
-		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.001"))).isNull();
+		assertNull(helper.getDifference(null, null));
+		assertNull(helper.getDifference(new BigDecimal("1.0"), null));
+		assertNull(helper.getDifference(null, new BigDecimal("1.0")));
+		assertNull(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0")));
+		assertNull(helper.getDifference(new BigDecimal("0.0"), new BigDecimal("1.0")));
+		assertNull(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("0.0")));
+		assertNull(helper.getDifference(new BigDecimal("0.0"), new BigDecimal("0.0")));
+		assertNull(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0")));
+		assertNull(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0001")));
+		assertNull(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.001")));
+
 		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.005"))).isEqualTo("-0.01");
 		assertThat(helper.getDifference(new BigDecimal("1.005"), new BigDecimal("1.0"))).isEqualTo("0.01");
 		assertThat(helper.getDifference(new BigDecimal("4.0"), new BigDecimal("3.0"))).isEqualTo("1.00");
@@ -101,7 +105,7 @@ public class GeneratorHelperTest extends ExchangeConfigurationTest {
 		assertTrue(helper.isDateNotEmpty("StringValue"));
 	}
 
-	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class })
+	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class, RestConfiguration.class })
 	public static class ExchangeConfigurationCommon {
 
 	}

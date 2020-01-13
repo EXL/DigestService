@@ -16,6 +16,7 @@ import ru.exlmoto.exchange.repository.BankByRepository;
 import ru.exlmoto.exchange.repository.BankRuRepository;
 import ru.exlmoto.exchange.repository.BankUaRepository;
 import ru.exlmoto.exchange.repository.MetalRuRepository;
+import ru.exlmoto.rest.RestConfiguration;
 
 import java.math.BigDecimal;
 
@@ -92,7 +93,7 @@ public class MarkdownGeneratorTest extends ExchangeConfigurationTest {
 		System.out.println(generator.metalRuReport());
 	}
 
-	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class })
+	@SpringBootApplication(scanBasePackageClasses = { ExchangeConfiguration.class, RestConfiguration.class })
 	public static class ExchangeConfigurationCommon {
 
 	}

@@ -30,6 +30,8 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	runtimeOnly 'org.postgresql:postgresql'
 
+	implementation project(':rest-manager')
+
 	implementation 'org.jsoup:jsoup:1.12.1'
 
 	compileOnly 'org.projectlombok:lombok:1.18.10'

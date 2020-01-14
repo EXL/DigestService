@@ -14,7 +14,7 @@ import ru.exlmoto.digest.util.ResourceFileHelper;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class RateParserUnitTest {
+class RateParserUnitTest {
 	private final RateParserHelper parserHelper = new RateParserHelper();
 
 	private static class RateParserHelper {

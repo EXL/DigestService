@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.motofan.service;
+package ru.exlmoto.digest.motofan;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

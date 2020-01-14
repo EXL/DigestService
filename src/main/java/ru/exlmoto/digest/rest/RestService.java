@@ -52,15 +52,24 @@ public class RestService {
 
 	private <T> Answer<T> getRestResponseAux(String url, Class<T> type, boolean getFile) {
 		try {
-			RestTemplate template = getRestTemplate();
-			checkForLength(template, url);
-			T content = (getFile) ? type.cast(getRestFileAux(template, url)) : template.getForObject(url, type);
-			checkForNull(content);
-			return new Answer<>("", content);
+			return getRestResponseAuxTry(url, type, getFile);
 		} catch (Exception e) {
-			log.error(String.format("Spring RestTemplate: Error while connect to '%s' or parsing response.", url), e);
-			return new Answer<>(e.getLocalizedMessage(), null);
+			log.error(String.format("RestTemplate #1: error while connect to '%s' or parsing response.", url), e);
+			try {
+				return getRestResponseAuxTry(url, type, getFile);
+			} catch (Exception ex) {
+				log.error(String.format("RestTemplate #2: error while connect to '%s' or parsing response.", url), ex);
+				return new Answer<>(ex.getLocalizedMessage(), null);
+			}
 		}
+	}
+
+	private <T> Answer<T> getRestResponseAuxTry(String url, Class<T> type, boolean getFile) {
+		RestTemplate template = getRestTemplate();
+		checkForLength(template, url);
+		T content = (getFile) ? type.cast(getRestFileAux(template, url)) : template.getForObject(url, type);
+		checkForNull(content);
+		return new Answer<>("", content);
 	}
 
 	private String getRestFileAux(RestTemplate template, String url) {

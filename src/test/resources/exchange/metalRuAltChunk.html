@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Курсы драгметаллов ЦБ РФ</title>
+            <meta name="description" content="Официальные учетные цены драгоценных металлов устанавливаются ЦБ РФ каждый рабочий день. Цены рассчитываются на основе фиксинга на золото, серебро, платину и палладий на лондонском рынке наличного металла спот, и пересчитываются в рубли по официальному курсу доллара США к российскому рублю, действующему на день, следующий за днем установления учетных цен. Учетные цены применяются для целей бухгалтерского учета в кредитных организациях." />
+                <link rel="shortcut icon" href="/static/styles/favicons/mfd.ru.ico" />
+                
+
+    <link rel="alternate" type="application/rss+xml" href="/rss/news/handler.ashx" title="Финансовые новости" />
+    <link rel="alternate" type="application/rss+xml" href="/rss/comments/handler.ashx" title="Комментарии аналитиков" />
+        <meta name="viewport" content="width=1024,initial-scale=1">
+                <link rel="stylesheet" type="text/css" href="/static/styles/mfd.css?v=0.10.7302.32378" />
+        <script src="/static/scripts/bundle.js?v=0.10.7302.32378"></script>
+
+    <script>
+        Mfd.viewData.userId = 4;
+    </script>
+
+
+
+    
+    
+    
+    <script>
+        //<![CDATA[
+        $(function ()
+        {
+            var calendarSettings = { "startDate": new Date(Date.UTC(1997,2,25)), "endDate": Mfd.Calendar.Tomorrow };
+            $("[name=from], [name=till]").mfdCalendar(calendarSettings);
+
+            $("[name=cancel]").click(Mfd.cancel_onClick);
+            $("[name=export]").click(Mfd.export_onClick);
+            $("[name=exportMetastock]").click(Mfd.exportMetastock_onClick);
+        });
+
+        Mfd.cancel_onClick = function ()
+        {
+            Mfd.goTo("/centrobank/preciousmetals/");
+        };
+
+        Mfd.export_onClick = function ()
+        {
+            Mfd.goTo("/preciousmetal/export/mfdexport.csv?" + $("[name=from], [name=till]").toQueryString());
+        };
+
+        Mfd.exportMetastock_onClick = function()
+        {
+            var params = {};
+            params.groupId = 36;
+            params.selectedTickers = $('option:selected', "[name='left']").attr('data-id');
+            params.from = $("[name='from']").val();
+            params.till = $("[name='till']").val();
+            params.period = 7;
+
+            var currencyCompare = $('option:selected', "[name='right']").attr('data-id');
+            if (currencyCompare)
+            {
+                params.selectedTickers+="," + currencyCompare;
+            }
+
+            Mfd.goTo("/export/?"+ Mfd.toQueryString(params));
+        };
+        //]]>
+    </script>
+    <script src="/static/scripts/bundle.charting.js?v=0.9.7302.32372"></script>
+
+    <style type="text/css">
+        .mfd-table { margin: 0; }
+        .mfd-table td { text-align: right; }
+    </style>
+
+
+
+
+    </head>
+    <body>
+        
+
+
+
+
+
+
+
+<div class="mfd-body-container"><div class="mfd-body-container-inner">
+<div class='mfd-banner-banner100pctx90-container'><div class='mfd-banner mfd-banner-banner100pctx90'><script>
+google_ad_client = "ca-pub-8980300939565371";
+google_ad_slot = "5647848644";
+google_ad_width = 728;
+google_ad_height = 90;
+</script>
+<script src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script></div></div>
+<div class="mfd-master-header-left"><a href='/currency/?currency=USD'>Курс доллара <strong>61.9057</strong></a> &nbsp; <a href='/currency/?currency=EUR'>Курс евро <strong>69.3777</strong></a> &nbsp; </div><div class='mfd-master-header-right'><a href='http://m.mfd.ru/centrobank/preciousmetals/'>Мобильная версия</a> &nbsp; </div><div class='mfd-master-header-children'><a href='/18plus/' rel='nofollow'>18+</a></div>
+<!--noindex--><div class="mfd-logon-form-modal">
+        <div id="mfd-logon-dialog" style="display: none;">
+            <div class="mfd-logon-form-modal-header">
+                <h2><button class="m-button-link mfd-selected" data-mode="logon" name="openLogonDialog" type="button">Вход</button> &ensp;•&ensp; <button class="m-button-link" data-mode="password" name="openLogonDialog" type="button">Забыли пароль?</button> &ensp;•&ensp; <button class="m-button-link" data-mode="register" name="openLogonDialog" type="button">Регистрация</button></h2>
+            </div>
+            <form accept-charset="utf-8" action="/secure/logon/" class="mfd-form-simple-v" id="mfd-logon-form-modal" method="post">
+                <div>
+                    <div>
+                        <div>Email: <span class="d">*</span></div>
+                        <input name="username" title="Email" type="text">
+                    </div>
+                    <div>
+                        <div>Пароль: <span class="d">*</span></div>
+                        <input name="password" title="Пароль" type="password">

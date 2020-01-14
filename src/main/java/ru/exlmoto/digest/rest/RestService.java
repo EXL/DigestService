@@ -58,7 +58,7 @@ public class RestService {
 			checkForNull(content);
 			return new Answer<>("", content);
 		} catch (Exception e) {
-			log.debug(String.format("Spring RestTemplate: Error while connect to '%s' or parsing response.", url), e);
+			log.error(String.format("Spring RestTemplate: Error while connect to '%s' or parsing response.", url), e);
 			return new Answer<>(e.getLocalizedMessage(), null);
 		}
 	}

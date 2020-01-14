@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Utils {
+public class Util {
 	/*
 	 * Remove html tags from text.
 	 * See: https://stackoverflow.com/questions/14445386/how-to-remove-text-in-brackets-from-the-start-of-a-string

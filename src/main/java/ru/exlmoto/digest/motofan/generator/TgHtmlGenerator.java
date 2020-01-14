@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.i18n.LocalizationService;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
-import ru.exlmoto.digest.util.Utils;
+import ru.exlmoto.digest.util.Util;
 
 @RequiredArgsConstructor
 @Component
 public class TgHtmlGenerator {
 	private final LocalizationService locale;
-	private final Utils utils;
+	private final Util util;
 
 	public String generateHtmlReport(MotofanPost post) {
 		return
@@ -23,6 +23,6 @@ public class TgHtmlGenerator {
 	}
 
 	public String filterMotofanPost(String text) {
-		return utils.removeBbCodes(utils.removeHtmlTags(text));
+		return util.removeBbCodes(util.removeHtmlTags(text));
 	}
 }

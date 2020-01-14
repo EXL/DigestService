@@ -23,15 +23,7 @@ public class TgHtmlGenerator {
 			locale.i18n("motofan.read") + " <a href=\"" + post.getPost_link() + "\">" + post.getTitle() + "</a>";
 	}
 
-	private String removeBbCodes(@NonNull String text) {
-		return text
-			.replaceAll("\\[.*?]", " ")
-			.replaceAll("\\[\\\\", " ")
-			.replaceAll("\\[", " ").trim()
-			.replaceAll(" +", " ");
-	}
-
 	public String filterMotofanPost(@NonNull String text) {
-		return removeBbCodes(utils.removeHtmlTags(text));
+		return utils.removeBbCodes(utils.removeHtmlTags(text));
 	}
 }

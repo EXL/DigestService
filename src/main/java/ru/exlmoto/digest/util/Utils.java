@@ -14,4 +14,12 @@ public class Utils {
 	public String removeHtmlTags(@NonNull String html) {
 		return Jsoup.parse(html).text();
 	}
+
+	public String removeBbCodes(@NonNull String text) {
+		return text
+			.replaceAll("\\[.*?]", " ")
+			.replaceAll("\\[\\\\", " ")
+			.replaceAll("\\[", " ").trim()
+			.replaceAll(" +", " ");
+	}
 }

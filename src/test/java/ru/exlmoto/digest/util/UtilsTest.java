@@ -18,4 +18,14 @@ class UtilsTest {
 		assertEquals("test text test", utils.removeHtmlTags("test <asdasd> text test</..."));
 		assertEquals("test text test", utils.removeHtmlTags("test <blockquote> text test</block"));
 	}
+
+	@SuppressWarnings("ConstantConditions")
+	@Test
+	public void testRemoveBbTags() {
+		assertThrows(NullPointerException.class, () -> utils.removeBbCodes(null));
+
+		assertEquals("test text test", utils.removeBbCodes("test [b]text[/b] test"));
+		assertEquals("test text test bl", utils.removeBbCodes("test [b]text[/b] test [bl"));
+		assertEquals("test text test bl", utils.removeBbCodes("test [b]text[/b] test [\\bl"));
+	}
 }

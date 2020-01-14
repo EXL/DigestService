@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.mockito.Mockito.when;
 
-import static org.springframework.test.web.client.ExpectedCount.twice;
+import static org.springframework.test.web.client.ExpectedCount.manyTimes;
 
 @SpringBootTest
 class MotofanServiceTest {
@@ -67,8 +67,10 @@ class MotofanServiceTest {
 
 	private MotofanPost[] fakeRestTemplateResult(String filename) {
 		MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
-		mockServer.expect(twice(), MockRestRequestMatchers.anything()).andRespond(MockRestResponseCreators.withSuccess(
-			new ResourceFileHelper().getFileContent(filename), MediaType.APPLICATION_JSON)
+		mockServer.expect(manyTimes(), MockRestRequestMatchers.anything()).andRespond(
+			MockRestResponseCreators.withSuccess(
+				new ResourceFileHelper().getFileContent(filename), MediaType.APPLICATION_JSON
+			)
 		);
 		return service.getMotofanPostObjects();
 	}

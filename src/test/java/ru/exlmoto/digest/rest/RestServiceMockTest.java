@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static org.mockito.Mockito.when;
 
-import static org.springframework.test.web.client.ExpectedCount.twice;
+import static org.springframework.test.web.client.ExpectedCount.manyTimes;
 
 @SpringBootTest
 class RestServiceMockTest {
@@ -55,7 +55,7 @@ class RestServiceMockTest {
 
 	private Answer<String> getContentFromMockServer(String answer) {
 		MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
-		mockServer.expect(twice(), MockRestRequestMatchers.anything())
+		mockServer.expect(manyTimes(), MockRestRequestMatchers.anything())
 			.andRespond(MockRestResponseCreators.withSuccess(answer, MediaType.APPLICATION_JSON));
 		return rest.getRestResponse("fake-url");
 	}

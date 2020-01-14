@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 
-import ru.exlmoto.digest.motofan.MotofanService;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.motofan.json.MotofanPostHelper;
 

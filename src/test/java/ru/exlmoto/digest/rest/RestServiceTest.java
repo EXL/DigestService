@@ -18,22 +18,23 @@ class RestServiceTest {
 	private RestService rest;
 
 	@Test
-	public void testRestService() {
-		Answer answer = rest.getRawContent("https://exlmoto.ru");
-		assertTrue(answer.status());
-		assertThat(answer.answer()).isNotEmpty();
+	public void testGetRestContent() {
+		Answer<String> res = rest.getRestResponse("https://exlmoto.ru");
+		assertTrue(res.ok());
+		assertThat(res.answer()).isNotEmpty();
+		assertThat(res.error()).isEmpty();
 
-		answer = rest.getRawContent("https://exlmotor.ru");
-		assertFalse(answer.status());
-		assertThat(answer.answer()).isNotEmpty();
-		System.out.println(answer.answer());
+		res = rest.getRestResponse("https://exlmotor.ru");
+		assertFalse(res.ok());
+		assertThat(res.error()).isNotEmpty();
+		System.out.println(res.error());
 	}
 
 	@Test
-	public void testDropOnLargeData() {
-		Answer answer = rest.getRawContent("https://mirror.yandex.ru/astra/current/orel/iso/orel-current.iso");
-		assertFalse(answer.status());
-		assertThat(answer.answer()).isNotEmpty();
-		System.out.println(answer.answer());
+	public void testDropLargeRestContent() {
+		Answer<String> res = rest.getRestResponse("https://mirror.yandex.ru/astra/current/orel/iso/orel-current.iso");
+		assertFalse(res.ok());
+		assertThat(res.error()).isNotEmpty();
+		System.out.println(res.error());
 	}
 }

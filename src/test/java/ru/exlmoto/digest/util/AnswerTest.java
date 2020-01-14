@@ -8,15 +8,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class AnswerTest {
-	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void testAnswer() {
-		Answer answerFirst = new Answer(true, "test");
-		assertTrue(answerFirst.status());
-		assertEquals("test", answerFirst.answer());
+		Answer<String> answerFirst = new Answer<>("", "Ok!");
+		assertTrue(answerFirst.ok());
+		assertEquals("Ok!", answerFirst.answer());
 
-		Answer answerSecond = new Answer(false, null);
-		assertFalse(answerSecond.status());
+		Answer<String> answerSecond = new Answer<>("Error text!", null);
+		assertFalse(answerSecond.ok());
 		assertNull(answerSecond.answer());
 	}
 }

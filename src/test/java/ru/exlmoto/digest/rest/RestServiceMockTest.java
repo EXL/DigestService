@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static org.mockito.Mockito.when;
 
@@ -37,24 +38,25 @@ class RestServiceMockTest {
 
 	@Test
 	public void testRestServiceEmptyAnswer() {
-		Answer answer = getContentFromMockServer("");
-		assertFalse(answer.status());
-		assertThat(answer.answer()).isNotEmpty();
-		System.out.println(answer.answer());
+		Answer<String> res = getContentFromMockServer("");
+		assertFalse(res.ok());
+		assertNull(res.answer());
+		assertThat(res.error()).isNotEmpty();
+		System.out.println(res.error());
 	}
 
 	@Test
 	public void testRestServiceNonEmptyAnswer() {
-		Answer answer = getContentFromMockServer("Test answer");
-		assertTrue(answer.status());
-		assertThat(answer.answer()).isNotEmpty();
-		System.out.println(answer.answer());
+		Answer<String> res = getContentFromMockServer("Test answer");
+		assertTrue(res.ok());
+		assertThat(res.answer()).isNotEmpty();
+		System.out.println(res.answer());
 	}
 
-	private Answer getContentFromMockServer(String answer) {
+	private Answer<String> getContentFromMockServer(String answer) {
 		MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
 		mockServer.expect(twice(), MockRestRequestMatchers.anything())
 			.andRespond(MockRestResponseCreators.withSuccess(answer, MediaType.APPLICATION_JSON));
-		return rest.getRawContent("fake-url");
+		return rest.getRestResponse("fake-url");
 	}
 }

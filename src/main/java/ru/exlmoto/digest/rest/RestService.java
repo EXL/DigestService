@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
@@ -15,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import ru.exlmoto.digest.util.Answer;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,19 +38,19 @@ public class RestService {
 			.build();
 	}
 
-	public Answer<String> getRestResponse(@NotNull String url) {
+	public Answer<String> getRestResponse(String url) {
 		return getRestResponseAux(url, String.class, false);
 	}
 
-	public <T> Answer<T> getRestResponse(@NonNull String url, Class<T> type) {
+	public <T> Answer<T> getRestResponse(String url, Class<T> type) {
 		return getRestResponseAux(url, type, false);
 	}
 
-	public Answer<String> getRestFile(@NonNull String url) {
+	public Answer<String> getRestFile(String url) {
 		return getRestResponseAux(url, String.class, true);
 	}
 
-	private <T> Answer<T> getRestResponseAux(@NonNull String url, Class<T> type, boolean getFile) {
+	private <T> Answer<T> getRestResponseAux(String url, Class<T> type, boolean getFile) {
 		try {
 			RestTemplate template = getRestTemplate();
 			checkForLength(template, url);
@@ -66,7 +63,7 @@ public class RestService {
 		}
 	}
 
-	private String getRestFileAux(@NonNull RestTemplate template, @NonNull String url) {
+	private String getRestFileAux(RestTemplate template, String url) {
 		return template.execute(url, HttpMethod.GET, null, response -> {
 			String suffix = "-" + new File(new URL(url).getPath()).getName();
 			suffix = suffix.length() > 3 ? suffix : null;
@@ -76,11 +73,11 @@ public class RestService {
 		});
 	}
 
-	private <T> void checkForNull(@Nullable T content) {
+	private <T> void checkForNull(T content) {
 		Assert.notNull(content, "Received raw data is null.");
 	}
 
-	private void checkForLength(@NonNull RestTemplate template, @NonNull String url) {
+	private void checkForLength(RestTemplate template, String url) {
 		Assert.isTrue(
 			template.headForHeaders(url).getContentLength() <= maxBodySize,
 			String.format("Response data is too large (> %d bytes).", maxBodySize)

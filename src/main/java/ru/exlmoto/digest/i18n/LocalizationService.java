@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -20,7 +19,7 @@ public class LocalizationService {
 
 	private final MessageSource messageSource;
 
-	public String i18n(@NonNull String key) {
+	public String i18n(String key) {
 		try {
 			return messageSource.getMessage(key, null, Locale.forLanguageTag(lang));
 		} catch (NoSuchMessageException nsme) {

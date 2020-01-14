@@ -2,7 +2,6 @@ package ru.exlmoto.digest.motofan.generator;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.i18n.LocalizationService;
@@ -15,7 +14,7 @@ public class TgHtmlGenerator {
 	private final LocalizationService locale;
 	private final Utils utils;
 
-	public String generateHtmlReport(@NonNull MotofanPost post) {
+	public String generateHtmlReport(MotofanPost post) {
 		return
 			locale.i18n("motofan.title") + "\n\n" +
 			"<b>" + post.getAuthor() + "</b> " + locale.i18n("motofan.wrote") + " (" + post.getTime() + "):\n" +
@@ -23,7 +22,7 @@ public class TgHtmlGenerator {
 			locale.i18n("motofan.read") + " <a href=\"" + post.getPost_link() + "\">" + post.getTitle() + "</a>";
 	}
 
-	public String filterMotofanPost(@NonNull String text) {
+	public String filterMotofanPost(String text) {
 		return utils.removeBbCodes(utils.removeHtmlTags(text));
 	}
 }

@@ -26,7 +26,7 @@ public class BankUaManager extends RateManager {
 			commitAux(bankUaParser);
 		} else {
 			BankUaMirrorParser bankUaMirrorParser = new BankUaMirrorParser();
-			if (bankUaMirrorParser.parse(restService.getRestResponse(url).answer())) {
+			if (bankUaMirrorParser.parse(restService.getRestResponse(mirror).answer())) {
 				commitAux(bankUaMirrorParser);
 			}
 		}

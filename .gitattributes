@@ -8,5 +8,4 @@
 # https://github.com/github/linguist
 #
 # Drop HTML, XML, JSON test files from GitHub statistics
-#exchange-manager/src/test/resources/parser/* linguist-vendored
-#motofan-crawler/src/test/resources/parser/* linguist-vendored
+src/test/resources/* linguist-vendored

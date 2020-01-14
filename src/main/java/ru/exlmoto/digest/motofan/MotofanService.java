@@ -29,7 +29,16 @@ public class MotofanService {
 	private String text = null;
 
 	public MotofanPost[] getMotofanPostObjects() {
-		return restService.getRestResponse(lastPostUrl, MotofanPost[].class).answer();
+		MotofanPost[] posts = restService.getRestResponse(lastPostUrl, MotofanPost[].class).answer();
+		if (posts != null && posts.length > 0) {
+			for (MotofanPost post : posts) {
+				if (!post.isValid()) {
+					return null;
+				}
+			}
+			return posts;
+		}
+		return null;
 	}
 
 	public List<String> getLastMotofanPostsInHtml() {

@@ -2,108 +2,74 @@ package ru.exlmoto.digest.motofan;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.test.web.client.match.MockRestRequestMatchers;
+import org.springframework.test.web.client.response.MockRestResponseCreators;
+import org.springframework.web.client.RestTemplate;
 
 import ru.exlmoto.digest.motofan.json.MotofanPost;
-import ru.exlmoto.digest.motofan.json.MotofanPostHelper;
-
-import java.util.List;
+import ru.exlmoto.digest.rest.RestService;
+import ru.exlmoto.digest.util.Answer;
+import ru.exlmoto.digest.util.ResourceFileHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import static org.mockito.Mockito.when;
+
+import static org.springframework.test.web.client.ExpectedCount.twice;
 
 @SpringBootTest
 class MotofanServiceTest {
-	@SpyBean
+	@Value("${motofan.last-post-url}")
+	private String lastPostUrl;
+
+	@Autowired
 	private MotofanService service;
 
+	@SpyBean
+	private RestService rest;
+
+	private RestTemplate restTemplate = new RestTemplateBuilder().build();
+
 	@Test
-	@DirtiesContext
-	public void testGetLastMotofanPostsNull() {
-		List<MotofanPost> firstStep = service.getLastMotofanPosts();
-		List<MotofanPost> secondStep = service.getLastMotofanPosts();
-		assertNull(firstStep);
-		assertNull(secondStep);
+	public void testGetLastMotofanPosts() {
+		Answer<MotofanPost[]> res = rest.getRestResponse(lastPostUrl, MotofanPost[].class);
+		assertThat(res.answer()).isNotEmpty();
+		System.out.println(res.answer()[0].getTitle());
 	}
 
 	@Test
-	@DirtiesContext
-	public void testGetLastMotofanPostsBugWithWrongArraySize() {
-		List<MotofanPost> firstStep = service.getLastMotofanPosts();
-		assertThat(firstStep).isNull();
-
-		MotofanPost[] posts = new MotofanPost[2];
-		when(service.getMotofanPostObjects()).thenReturn(posts);
-		posts[0] = new MotofanPostHelper().getRandomMotofanPost(4000000000000000000L);
-		posts[1] = new MotofanPostHelper().getRandomMotofanPost(3000000000000000000L);
-		List<MotofanPost> secondStep = service.getLastMotofanPosts();
-		assertEquals(2, secondStep.size());
+	public void testGetLastMotofanPostsWrongUrl() {
+		assertThat(rest.getRestResponse("fake-url", MotofanPost[].class).answer()).isNull();
+		assertThat(rest.getRestResponse("https://exlmoto.ru", MotofanPost[].class).answer()).isNull();
+		assertThat(rest.getRestResponse("https://exlmotor.ru", MotofanPost[].class).answer()).isNull();
 	}
 
 	@Test
-	@DirtiesContext
-	public void testGetLastMotofanPostsFake() {
-		MotofanPost[] posts = new MotofanPost[3];
-		posts[0] = new MotofanPostHelper().getRandomMotofanPost(2L);
-		posts[1] = new MotofanPostHelper().getRandomMotofanPost(1L);
-		posts[2] = new MotofanPostHelper().getRandomMotofanPost(0L);
-		when(service.getMotofanPostObjects()).thenReturn(posts);
-		List<MotofanPost> firstStep = service.getLastMotofanPosts();
-
-		posts[0] = new MotofanPostHelper().getRandomMotofanPost(4L);
-		posts[1] = new MotofanPostHelper().getRandomMotofanPost(3L);
-		posts[2] = new MotofanPostHelper().getRandomMotofanPost(2L);
-		List<MotofanPost> secondStep = service.getLastMotofanPosts();
-
-		assertThat(firstStep).isNull();
-		assertThat(secondStep).isNotEmpty();
-		assertEquals(2, secondStep.size());
-		System.out.println(secondStep);
+	public void testIncorrectJson() {
+		when(rest.getRestTemplate()).thenReturn(restTemplate);
+		MotofanPost[] posts = fakeRestTemplateResult("motofan/posts.json");
+		assertThat(posts).isNotEmpty();
+		System.out.println(posts[0].getTitle());
+		assertThat(fakeRestTemplateResult("motofan/posts-null.json")).isNull();
+		assertThat(fakeRestTemplateResult("motofan/posts-incorrect.json")).isNull();
+		assertThat(fakeRestTemplateResult("motofan/posts-empty.json")).isNull();
+		assertThat(fakeRestTemplateResult("motofan/posts-another.json")).isNull();
+		assertThat(fakeRestTemplateResult("motofan/posts-wrong.json")).isNull();
+		assertThat(fakeRestTemplateResult("motofan/posts-chunk.json")).isNull();
 	}
 
-	@Test
-	@DirtiesContext
-	public void testGetLastMotofanPostsInHtml() {
-		MotofanPost[] posts = new MotofanPost[3];
-		posts[0] = new MotofanPostHelper().getRandomMotofanPost(2L);
-		posts[1] = new MotofanPostHelper().getRandomMotofanPost(1L);
-		posts[2] = new MotofanPostHelper().getRandomMotofanPost(0L);
-		when(service.getMotofanPostObjects()).thenReturn(posts);
-		List<String> firstStep = service.getLastMotofanPostsInHtml();
-
-		posts[0] = new MotofanPostHelper().getRandomMotofanPost(4L);
-		posts[1] = new MotofanPostHelper().getRandomMotofanPost(3L);
-		posts[2] = new MotofanPostHelper().getRandomMotofanPost(2L);
-		List<String> secondStep = service.getLastMotofanPostsInHtml();
-
-		assertThat(firstStep).isEmpty();
-		assertThat(secondStep).isNotEmpty();
-		assertEquals(2, secondStep.size());
-		System.out.println(secondStep);
-	}
-
-	@Test
-	@DirtiesContext
-	public void testGetLastMotofanPostsInHtmlWithNulls() {
-		MotofanPost[] posts = new MotofanPost[2];
-		posts[0] = new MotofanPostHelper().getRandomMotofanPost(1L);
-		posts[1] = new MotofanPostHelper().getRandomMotofanPost(0L);
-		when(service.getMotofanPostObjects()).thenReturn(posts);
-		service.getLastMotofanPostsInHtml();
-
-		MotofanPost motofanPostFirst = new MotofanPost();
-		MotofanPost motofanPostSecond = new MotofanPost();
-		motofanPostFirst.setTopic(1L);
-		motofanPostSecond.setTopic(1L);
-		posts[0] = motofanPostFirst;
-		posts[1] = motofanPostSecond;
-		assertThrows(NullPointerException.class, () -> service.getLastMotofanPostsInHtml());
+	private MotofanPost[] fakeRestTemplateResult(String filename) {
+		MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
+		mockServer.expect(twice(), MockRestRequestMatchers.anything()).andRespond(MockRestResponseCreators.withSuccess(
+			new ResourceFileHelper().getFileContent(filename), MediaType.APPLICATION_JSON)
+		);
+		return service.getMotofanPostObjects();
 	}
 }

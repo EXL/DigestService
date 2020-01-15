@@ -12,8 +12,8 @@ import org.yaml.snakeyaml.Yaml;
 
 import ru.exlmoto.digest.chart.yaml.Chart;
 import ru.exlmoto.digest.util.Answer;
+import ru.exlmoto.digest.util.resource.ImageHelper;
 import ru.exlmoto.digest.util.resource.ResourceHelper;
-import ru.exlmoto.digest.util.rest.RestHelper;
 
 import javax.annotation.PostConstruct;
 
@@ -40,7 +40,7 @@ public class ChartService {
 	private Resource yamlFile;
 
 	private final ResourceHelper resourceHelper;
-	private final RestHelper restHelper;
+	private final ImageHelper imageHelper;
 
 	private Map<String, Chart> chartMap;
 
@@ -80,15 +80,11 @@ public class ChartService {
 		if (!downloadFile) {
 			return Ok(chart);
 		}
-		Answer<String> res = getRestHelper().getRestFile(chart.getApiUrl());
+		Answer<String> res = imageHelper.getImageByLink(chart.getApiUrl());
 		if (res.ok()) {
 			chart.setApiUrl(res.answer());
 			return Ok(chart);
 		}
 		return Error(res.error());
-	}
-
-	public RestHelper getRestHelper() {
-		return restHelper;
 	}
 }

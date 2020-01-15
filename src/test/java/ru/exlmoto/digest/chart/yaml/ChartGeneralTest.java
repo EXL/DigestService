@@ -14,14 +14,11 @@ class ChartGeneralTest {
 		ChartGeneral chart = new ChartGeneral();
 		assertFalse(chart.isValid());
 
-		chart.setTitleEn("Test Value");
+		chart.setTitle("Test Value");
 		assertFalse(chart.isValid());
 
-		chart.setTitleRu("Test Value");
-		chart.setDescRu("Test Value");
-		chart.setDescEn("Test Value");
-		chart.setButtonRu("Test Value");
-		chart.setButtonEn("Test Value");
+		chart.setDesc("Test Value");
+		chart.setButton("Test Value");
 		assertFalse(chart.isValid());
 
 		chart.setApiUrl("Test Value");
@@ -31,17 +28,20 @@ class ChartGeneralTest {
 	@Test
 	public void testConstructor() {
 		Map<String, String> values = new HashMap<>();
-		values.put("titleRu", "some value");
-		values.put("titleEn", "some value");
-		values.put("descRu", "some value");
-		values.put("descEn", "some value");
-		values.put("buttonRu", "some value");
-		values.put("buttonEn", "some value");
-		ChartGeneral chartFirst = new ChartGeneral(values);
+		values.put("title_ru", "some value");
+		values.put("title_en", "some value");
+		values.put("desc_ru", "some value");
+		values.put("desc_en", "some value");
+		values.put("button_ru", "some value");
+		values.put("button_en", "some value");
+		ChartGeneral chartFirst = new ChartGeneral(values, "en");
 		assertFalse(chartFirst.isValid());
 
-		values.put("apiUrl", "some value");
-		ChartGeneral chartSecond = new ChartGeneral(values);
+		values.put("api_url", "some value");
+		ChartGeneral chartSecond = new ChartGeneral(values, "en");
 		assertTrue(chartSecond.isValid());
+
+		ChartGeneral chartThird = new ChartGeneral(values, "fr");
+		assertFalse(chartThird.isValid());
 	}
 }

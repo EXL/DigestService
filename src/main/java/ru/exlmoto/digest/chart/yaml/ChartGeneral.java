@@ -14,32 +14,23 @@ import java.util.Map;
 @ToString
 @NoArgsConstructor
 public class ChartGeneral {
-	private String titleRu;
-	private String titleEn;
-	private String descRu;
-	private String descEn;
-	private String buttonRu;
-	private String buttonEn;
+	private String title;
+	private String desc;
+	private String button;
 	private String apiUrl;
 
 	public boolean isValid() {
 		return
-			!StringUtils.isEmpty(titleRu) &&
-			!StringUtils.isEmpty(titleEn) &&
-			!StringUtils.isEmpty(descRu) &&
-			!StringUtils.isEmpty(descEn) &&
-			!StringUtils.isEmpty(buttonRu) &&
-			!StringUtils.isEmpty(buttonEn) &&
+			!StringUtils.isEmpty(title) &&
+			!StringUtils.isEmpty(desc) &&
+			!StringUtils.isEmpty(button) &&
 			!StringUtils.isEmpty(apiUrl);
 	}
 
-	public ChartGeneral(Map<String, String> map) {
-		titleRu = map.get("titleRu");
-		titleEn = map.get("titleEn");
-		descRu = map.get("descRu");
-		descEn = map.get("descEn");
-		buttonRu = map.get("buttonRu");
-		buttonEn = map.get("buttonEn");
-		apiUrl = map.get("apiUrl");
+	public ChartGeneral(Map<String, String> map, String lang) {
+		title = map.get("title_" + lang);
+		desc = map.get("desc_" + lang);
+		button = map.get("button_" + lang);
+		apiUrl = map.get("api_url");
 	}
 }

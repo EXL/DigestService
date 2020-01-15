@@ -9,7 +9,7 @@ import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.exchange.manager.RateManager;
 import ru.exlmoto.digest.entity.MetalRuEntity;
 import ru.exlmoto.digest.repository.MetalRuRepository;
-import ru.exlmoto.digest.rest.RestService;
+import ru.exlmoto.digest.rest.RestHelper;
 
 import java.math.BigDecimal;
 
@@ -17,16 +17,16 @@ import java.math.BigDecimal;
 @Component
 public class MetalRuManager extends RateManager {
 	private final MetalRuRepository metalRuRepository;
-	private final RestService restService;
+	private final RestHelper restHelper;
 
 	@Override
 	public void commitRates(String url, String mirror) {
 		MetalRuParser metalRuParser = new MetalRuParser();
-		if (metalRuParser.parse(restService.getRestResponse(url).answer())) {
+		if (metalRuParser.parse(restHelper.getRestResponse(url).answer())) {
 			commitAux(metalRuParser);
 		} else {
 			MetalRuMirrorParser metalRuMirrorParser = new MetalRuMirrorParser();
-			if (metalRuMirrorParser.parse(restService.getRestResponse(mirror).answer())) {
+			if (metalRuMirrorParser.parse(restHelper.getRestResponse(mirror).answer())) {
 				commitAux(metalRuMirrorParser);
 			}
 		}

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digest.motofan.generator.TgHtmlGenerator;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
-import ru.exlmoto.digest.rest.RestService;
+import ru.exlmoto.digest.rest.RestHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class MotofanService {
 	@Value("${motofan.last-post-url}")
 	private String lastPostUrl;
 
-	private final RestService restService;
+	private final RestHelper restHelper;
 	private final TgHtmlGenerator htmlGenerator;
 
 	private Long timestamp = 0L;
@@ -29,7 +29,7 @@ public class MotofanService {
 	private String text = null;
 
 	public MotofanPost[] getMotofanPostObjects() {
-		MotofanPost[] posts = restService.getRestResponse(lastPostUrl, MotofanPost[].class).answer();
+		MotofanPost[] posts = restHelper.getRestResponse(lastPostUrl, MotofanPost[].class).answer();
 		if (posts != null && posts.length > 0) {
 			for (MotofanPost post : posts) {
 				if (!post.isValid()) {

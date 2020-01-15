@@ -12,7 +12,7 @@ import ru.exlmoto.digest.entity.MetalRuEntity;
 
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.generator.helper.RepositoryHelper;
-import ru.exlmoto.digest.i18n.LocalizationService;
+import ru.exlmoto.digest.i18n.LocalizationHelper;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class TgMarkdownGenerator {
 	private final GeneratorHelper helper;
 	private final RepositoryHelper repos;
-	private final LocalizationService locale;
+	private final LocalizationHelper locale;
 
 	public String bankRuReport() {
 		return Optional.ofNullable(repos.getBankRu()).map(this::bankRuReportAux).orElse(errorReport());

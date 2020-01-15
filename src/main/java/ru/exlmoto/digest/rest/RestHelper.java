@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestTemplate;
@@ -23,8 +23,8 @@ import static ru.exlmoto.digest.util.Answer.Error;
 import static ru.exlmoto.digest.util.Answer.Ok;
 
 @Slf4j
-@Service
-public class RestService {
+@Component
+public class RestHelper {
 	@Value("${rest.timeout-sec}")
 	private long timeoutSec;
 

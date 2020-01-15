@@ -6,14 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service
-public class LocalizationService {
+@Component
+public class LocalizationHelper {
 	@Value("${general.lang}")
 	private String lang;
 

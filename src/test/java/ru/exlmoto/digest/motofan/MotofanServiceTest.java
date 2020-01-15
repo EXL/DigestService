@@ -14,7 +14,7 @@ import org.springframework.test.web.client.response.MockRestResponseCreators;
 import org.springframework.web.client.RestTemplate;
 
 import ru.exlmoto.digest.motofan.json.MotofanPost;
-import ru.exlmoto.digest.rest.RestService;
+import ru.exlmoto.digest.rest.RestHelper;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.resource.ResourceHelper;
 
@@ -36,7 +36,7 @@ class MotofanServiceTest {
 	private ResourceHelper resourceHelper;
 
 	@SpyBean
-	private RestService rest;
+	private RestHelper rest;
 
 	private final RestTemplate restTemplate = new RestTemplateBuilder().build();
 

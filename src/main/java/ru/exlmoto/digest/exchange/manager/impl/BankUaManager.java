@@ -9,7 +9,7 @@ import ru.exlmoto.digest.exchange.parser.impl.BankUaMirrorParser;
 import ru.exlmoto.digest.exchange.manager.RateManager;
 import ru.exlmoto.digest.entity.BankUaEntity;
 import ru.exlmoto.digest.repository.BankUaRepository;
-import ru.exlmoto.digest.rest.RestService;
+import ru.exlmoto.digest.rest.RestHelper;
 
 import java.math.BigDecimal;
 
@@ -17,16 +17,16 @@ import java.math.BigDecimal;
 @Component
 public class BankUaManager extends RateManager {
 	private final BankUaRepository bankUaRepository;
-	private final RestService restService;
+	private final RestHelper restHelper;
 
 	@Override
 	public void commitRates(String url, String mirror) {
 		BankUaParser bankUaParser = new BankUaParser();
-		if (bankUaParser.parse(restService.getRestResponse(url).answer())) {
+		if (bankUaParser.parse(restHelper.getRestResponse(url).answer())) {
 			commitAux(bankUaParser);
 		} else {
 			BankUaMirrorParser bankUaMirrorParser = new BankUaMirrorParser();
-			if (bankUaMirrorParser.parse(restService.getRestResponse(mirror).answer())) {
+			if (bankUaMirrorParser.parse(restHelper.getRestResponse(mirror).answer())) {
 				commitAux(bankUaMirrorParser);
 			}
 		}

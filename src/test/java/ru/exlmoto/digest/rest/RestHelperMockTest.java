@@ -25,9 +25,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.ExpectedCount.manyTimes;
 
 @SpringBootTest
-class RestServiceMockTest {
+class RestHelperMockTest {
 	@SpyBean
-	private RestService rest;
+	private RestHelper rest;
 
 	private final RestTemplate restTemplate = new RestTemplateBuilder().build();
 

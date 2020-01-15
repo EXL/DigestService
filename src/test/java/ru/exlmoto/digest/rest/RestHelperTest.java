@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
-class RestServiceTest {
+class RestHelperTest {
 	@Autowired
-	private RestService rest;
+	private RestHelper rest;
 
 	@Test
 	public void testGetRestContent() {

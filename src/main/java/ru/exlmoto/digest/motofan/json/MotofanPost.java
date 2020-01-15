@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import org.springframework.util.StringUtils;
+
 @Setter
 @Getter
 @ToString
@@ -23,13 +25,13 @@ public class MotofanPost {
 	public boolean isValid() {
 		return
 			timestamp != null &&
-			time != null &&
+			!StringUtils.isEmpty(time) &&
 			topic != null &&
 			post != null &&
-			topic_link != null &&
-			post_link != null &&
-			author != null &&
-			title != null &&
-			text != null;
+			!StringUtils.isEmpty(topic_link) &&
+			!StringUtils.isEmpty(post_link) &&
+			!StringUtils.isEmpty(author) &&
+			!StringUtils.isEmpty(title) &&
+			!StringUtils.isEmpty(text);
 	}
 }

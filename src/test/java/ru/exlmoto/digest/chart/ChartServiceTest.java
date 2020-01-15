@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 
-import ru.exlmoto.digest.chart.yaml.ChartGeneral;
+import ru.exlmoto.digest.chart.yaml.Chart;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.resource.ResourceHelper;
 
@@ -55,11 +55,11 @@ class ChartServiceTest {
 
 	@Test
 	public void testGetChart() {
-		Answer<ChartGeneral> res = chartService.getChart("unknown_key");
+		Answer<Chart> res = chartService.getChart("unknown_key");
 		assertFalse(res.ok());
 		System.out.println(res.error());
 
-		ChartGeneral chart = chartService.getChart("usd_rub").answer();
+		Chart chart = chartService.getChart("usd_rub").answer();
 		assertNotNull(chart);
 		System.out.println(chart.getTitle());
 		System.out.println(chart.getDesc());

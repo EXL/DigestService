@@ -8,10 +8,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ChartGeneralTest {
+class ChartTest {
 	@Test
 	public void testIsValid() {
-		ChartGeneral chart = new ChartGeneral();
+		Chart chart = new Chart();
 		assertFalse(chart.isValid());
 
 		chart.setTitle("Test Value");
@@ -34,14 +34,14 @@ class ChartGeneralTest {
 		values.put("desc_en", "some value");
 		values.put("button_ru", "some value");
 		values.put("button_en", "some value");
-		ChartGeneral chartFirst = new ChartGeneral(values, "en");
+		Chart chartFirst = new Chart(values, "en");
 		assertFalse(chartFirst.isValid());
 
 		values.put("api_url", "some value");
-		ChartGeneral chartSecond = new ChartGeneral(values, "en");
+		Chart chartSecond = new Chart(values, "en");
 		assertTrue(chartSecond.isValid());
 
-		ChartGeneral chartThird = new ChartGeneral(values, "fr");
+		Chart chartThird = new Chart(values, "fr");
 		assertFalse(chartThird.isValid());
 	}
 }

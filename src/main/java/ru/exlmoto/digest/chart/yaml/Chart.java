@@ -13,7 +13,7 @@ import java.util.Map;
 @Setter
 @ToString
 @NoArgsConstructor
-public class ChartGeneral {
+public class Chart {
 	private String title;
 	private String desc;
 	private String button;
@@ -27,7 +27,7 @@ public class ChartGeneral {
 			!StringUtils.isEmpty(apiUrl);
 	}
 
-	public ChartGeneral(Map<String, String> map, String lang) {
+	public Chart(Map<String, String> map, String lang) {
 		title = map.get("title_" + lang);
 		desc = map.get("desc_" + lang);
 		button = map.get("button_" + lang);

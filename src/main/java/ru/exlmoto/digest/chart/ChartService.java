@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import org.yaml.snakeyaml.Yaml;
 
-import ru.exlmoto.digest.chart.yaml.ChartGeneral;
+import ru.exlmoto.digest.chart.yaml.Chart;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.resource.ResourceHelper;
 import ru.exlmoto.digest.util.rest.RestHelper;
@@ -42,17 +42,17 @@ public class ChartService {
 	private final ResourceHelper resourceHelper;
 	private final RestHelper restHelper;
 
-	private Map<String, ChartGeneral> chartMap;
+	private Map<String, Chart> chartMap;
 
 	@PostConstruct
 	private void setUp() {
 		chartMap = parseChartsYamlFile(resourceHelper.asString(yamlFile), langTag);
 	}
 
-	public Map<String, ChartGeneral> parseChartsYamlFile(String yaml, String lang) {
+	public Map<String, Chart> parseChartsYamlFile(String yaml, String lang) {
 		Map<String, Map<String, String>> yamlMap = new Yaml().load(yaml);
-		Map<String, ChartGeneral> res = new HashMap<>();
-		yamlMap.forEach((k, v) -> res.put(k, new ChartGeneral(v, lang)));
+		Map<String, Chart> res = new HashMap<>();
+		yamlMap.forEach((k, v) -> res.put(k, new Chart(v, lang)));
 		StringJoiner joiner = new StringJoiner(", ");
 		res.forEach((k, v) -> {
 			Assert.isTrue(v.isValid(), "Cannot check Chart object. Is YAML file valid?");
@@ -72,11 +72,11 @@ public class ChartService {
 		return chartMap.get(key).getButton();
 	}
 
-	public Answer<ChartGeneral> getChart(String key) {
+	public Answer<Chart> getChart(String key) {
 		if (!getChartKeys().contains(key)) {
 			return Error(String.format("Unknown key '%s' for charts!", key));
 		}
-		ChartGeneral chart = chartMap.get(key);
+		Chart chart = chartMap.get(key);
 		if (!downloadFile) {
 			return Ok(chart);
 		}

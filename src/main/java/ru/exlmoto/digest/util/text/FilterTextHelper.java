@@ -1,11 +1,11 @@
-package ru.exlmoto.digest.util;
+package ru.exlmoto.digest.util.text;
 
 import org.jsoup.Jsoup;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class Util {
+public class FilterTextHelper {
 	/*
 	 * Remove html tags from text.
 	 * See: https://stackoverflow.com/questions/14445386/how-to-remove-text-in-brackets-from-the-start-of-a-string

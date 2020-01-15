@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class ResourceHelperTest {
-	@Value("classpath:chart/charts.yml")
+	@Value("classpath:chart/charts.yaml")
 	private Resource resourceOk;
 
 	@Value("classpath:unknown-file.ext")

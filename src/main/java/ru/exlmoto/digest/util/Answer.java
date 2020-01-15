@@ -2,6 +2,7 @@ package ru.exlmoto.digest.util;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
@@ -9,13 +10,17 @@ import lombok.experimental.Accessors;
 @ToString
 @EqualsAndHashCode
 @Accessors(fluent = true)
+@RequiredArgsConstructor
 public final class Answer<T> {
 	private final String error;
 	private final T answer;
 
-	public Answer(String error, T answer) {
-		this.error = error;
-		this.answer = answer;
+	public static <T> Answer<T> Error(String error) {
+		return new Answer<>(error, null);
+	}
+
+	public static <T> Answer<T> Ok(T answer) {
+		return new Answer<>("", answer);
 	}
 
 	public boolean ok() {

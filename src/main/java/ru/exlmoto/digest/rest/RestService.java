@@ -19,6 +19,9 @@ import java.io.FileOutputStream;
 import java.net.URL;
 import java.time.Duration;
 
+import static ru.exlmoto.digest.util.Answer.Error;
+import static ru.exlmoto.digest.util.Answer.Ok;
+
 @Slf4j
 @Service
 public class RestService {
@@ -59,7 +62,7 @@ public class RestService {
 				return getRestResponseAuxTry(url, type, getFile);
 			} catch (Exception ex) {
 				log.error(String.format("RestTemplate #2: error while connect to '%s' or parsing response.", url), ex);
-				return new Answer<>(ex.getLocalizedMessage(), null);
+				return Error(ex.getLocalizedMessage());
 			}
 		}
 	}
@@ -69,7 +72,7 @@ public class RestService {
 		checkForLength(template, url);
 		T content = (getFile) ? type.cast(getRestFileAux(template, url)) : template.getForObject(url, type);
 		checkForNull(content);
-		return new Answer<>("", content);
+		return Ok(content);
 	}
 
 	private String getRestFileAux(RestTemplate template, String url) {

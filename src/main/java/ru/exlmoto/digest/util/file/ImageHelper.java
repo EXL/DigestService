@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.util.resource;
+package ru.exlmoto.digest.util.file;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

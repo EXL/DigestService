@@ -9,7 +9,7 @@ import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
-import ru.exlmoto.digest.util.resource.ResourceHelper;
+import ru.exlmoto.digest.util.file.ResourceHelper;
 
 import java.nio.charset.Charset;
 

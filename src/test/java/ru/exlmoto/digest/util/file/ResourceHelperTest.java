@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.util.resource;
+package ru.exlmoto.digest.util.file;
 
 import org.junit.jupiter.api.Test;
 

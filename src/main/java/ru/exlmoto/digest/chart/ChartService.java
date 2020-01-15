@@ -12,8 +12,8 @@ import org.yaml.snakeyaml.Yaml;
 
 import ru.exlmoto.digest.chart.yaml.Chart;
 import ru.exlmoto.digest.util.Answer;
-import ru.exlmoto.digest.util.resource.ImageHelper;
-import ru.exlmoto.digest.util.resource.ResourceHelper;
+import ru.exlmoto.digest.util.file.ImageHelper;
+import ru.exlmoto.digest.util.file.ResourceHelper;
 
 import javax.annotation.PostConstruct;
 

@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.util.rest.RestHelper;
 import ru.exlmoto.digest.util.Answer;
-import ru.exlmoto.digest.util.resource.ResourceHelper;
+import ru.exlmoto.digest.util.file.ResourceHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.scanner.ScannerException;
 
 import ru.exlmoto.digest.chart.yaml.Chart;
-import ru.exlmoto.digest.util.resource.ResourceHelper;
+import ru.exlmoto.digest.util.file.ResourceHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

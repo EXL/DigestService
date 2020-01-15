@@ -3,13 +3,10 @@ package ru.exlmoto.digest.chart;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.Resource;
 
 import ru.exlmoto.digest.chart.yaml.Chart;
 import ru.exlmoto.digest.util.Answer;
-import ru.exlmoto.digest.util.resource.ResourceHelper;
 
 import java.util.List;
 
@@ -21,20 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class ChartServiceTest {
-	@Value("classpath:chart/charts.yaml")
-	private Resource yamlFile;
-
 	@Autowired
 	private ChartService chartService;
-
-	@Test
-	public void testParseChartsYamlFile() {
-		ChartService chartService = new ChartService(null, null);
-		assertThat(chartService.parseChartsYamlFile(new ResourceHelper().asString(yamlFile), "en")).isNotEmpty();
-		assertThat(chartService.parseChartsYamlFile(new ResourceHelper().asString(yamlFile), "ru")).isNotEmpty();
-		assertThrows(IllegalArgumentException.class,
-			() -> chartService.parseChartsYamlFile(new ResourceHelper().asString(yamlFile), "fr"));
-	}
 
 	@Test
 	public void testGetChartKeys() {

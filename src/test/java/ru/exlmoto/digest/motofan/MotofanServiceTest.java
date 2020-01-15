@@ -14,7 +14,7 @@ import org.springframework.test.web.client.response.MockRestResponseCreators;
 import org.springframework.web.client.RestTemplate;
 
 import ru.exlmoto.digest.motofan.json.MotofanPost;
-import ru.exlmoto.digest.rest.RestHelper;
+import ru.exlmoto.digest.util.rest.RestHelper;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.resource.ResourceHelper;
 

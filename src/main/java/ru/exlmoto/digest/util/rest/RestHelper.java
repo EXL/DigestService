@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.rest;
+package ru.exlmoto.digest.util.rest;
 
 import lombok.extern.slf4j.Slf4j;
 

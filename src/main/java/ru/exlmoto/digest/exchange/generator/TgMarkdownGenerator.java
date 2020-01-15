@@ -12,7 +12,7 @@ import ru.exlmoto.digest.entity.MetalRuEntity;
 
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.generator.helper.RepositoryHelper;
-import ru.exlmoto.digest.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 import java.math.BigDecimal;
 import java.util.Optional;

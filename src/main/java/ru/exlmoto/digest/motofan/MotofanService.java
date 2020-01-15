@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digest.motofan.generator.TgHtmlGenerator;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
-import ru.exlmoto.digest.rest.RestHelper;
+import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.util.ArrayList;
 import java.util.List;

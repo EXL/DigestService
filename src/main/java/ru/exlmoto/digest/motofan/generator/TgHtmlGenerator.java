@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.util.Util;
 

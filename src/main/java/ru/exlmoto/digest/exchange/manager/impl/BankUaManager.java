@@ -9,7 +9,7 @@ import ru.exlmoto.digest.exchange.parser.impl.BankUaMirrorParser;
 import ru.exlmoto.digest.exchange.manager.RateManager;
 import ru.exlmoto.digest.entity.BankUaEntity;
 import ru.exlmoto.digest.repository.BankUaRepository;
-import ru.exlmoto.digest.rest.RestHelper;
+import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.i18n;
+package ru.exlmoto.digest.util.i18n;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

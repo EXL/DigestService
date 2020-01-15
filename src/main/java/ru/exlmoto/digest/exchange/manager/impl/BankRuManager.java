@@ -8,7 +8,7 @@ import ru.exlmoto.digest.exchange.parser.impl.BankRuParser;
 import ru.exlmoto.digest.exchange.manager.RateManager;
 import ru.exlmoto.digest.entity.BankRuEntity;
 import ru.exlmoto.digest.repository.BankRuRepository;
-import ru.exlmoto.digest.rest.RestHelper;
+import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 

@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import org.springframework.util.StringUtils;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @ToString
@@ -29,5 +31,15 @@ public class ChartGeneral {
 			!StringUtils.isEmpty(buttonRu) &&
 			!StringUtils.isEmpty(buttonEn) &&
 			!StringUtils.isEmpty(apiUrl);
+	}
+
+	public ChartGeneral(Map<String, String> map) {
+		titleRu = map.get("titleRu");
+		titleEn = map.get("titleEn");
+		descRu = map.get("descRu");
+		descEn = map.get("descEn");
+		buttonRu = map.get("buttonRu");
+		buttonEn = map.get("buttonEn");
+		apiUrl = map.get("apiUrl");
 	}
 }

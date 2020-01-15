@@ -17,20 +17,21 @@ public class Chart {
 	private String title;
 	private String desc;
 	private String button;
-	private String path;
+	private String url;
+	private String path = "";
 
 	public boolean isValid() {
 		return
 			!StringUtils.isEmpty(title) &&
 			!StringUtils.isEmpty(desc) &&
 			!StringUtils.isEmpty(button) &&
-			!StringUtils.isEmpty(path);
+			!StringUtils.isEmpty(url);
 	}
 
 	public Chart(Map<String, String> map, String lang) {
 		title = map.get("title_" + lang);
 		desc = map.get("desc_" + lang);
 		button = map.get("button_" + lang);
-		path = map.get("api_url");
+		url = map.get("api_url");
 	}
 }

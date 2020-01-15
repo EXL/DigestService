@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,7 +22,7 @@ class ChartTest {
 		chart.setButton("Test Value");
 		assertFalse(chart.isValid());
 
-		chart.setApiUrl("Test Value");
+		chart.setUrl("Test Value");
 		assertTrue(chart.isValid());
 	}
 
@@ -40,6 +41,7 @@ class ChartTest {
 		values.put("api_url", "some value");
 		Chart chartSecond = new Chart(values, "en");
 		assertTrue(chartSecond.isValid());
+		assertThat(chartSecond.getPath()).isEmpty();
 
 		Chart chartThird = new Chart(values, "fr");
 		assertFalse(chartThird.isValid());

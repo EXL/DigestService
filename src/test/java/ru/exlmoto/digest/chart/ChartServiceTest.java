@@ -49,6 +49,7 @@ class ChartServiceTest {
 		System.out.println(chart.getTitle());
 		System.out.println(chart.getDesc());
 		System.out.println(chart.getButton());
+		System.out.println(chart.getUrl());
 		System.out.println(chart.getPath());
 	}
 }

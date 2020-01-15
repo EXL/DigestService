@@ -74,7 +74,7 @@ public class ChartService {
 			return Error(String.format("Unknown key '%s' for charts!", key));
 		}
 		Chart chart = chartMap.get(key);
-		Answer<String> res = imageHelper.getImageByLink(chart.getPath());
+		Answer<String> res = imageHelper.getImageByLink(chart.getUrl());
 		if (res.ok()) {
 			chart.setPath(res.answer());
 			return Ok(chart);

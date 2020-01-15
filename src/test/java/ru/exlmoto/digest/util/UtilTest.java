@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UtilTest {
 	private final Util util = new Util();
 
-	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void testRemoveHtmlTags() {
 		assertThrows(NullPointerException.class, () -> util.removeHtmlTags(null));

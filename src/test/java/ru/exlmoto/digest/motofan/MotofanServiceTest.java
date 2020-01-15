@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.rest.RestService;
 import ru.exlmoto.digest.util.Answer;
-import ru.exlmoto.digest.util.ResourceFileHelper;
+import ru.exlmoto.digest.util.resource.ResourceHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,10 +32,13 @@ class MotofanServiceTest {
 	@Autowired
 	private MotofanService service;
 
+	@Autowired
+	private ResourceHelper resourceHelper;
+
 	@SpyBean
 	private RestService rest;
 
-	private RestTemplate restTemplate = new RestTemplateBuilder().build();
+	private final RestTemplate restTemplate = new RestTemplateBuilder().build();
 
 	@Test
 	public void testGetLastMotofanPosts() {
@@ -54,23 +57,21 @@ class MotofanServiceTest {
 	@Test
 	public void testIncorrectJson() {
 		when(rest.getRestTemplate()).thenReturn(restTemplate);
-		MotofanPost[] posts = fakeRestTemplateResult("motofan/posts.json");
+		MotofanPost[] posts = fakeRestTemplateResult("classpath:motofan/posts.json");
 		assertThat(posts).isNotEmpty();
 		System.out.println(posts[0].getTitle());
-		assertThat(fakeRestTemplateResult("motofan/posts-null.json")).isNull();
-		assertThat(fakeRestTemplateResult("motofan/posts-incorrect.json")).isNull();
-		assertThat(fakeRestTemplateResult("motofan/posts-empty.json")).isNull();
-		assertThat(fakeRestTemplateResult("motofan/posts-another.json")).isNull();
-		assertThat(fakeRestTemplateResult("motofan/posts-wrong.json")).isNull();
-		assertThat(fakeRestTemplateResult("motofan/posts-chunk.json")).isNull();
+		assertThat(fakeRestTemplateResult("classpath:motofan/posts-null.json")).isNull();
+		assertThat(fakeRestTemplateResult("classpath:motofan/posts-incorrect.json")).isNull();
+		assertThat(fakeRestTemplateResult("classpath:motofan/posts-empty.json")).isNull();
+		assertThat(fakeRestTemplateResult("classpath:motofan/posts-another.json")).isNull();
+		assertThat(fakeRestTemplateResult("classpath:motofan/posts-wrong.json")).isNull();
+		assertThat(fakeRestTemplateResult("classpath:motofan/posts-chunk.json")).isNull();
 	}
 
 	private MotofanPost[] fakeRestTemplateResult(String filename) {
 		MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
 		mockServer.expect(manyTimes(), MockRestRequestMatchers.anything()).andRespond(
-			MockRestResponseCreators.withSuccess(
-				new ResourceFileHelper().getFileContent(filename), MediaType.APPLICATION_JSON
-			)
+			MockRestResponseCreators.withSuccess(resourceHelper.readFileToString(filename), MediaType.APPLICATION_JSON)
 		);
 		return service.getMotofanPostObjects();
 	}

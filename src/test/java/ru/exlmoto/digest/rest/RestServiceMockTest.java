@@ -29,7 +29,7 @@ class RestServiceMockTest {
 	@SpyBean
 	private RestService rest;
 
-	private RestTemplate restTemplate = new RestTemplateBuilder().build();
+	private final RestTemplate restTemplate = new RestTemplateBuilder().build();
 
 	@BeforeEach
 	public void setUp() {

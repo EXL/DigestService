@@ -9,7 +9,9 @@ import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
-import ru.exlmoto.digest.util.ResourceFileHelper;
+import ru.exlmoto.digest.util.resource.ResourceHelper;
+
+import java.nio.charset.Charset;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,7 +20,7 @@ class RateParserUnitTest {
 	private final RateParserHelper parserHelper = new RateParserHelper();
 
 	private static class RateParserHelper {
-		private final ResourceFileHelper fileHelper = new ResourceFileHelper();
+		private final ResourceHelper resourceHelper = new ResourceHelper();
 
 		public boolean process(RateParser parser, String content) {
 			boolean result = parser.parse(content);
@@ -27,11 +29,11 @@ class RateParserUnitTest {
 		}
 
 		public String fileContent(String name) {
-			return fileHelper.getFileContent("exchange/" + name);
+			return resourceHelper.readFileToString("classpath:exchange/" + name);
 		}
 
 		public String fileContent(String name, String charset) {
-			return fileHelper.getFileContent("exchange/" + name, charset);
+			return resourceHelper.readFileToString("classpath:exchange/" + name, Charset.forName(charset));
 		}
 	}
 

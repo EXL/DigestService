@@ -26,7 +26,7 @@ class ResourceHelperTest {
 
 	@Test
 	public void testReadFileToString() {
-		String res = resourceHelper.readFileToString("classpath:chart/charts.yml");
+		String res = resourceHelper.readFileToString("classpath:chart/charts.yaml");
 		assertThat(res).isNotEmpty();
 		System.out.println(res.substring(0, 40));
 

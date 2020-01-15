@@ -36,12 +36,12 @@ public class GeneratorHelper {
 	}
 
 	public String addTrailingSigns(String value, String sign, int limit) {
-		StringBuilder stringBuilder = new StringBuilder(value);
+		StringBuilder builder = new StringBuilder(value);
 		int start = value.length();
 		for (int i = start; i < limit; i++) {
-			stringBuilder.append(sign);
+			builder.append(sign);
 		}
-		return stringBuilder.toString();
+		return builder.toString();
 	}
 
 	public boolean isDateNotEmpty(String date) {

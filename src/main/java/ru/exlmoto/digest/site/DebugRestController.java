@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ru.exlmoto.digest.chart.ChartService;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.motofan.MotofanService;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class DebugRestController {
 	private final ExchangeService exchangeService;
 	private final MotofanService motofanService;
+	private final ChartService chartService;
 
 	@GetMapping("/")
 	public String root() {
@@ -45,5 +47,10 @@ public class DebugRestController {
 			stringBuilder.append(message).append("<br><br>");
 		}
 		return stringBuilder.toString();
+	}
+
+	@GetMapping("/chart")
+	public String chart() {
+		return chartService.getChartKeys().toString();
 	}
 }

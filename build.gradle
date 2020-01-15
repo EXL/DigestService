@@ -26,6 +26,7 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 
 	implementation 'org.jsoup:jsoup:1.12.1'
+	implementation 'org.yaml:snakeyaml:1.25'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
 import ru.exlmoto.digest.chart.yaml.ChartGeneral;
+import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.resource.ResourceHelper;
+import ru.exlmoto.digest.util.rest.RestHelper;
 
 import javax.annotation.PostConstruct;
 
@@ -21,23 +23,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
+import static ru.exlmoto.digest.util.Answer.Ok;
+import static ru.exlmoto.digest.util.Answer.Error;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class ChartService {
 	@Value("${general.lang}")
-	private String lang;
+	private String langTag;
+
+	@Value("${chart.download-file}")
+	private boolean downloadFile;
 
 	@Value("classpath:chart/charts.yaml")
 	private Resource yamlFile;
 
 	private final ResourceHelper resourceHelper;
+	private final RestHelper restHelper;
 
 	private Map<String, ChartGeneral> chartMap;
 
 	@PostConstruct
 	private void setUp() {
-		chartMap = parseChartsYamlFile(resourceHelper.asString(yamlFile), lang);
+		chartMap = parseChartsYamlFile(resourceHelper.asString(yamlFile), langTag);
 	}
 
 	public Map<String, ChartGeneral> parseChartsYamlFile(String yaml, String lang) {
@@ -61,5 +70,25 @@ public class ChartService {
 
 	public String getButtonLabel(String key) {
 		return chartMap.get(key).getButton();
+	}
+
+	public Answer<ChartGeneral> getChart(String key) {
+		if (!getChartKeys().contains(key)) {
+			return Error(String.format("Unknown key '%s' for charts!", key));
+		}
+		ChartGeneral chart = chartMap.get(key);
+		if (!downloadFile) {
+			return Ok(chart);
+		}
+		Answer<String> res = getRestHelper().getRestFile(chart.getApiUrl());
+		if (res.ok()) {
+			chart.setApiUrl(res.answer());
+			return Ok(chart);
+		}
+		return Error(res.error());
+	}
+
+	public RestHelper getRestHelper() {
+		return restHelper;
 	}
 }

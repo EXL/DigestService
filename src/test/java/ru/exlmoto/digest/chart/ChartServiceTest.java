@@ -7,12 +7,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 
+import ru.exlmoto.digest.chart.yaml.ChartGeneral;
+import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.resource.ResourceHelper;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class ChartServiceTest {
@@ -24,7 +29,7 @@ class ChartServiceTest {
 
 	@Test
 	public void testParseChartsYamlFile() {
-		ChartService chartService = new ChartService(null);
+		ChartService chartService = new ChartService(null, null);
 		assertThat(chartService.parseChartsYamlFile(new ResourceHelper().asString(yamlFile), "en")).isNotEmpty();
 		assertThat(chartService.parseChartsYamlFile(new ResourceHelper().asString(yamlFile), "ru")).isNotEmpty();
 		assertThrows(IllegalArgumentException.class,
@@ -46,5 +51,19 @@ class ChartServiceTest {
 		System.out.println(res);
 
 		assertThrows(NullPointerException.class, () -> chartService.getButtonLabel("unknown_key"));
+	}
+
+	@Test
+	public void testGetChart() {
+		Answer<ChartGeneral> res = chartService.getChart("unknown_key");
+		assertFalse(res.ok());
+		System.out.println(res.error());
+
+		ChartGeneral chart = chartService.getChart("usd_rub").answer();
+		assertNotNull(chart);
+		System.out.println(chart.getTitle());
+		System.out.println(chart.getDesc());
+		System.out.println(chart.getButton());
+		System.out.println(chart.getApiUrl());
 	}
 }

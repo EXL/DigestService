@@ -51,6 +51,9 @@ public class DebugRestController {
 
 	@GetMapping("/chart")
 	public String chart() {
-		return chartService.getChartKeys().toString();
+		return
+			chartService.getChartKeys().toString() + "<br>" +
+			chartService.getButtonLabel("usd_rub") + "<br>" +
+			chartService.getChart("usd_rub");
 	}
 }

@@ -33,9 +33,6 @@ public class ChartService {
 	@Value("${general.lang}")
 	private String langTag;
 
-	@Value("${chart.download-file}")
-	private boolean downloadFile;
-
 	@Value("classpath:chart/charts.yaml")
 	private Resource yamlFile;
 
@@ -77,12 +74,9 @@ public class ChartService {
 			return Error(String.format("Unknown key '%s' for charts!", key));
 		}
 		Chart chart = chartMap.get(key);
-		if (!downloadFile) {
-			return Ok(chart);
-		}
-		Answer<String> res = imageHelper.getImageByLink(chart.getApiUrl());
+		Answer<String> res = imageHelper.getImageByLink(chart.getPath());
 		if (res.ok()) {
-			chart.setApiUrl(res.answer());
+			chart.setPath(res.answer());
 			return Ok(chart);
 		}
 		return Error(res.error());

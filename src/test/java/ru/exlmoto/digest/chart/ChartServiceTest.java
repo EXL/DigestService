@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
+
 import ru.exlmoto.digest.util.resource.ResourceHelper;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class ChartServiceTest {
@@ -21,14 +22,13 @@ class ChartServiceTest {
 	@Autowired
 	private ChartService chartService;
 
-	@Autowired
-	private ResourceHelper resourceHelper;
-
 	@Test
 	public void testParseChartsYamlFile() {
-		// System.out.println(chartService.parseChartsYamlFile(resourceHelper.asString(yamlFile)));
-		ChartService chartService = new ChartService(resourceHelper);
-		assertThat(chartService.parseChartsYamlFile(resourceHelper.asString(yamlFile))).isNotEmpty();
+		ChartService chartService = new ChartService(null);
+		assertThat(chartService.parseChartsYamlFile(new ResourceHelper().asString(yamlFile), "en")).isNotEmpty();
+		assertThat(chartService.parseChartsYamlFile(new ResourceHelper().asString(yamlFile), "ru")).isNotEmpty();
+		assertThrows(IllegalArgumentException.class,
+			() -> chartService.parseChartsYamlFile(new ResourceHelper().asString(yamlFile), "fr"));
 	}
 
 	@Test
@@ -36,5 +36,15 @@ class ChartServiceTest {
 		List<String> keys = chartService.getChartKeys();
 		assertThat(keys).isNotEmpty();
 		System.out.println(keys);
+	}
+
+	@Test
+	public void testGetButtonLabel() {
+		String res = chartService.getButtonLabel("usd_rub");
+		assertThat(res).isNotEmpty();
+		assertThat(res).isInstanceOf(String.class);
+		System.out.println(res);
+
+		assertThrows(NullPointerException.class, () -> chartService.getButtonLabel("unknown_key"));
 	}
 }

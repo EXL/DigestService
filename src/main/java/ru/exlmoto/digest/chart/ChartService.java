@@ -14,28 +14,36 @@ import ru.exlmoto.digest.chart.yaml.ChartGeneral;
 import ru.exlmoto.digest.util.resource.ResourceHelper;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class ChartService {
+	@Value("${general.lang}")
+	private String lang;
+
 	@Value("classpath:chart/charts.yaml")
 	private Resource yamlFile;
 
 	private final ResourceHelper resourceHelper;
 
-	private Map<String, ChartGeneral> yamlMap;
+	private Map<String, ChartGeneral> chartMap;
 
 	@PostConstruct
 	private void setUp() {
-		yamlMap = parseChartsYamlFile(resourceHelper.asString(yamlFile));
+		chartMap = parseChartsYamlFile(resourceHelper.asString(yamlFile), lang);
 	}
 
-	public Map<String, ChartGeneral> parseChartsYamlFile(String yaml) {
-		Map<String, Map<String, String>> parsedYaml = new Yaml().load(yaml);
+	public Map<String, ChartGeneral> parseChartsYamlFile(String yaml, String lang) {
+		Map<String, Map<String, String>> yamlMap = new Yaml().load(yaml);
 		Map<String, ChartGeneral> res = new HashMap<>();
-		parsedYaml.forEach((k, v) -> res.put(k, new ChartGeneral(v)));
+		yamlMap.forEach((k, v) -> res.put(k, new ChartGeneral(v, lang)));
 		StringJoiner joiner = new StringJoiner(", ");
 		res.forEach((k, v) -> {
 			Assert.isTrue(v.isValid(), "Cannot check Chart object. Is YAML file valid?");
@@ -47,7 +55,11 @@ public class ChartService {
 
 	public List<String> getChartKeys() {
 		List<String> keys = new ArrayList<>();
-		yamlMap.forEach((k, v) -> keys.add(k));
+		chartMap.forEach((k, v) -> keys.add(k));
 		return keys;
+	}
+
+	public String getButtonLabel(String key) {
+		return chartMap.get(key).getButton();
 	}
 }

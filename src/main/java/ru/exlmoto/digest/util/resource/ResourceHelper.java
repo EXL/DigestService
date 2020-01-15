@@ -32,8 +32,8 @@ public class ResourceHelper {
 	public String asString(Resource resource, Charset charset) {
 		try (Reader reader = new InputStreamReader(resource.getInputStream(), charset)) {
 			return FileCopyUtils.copyToString(reader);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
+		} catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
 		}
 	}
 

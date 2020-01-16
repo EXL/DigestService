@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import ru.exlmoto.digest.exchange.config.ExchangeConfiguration;
 import ru.exlmoto.digest.exchange.manager.impl.BankByManager;
 import ru.exlmoto.digest.exchange.manager.impl.BankKzManager;
 import ru.exlmoto.digest.exchange.manager.impl.BankRuManager;
@@ -16,30 +17,7 @@ import ru.exlmoto.digest.exchange.manager.impl.MetalRuManager;
 @RequiredArgsConstructor
 @Component
 public class RateGeneralManager {
-	@Value("${exchange.bank-ru}")
-	private String bankRu;
-
-	@Value("${exchange.bank-ru-mirror}")
-	private String bankRuMirror;
-
-	@Value("${exchange.bank-ua}")
-	private String bankUa;
-
-	@Value("${exchange.bank-ua-mirror}")
-	private String bankUaMirror;
-
-	@Value("${exchange.bank-by}")
-	private String bankBy;
-
-	@Value("${exchange.bank-kz}")
-	private String bankKz;
-
-	@Value("${exchange.metal-ru}")
-	private String metalRu;
-
-	@Value("${exchange.metal-ru-mirror}")
-	private String metalRuMirror;
-
+	private final ExchangeConfiguration config;
 	private final BankRuManager bankRuManager;
 	private final BankUaManager bankUaManager;
 	private final BankByManager bankByManager;
@@ -48,11 +26,11 @@ public class RateGeneralManager {
 
 	public void commitAllRates() {
 		log.info("=> Start update exchanging rates.");
-		bankRuManager.commitRates(bankRu, bankRuMirror);
-		bankUaManager.commitRates(bankUa, bankUaMirror);
-		bankByManager.commitRates(bankBy);
-		bankKzManager.commitRates(bankKz);
-		metalRuManager.commitRates(metalRu, metalRuMirror);
+		bankRuManager.commitRates(config.getBankRu(), config.getBankRuMirror());
+		bankUaManager.commitRates(config.getBankUa(), config.getBankUaMirror());
+		bankByManager.commitRates(config.getBankBy());
+		bankKzManager.commitRates(config.getBankKz());
+		metalRuManager.commitRates(config.getMetalRu(), config.getMetalRuMirror());
 		log.info("=> End update exchanging rates.");
 	}
 }

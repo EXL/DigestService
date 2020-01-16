@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.bot;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,24 +11,19 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.exlmoto.digest.bot.config.BotConfiguration;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BotService extends TelegramLongPollingBot {
-	@Value("${bot.username}")
-	private String botUsername;
-
-	@Value("${bot.token}")
-	private String botToken;
-
-	@Value("${bot.log-updates}")
-	private boolean botLogUpdates;
+	private final BotConfiguration config;
 
 	@Override
 	public void onUpdateReceived(Update update) {
-		if (botLogUpdates) {
+		if (config.isLogUpdates()) {
 			log.info(update.toString());
 		}
 		Message message = checkMessage(update);
@@ -55,11 +51,11 @@ public class BotService extends TelegramLongPollingBot {
 
 	@Override
 	public String getBotUsername() {
-		return botUsername;
+		return config.getUsername();
 	}
 
 	@Override
 	public String getBotToken() {
-		return botToken;
+		return config.getToken();
 	}
 }

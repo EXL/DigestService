@@ -18,6 +18,8 @@ public class BotConfiguration {
 	private String token;
 	private String username;
 	private boolean logUpdates;
+	private boolean showGreetings;
+	private int maxUpdates;
 
 	@PostConstruct
 	private void telegramBotApiInitialization() {

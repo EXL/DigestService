@@ -54,7 +54,7 @@ public class BotService extends TelegramLongPollingBot {
 		if (message != null) {
 			handleMessage(message);
 		} else if (update.hasCallbackQuery()) {
-			handler.onCallBackQuery(update.getCallbackQuery());
+			handler.onCallbackQuery(update.getCallbackQuery());
 		}
 	}
 

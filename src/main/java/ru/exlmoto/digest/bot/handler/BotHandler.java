@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.EntityType;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
@@ -39,12 +38,9 @@ public class BotHandler {
 	}
 
 	public void onCommand(Message message) {
-		List<MessageEntity> entities = message.getEntities();
-		if (entities != null) {
-			entities.stream()
-				.filter(entity -> entity.getType().equals(EntityType.BOTCOMMAND) && entity.getOffset() == 0)
-				.forEach(System.out::println);
-		}
+		message.getEntities().stream()
+			.filter(entity -> entity.getType().equals(EntityType.BOTCOMMAND) && entity.getOffset() == 0)
+			.forEach(System.out::println);
 	}
 
 	public void onHashTag(Message message) {
@@ -57,7 +53,7 @@ public class BotHandler {
 		}
 	}
 
-	public void onCallBackQuery(CallbackQuery callbackQuery) {
+	public void onCallbackQuery(CallbackQuery callbackQuery) {
 		int cooldown = config.getCallbackCooldown();
 		if (config.isDebugUseStack()) {
 			long chatId = callbackQuery.getMessage().getChatId();

@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
 
-class AnswerTest {
+class AnswerUnitTest {
 	@Test
 	public void testAnswer() {
 		Answer<String> answerFirst = Ok("Ok!");

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class MotofanPostTest {
+class MotofanPostUnitTest {
 	private final MotofanPost motofanPostFirst = new MotofanPost();
 	private final MotofanPost motofanPostSecond = new MotofanPost();
 	private final MotofanPost motofanPostThird = new MotofanPost();

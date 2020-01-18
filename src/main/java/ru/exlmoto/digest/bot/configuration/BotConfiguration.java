@@ -19,11 +19,13 @@ public class BotConfiguration {
 	private String username;
 	private int maxUpdates;
 	private int maxSendLength;
+	private int callbackCooldown;
 	private boolean enableNotifications;
 	private boolean debugLogUpdates;
 	private boolean debugShowGreetings;
 	private boolean debugSilent;
 	private boolean debugLogSends;
+	private boolean debugUseStack;
 
 	@PostConstruct
 	private void telegramBotApiInitialization() {

@@ -41,7 +41,7 @@ public class LocalizationHelper {
 		return strings[ThreadLocalRandom.current().nextInt(0, strings.length)];
 	}
 
-	public String i18RU(String key, String username) {
+	public String i18nRU(String key, String username) {
 		return i18nR(key).replaceAll(usernameTag, username);
 	}
 }

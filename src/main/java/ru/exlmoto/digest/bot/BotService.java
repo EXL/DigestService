@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+import ru.exlmoto.digest.bot.handler.BotHandler;
 import ru.exlmoto.digest.bot.sender.BotSender;
 
 import java.util.List;
@@ -19,10 +20,12 @@ import java.util.List;
 @Service
 public class BotService extends TelegramLongPollingBot {
 	private final BotConfiguration config;
+	private final BotHandler handler;
 	private BotSender sender;
 
-	public BotService(BotConfiguration config) {
+	public BotService(BotConfiguration config, BotHandler handler) {
 		this.config = config;
+		this.handler = handler;
 	}
 
 	@Autowired
@@ -51,22 +54,21 @@ public class BotService extends TelegramLongPollingBot {
 		if (message != null) {
 			handleMessage(message);
 		} else if (update.hasCallbackQuery()) {
-			// TODO: CallbackQuery
-			// mCallbackQueryHandler.handle(this, aUpdate.getCallbackQuery());
+			handler.onCallBackQuery(update.getCallbackQuery());
 		}
 	}
 
 	private void handleMessage(Message message) {
 		if (message.isCommand()) {
-			// onCommand(message);
+			handler.onCommand(message);
 		} else if (checkNewUsers(message)) {
-			// onNewUsers(aMessage);
+			handler.onNewUsers(message);
 		} else if (checkLeftUser(message)) {
-			// onLeftUser(aMessage);
+			handler.onLeftUser(message);
 		} else if (checkNewChatPhoto(message)) {
-			// onNewChatPhoto(aMessage);
+			handler.onNewChatPhoto(message);
 		} else if (checkOnHashTag(message)) {
-			// onHashTag(aMessage);
+			handler.onHashTag(message);
 		}
 
 		sender.replyMessage(message.getChatId(), message.getMessageId(), message.getText());

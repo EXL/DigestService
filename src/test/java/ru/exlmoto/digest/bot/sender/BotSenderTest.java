@@ -26,7 +26,7 @@ class BotSenderTest {
 		System.out.println("===");
 
 		botSender.sendHtmlMessage(0L, "Test");
-		botSender.sendAnswer("0", "Test");
+		botSender.sendCallbackQueryAnswer("0", "Test");
 		System.out.println("===");
 
 		botSender.sendMessageToChat(0L, "Test", 0L, 0);

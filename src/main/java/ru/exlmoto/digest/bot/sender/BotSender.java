@@ -140,7 +140,7 @@ public class BotSender {
 		}
 	}
 
-	public void sendAnswer(String callbackId, String text) {
+	public void sendCallbackQueryAnswer(String callbackId, String text) {
 		executeGeneralMethod(
 			new AnswerCallbackQuery().setCallbackQueryId(callbackId).setText(text).setShowAlert(false));
 	}

@@ -9,6 +9,7 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -16,6 +17,9 @@ import java.util.Locale;
 public class LocalizationHelper {
 	@Value("${general.lang}")
 	private String lang;
+
+	@Value("${general.username-tag}")
+	private String usernameTag;
 
 	private final MessageSource messageSource;
 
@@ -26,5 +30,18 @@ public class LocalizationHelper {
 			log.error(String.format("Message with key '%s' is missing.", key), nsme);
 			return nsme.getLocalizedMessage();
 		}
+	}
+
+	public String i18nU(String key, String username) {
+		return i18n(key).replaceAll(usernameTag, username);
+	}
+
+	public String i18nR(String key) {
+		String[] strings = i18n(key).split("\n");
+		return strings[ThreadLocalRandom.current().nextInt(0, strings.length)];
+	}
+
+	public String i18RU(String key, String username) {
+		return i18nR(key).replaceAll(usernameTag, username);
 	}
 }

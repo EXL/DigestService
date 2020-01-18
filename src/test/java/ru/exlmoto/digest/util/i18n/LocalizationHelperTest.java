@@ -25,4 +25,17 @@ class LocalizationHelperTest {
 
 		assertTrue(locale.i18n("unknown.key").startsWith("No message found under code"));
 	}
+
+	@Test
+	public void testUsernameAndRandomLocalizations() {
+		// TODO: Check username replacing
+
+		String randomString = locale.i18nR("bot.event.user.new");
+		assertThat(randomString).isInstanceOf(String.class).isNotEmpty();
+		System.out.println(randomString);
+
+		String randomStringWithUsername = locale.i18RU("bot.event.user.new", "My Username");
+		assertThat(randomStringWithUsername).isInstanceOf(String.class).isNotEmpty();
+		System.out.println(randomStringWithUsername);
+	}
 }

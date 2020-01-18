@@ -69,7 +69,7 @@ public class BotService extends TelegramLongPollingBot {
 			// onHashTag(aMessage);
 		}
 
-		sender.replyMarkdownMessage(message.getChatId(), message.getMessageId(), message.getText());
+		sender.replyMessage(message.getChatId(), message.getMessageId(), message.getText());
 	}
 
 	@Override

@@ -1,10 +1,9 @@
 package ru.exlmoto.digest.bot.sender;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -14,23 +13,26 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-
-@SpringBootTest
+@SpringBootTest(properties = "bot.debug-silent=true")
 class BotSenderTest {
-	@SpyBean
+	@Autowired
 	private BotSender botSender;
 
-	@BeforeEach
-	public void setUp() {
-		doNothing().when(botSender).executeMethod(any());
-	}
-
 	@Test
-	public void testMethods() {
-		botSender.replyMarkdownMessage(0L, 0, "Test");
+	public void testBotSenderMethods() {
+		botSender.replyMessage(0L, 0, "Test");
+		botSender.replySticker(0L, 0, "Test");
+		botSender.replyPhoto(0L, 0, "fake-uri", "Test");
+		System.out.println("===");
+
 		botSender.sendHtmlMessage(0L, "Test");
+		botSender.sendAnswer("0", "Test");
+		System.out.println("===");
+
+		botSender.sendMessageToChat(0L, "Test", 0L, 0);
+		botSender.sendStickerToChat(0L, "Test", 0L, 0);
+		botSender.sendPhotoToChat(0L, "fake-uri", "Test", 0L, 0);
+		System.out.println("===");
 
 		InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 		InlineKeyboardButton button = new InlineKeyboardButton().setText("Button");
@@ -42,6 +44,7 @@ class BotSenderTest {
 
 		botSender.editMessage(0L, 0, "Test", inlineKeyboardMarkup);
 		botSender.replyMessageWithKeyboard(0L, 0, "Test", inlineKeyboardMarkup);
+		System.out.println("===");
 	}
 
 	@Test

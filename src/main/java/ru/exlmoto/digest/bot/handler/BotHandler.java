@@ -2,6 +2,7 @@ package ru.exlmoto.digest.bot.handler;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -16,7 +17,11 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.StringJoiner;
 
 @Slf4j
 @Component
@@ -36,6 +41,13 @@ public class BotHandler {
 		this.locale = helper.getLocale();
 		this.sender = helper.getSender();
 		this.abilityFactory = abilityFactory;
+	}
+
+	@Scheduled(cron = "${cron.bot.callbacks.clear}")
+	public void clearCallbackQueriesMap() {
+		log.info("=> Start clear Callback Queries Map.");
+		callbackQueriesMap.clear();
+		log.info("=> End clear Callback Queries Map.");
 	}
 
 	public void onCommand(Message message) {

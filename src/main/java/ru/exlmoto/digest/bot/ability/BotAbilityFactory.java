@@ -1,5 +1,7 @@
 package ru.exlmoto.digest.bot.ability;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class BotAbilityFactory {
 	private final ApplicationContext context;
@@ -41,6 +44,7 @@ public class BotAbilityFactory {
 	 * Example: "/hello" and "/hello@Digest_bot" commands.
 	 */
 	private <T extends BotAbility> void addAbility(String ability, Class<T> botAbilityClass) {
+		log.info("Register ability: " + botAbilityClass);
 		abilityMap.put(ability, context.getBean(botAbilityClass));
 		abilityMap.put(ability + "@" + config.getUsername(), context.getBean(botAbilityClass));
 	}

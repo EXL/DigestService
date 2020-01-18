@@ -12,7 +12,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.handler.BotHandler;
-import ru.exlmoto.digest.bot.sender.BotSender;
 
 import java.util.List;
 
@@ -21,15 +20,9 @@ import java.util.List;
 public class BotService extends TelegramLongPollingBot {
 	private final BotConfiguration config;
 	private BotHandler handler;
-	private BotSender sender;
 
 	public BotService(BotConfiguration config) {
 		this.config = config;
-	}
-
-	@Autowired
-	public void setBotSender(BotSender sender) {
-		this.sender = sender;
 	}
 
 	@Autowired
@@ -74,8 +67,6 @@ public class BotService extends TelegramLongPollingBot {
 		} else if (checkOnHashTag(message)) {
 			handler.onHashTag(message);
 		}
-
-		sender.replyMessage(message.getChatId(), message.getMessageId(), message.getText());
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package ru.exlmoto.digest.bot;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -11,18 +11,40 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import ru.exlmoto.digest.bot.config.BotConfiguration;
+import ru.exlmoto.digest.bot.sender.BotSender;
 
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class BotService extends TelegramLongPollingBot {
 	private final BotConfiguration config;
+	private BotSender sender;
+
+	public BotService(BotConfiguration config) {
+		this.config = config;
+	}
+
+	@Autowired
+	public void setBotSender(BotSender sender) {
+		this.sender = sender;
+	}
+
+	@Override
+	public void onUpdatesReceived(List<Update> updates) {
+		int updatesCount = updates.size();
+		int maxUpdates = config.getMaxUpdates();
+		if (updatesCount > maxUpdates) {
+			log.info(String.format("Too many '%d' updates received, shrink updates array to '%d'.",
+				updatesCount, maxUpdates));
+			updates.subList(0, updatesCount - maxUpdates).clear();
+		}
+		super.onUpdatesReceived(updates);
+	}
 
 	@Override
 	public void onUpdateReceived(Update update) {
-		if (config.isLogUpdates()) {
+		if (config.isDebugLogUpdates()) {
 			log.info(update.toString());
 		}
 		Message message = checkMessage(update);
@@ -46,16 +68,8 @@ public class BotService extends TelegramLongPollingBot {
 		} else if (checkOnHashTag(message)) {
 			// onHashTag(aMessage);
 		}
-	}
 
-	@Override
-	public void onUpdatesReceived(List<Update> updates) {
-		int updatesCount = updates.size();
-		int maxUpdates = config.getMaxUpdates();
-		if (updatesCount > maxUpdates) {
-			updates.subList(0, updatesCount - maxUpdates).clear();
-		}
-		super.onUpdatesReceived(updates);
+		sender.replyMarkdownMessage(message.getChatId(), message.getMessageId(), message.getText());
 	}
 
 	@Override
@@ -68,23 +82,23 @@ public class BotService extends TelegramLongPollingBot {
 		return config.getToken();
 	}
 
-	private Message checkMessage(Update update) {
+	public Message checkMessage(Update update) {
 		return update.hasEditedMessage() ? update.getEditedMessage() : update.hasMessage() ? update.getMessage() : null;
 	}
 
-	private boolean checkNewUsers(Message message) {
+	public boolean checkNewUsers(Message message) {
 		return !ObjectUtils.isEmpty(message.getNewChatMembers());
 	}
 
-	private boolean checkNewChatPhoto(Message message) {
+	public boolean checkNewChatPhoto(Message message) {
 		return !ObjectUtils.isEmpty(message.getNewChatPhoto());
 	}
 
-	private boolean checkOnHashTag(Message message) {
+	public boolean checkOnHashTag(Message message) {
 		return !ObjectUtils.isEmpty(message.getEntities());
 	}
 
-	private boolean checkLeftUser(Message message) {
+	public boolean checkLeftUser(Message message) {
 		return message.getLeftChatMember() != null;
 	}
 }

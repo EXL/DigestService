@@ -17,9 +17,13 @@ import javax.annotation.PostConstruct;
 public class BotConfiguration {
 	private String token;
 	private String username;
-	private boolean logUpdates;
-	private boolean showGreetings;
 	private int maxUpdates;
+	private int maxSendLength;
+	private boolean enableNotifications;
+	private boolean debugLogUpdates;
+	private boolean debugShowGreetings;
+	private boolean debugSilent;
+	private boolean debugLogSends;
 
 	@PostConstruct
 	private void telegramBotApiInitialization() {

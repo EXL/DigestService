@@ -12,7 +12,7 @@ public class HelpCommand extends BotAbility {
 	@Override
 	protected void execute(BotHelper helper, Message message) {
 		String botAnswer = helper.getLocale().i18n("bot.command.help");
-		if (helper.isUserAdmin(helper.getValidUsername(message.getFrom()))) {
+		if (helper.isUserAdmin(message.getFrom().getUserName())) {
 			botAnswer += "\n" + helper.getLocale().i18n("bot.command.help.admin");
 		}
 		helper.getSender().replyMessage(message.getChatId(), message.getMessageId(), botAnswer);

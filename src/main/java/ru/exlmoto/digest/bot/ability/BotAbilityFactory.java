@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.impl.HelloCommand;
+import ru.exlmoto.digest.bot.ability.impl.HelpCommand;
 import ru.exlmoto.digest.bot.ability.impl.StartCommand;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 
@@ -37,6 +38,7 @@ public class BotAbilityFactory {
 		addAbility("/hello", HelloCommand.class);
 		addAbility("/hi", HelloCommand.class);
 		addAbility("/start", StartCommand.class);
+		addAbility("/help", HelpCommand.class);
 	}
 
 	/*
@@ -44,7 +46,7 @@ public class BotAbilityFactory {
 	 * Example: "/hello" and "/hello@Digest_bot" commands.
 	 */
 	private <T extends BotAbility> void addAbility(String ability, Class<T> botAbilityClass) {
-		log.info("Register ability: " + botAbilityClass);
+		log.info(String.format("Registering bot ability: '%s'.", ability));
 		abilityMap.put(ability, context.getBean(botAbilityClass));
 		abilityMap.put(ability + "@" + config.getUsername(), context.getBean(botAbilityClass));
 	}

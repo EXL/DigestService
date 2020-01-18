@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import ru.exlmoto.digest.bot.config.BotConfiguration;
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 
 import java.util.ArrayList;

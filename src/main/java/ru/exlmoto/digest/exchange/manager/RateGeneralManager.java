@@ -3,10 +3,9 @@ package ru.exlmoto.digest.exchange.manager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.exchange.config.ExchangeConfiguration;
+import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
 import ru.exlmoto.digest.exchange.manager.impl.BankByManager;
 import ru.exlmoto.digest.exchange.manager.impl.BankKzManager;
 import ru.exlmoto.digest.exchange.manager.impl.BankRuManager;

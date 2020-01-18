@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.bot.config;
+package ru.exlmoto.digest.bot.configuration;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

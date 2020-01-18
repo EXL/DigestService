@@ -18,7 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import ru.exlmoto.digest.bot.BotService;
-import ru.exlmoto.digest.bot.config.BotConfiguration;
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 

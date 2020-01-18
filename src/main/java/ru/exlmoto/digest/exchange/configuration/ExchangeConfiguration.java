@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.exchange.config;
+package ru.exlmoto.digest.exchange.configuration;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -34,7 +34,7 @@ class LocalizationHelperTest {
 		assertThat(randomString).isInstanceOf(String.class).isNotEmpty();
 		System.out.println(randomString);
 
-		String randomStringWithUsername = locale.i18RU("bot.event.user.new", "My Username");
+		String randomStringWithUsername = locale.i18nRU("bot.event.user.new", "My Username");
 		assertThat(randomStringWithUsername).isInstanceOf(String.class).isNotEmpty();
 		System.out.println(randomStringWithUsername);
 	}

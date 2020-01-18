@@ -20,17 +20,21 @@ import java.util.List;
 @Service
 public class BotService extends TelegramLongPollingBot {
 	private final BotConfiguration config;
-	private final BotHandler handler;
+	private BotHandler handler;
 	private BotSender sender;
 
-	public BotService(BotConfiguration config, BotHandler handler) {
+	public BotService(BotConfiguration config) {
 		this.config = config;
-		this.handler = handler;
 	}
 
 	@Autowired
 	public void setBotSender(BotSender sender) {
 		this.sender = sender;
+	}
+
+	@Autowired
+	public void setBotHandler(BotHandler handler) {
+		this.handler = handler;
 	}
 
 	@Override

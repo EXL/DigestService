@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 public class BotConfiguration {
 	private String token;
 	private String username;
+	private String[] admins;
 	private int maxUpdates;
 	private int maxSendLength;
 	private int callbackCooldown;

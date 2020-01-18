@@ -9,15 +9,14 @@ import org.telegram.telegrambots.meta.api.objects.EntityType;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import ru.exlmoto.digest.bot.ability.BotAbility;
+import ru.exlmoto.digest.bot.ability.BotAbilityFactory;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -29,18 +28,21 @@ public class BotHandler {
 	private final BotSender sender;
 	private final LocalizationHelper locale;
 	private final BotHelper helper;
+	private final BotAbilityFactory abilityFactory;
 
-	public BotHandler(BotConfiguration config, BotSender sender, LocalizationHelper locale, BotHelper helper) {
+	public BotHandler(BotConfiguration config, BotHelper helper, BotAbilityFactory abilityFactory) {
 		this.config = config;
-		this.sender = sender;
-		this.locale = locale;
 		this.helper = helper;
+		this.locale = helper.getLocale();
+		this.sender = helper.getSender();
+		this.abilityFactory = abilityFactory;
 	}
 
 	public void onCommand(Message message) {
 		message.getEntities().stream()
 			.filter(entity -> entity.getType().equals(EntityType.BOTCOMMAND) && entity.getOffset() == 0)
-			.forEach(System.out::println);
+			.forEach(entity -> abilityFactory.getAbility(entity.getText())
+				.ifPresent(commandAbility -> commandAbility.process(helper, message)));
 	}
 
 	public void onHashTag(Message message) {
@@ -49,7 +51,11 @@ public class BotHandler {
 			entity -> hashTags.add(entity.getText())
 		);
 		for (String hashTag : hashTags) {
-			System.out.println(hashTag);
+			Optional<BotAbility> optionalBotAbility = abilityFactory.getAbility(hashTag);
+			if (optionalBotAbility.isPresent()) {
+				optionalBotAbility.ifPresent(hashTagAbility -> hashTagAbility.process(helper, message));
+				break;
+			}
 		}
 	}
 

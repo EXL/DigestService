@@ -21,8 +21,7 @@ dependencies {
 
 	implementation 'org.jsoup:jsoup:1.12.1'
 	implementation 'org.yaml:snakeyaml:1.25'
-	implementation 'org.telegram:telegrambots:4.5'
-	implementation 'org.telegram:telegrambots-spring-boot-starter:4.5'
+	implementation 'com.github.pengrad:java-telegram-bot-api:4.5.0'
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

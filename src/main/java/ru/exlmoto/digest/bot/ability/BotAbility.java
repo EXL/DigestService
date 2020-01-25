@@ -1,17 +1,19 @@
 package ru.exlmoto.digest.bot.ability;
 
-import org.telegram.telegrambots.meta.api.objects.Message;
+import com.pengrad.telegrambot.model.Message;
 
+import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 public abstract class BotAbility {
-	public void process(BotHelper helper, Message message) {
-		new Thread(() -> processAux(helper, message)).start();
+	public void process(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+		new Thread(() -> processAux(helper, sender, locale, message)).start();
 	}
 
-	protected void processAux(BotHelper helper, Message message) {
-		execute(helper, message);
+	protected void processAux(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+		execute(helper, sender, locale, message);
 	}
 
-	protected abstract void execute(BotHelper helper, Message message);
+	protected abstract void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message);
 }

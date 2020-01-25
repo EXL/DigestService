@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.bot.ability.impl.HelloCommand;
 import ru.exlmoto.digest.bot.ability.impl.HelpCommand;
 import ru.exlmoto.digest.bot.ability.impl.StartCommand;
-import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+import ru.exlmoto.digest.bot.telegram.BotTelegram;
 
 import javax.annotation.PostConstruct;
 
@@ -22,13 +22,13 @@ public class BotAbilityFactory {
 	private final Logger log = LoggerFactory.getLogger(BotAbilityFactory.class);
 
 	private final ApplicationContext context;
-	private final BotConfiguration config;
+	private final BotTelegram telegram;
 
 	private final Map<String, BotAbility> abilityMap = new HashMap<>();
 
-	public BotAbilityFactory(ApplicationContext context, BotConfiguration config) {
+	public BotAbilityFactory(ApplicationContext context, BotTelegram telegram) {
 		this.context = context;
-		this.config = config;
+		this.telegram = telegram;
 	}
 
 	@PostConstruct
@@ -48,9 +48,9 @@ public class BotAbilityFactory {
 	 * Example: "/hello" and "/hello@Digest_bot" commands.
 	 */
 	private <T extends BotAbility> void addAbility(String ability, Class<T> botAbilityClass) {
-		log.info(String.format("Registering bot ability: '%s'.", ability));
+		log.info(String.format("Register bot ability: '%s' on '%s' class.", ability, botAbilityClass.getSimpleName()));
 		abilityMap.put(ability, context.getBean(botAbilityClass));
-		abilityMap.put(ability + "@" + config.getUsername(), context.getBean(botAbilityClass));
+		abilityMap.put(ability + "@" + telegram.getUsername(), context.getBean(botAbilityClass));
 	}
 
 	public Optional<BotAbility> getAbility(String ability) {

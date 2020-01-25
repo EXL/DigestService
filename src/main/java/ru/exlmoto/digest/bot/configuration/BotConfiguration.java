@@ -2,29 +2,19 @@ package ru.exlmoto.digest.bot.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import org.telegram.telegrambots.ApiContextInitializer;
-
-import javax.annotation.PostConstruct;
-
 @ConfigurationProperties(prefix = "bot")
 public class BotConfiguration {
 	private String token;
-	private String username;
 	private String[] admins;
 	private int maxUpdates;
 	private int maxSendLength;
-	private int callbackCooldown;
-	private boolean enableNotifications;
+	private int cooldown;
 	private boolean logUpdates;
-	private boolean showGreetings;
-	private boolean silent;
 	private boolean logSends;
+	private boolean disableNotifications;
+	private boolean silent;
 	private boolean useStack;
-
-	@PostConstruct
-	private void telegramBotApiInitialization() {
-		ApiContextInitializer.init();
-	}
+	private boolean showGreetings;
 
 	public String getToken() {
 		return token;
@@ -32,14 +22,6 @@ public class BotConfiguration {
 
 	public void setToken(String token) {
 		this.token = token;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String[] getAdmins() {
@@ -66,20 +48,12 @@ public class BotConfiguration {
 		this.maxSendLength = maxSendLength;
 	}
 
-	public int getCallbackCooldown() {
-		return callbackCooldown;
+	public int getCooldown() {
+		return cooldown;
 	}
 
-	public void setCallbackCooldown(int callbackCooldown) {
-		this.callbackCooldown = callbackCooldown;
-	}
-
-	public boolean isEnableNotifications() {
-		return enableNotifications;
-	}
-
-	public void setEnableNotifications(boolean enableNotifications) {
-		this.enableNotifications = enableNotifications;
+	public void setCooldown(int cooldown) {
+		this.cooldown = cooldown;
 	}
 
 	public boolean isLogUpdates() {
@@ -90,20 +64,12 @@ public class BotConfiguration {
 		this.logUpdates = logUpdates;
 	}
 
-	public boolean isShowGreetings() {
-		return showGreetings;
+	public boolean isDisableNotifications() {
+		return disableNotifications;
 	}
 
-	public void setShowGreetings(boolean showGreetings) {
-		this.showGreetings = showGreetings;
-	}
-
-	public boolean isSilent() {
-		return silent;
-	}
-
-	public void setSilent(boolean silent) {
-		this.silent = silent;
+	public void setDisableNotifications(boolean disableNotifications) {
+		this.disableNotifications = disableNotifications;
 	}
 
 	public boolean isLogSends() {
@@ -114,11 +80,27 @@ public class BotConfiguration {
 		this.logSends = logSends;
 	}
 
+	public boolean isSilent() {
+		return silent;
+	}
+
+	public void setSilent(boolean silent) {
+		this.silent = silent;
+	}
+
 	public boolean isUseStack() {
 		return useStack;
 	}
 
 	public void setUseStack(boolean useStack) {
 		this.useStack = useStack;
+	}
+
+	public boolean isShowGreetings() {
+		return showGreetings;
+	}
+
+	public void setShowGreetings(boolean showGreetings) {
+		this.showGreetings = showGreetings;
 	}
 }

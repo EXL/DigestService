@@ -1,89 +1,100 @@
 package ru.exlmoto.digest.bot.handler;
 
+import com.pengrad.telegrambot.model.CallbackQuery;
+import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.MessageEntity;
+import com.pengrad.telegrambot.model.User;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.EntityType;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.User;
-
 import ru.exlmoto.digest.bot.ability.BotAbility;
 import ru.exlmoto.digest.bot.ability.BotAbilityFactory;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
+import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.StringJoiner;
+import java.util.*;
+
+import static com.pengrad.telegrambot.model.MessageEntity.Type.bot_command;
+import static com.pengrad.telegrambot.model.MessageEntity.Type.hashtag;
 
 @Component
 public class BotHandler {
 	private final Logger log = LoggerFactory.getLogger(BotHandler.class);
-
 
 	private int delay = 0;
 	private HashMap<Long, Long> callbackQueriesMap = new HashMap<>();
 
 	private final BotConfiguration config;
 	private final BotSender sender;
-	private final LocalizationHelper locale;
 	private final BotHelper helper;
-	private final BotAbilityFactory abilityFactory;
+	private final BotTelegram telegram;
+	private final BotAbilityFactory factory;
+	private final LocalizationHelper locale;
 
-	public BotHandler(BotConfiguration config, BotHelper helper, BotAbilityFactory abilityFactory) {
+	public BotHandler(BotConfiguration config,
+	                  BotSender sender,
+	                  BotHelper helper,
+	                  BotTelegram telegram,
+	                  BotAbilityFactory factory,
+	                  LocalizationHelper locale) {
 		this.config = config;
+		this.sender = sender;
 		this.helper = helper;
-		this.locale = helper.getLocale();
-		this.sender = helper.getSender();
-		this.abilityFactory = abilityFactory;
+		this.telegram = telegram;
+		this.factory = factory;
+		this.locale = locale;
 	}
 
 	@Scheduled(cron = "${cron.bot.callbacks.clear}")
 	public void clearCallbackQueriesMap() {
-		log.info("=> Start clear Callback Queries Map.");
+		log.info(String.format("=> Start clear Callback Queries Map, size: '%d'.", callbackQueriesMap.size()));
 		callbackQueriesMap.clear();
-		log.info("=> End clear Callback Queries Map.");
+		log.info(String.format("=> End clear Callback Queries Map, size: '%d'.", callbackQueriesMap.size()));
 	}
 
 	public void onCommand(Message message) {
-		message.getEntities().stream()
-			.filter(entity -> entity.getType().equals(EntityType.BOTCOMMAND) && entity.getOffset() == 0)
-			.forEach(entity -> abilityFactory.getAbility(entity.getText())
-				.ifPresent(commandAbility -> commandAbility.process(helper, message)));
+		final int START = 0;
+		for (MessageEntity entity : message.entities()) {
+			if (entity.type().equals(bot_command) && entity.offset() == START) {
+				Optional<BotAbility> ability = factory.getAbility(message.text().substring(START, entity.length()));
+				if (ability.isPresent()) {
+					ability.ifPresent(commandAbility -> commandAbility.process(helper, sender, locale, message));
+					return;
+				}
+			}
+		}
 	}
 
 	public void onHashTag(Message message) {
-		List<String> hashTags = new ArrayList<>();
-		message.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.HASHTAG)).forEach(
-			entity -> hashTags.add(entity.getText())
-		);
-		for (String hashTag : hashTags) {
-			Optional<BotAbility> optionalBotAbility = abilityFactory.getAbility(hashTag);
-			if (optionalBotAbility.isPresent()) {
-				optionalBotAbility.ifPresent(hashTagAbility -> hashTagAbility.process(helper, message));
-				break;
+		for (MessageEntity entity : message.entities()) {
+			if (entity.type().equals(hashtag)) {
+				Optional<BotAbility> ability =
+					factory.getAbility(message.text().substring(entity.offset(), entity.length()));
+				if (ability.isPresent()) {
+					ability.ifPresent(hashTagAbility -> hashTagAbility.process(helper, sender, locale, message));
+					return;
+				}
 			}
 		}
 	}
 
 	public void onCallbackQuery(CallbackQuery callbackQuery) {
-		int cooldown = config.getCallbackCooldown();
+		int cooldown = config.getCooldown();
 		if (config.isUseStack()) {
-			long chatId = callbackQuery.getMessage().getChatId();
+			long chatId = callbackQuery.message().chat().id();
 			long currentTime = helper.getCurrentUnixTime();
 			if (callbackQueriesMap.containsKey(chatId) || callbackQueriesMap.get(chatId) <= currentTime - cooldown) {
 				callbackQueriesMap.put(chatId, currentTime);
 				// HandleCallbackQuery
 			} else {
-				sendCooldownAnswer(callbackQuery.getId(),
+				sendCooldownAnswer(callbackQuery.id(),
 					cooldown - (currentTime - callbackQueriesMap.get(chatId)));
 			}
 		} else {
@@ -91,7 +102,7 @@ public class BotHandler {
 				delayCooldown(cooldown);
 				// HandleCallbackQuery
 			} else {
-				sendCooldownAnswer(callbackQuery.getId(), delay);
+				sendCooldownAnswer(callbackQuery.id(), delay);
 			}
 		}
 	}
@@ -118,7 +129,7 @@ public class BotHandler {
 
 	public void onNewUsers(Message message) {
 		if (config.isShowGreetings()) {
-			List<User> users = message.getNewChatMembers();
+			List<User> users = Arrays.asList(message.newChatMembers());
 			String usernames;
 			if (users.size() == 1) {
 				usernames = helper.getValidUsername(users.get(0));
@@ -127,25 +138,25 @@ public class BotHandler {
 				users.forEach(user -> joiner.add(helper.getValidUsername(user)));
 				usernames = joiner.toString();
 			}
-			boolean isBotHere = usernames.contains(config.getUsername());
+			boolean isBotHere = usernames.contains(telegram.getUsername());
 			String botAnswer = (isBotHere) ?
 				locale.i18n("bot.event.added") :
 				locale.i18nRU("bot.event.user.new", usernames);
-			sender.replyMessage(message.getChatId(), message.getMessageId(), botAnswer);
+			sender.replyMessage(message.chat().id(), message.messageId(), botAnswer);
 		}
 	}
 
 	public void onLeftUser(Message message) {
 		if (config.isShowGreetings()) {
-			String username = helper.getValidUsername(message.getLeftChatMember());
-			if (!username.equals(config.getUsername())) {
-				sender.replyMessage(message.getChatId(), message.getMessageId(),
+			String username = helper.getValidUsername(message.leftChatMember());
+			if (!username.equals(telegram.getUsername())) {
+				sender.replyMessage(message.chat().id(), message.messageId(),
 					locale.i18nRU("bot.event.user.left", username));
 			}
 		}
 	}
 
-	public void onNewChatPhoto(Message message) {
-		sender.replyMessage(message.getChatId(), message.getMessageId(), locale.i18n("bot.event.photo.change"));
+	public void onNewPhotos(Message message) {
+		sender.replyMessage(message.chat().id(), message.messageId(), locale.i18n("bot.event.photo.change"));
 	}
 }

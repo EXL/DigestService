@@ -75,6 +75,20 @@ public class BotService implements UpdatesListener {
 		}
 	}
 
+	private void processMessage(Message message) {
+		if (checkCommand(message)) {
+			handler.onCommand(message);
+		} else if (checkHashTag(message)) {
+			handler.onHashTag(message);
+		} else if (checkNewUsers(message)) {
+			handler.onNewUsers(message);
+		} else if (checkLeftUser(message)) {
+			handler.onLeftUser(message);
+		} else if (checkNewPhotos(message)) {
+			handler.onNewPhotos(message);
+		}
+	}
+
 	private Message checkMessage(Update update) {
 		Message editedMessage = update.editedMessage();
 		return (editedMessage != null) ? editedMessage : update.message();
@@ -113,19 +127,5 @@ public class BotService implements UpdatesListener {
 			}
 		}
 		return false;
-	}
-
-	private void processMessage(Message message) {
-		if (checkCommand(message)) {
-			handler.onCommand(message);
-		} else if (checkHashTag(message)) {
-			handler.onHashTag(message);
-		} else if (checkNewUsers(message)) {
-			handler.onNewUsers(message);
-		} else if (checkLeftUser(message)) {
-			handler.onLeftUser(message);
-		} else if (checkNewPhotos(message)) {
-			handler.onNewPhotos(message);
-		}
 	}
 }

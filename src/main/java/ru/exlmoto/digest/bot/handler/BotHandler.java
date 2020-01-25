@@ -19,7 +19,11 @@ import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.StringJoiner;
 
 import static com.pengrad.telegrambot.model.MessageEntity.Type.bot_command;
 import static com.pengrad.telegrambot.model.MessageEntity.Type.hashtag;
@@ -29,7 +33,7 @@ public class BotHandler {
 	private final Logger log = LoggerFactory.getLogger(BotHandler.class);
 
 	private int delay = 0;
-	private HashMap<Long, Long> callbackQueriesMap = new HashMap<>();
+	private final HashMap<Long, Long> callbackQueriesMap = new HashMap<>();
 
 	private final BotConfiguration config;
 	private final BotSender sender;

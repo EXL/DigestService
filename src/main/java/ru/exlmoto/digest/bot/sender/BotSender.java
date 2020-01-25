@@ -82,7 +82,7 @@ public class BotSender {
 	public void editMessage(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
 		executeRequestLog(
 			new EditMessageText(chatId, messageId, shrinkText(text))
-				.parseMode(Markdown).disableWebPagePreview(downloadFile)
+				.parseMode(Markdown).disableWebPagePreview(downloadFile).replyMarkup(keyboard)
 		);
 	}
 
@@ -142,11 +142,12 @@ public class BotSender {
 	}
 
 	private Answer<String> executeRequest(BaseRequest<?, ?> request) {
+		final String error = request.getMethod() + " " + request.getParameters();
 		if (config.isLogSends()) {
-			log.info(request.getMethod() + " " + request.getParameters());
+			log.info(error);
 		}
 		if (config.isSilent()) {
-			return Error(String.format("Silent mode is activated. Cannot execute request: '%s'.", request.toString()));
+			return Error(String.format("Silent mode is activated. Cannot execute request: '%s'.", error));
 		}
 		return getResponse(telegram.getBot().execute(request));
 	}

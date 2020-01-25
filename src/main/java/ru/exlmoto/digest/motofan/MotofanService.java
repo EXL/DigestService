@@ -1,7 +1,7 @@
 package ru.exlmoto.digest.motofan;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,10 @@ import ru.exlmoto.digest.util.rest.RestHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
-@RequiredArgsConstructor
 @Service
 public class MotofanService {
+	private final Logger log = LoggerFactory.getLogger(MotofanService.class);
+
 	@Value("${motofan.last-post-url}")
 	private String lastPostUrl;
 
@@ -27,6 +27,11 @@ public class MotofanService {
 	private Long topic = 0L;
 	private String author = null;
 	private String text = null;
+
+	public MotofanService(RestHelper restHelper, TgHtmlGenerator htmlGenerator) {
+		this.restHelper = restHelper;
+		this.htmlGenerator = htmlGenerator;
+	}
 
 	public MotofanPost[] getMotofanPostObjects() {
 		MotofanPost[] posts = restHelper.getRestResponse(lastPostUrl, MotofanPost[].class).answer();

@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("unused")
 @SpringJUnitConfig
 @ContextConfiguration(classes = { RepositoryHelper.class })
 class RepositoryHelperTest {

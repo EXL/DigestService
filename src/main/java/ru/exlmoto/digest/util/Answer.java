@@ -1,19 +1,13 @@
 package ru.exlmoto.digest.util;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.Accessors;
-
-@Getter
-@ToString
-@EqualsAndHashCode
-@Accessors(fluent = true)
-@RequiredArgsConstructor
 public final class Answer<T> {
 	private final String error;
 	private final T answer;
+
+	private Answer(String error, T answer) {
+		this.error = error;
+		this.answer = answer;
+	}
 
 	public static <T> Answer<T> Error(String error) {
 		return new Answer<>(error, null);
@@ -25,5 +19,21 @@ public final class Answer<T> {
 
 	public boolean ok() {
 		return error.isEmpty();
+	}
+
+	public String error() {
+		return error;
+	}
+
+	public T answer() {
+		return answer;
+	}
+
+	@Override
+	public String toString() {
+		return
+			"Answer{error=" + error +
+			", answer=" + answer +
+			"}";
 	}
 }

@@ -1,13 +1,13 @@
 package ru.exlmoto.digest.exchange.parser;
 
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
-@Slf4j
-@Getter
 public abstract class BankParser extends RateParser {
+	private final Logger log = LoggerFactory.getLogger(BankParser.class);
+
 	protected BigDecimal usd = null;
 	protected BigDecimal eur = null;
 	protected BigDecimal kzt = null;
@@ -28,5 +28,33 @@ public abstract class BankParser extends RateParser {
 			date, usd, eur, kzt, byn, rub, uah, gbp
 			)
 		);
+	}
+
+	public BigDecimal getUsd() {
+		return usd;
+	}
+
+	public BigDecimal getEur() {
+		return eur;
+	}
+
+	public BigDecimal getKzt() {
+		return kzt;
+	}
+
+	public BigDecimal getByn() {
+		return byn;
+	}
+
+	public BigDecimal getUah() {
+		return uah;
+	}
+
+	public BigDecimal getGbp() {
+		return gbp;
+	}
+
+	public BigDecimal getRub() {
+		return rub;
 	}
 }

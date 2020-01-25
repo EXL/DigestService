@@ -1,23 +1,19 @@
 package ru.exlmoto.digest.exchange.parser;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 
-@Slf4j
-@Getter
-@Setter
 public abstract class RateParser {
-	@Setter(AccessLevel.NONE)
+	private final Logger log = LoggerFactory.getLogger(RateParser.class);
+
 	protected String date = null;
 	protected boolean mirror = false;
 
@@ -81,5 +77,17 @@ public abstract class RateParser {
 
 	protected String filterSpaces(String value) {
 		return value.replaceAll(" ", "");
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public boolean isMirror() {
+		return mirror;
+	}
+
+	public void setMirror(boolean mirror) {
+		this.mirror = mirror;
 	}
 }

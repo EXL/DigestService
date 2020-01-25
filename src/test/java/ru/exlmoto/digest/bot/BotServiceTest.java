@@ -28,10 +28,10 @@ class BotServiceTest {
 	@MockBean
 	private BotSender botSender;
 
-	@BeforeEach
-	public void setUp() {
-		botService.setBotSender(botSender);
-	}
+//	@BeforeEach
+//	public void setUp() {
+//		botService.setBotSender(botSender);
+//	}
 
 	@Test
 	public void testTokenAndUsername() {

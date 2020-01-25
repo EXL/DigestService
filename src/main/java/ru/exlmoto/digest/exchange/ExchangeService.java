@@ -1,18 +1,20 @@
 package ru.exlmoto.digest.exchange;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digest.exchange.generator.TgMarkdownGenerator;
 import ru.exlmoto.digest.exchange.manager.RateGeneralManager;
 
-@RequiredArgsConstructor
 @Service
 public class ExchangeService {
 	private final TgMarkdownGenerator markdownGenerator;
 	private final RateGeneralManager rateGeneralManager;
+
+	public ExchangeService(TgMarkdownGenerator markdownGenerator, RateGeneralManager rateGeneralManager) {
+		this.markdownGenerator = markdownGenerator;
+		this.rateGeneralManager = rateGeneralManager;
+	}
 
 	@Scheduled(cron = "${cron.exchange.rates.update}")
 	public void updateAllRates() {

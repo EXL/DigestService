@@ -1,7 +1,7 @@
 package ru.exlmoto.digest.chart;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.util.Assert;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +26,10 @@ import java.util.StringJoiner;
 import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
 
-@Slf4j
-@RequiredArgsConstructor
 @Service
 public class ChartService {
+	private final Logger log = LoggerFactory.getLogger(ChartService.class);
+
 	@Value("${general.lang}")
 	private String langTag;
 
@@ -40,6 +40,11 @@ public class ChartService {
 	private final ImageHelper imageHelper;
 
 	private Map<String, Chart> chartMap;
+
+	public ChartService(ResourceHelper resourceHelper, ImageHelper imageHelper) {
+		this.resourceHelper = resourceHelper;
+		this.imageHelper = imageHelper;
+	}
 
 	@PostConstruct
 	private void setUp() {

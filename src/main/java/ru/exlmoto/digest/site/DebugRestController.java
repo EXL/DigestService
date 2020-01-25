@@ -1,7 +1,5 @@
 package ru.exlmoto.digest.site;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,12 +9,19 @@ import ru.exlmoto.digest.motofan.MotofanService;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
 public class DebugRestController {
 	private final ExchangeService exchangeService;
 	private final MotofanService motofanService;
 	private final ChartService chartService;
+
+	public DebugRestController(ExchangeService exchangeService,
+	                           MotofanService motofanService,
+	                           ChartService chartService) {
+		this.exchangeService = exchangeService;
+		this.motofanService = motofanService;
+		this.chartService = chartService;
+	}
 
 	@GetMapping("/")
 	public String root() {

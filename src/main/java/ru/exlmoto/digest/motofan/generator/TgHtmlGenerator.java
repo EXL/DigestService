@@ -1,18 +1,20 @@
 package ru.exlmoto.digest.motofan.generator;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.util.text.FilterTextHelper;
 
-@RequiredArgsConstructor
 @Component
 public class TgHtmlGenerator {
 	private final LocalizationHelper locale;
 	private final FilterTextHelper filterTextHelper;
+
+	public TgHtmlGenerator(LocalizationHelper locale, FilterTextHelper filterTextHelper) {
+		this.locale = locale;
+		this.filterTextHelper = filterTextHelper;
+	}
 
 	public String generateHtmlReport(MotofanPost post) {
 		return

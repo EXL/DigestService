@@ -1,7 +1,7 @@
 package ru.exlmoto.digest.util.i18n;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Slf4j
-@RequiredArgsConstructor
 @Component
 public class LocalizationHelper {
+	private final Logger log = LoggerFactory.getLogger(LocalizationHelper.class);
+
 	@Value("${general.lang}")
 	private String lang;
 
@@ -22,6 +22,10 @@ public class LocalizationHelper {
 	private String usernameTag;
 
 	private final MessageSource messageSource;
+
+	public LocalizationHelper(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
 
 	public String i18n(String key) {
 		try {

@@ -1,7 +1,5 @@
 package ru.exlmoto.digest.exchange.manager.impl;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
@@ -13,11 +11,15 @@ import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
-@RequiredArgsConstructor
 @Component
 public class MetalRuManager extends RateManager {
 	private final MetalRuRepository metalRuRepository;
 	private final RestHelper restHelper;
+
+	public MetalRuManager(MetalRuRepository metalRuRepository, RestHelper restHelper) {
+		this.metalRuRepository = metalRuRepository;
+		this.restHelper = restHelper;
+	}
 
 	@Override
 	public void commitRates(String url, String mirror) {

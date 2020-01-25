@@ -1,7 +1,5 @@
 package ru.exlmoto.digest.exchange.parser.impl;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -9,7 +7,6 @@ import ru.exlmoto.digest.exchange.parser.MetalParser;
 
 import java.math.BigDecimal;
 
-@Slf4j
 public class MetalRuParser extends MetalParser {
 	@Override
 	protected void parseDocumentAux(Document document) {

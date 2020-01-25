@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot.handler;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -23,9 +24,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-@Slf4j
 @Component
 public class BotHandler {
+	private final Logger log = LoggerFactory.getLogger(BotHandler.class);
+
+
 	private int delay = 0;
 	private HashMap<Long, Long> callbackQueriesMap = new HashMap<>();
 
@@ -73,7 +76,7 @@ public class BotHandler {
 
 	public void onCallbackQuery(CallbackQuery callbackQuery) {
 		int cooldown = config.getCallbackCooldown();
-		if (config.isDebugUseStack()) {
+		if (config.isUseStack()) {
 			long chatId = callbackQuery.getMessage().getChatId();
 			long currentTime = helper.getCurrentUnixTime();
 			if (callbackQueriesMap.containsKey(chatId) || callbackQueriesMap.get(chatId) <= currentTime - cooldown) {
@@ -114,7 +117,7 @@ public class BotHandler {
 	}
 
 	public void onNewUsers(Message message) {
-		if (config.isDebugShowGreetings()) {
+		if (config.isShowGreetings()) {
 			List<User> users = message.getNewChatMembers();
 			String usernames;
 			if (users.size() == 1) {
@@ -133,7 +136,7 @@ public class BotHandler {
 	}
 
 	public void onLeftUser(Message message) {
-		if (config.isDebugShowGreetings()) {
+		if (config.isShowGreetings()) {
 			String username = helper.getValidUsername(message.getLeftChatMember());
 			if (!username.equals(config.getUsername())) {
 				sender.replyMessage(message.getChatId(), message.getMessageId(),

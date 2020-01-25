@@ -1,7 +1,7 @@
 package ru.exlmoto.digest.util.file;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -30,10 +30,10 @@ import static ru.exlmoto.digest.util.Answer.Ok;
  * 6. isFileImageProbing() took  21 ms | isFileImageRead() took 127 ms
  */
 
-@Slf4j
-@RequiredArgsConstructor
 @Component
 public class ImageHelper {
+	private final Logger log = LoggerFactory.getLogger(ImageHelper.class);
+
 	@Value("${image.use-probing}")
 	private boolean useProbing;
 
@@ -41,6 +41,10 @@ public class ImageHelper {
 	private boolean downloadFile;
 
 	private final RestHelper restHelper;
+
+	public ImageHelper(RestHelper restHelper) {
+		this.restHelper = restHelper;
+	}
 
 	public Answer<String> getImageByLink(String url) {
 		if (!downloadFile) {

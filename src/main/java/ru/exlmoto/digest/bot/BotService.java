@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,10 @@ import ru.exlmoto.digest.bot.handler.BotHandler;
 
 import java.util.List;
 
-@Slf4j
 @Service
 public class BotService extends TelegramLongPollingBot {
+	private final Logger log = LoggerFactory.getLogger(BotService.class);
+
 	private final BotConfiguration config;
 	private BotHandler handler;
 
@@ -44,7 +46,7 @@ public class BotService extends TelegramLongPollingBot {
 
 	@Override
 	public void onUpdateReceived(Update update) {
-		if (config.isDebugLogUpdates()) {
+		if (config.isLogUpdates()) {
 			log.info(update.toString());
 		}
 		Message message = checkMessage(update);

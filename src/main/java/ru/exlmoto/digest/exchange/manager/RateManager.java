@@ -1,13 +1,15 @@
 package ru.exlmoto.digest.exchange.manager;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.dao.DataAccessException;
 
 import ru.exlmoto.digest.exchange.parser.RateParser;
 
-@Slf4j
 public abstract class RateManager {
+	private final Logger log = LoggerFactory.getLogger(RateManager.class);
+
 	public void commitRates(String url) {
 		try {
 			commitRates(url, null);

@@ -1,7 +1,5 @@
 package ru.exlmoto.digest.exchange.manager.impl;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
@@ -12,11 +10,15 @@ import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
-@RequiredArgsConstructor
 @Component
 public class BankKzManager extends RateManager {
 	private final BankKzRepository bankKzRepository;
 	private final RestHelper restHelper;
+
+	public BankKzManager(BankKzRepository bankKzRepository, RestHelper restHelper) {
+		this.bankKzRepository = bankKzRepository;
+		this.restHelper = restHelper;
+	}
 
 	@Override
 	public void commitRates(String url, String mirror) {

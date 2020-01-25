@@ -1,7 +1,5 @@
 package ru.exlmoto.digest.exchange.generator;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.entity.BankRuEntity;
@@ -17,12 +15,17 @@ import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Component
 public class TgMarkdownGenerator {
 	private final GeneratorHelper helper;
 	private final RepositoryHelper repos;
 	private final LocalizationHelper locale;
+
+	public TgMarkdownGenerator(GeneratorHelper helper, RepositoryHelper repos, LocalizationHelper locale) {
+		this.helper = helper;
+		this.repos = repos;
+		this.locale = locale;
+	}
 
 	public String bankRuReport() {
 		return Optional.ofNullable(repos.getBankRu()).map(this::bankRuReportAux).orElse(errorReport());

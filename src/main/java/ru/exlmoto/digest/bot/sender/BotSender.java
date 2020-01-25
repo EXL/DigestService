@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot.sender;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,9 +28,10 @@ import java.io.File;
 import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
 
-@Slf4j
 @Component
 public class BotSender {
+	private final Logger log = LoggerFactory.getLogger(BotSender.class);
+
 	private final BotConfiguration config;
 	private final LocalizationHelper locale;
 	private BotService botService;
@@ -195,10 +197,10 @@ public class BotSender {
 	}
 
 	private Answer<String> logExecuteMethod(PartialBotApiMethod<?> method) {
-		if (config.isDebugLogSends()) {
+		if (config.isLogSends()) {
 			log.info(method.toString());
 		}
-		if (config.isDebugSilent()) {
+		if (config.isSilent()) {
 			return Error(String.format("Silent mode is activated. Cannot execute method: '%s'.", method.toString()));
 		}
 		return Ok("Ok!");

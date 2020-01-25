@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot.ability;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -16,9 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Slf4j
 @Component
 public class BotAbilityFactory {
+	private final Logger log = LoggerFactory.getLogger(BotAbilityFactory.class);
+
 	private final ApplicationContext context;
 	private final BotConfiguration config;
 

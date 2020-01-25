@@ -30,10 +30,12 @@ public class BotTelegram {
 	private void setUp() {
 		bot = new TelegramBot(config.getToken());
 		User botUser = bot.execute(new GetMe()).user();
-		username = botUser.username();
-		log.info(String.format("Hello! My name is '%s'.", botUser.firstName()));
-		log.info(String.format("My id is '%d'.", botUser.id()));
-		log.info(String.format("And my username is '%s'.", username));
+		if (botUser != null) {
+			username = botUser.username();
+			log.info(String.format("Hello! My name is '%s'.", botUser.firstName()));
+			log.info(String.format("My id is '%d'.", botUser.id()));
+			log.info(String.format("And my username is '%s'.", username));
+		}
 	}
 
 	public TelegramBot getBot() {

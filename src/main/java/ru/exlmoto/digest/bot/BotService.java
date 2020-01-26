@@ -63,7 +63,7 @@ public class BotService implements UpdatesListener {
 		if (config.isLogUpdates()) {
 			log.info(update.toString());
 		}
-		Message message = checkMessage(update);
+		Message message = checkForward(checkMessage(update));
 		if (message != null) {
 			processMessage(message);
 		} else if (checkCallbackQuery(update)) {
@@ -83,6 +83,10 @@ public class BotService implements UpdatesListener {
 		} else if (checkNewPhotos(message)) {
 			handler.onNewPhotos(message);
 		}
+	}
+
+	private Message checkForward(Message message) {
+		return (message.forwardFrom() == null) ? message : null;
 	}
 
 	private Message checkMessage(Update update) {

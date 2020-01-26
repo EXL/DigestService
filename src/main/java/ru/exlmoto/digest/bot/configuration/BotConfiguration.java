@@ -10,7 +10,6 @@ public class BotConfiguration {
 	private int maxSendLength;
 	private int cooldown;
 	private boolean logUpdates;
-	private boolean logSends;
 	private boolean disableNotifications;
 	private boolean silent;
 	private boolean useStack;
@@ -70,14 +69,6 @@ public class BotConfiguration {
 
 	public void setDisableNotifications(boolean disableNotifications) {
 		this.disableNotifications = disableNotifications;
-	}
-
-	public boolean isLogSends() {
-		return logSends;
-	}
-
-	public void setLogSends(boolean logSends) {
-		this.logSends = logSends;
 	}
 
 	public boolean isSilent() {

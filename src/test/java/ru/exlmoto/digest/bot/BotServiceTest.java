@@ -6,25 +6,19 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
-import ru.exlmoto.digest.bot.sender.BotSender;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(properties = "bot.log-updates=true" )
 class BotServiceTest {
 	@Autowired
 	private BotService botService;
 
 	@Autowired
 	private BotConfiguration config;
-
-	@SuppressWarnings("unused")
-	@MockBean
-	private BotSender botSender;
 
 	@Test
 	public void testManyUpdates() {

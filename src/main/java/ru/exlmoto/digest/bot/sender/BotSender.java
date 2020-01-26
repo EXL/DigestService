@@ -143,9 +143,6 @@ public class BotSender {
 
 	private Answer<String> executeRequest(BaseRequest<?, ?> request) {
 		final String error = request.getMethod() + " " + request.getParameters();
-		if (config.isLogSends()) {
-			log.info(error);
-		}
 		if (config.isSilent()) {
 			return Error(String.format("Silent mode is activated. Cannot execute request: '%s'.", error));
 		}

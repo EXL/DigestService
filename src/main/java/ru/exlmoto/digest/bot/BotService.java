@@ -49,24 +49,20 @@ public class BotService implements UpdatesListener {
 			int maxUpdates = config.getMaxUpdates();
 			if (updatesCount > maxUpdates) {
 				log.info(String.format("Too many '%d' updates received, shrink updates array to '%d'.",
-						updatesCount, maxUpdates));
+					updatesCount, maxUpdates));
 				updates.subList(0, updatesCount - maxUpdates).clear();
 			}
 			for (Update update : updates) {
-				if (config.isLogUpdates()) {
-					logUpdate(update);
-				}
 				processUpdate(update);
 			}
 		}
 		return CONFIRMED_UPDATES_ALL;
 	}
 
-	private void logUpdate(Update update) {
-		log.info(update.toString());
-	}
-
 	public void processUpdate(Update update) {
+		if (config.isLogUpdates()) {
+			log.info(update.toString());
+		}
 		Message message = checkMessage(update);
 		if (message != null) {
 			processMessage(message);
@@ -111,14 +107,14 @@ public class BotService implements UpdatesListener {
 	}
 
 	private boolean checkCommand(Message message) {
-		return entitiesHelper(message.entities(), bot_command);
+		return checkEntities(message.entities(), bot_command);
 	}
 
 	private boolean checkHashTag(Message message) {
-		return entitiesHelper(message.entities(), hashtag);
+		return checkEntities(message.entities(), hashtag);
 	}
 
-	private boolean entitiesHelper(MessageEntity[] entities, Type entity) {
+	private boolean checkEntities(MessageEntity[] entities, Type entity) {
 		if (entities != null) {
 			for (MessageEntity messageEntity : entities) {
 				if (messageEntity.type().equals(entity)) {

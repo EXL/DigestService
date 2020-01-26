@@ -74,6 +74,8 @@ public class BotHandler {
 				}
 			}
 		}
+		log.info(String.format("Unknown command in '%d' chat from '%s' user, message: '%s'.",
+			message.chat().id(), helper.getValidUsername(message.from()), message.text()));
 	}
 
 	public void onHashTag(Message message) {

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import ru.exlmoto.digest.bot.ability.impl.CoffeeCommand;
 import ru.exlmoto.digest.bot.ability.impl.HelloCommand;
 import ru.exlmoto.digest.bot.ability.impl.HelpCommand;
 import ru.exlmoto.digest.bot.ability.impl.StartCommand;
@@ -41,6 +42,7 @@ public class BotAbilityFactory {
 		addCommand("/hi", HelloCommand.class);
 		addCommand("/start", StartCommand.class);
 		addCommand("/help", HelpCommand.class);
+		addCommand("/coffee", CoffeeCommand.class);
 	}
 
 	/*

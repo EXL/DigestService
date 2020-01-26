@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "bot")
 public class BotConfiguration {
 	private String token;
+	private String stickerCoffee;
 	private String[] admins;
 	private int maxUpdates;
 	private int maxSendLength;
@@ -21,6 +22,14 @@ public class BotConfiguration {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getStickerCoffee() {
+		return stickerCoffee;
+	}
+
+	public void setStickerCoffee(String stickerCoffee) {
+		this.stickerCoffee = stickerCoffee;
 	}
 
 	public String[] getAdmins() {

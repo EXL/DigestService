@@ -61,7 +61,7 @@ public class BotSender {
 	public void sendMessageToChat(long chatId, String text, long origChatId, int origReplyId) {
 		Answer<String> res = executeRequestLog(new SendMessage(chatId, shrinkText(text)).parseMode(Markdown));
 		if (!res.ok()) {
-			replyMessage(origChatId, origReplyId,
+			sendError(origChatId, origReplyId,
 				shrinkText(String.format(locale.i18n("bot.error.send.message"), text, chatId, res.error())));
 		}
 	}
@@ -93,7 +93,7 @@ public class BotSender {
 	public void sendStickerToChat(long chatId, String stickerId, long origChatId, int origReplyId) {
 		Answer<String> res = executeRequestLog(new SendSticker(chatId, stickerId));
 		if (!res.ok()) {
-			replyMessage(origChatId, origReplyId,
+			sendError(origChatId, origReplyId,
 				shrinkText(String.format(locale.i18n("bot.error.send.sticker"), stickerId, chatId, res.error())));
 		}
 	}
@@ -102,8 +102,8 @@ public class BotSender {
 		sendPhoto(chatId, replyId, uri, title, chatId, replyId);
 	}
 
-	public void sendPhotoToChat(long chatId, String uri, String title, long origChatId, int origReplyId) {
-		sendPhoto(chatId, null, uri, title, origChatId, origReplyId);
+	public void sendPhotoToChat(long chatId, String uri, long origChatId, int origReplyId) {
+		sendPhoto(chatId, null, uri, null, origChatId, origReplyId);
 	}
 
 	private void sendPhoto(long chatId, Integer replyId, String uri, String title, long origChatId, int origReplyId) {
@@ -118,11 +118,13 @@ public class BotSender {
 		if (replyId != null) {
 			sendPhoto.replyToMessageId(replyId);
 		}
-		sendPhoto.caption(title);
+		if (title != null) {
+			sendPhoto.caption(title);
+		}
 		Answer<String> res = executeRequestLog(sendPhoto);
 		if (!res.ok()) {
-			replyMessage(origChatId, origReplyId, shrinkText(String.format(locale.i18n("bot.error.send.image"),
-				uri, chatId, res.error())));
+			sendError(origChatId, origReplyId,
+				shrinkText(String.format(locale.i18n("bot.error.send.image"), uri, chatId, res.error())));
 		}
 		if (photo != null && !photo.delete()) {
 			log.error(String.format("Cannot delete temporary photo file '%s'.", uri));
@@ -134,19 +136,16 @@ public class BotSender {
 	}
 
 	private Answer<String> executeRequestLog(BaseRequest<?, ?> request) {
-		Answer<String> res = executeRequest(request);
+		final String error = request.getMethod() + " " + request.getParameters();
+		if (config.isSilent()) {
+			log.info(String.format("Silent mode is activated. Cannot execute request: '%s'.", error));
+			return Ok("Ok!");
+		}
+		Answer<String> res = getResponse(telegram.getBot().execute(request));
 		if (!res.ok()) {
 			log.error(res.error());
 		}
 		return res;
-	}
-
-	private Answer<String> executeRequest(BaseRequest<?, ?> request) {
-		final String error = request.getMethod() + " " + request.getParameters();
-		if (config.isSilent()) {
-			return Error(String.format("Silent mode is activated. Cannot execute request: '%s'.", error));
-		}
-		return getResponse(telegram.getBot().execute(request));
 	}
 
 	private Answer<String> getResponse(BaseResponse response) {
@@ -165,5 +164,10 @@ public class BotSender {
 			return text.substring(0, maxSendLength) + "\n" + locale.i18n("bot.warn.send.long");
 		}
 		return text;
+	}
+
+	private void sendError(long chatId, int replyId, String error) {
+		log.error(error);
+		replyMessage(chatId, replyId, error);
 	}
 }

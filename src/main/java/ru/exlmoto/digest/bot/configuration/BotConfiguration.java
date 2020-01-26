@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class BotConfiguration {
 	private String token;
 	private String stickerCoffee;
+	private String urlHostIp;
 	private String[] admins;
 	private int maxUpdates;
 	private int maxSendLength;
@@ -30,6 +31,14 @@ public class BotConfiguration {
 
 	public void setStickerCoffee(String stickerCoffee) {
 		this.stickerCoffee = stickerCoffee;
+	}
+
+	public String getUrlHostIp() {
+		return urlHostIp;
+	}
+
+	public void setUrlHostIp(String urlHostIp) {
+		this.urlHostIp = urlHostIp;
 	}
 
 	public String[] getAdmins() {

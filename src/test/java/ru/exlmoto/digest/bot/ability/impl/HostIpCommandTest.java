@@ -11,9 +11,9 @@ import ru.exlmoto.digest.bot.util.MessageHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @SpringBootTest(properties = "bot.silent=true")
-class StartCommandTest {
+class HostIpCommandTest {
 	@Autowired
-	private StartCommand command;
+	private HostIpCommand command;
 
 	@Autowired
 	private BotHelper helper;
@@ -25,8 +25,8 @@ class StartCommandTest {
 	private LocalizationHelper locale;
 
 	@Test
-	public void testStartCommand() {
+	public void testHostIpCommand() {
 		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/start", "anyone"));
+			new MessageHelper().getSimpleMessage("/hostip", "exlmoto"));
 	}
 }

@@ -21,9 +21,9 @@ class BotHandlerTest {
 		handler.onCommand(new MessageHelper().getMessageWithEntities(
 			"/hi", bot_command, 0, "exlmoto"));
 		handler.onCommand(new MessageHelper().getMessageWithEntities(
-			"/hi", bot_command, 0, "yakimka"));
+			"/hi", bot_command, 0, "anyone"));
 		handler.onCommand(new MessageHelper().getMessageWithEntities(
-			"/unknown", bot_command, 0, "yakimka"));
+			"/unknown", bot_command, 0, "anyone"));
 	}
 
 	@Test

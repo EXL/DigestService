@@ -38,7 +38,7 @@ class BotHelperTest {
 	public void testIsUserAdmin() {
 		assertTrue(helper.isUserAdmin("exlmoto"));
 		assertTrue(helper.isUserAdmin("ZorgeR"));
-		assertFalse(helper.isUserAdmin("yakimka"));
+		assertFalse(helper.isUserAdmin("anyone"));
 	}
 
 	@Test

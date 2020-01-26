@@ -26,7 +26,7 @@ class CoffeeCommandTest {
 
 	@Test
 	public void testCoffeeCommand() {
-		command.process(helper, sender, locale,
+		command.execute(helper, sender, locale,
 			new MessageHelper().getSimpleMessage("/coffee", "exlmoto"));
 	}
 }

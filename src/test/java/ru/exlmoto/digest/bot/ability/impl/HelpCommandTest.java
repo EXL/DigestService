@@ -26,9 +26,9 @@ class HelpCommandTest {
 
 	@Test
 	public void testHelpCommand() {
-		command.process(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/help", "yakimka"));
-		command.process(helper, sender, locale,
+		command.execute(helper, sender, locale,
+			new MessageHelper().getSimpleMessage("/help", "anyone"));
+		command.execute(helper, sender, locale,
 			new MessageHelper().getSimpleMessage("/help", "exlmoto"));
 	}
 }

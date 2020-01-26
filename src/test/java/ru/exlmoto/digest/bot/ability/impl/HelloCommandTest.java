@@ -26,9 +26,7 @@ class HelloCommandTest {
 
 	@Test
 	public void testHelloCommand() {
-		command.process(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/hi", "yakimka"));
-		command.process(helper, sender, locale,
+		command.execute(helper, sender, locale,
 			new MessageHelper().getSimpleMessage("/hi", "exlmoto"));
 	}
 }

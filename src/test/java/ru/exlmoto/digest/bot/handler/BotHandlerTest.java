@@ -33,6 +33,12 @@ class BotHandlerTest {
 		assertEquals("chart_", handler.chopCallbackData("chart_rub"));
 		assertEquals("chart_", handler.chopCallbackData("chart_rub_eur"));
 		assertEquals("chart", handler.chopCallbackData("chart"));
+		assertEquals("chart_", handler.chopCallbackData("chart___"));
+		assertEquals("chart_", handler.chopCallbackData("chart__"));
+		assertEquals("chart_", handler.chopCallbackData("chart_"));
+		assertEquals("_", handler.chopCallbackData("_"));
+		assertEquals("_", handler.chopCallbackData("_a"));
+		assertEquals("_", handler.chopCallbackData("_ab"));
 	}
 
 	@Test

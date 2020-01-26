@@ -128,7 +128,7 @@ public class BotHandler {
 	public String chopCallbackData(String data) {
 		int find = data.indexOf(BotKeyboard.DELIMITER);
 		if (find != -1) {
-			return data.substring(0, find + 1);
+			return data.substring(0, find) + BotKeyboard.DELIMITER;
 		}
 		return data;
 	}

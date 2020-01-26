@@ -11,6 +11,7 @@ import ru.exlmoto.digest.bot.ability.impl.GameCommand;
 import ru.exlmoto.digest.bot.ability.impl.HelloCommand;
 import ru.exlmoto.digest.bot.ability.impl.HelpCommand;
 import ru.exlmoto.digest.bot.ability.impl.HostIpCommand;
+import ru.exlmoto.digest.bot.ability.impl.SendCommand;
 import ru.exlmoto.digest.bot.ability.impl.StartCommand;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 
@@ -47,6 +48,9 @@ public class BotAbilityFactory {
 		addCommand("/coffee", CoffeeCommand.class);
 		addCommand("/hostip", HostIpCommand.class);
 		addCommand("/game", GameCommand.class);
+		addCommand("/send", SendCommand.class);
+		addCommand("/sticker", SendCommand.class);
+		addCommand("/image", SendCommand.class);
 	}
 
 	/*

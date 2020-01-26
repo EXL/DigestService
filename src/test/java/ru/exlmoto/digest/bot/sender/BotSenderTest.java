@@ -28,7 +28,7 @@ class BotSenderTest {
 
 		sender.sendMessageToChat(0L, "Fake text", 0L, 0);
 		sender.sendStickerToChat(0L, "Fake stickerId", 0L, 0);
-		sender.sendPhotoToChat(0L, "Fake uri", "Fake title", 0L, 0);
+		sender.sendPhotoToChat(0L, "Fake uri", 0L, 0);
 		System.out.println("===");
 
 		InlineKeyboardButton[][] buttons = new InlineKeyboardButton[2][2];

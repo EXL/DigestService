@@ -1,19 +1,20 @@
-package ru.exlmoto.digest.bot.ability.impl;
+package ru.exlmoto.digest.bot.ability;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import ru.exlmoto.digest.bot.ability.impl.HelloCommand;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.MessageHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @SpringBootTest(properties = "bot.silent=true")
-class HelpCommandTest {
+class BotAbilityAdminTest {
 	@Autowired
-	private HelpCommand command;
+	private HelloCommand command;
 
 	@Autowired
 	private BotHelper helper;
@@ -25,11 +26,11 @@ class HelpCommandTest {
 	private LocalizationHelper locale;
 
 	@Test
-	public void testHelpCommand() {
-		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/help", "anyone"));
+	public void testProcessAux() {
+		command.processAux(helper, sender, locale,
+			new MessageHelper().getSimpleMessage("/hi", "exlmoto"));
 
-		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/help", "exlmoto"));
+		command.processAux(helper, sender, locale,
+			new MessageHelper().getSimpleMessage("/hi", "anyone"));
 	}
 }

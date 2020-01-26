@@ -34,7 +34,7 @@ public class BotKeyboardFactory {
 	private <T extends BotKeyboard> void addKeyboard(String keyboard, Class<T> botKeyboardClass) {
 		keyboardMap.put(keyboard, context.getBean(botKeyboardClass));
 		log.info(String.format("Registered bot Keyboard: '%s' on '%s' class.",
-			keyboard.replaceAll("-", ""), botKeyboardClass.getSimpleName()));
+			keyboard.replaceAll(BotKeyboard.DELIMITER, ""), botKeyboardClass.getSimpleName()));
 	}
 
 	public Optional<BotKeyboard> getKeyboard(String keyboard) {

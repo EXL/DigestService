@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.bot.ability.BotAbility;
 import ru.exlmoto.digest.bot.ability.BotAbilityFactory;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+import ru.exlmoto.digest.bot.keyboard.BotKeyboard;
 import ru.exlmoto.digest.bot.keyboard.BotKeyboardFactory;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
@@ -125,7 +126,7 @@ public class BotHandler {
 	}
 
 	public String chopCallbackData(String data) {
-		int find = data.indexOf("_");
+		int find = data.indexOf(BotKeyboard.DELIMITER);
 		if (find != -1) {
 			return data.substring(0, find + 1);
 		}

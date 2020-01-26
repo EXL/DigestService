@@ -8,14 +8,15 @@ import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 public abstract class BotKeyboard {
-	public static final String RATE = "rate_";
-	public static final String CHART = "chart_";
+	public static final String DELIMITER = "_";
+	public static final String RATE = "rate" + DELIMITER;
+	public static final String CHART = "chart" + DELIMITER;
 
 	public void process(BotHelper helper, BotSender sender, LocalizationHelper locale, CallbackQuery callback) {
 		new Thread(() -> handle(helper, sender, locale, callback)).start();
 	}
 
-	protected abstract InlineKeyboardMarkup getMarkup();
+	public abstract InlineKeyboardMarkup getMarkup();
 
 	protected abstract void handle(BotHelper helper, BotSender sender,
 	                               LocalizationHelper locale, CallbackQuery callback);

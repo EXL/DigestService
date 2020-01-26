@@ -21,6 +21,7 @@ import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class BotHandler {
 	private final Logger log = LoggerFactory.getLogger(BotHandler.class);
 
 	private int delay = 0;
-	private final HashMap<Long, Long> callbackQueriesMap = new HashMap<>();
+	private final Map<Long, Long> callbackQueriesMap = new HashMap<>();
 
 	private final BotConfiguration config;
 	private final BotSender sender;
@@ -101,7 +102,7 @@ public class BotHandler {
 		if (config.isUseStack()) {
 			long chatId = callbackQuery.message().chat().id();
 			long currentTime = helper.getCurrentUnixTime();
-			if (callbackQueriesMap.containsKey(chatId) || callbackQueriesMap.get(chatId) <= currentTime - cooldown) {
+			if (!callbackQueriesMap.containsKey(chatId) || callbackQueriesMap.get(chatId) <= currentTime - cooldown) {
 				callbackQueriesMap.put(chatId, currentTime);
 				onKeyboard(callbackQuery);
 			} else {

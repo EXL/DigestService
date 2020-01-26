@@ -7,6 +7,7 @@ public class BotConfiguration {
 	private String token;
 	private String stickerCoffee;
 	private String urlHostIp;
+	private String urlGame;
 	private String[] admins;
 	private int maxUpdates;
 	private int maxSendLength;
@@ -39,6 +40,14 @@ public class BotConfiguration {
 
 	public void setUrlHostIp(String urlHostIp) {
 		this.urlHostIp = urlHostIp;
+	}
+
+	public String getUrlGame() {
+		return urlGame;
+	}
+
+	public void setUrlGame(String urlGame) {
+		this.urlGame = urlGame;
 	}
 
 	public String[] getAdmins() {

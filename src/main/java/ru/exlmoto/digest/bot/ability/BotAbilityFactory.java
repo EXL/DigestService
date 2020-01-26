@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.impl.CoffeeCommand;
+import ru.exlmoto.digest.bot.ability.impl.GameCommand;
 import ru.exlmoto.digest.bot.ability.impl.HelloCommand;
 import ru.exlmoto.digest.bot.ability.impl.HelpCommand;
 import ru.exlmoto.digest.bot.ability.impl.HostIpCommand;
@@ -45,6 +46,7 @@ public class BotAbilityFactory {
 		addCommand("/help", HelpCommand.class);
 		addCommand("/coffee", CoffeeCommand.class);
 		addCommand("/hostip", HostIpCommand.class);
+		addCommand("/game", GameCommand.class);
 	}
 
 	/*

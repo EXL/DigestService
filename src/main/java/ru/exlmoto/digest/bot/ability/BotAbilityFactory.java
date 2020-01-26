@@ -36,10 +36,6 @@ public class BotAbilityFactory {
 	}
 
 	@PostConstruct
-	private void setUp() {
-		registerAbilities();
-	}
-
 	private void registerAbilities() {
 		addCommand("/hello", HelloCommand.class);
 		addCommand("/hi", HelloCommand.class);

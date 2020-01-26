@@ -9,6 +9,8 @@ import ru.exlmoto.digest.bot.util.MessageHelper;
 
 import static com.pengrad.telegrambot.model.MessageEntity.Type.bot_command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(properties = "bot.silent=true")
 class BotHandlerTest {
 	@Autowired
@@ -27,6 +29,13 @@ class BotHandlerTest {
 	}
 
 	@Test
+	public void testChopCallbackData() {
+		assertEquals("chart_", handler.chopCallbackData("chart_rub"));
+		assertEquals("chart_", handler.chopCallbackData("chart_rub_eur"));
+		assertEquals("chart", handler.chopCallbackData("chart"));
+	}
+
+	@Test
 	public void testClearCallbackQueriesMap() {
 		// TODO:
 	}
@@ -38,6 +47,11 @@ class BotHandlerTest {
 
 	@Test
 	public void testOnCallbackQuery() {
+		// TODO:
+	}
+
+	@Test
+	public void testOnKeyboard() {
 		// TODO:
 	}
 

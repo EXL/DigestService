@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.bot.ability.BotAbility;
 import ru.exlmoto.digest.bot.ability.BotAbilityFactory;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+import ru.exlmoto.digest.bot.keyboard.BotKeyboardFactory;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
@@ -39,20 +40,23 @@ public class BotHandler {
 	private final BotSender sender;
 	private final BotHelper helper;
 	private final BotTelegram telegram;
-	private final BotAbilityFactory factory;
+	private final BotAbilityFactory abilityFactory;
+	private final BotKeyboardFactory keyboardFactory;
 	private final LocalizationHelper locale;
 
 	public BotHandler(BotConfiguration config,
 	                  BotSender sender,
 	                  BotHelper helper,
 	                  BotTelegram telegram,
-	                  BotAbilityFactory factory,
+	                  BotAbilityFactory abilityFactory,
+	                  BotKeyboardFactory keyboardFactory,
 	                  LocalizationHelper locale) {
 		this.config = config;
 		this.sender = sender;
 		this.helper = helper;
 		this.telegram = telegram;
-		this.factory = factory;
+		this.abilityFactory = abilityFactory;
+		this.keyboardFactory = keyboardFactory;
 		this.locale = locale;
 	}
 
@@ -67,9 +71,10 @@ public class BotHandler {
 		final int START = 0;
 		for (MessageEntity entity : message.entities()) {
 			if (entity.type().equals(bot_command) && entity.offset() == START) {
-				Optional<BotAbility> ability = factory.getAbility(message.text().substring(START, entity.length()));
+				Optional<BotAbility> ability =
+					abilityFactory.getAbility(message.text().substring(START, entity.length()));
 				if (ability.isPresent()) {
-					ability.ifPresent(commandAbility -> commandAbility.process(helper, sender, locale, message));
+					ability.get().process(helper, sender, locale, message);
 					return;
 				}
 			}
@@ -82,9 +87,9 @@ public class BotHandler {
 		for (MessageEntity entity : message.entities()) {
 			if (entity.type().equals(hashtag)) {
 				Optional<BotAbility> ability =
-					factory.getAbility(message.text().substring(entity.offset(), entity.length()));
+					abilityFactory.getAbility(message.text().substring(entity.offset(), entity.length()));
 				if (ability.isPresent()) {
-					ability.ifPresent(hashTagAbility -> hashTagAbility.process(helper, sender, locale, message));
+					ability.get().process(helper, sender, locale, message);
 					return;
 				}
 			}
@@ -98,7 +103,7 @@ public class BotHandler {
 			long currentTime = helper.getCurrentUnixTime();
 			if (callbackQueriesMap.containsKey(chatId) || callbackQueriesMap.get(chatId) <= currentTime - cooldown) {
 				callbackQueriesMap.put(chatId, currentTime);
-				// HandleCallbackQuery
+				onKeyboard(callbackQuery);
 			} else {
 				sendCooldownAnswer(callbackQuery.id(),
 					cooldown - (currentTime - callbackQueriesMap.get(chatId)));
@@ -106,11 +111,24 @@ public class BotHandler {
 		} else {
 			if (delay == 0) {
 				delayCooldown(cooldown);
-				// HandleCallbackQuery
+				onKeyboard(callbackQuery);
 			} else {
 				sendCooldownAnswer(callbackQuery.id(), delay);
 			}
 		}
+	}
+
+	public void onKeyboard(CallbackQuery callbackQuery) {
+		keyboardFactory.getKeyboard(chopCallbackData(callbackQuery.data()))
+			.ifPresent(botKeyboard -> botKeyboard.process(helper, sender, locale, callbackQuery));
+	}
+
+	public String chopCallbackData(String data) {
+		int find = data.indexOf("_");
+		if (find != -1) {
+			return data.substring(0, find + 1);
+		}
+		return data;
 	}
 
 	private void sendCooldownAnswer(String callbackQueryId, long cooldownSec) {

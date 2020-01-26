@@ -15,10 +15,10 @@ import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 import java.util.List;
 
 @Component
-public class ChartKeyboard extends BotKeyboard {
+public class ChartsKeyboard extends BotKeyboard {
 	private final ChartService chart;
 
-	public ChartKeyboard(ChartService chart) {
+	public ChartsKeyboard(ChartService chart) {
 		this.chart = chart;
 	}
 

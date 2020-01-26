@@ -37,20 +37,28 @@ public class BotAbilityFactory {
 	}
 
 	private void registerAbilities() {
-		addAbility("/hello", HelloCommand.class);
-		addAbility("/hi", HelloCommand.class);
-		addAbility("/start", StartCommand.class);
-		addAbility("/help", HelpCommand.class);
+		addCommand("/hello", HelloCommand.class);
+		addCommand("/hi", HelloCommand.class);
+		addCommand("/start", StartCommand.class);
+		addCommand("/help", HelpCommand.class);
 	}
 
 	/*
 	 * The second addition of the same command to the hash map is respond to the command with the bot nickname.
 	 * Example: "/hello" and "/hello@Digest_bot" commands.
 	 */
-	private <T extends BotAbility> void addAbility(String ability, Class<T> botAbilityClass) {
-		log.info(String.format("Register bot ability: '%s' on '%s' class.", ability, botAbilityClass.getSimpleName()));
-		abilityMap.put(ability, context.getBean(botAbilityClass));
-		abilityMap.put(ability + "@" + telegram.getUsername(), context.getBean(botAbilityClass));
+	private <T extends BotAbility> void addCommand(String command, Class<T> botAbilityClass) {
+		String fullCommand = command + "@" + telegram.getUsername();
+		abilityMap.put(command, context.getBean(botAbilityClass));
+		abilityMap.put(fullCommand, context.getBean(botAbilityClass));
+		log.info(String.format("Registered bot Command: '%s' alias '%s' on '%s' class.",
+			command, fullCommand, botAbilityClass.getSimpleName()));
+	}
+
+	private <T extends BotAbility> void addHashTag(String hashTag, Class<T> botAbilityClass) {
+		abilityMap.put(hashTag, context.getBean(botAbilityClass));
+		log.info(String.format("Registered bot HashTag: '%s' on '%s' class.",
+			hashTag, botAbilityClass.getSimpleName()));
 	}
 
 	public Optional<BotAbility> getAbility(String ability) {

@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot.keyboard.impl;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
@@ -13,34 +14,44 @@ import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
+import javax.annotation.PostConstruct;
+
 @Component
 public class RateKeyboard extends BotKeyboard {
 	private final ExchangeService service;
+
+	private InlineKeyboardMarkup markup = null;
 
 	public RateKeyboard(ExchangeService service) {
 		this.service = service;
 	}
 
-	@Override
-	public InlineKeyboardMarkup getMarkup() {
+	@PostConstruct
+	private void generateKeyboard() {
 		InlineKeyboardButton[] keyboardRow = new InlineKeyboardButton[ExchangeKey.values().length];
 		int i = 0;
 		for(ExchangeKey key: ExchangeKey.values()) {
 			keyboardRow[i++] = new InlineKeyboardButton(service.buttonLabel(key.name())).callbackData(RATE + key);
 		}
-		return new InlineKeyboardMarkup(keyboardRow);
+		markup = new InlineKeyboardMarkup(keyboardRow);
+	}
+
+	@Override
+	public InlineKeyboardMarkup getMarkup() {
+		return markup;
 	}
 
 	@Override
 	protected void handle(BotHelper helper, BotSender sender, LocalizationHelper locale, CallbackQuery callback) {
-		String key = callback.data().replaceAll(RATE, "");
-		/*
-		String title;
-		try {
-			title = ExchangeKey.valueOf()
-		}
-		*/
+		Message message = callback.message();
+		long chatId = message.chat().id();
+		int messageId = message.messageId();
 
-		sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.selected") + " ");
+		String key = callback.data().replaceAll(RATE, "");
+
+		sender.sendCallbackQueryAnswer(callback.id(),
+			locale.i18n("bot.inline.selected") + " " + service.buttonLabel(key));
+
+		sender.editMessage(chatId, messageId, service.markdownReport(key), getMarkup());
 	}
 }

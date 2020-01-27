@@ -4,19 +4,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digest.exchange.generator.TgMarkdownGenerator;
+import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.exchange.manager.RateGeneralManager;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @Service
 public class ExchangeService {
-	public enum ExchangeKey {
-		bank_ru,
-		bank_ua,
-		bank_by,
-		bank_kz,
-		metal_ru
-	}
-
 	private final TgMarkdownGenerator markdownGenerator;
 	private final RateGeneralManager rateGeneralManager;
 	private final LocalizationHelper localizationHelper;
@@ -34,8 +27,9 @@ public class ExchangeService {
 		rateGeneralManager.commitAllRates();
 	}
 
-	public String markdownReport(ExchangeKey key) {
-		switch (key) {
+	public String markdownReport(String key) {
+		ExchangeKey exchangeKey = ExchangeKey.checkExchangeKey(key);
+		switch (exchangeKey) {
 			default:
 			case bank_ru: return markdownGenerator.bankRuReport();
 			case bank_ua: return markdownGenerator.bankUaReport();
@@ -45,8 +39,9 @@ public class ExchangeService {
 		}
 	}
 
-	public String buttonLabel(ExchangeKey key) {
-		switch (key) {
+	public String buttonLabel(String key) {
+		ExchangeKey exchangeKey = ExchangeKey.checkExchangeKey(key);
+		switch (exchangeKey) {
 			default:
 			case bank_ru: return localizationHelper.i18n("exchange.bank.ru.button");
 			case bank_ua: return localizationHelper.i18n("exchange.bank.ua.button");

@@ -9,7 +9,7 @@ import ru.exlmoto.digest.bot.keyboard.impl.RateKeyboard;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.exchange.ExchangeService;
-import ru.exlmoto.digest.exchange.ExchangeService.ExchangeKey;
+import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @Component
@@ -25,6 +25,6 @@ public class RateCommand extends BotAbility {
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
 		sender.replyKeyboard(message.chat().id(), message.messageId(),
-			service.markdownReport(ExchangeKey.bank_ru), keyboard.getMarkup());
+			service.markdownReport(ExchangeKey.bank_ru.name()), keyboard.getMarkup());
 	}
 }

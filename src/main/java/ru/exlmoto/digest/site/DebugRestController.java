@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ru.exlmoto.digest.chart.ChartService;
 import ru.exlmoto.digest.exchange.ExchangeService;
-import ru.exlmoto.digest.exchange.ExchangeService.ExchangeKey;
+import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.motofan.MotofanService;
 
 import java.util.List;
@@ -32,11 +32,11 @@ public class DebugRestController {
 	@GetMapping("/ex")
 	public String home() {
 		return
-			exchangeService.markdownReport(ExchangeKey.bank_ru) + "\n\n" +
-			exchangeService.markdownReport(ExchangeKey.bank_ua) + "\n\n" +
-			exchangeService.markdownReport(ExchangeKey.bank_by) + "\n\n" +
-			exchangeService.markdownReport(ExchangeKey.bank_kz) + "\n\n" +
-			exchangeService.markdownReport(ExchangeKey.metal_ru);
+			exchangeService.markdownReport(ExchangeKey.bank_ru.name()) + "\n\n" +
+			exchangeService.markdownReport(ExchangeKey.bank_ua.name()) + "\n\n" +
+			exchangeService.markdownReport(ExchangeKey.bank_by.name()) + "\n\n" +
+			exchangeService.markdownReport(ExchangeKey.bank_kz.name()) + "\n\n" +
+			exchangeService.markdownReport(ExchangeKey.metal_ru.name());
 	}
 
 	@GetMapping("/ex/refresh")

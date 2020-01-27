@@ -65,7 +65,7 @@ public class ChartKeyboard extends BotKeyboard {
 		String key = callback.data().replaceAll(CHART, "");
 
 		sender.sendCallbackQueryAnswer(callback.id(),
-			locale.i18n("bot.inline.chart.selected") + " " + chartService.getTitle(key));
+			locale.i18n("bot.inline.selected") + " " + chartService.getTitle(key));
 
 		Answer<Chart> res = chartService.getChart(key);
 		if (res.ok()) {

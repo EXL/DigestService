@@ -14,6 +14,7 @@ import ru.exlmoto.digest.bot.ability.impl.HostIpCommand;
 import ru.exlmoto.digest.bot.ability.impl.SendCommand;
 import ru.exlmoto.digest.bot.ability.impl.StartCommand;
 import ru.exlmoto.digest.bot.ability.impl.ChartCommand;
+import ru.exlmoto.digest.bot.ability.impl.RateCommand;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 
 import javax.annotation.PostConstruct;
@@ -49,6 +50,7 @@ public class BotAbilityFactory {
 		addCommand("/sticker", SendCommand.class);
 		addCommand("/image", SendCommand.class);
 		addCommand("/charts", ChartCommand.class);
+		addCommand("/rates", RateCommand.class);
 	}
 
 	/*

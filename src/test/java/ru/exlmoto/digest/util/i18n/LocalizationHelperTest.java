@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class LocalizationHelperTest {
@@ -23,7 +23,7 @@ class LocalizationHelperTest {
 		assertThat(res).isInstanceOf(String.class);
 		System.out.println(res);
 
-		assertTrue(locale.i18n("unknown.key").startsWith("No message found under code"));
+		assertEquals("???", locale.i18n("unknown.key"));
 	}
 
 	@Test

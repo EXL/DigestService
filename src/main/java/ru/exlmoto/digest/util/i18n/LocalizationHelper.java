@@ -32,7 +32,7 @@ public class LocalizationHelper {
 			return messageSource.getMessage(key, null, Locale.forLanguageTag(lang));
 		} catch (NoSuchMessageException nsme) {
 			log.error(String.format("Message with key '%s' is missing.", key), nsme);
-			return nsme.getLocalizedMessage();
+			return "???";
 		}
 	}
 

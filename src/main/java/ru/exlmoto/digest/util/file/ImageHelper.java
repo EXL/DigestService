@@ -34,8 +34,8 @@ import static ru.exlmoto.digest.util.Answer.Ok;
 public class ImageHelper {
 	private final Logger log = LoggerFactory.getLogger(ImageHelper.class);
 
-	@Value("${image.use-probing}")
-	private boolean useProbing;
+	@Value("${image.use-image-io-read}")
+	private boolean useImageIoRead;
 
 	@Value("${image.download-file}")
 	private boolean downloadFile;
@@ -63,7 +63,7 @@ public class ImageHelper {
 
 	public boolean isFileImage(String path) {
 		File imageFile = new File(path);
-		return (useProbing) ? isFileImageProbing(imageFile) : isFileImageRead(imageFile);
+		return (useImageIoRead) ? isFileImageRead(imageFile) : isFileImageProbing(imageFile);
 	}
 
 	public boolean isFileImageProbing(File file) {

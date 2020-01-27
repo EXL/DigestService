@@ -55,6 +55,6 @@ public class ChartKeyboard extends BotKeyboard {
 
 	@Override
 	protected void handle(BotHelper helper, BotSender sender, LocalizationHelper locale, CallbackQuery callback) {
-		sender.sendCallbackQueryAnswer(callback.id(), "Here!");
+		sender.sendCallbackQueryAnswer(callback.id(), "Here: " + callback.data());
 	}
 }

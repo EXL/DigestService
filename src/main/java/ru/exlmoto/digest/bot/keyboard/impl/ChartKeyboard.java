@@ -17,12 +17,12 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Component
-public class ChartsKeyboard extends BotKeyboard {
+public class ChartKeyboard extends BotKeyboard {
 	private final ChartService chart;
 
 	private InlineKeyboardMarkup markup = null;
 
-	public ChartsKeyboard(ChartService chart) {
+	public ChartKeyboard(ChartService chart) {
 		this.chart = chart;
 	}
 

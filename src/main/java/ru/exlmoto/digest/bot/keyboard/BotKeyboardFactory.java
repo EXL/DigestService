@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.bot.keyboard.impl.ChartsKeyboard;
+import ru.exlmoto.digest.bot.keyboard.impl.ChartKeyboard;
 
 import javax.annotation.PostConstruct;
 
@@ -28,7 +28,7 @@ public class BotKeyboardFactory {
 
 	@PostConstruct
 	private void registerKeyboards() {
-		addKeyboard(BotKeyboard.CHART, ChartsKeyboard.class);
+		addKeyboard(BotKeyboard.CHART, ChartKeyboard.class);
 	}
 
 	private <T extends BotKeyboard> void addKeyboard(String keyboard, Class<T> botKeyboardClass) {

@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class ChartsKeyboardTest {
+class ChartKeyboardTest {
 	@Autowired
-	private ChartsKeyboard keyboard;
+	private ChartKeyboard keyboard;
 
 	@Test
 	public void testGetMarkup() {

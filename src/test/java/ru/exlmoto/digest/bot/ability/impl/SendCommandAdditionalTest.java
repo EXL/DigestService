@@ -25,6 +25,12 @@ class SendCommandAdditionalTest {
 	private LocalizationHelper locale;
 
 	@Test
+	public void testOnWrongCommand() {
+		/* Wrong command */
+		onCmd("/test error");
+	}
+
+	@Test
 	public void testSendOnWrongChats() {
 		/* Wrong chat */
 		onCmd("/send 87123336977 ad");

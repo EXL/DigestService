@@ -2,6 +2,9 @@ package ru.exlmoto.digest.bot.ability.impl;
 
 import com.pengrad.telegrambot.model.Message;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
 
@@ -17,23 +20,15 @@ import static ru.exlmoto.digest.util.Answer.Error;
 
 @Component
 public class SendCommand extends BotAbilityAdmin {
-	private final ImageHelper rest;
+	private final Logger log = LoggerFactory.getLogger(SendCommand.class);
 
 	private enum Command {
-		SEND("/send"),
-		STICKER("/sticker"),
-		IMAGE("/image");
-
-		private final String command;
-
-		Command(String command) {
-			this.command = command;
-		}
-
-		public String command() {
-			return command;
-		}
+		send,
+		sticker,
+		image
 	}
+
+	private final ImageHelper rest;
 
 	public SendCommand(ImageHelper rest) {
 		this.rest = rest;
@@ -46,7 +41,7 @@ public class SendCommand extends BotAbilityAdmin {
 		String text = message.text();
 		String[] commandWithArgs = text.split(" ");
 
-		Command command = determineCommand(text);
+		Command command = determineCommand(commandWithArgs[0]);
 
 		Answer<String> commandRes = checkCommand(commandWithArgs, command, locale);
 		if (!commandRes.ok()) {
@@ -65,15 +60,15 @@ public class SendCommand extends BotAbilityAdmin {
 			.replaceFirst(commandWithArgs[1], "").trim();
 
 		switch (command) {
-			case SEND: {
+			case send: {
 				sender.sendMessageToChat(chatId, text, origChatId, origMessageId);
 				break;
 			}
-			case STICKER: {
+			case sticker: {
 				sender.sendStickerToChat(chatId, text, origChatId, origMessageId);
 				break;
 			}
-			case IMAGE: {
+			case image: {
 				Answer<String> imageRes = rest.getImageByLink(text);
 				if (imageRes.ok()) {
 					sender.sendPhotoToChat(chatId, imageRes.answer(), origChatId, origMessageId);
@@ -87,22 +82,22 @@ public class SendCommand extends BotAbilityAdmin {
 	}
 
 	private Command determineCommand(String message) {
-		if (message.startsWith(Command.STICKER.command())) {
-			return Command.STICKER;
-		} else if (message.startsWith(Command.IMAGE.command())) {
-			return Command.IMAGE;
-		} else {
-			return Command.SEND;
+		String command = message.substring(1);
+		try {
+			return Command.valueOf(command);
+		} catch (IllegalArgumentException iae) {
+			log.error(String.format("Wrong command: '%s', return first default '%s'.", command, Command.send), iae);
+			return Command.send;
 		}
 	}
 
 	private Answer<String> checkCommand(String[] commandTokens, Command command, LocalizationHelper locale) {
-		boolean isTextMode = (command == Command.SEND);
+		boolean isTextMode = (command == Command.send);
 		if ((isTextMode && commandTokens.length < 3) || (!isTextMode && commandTokens.length != 3)) {
 			switch (command) {
-				case SEND: return Error(locale.i18n("bot.error.send.format"));
-				case STICKER: return Error(locale.i18n("bot.error.sticker.format"));
-				case IMAGE: return Error(locale.i18n("bot.error.image.format"));
+				case send: return Error(locale.i18n("bot.error.send.format"));
+				case sticker: return Error(locale.i18n("bot.error.sticker.format"));
+				case image: return Error(locale.i18n("bot.error.image.format"));
 			}
 		}
 		return Ok("Ok!");

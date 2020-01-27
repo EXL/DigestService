@@ -12,8 +12,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
@@ -29,20 +29,33 @@ class ChartServiceTest {
 	}
 
 	@Test
+	public void testGetTitle() {
+		String title = chartService.getTitle("usd_rub");
+		assertThat(title).isNotEmpty();
+		assertThat(title).isInstanceOf(String.class);
+		System.out.println(title);
+
+		title = chartService.getTitle("unknown_key");
+		assertEquals("???", title);
+	}
+
+	@Test
 	public void testMarkdownDescriptions() {
 		String descriptions = chartService.markdownDescriptions();
 		assertThat(descriptions).isNotEmpty();
+		assertThat(descriptions).isInstanceOf(String.class);
 		System.out.println(descriptions);
 	}
 
 	@Test
 	public void testGetButtonLabel() {
-		String res = chartService.getButtonLabel("usd_rub");
-		assertThat(res).isNotEmpty();
-		assertThat(res).isInstanceOf(String.class);
-		System.out.println(res);
+		String label = chartService.getButtonLabel("usd_rub");
+		assertThat(label).isNotEmpty();
+		assertThat(label).isInstanceOf(String.class);
+		System.out.println(label);
 
-		assertThrows(NullPointerException.class, () -> chartService.getButtonLabel("unknown_key"));
+		label = chartService.getButtonLabel("unknown_key");
+		assertEquals("???", label);
 	}
 
 	@Test

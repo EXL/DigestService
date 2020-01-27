@@ -78,7 +78,11 @@ public class ChartService {
 	}
 
 	public String getButtonLabel(String key) {
-		return chartMap.get(key).getButton();
+		return chartMap.containsKey(key) ? chartMap.get(key).getButton() : "???";
+	}
+
+	public String getTitle(String key) {
+		return chartMap.containsKey(key) ? chartMap.get(key).getTitle() : "???";
 	}
 
 	public Answer<Chart> getChart(String key) {

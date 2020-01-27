@@ -12,30 +12,45 @@ import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.chart.ChartService;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
+import javax.annotation.PostConstruct;
+
 import java.util.List;
 
 @Component
 public class ChartsKeyboard extends BotKeyboard {
 	private final ChartService chart;
 
+	private InlineKeyboardMarkup markup = null;
+
 	public ChartsKeyboard(ChartService chart) {
 		this.chart = chart;
 	}
 
+	@PostConstruct
+	private void generateKeyboard() {
+		List<String> keys = chart.getChartKeys();
+
+		final int columns = 4;
+		final int size = keys.size();
+		final int rows = ((size - 1) / columns) + 1;
+
+		InlineKeyboardButton[][] keyboard = new InlineKeyboardButton[rows][];
+		for (int i = 0; i < rows; i++) {
+			int columnLength = columns - ((columns * rows) - size) * (rows / (rows * (rows - i)));
+			// int columnLength = (i == rows - 1) ? columns - ((columns * rows) - size) : columns;
+			InlineKeyboardButton[] keyboardRow = new InlineKeyboardButton[columnLength];
+			for (int j = 0; j < columnLength; j++) {
+				String key = keys.get(columns * i + j);
+				keyboardRow[j] = new InlineKeyboardButton(key).callbackData(CHART + key);
+			}
+			keyboard[i] = keyboardRow;
+		}
+		markup = new InlineKeyboardMarkup(keyboard);
+	}
+
 	@Override
 	public InlineKeyboardMarkup getMarkup() {
-		List<String> keys = chart.getChartKeys();
-		final int columns = 4;
-		final int rows = keys.size() / columns;
-
-		InlineKeyboardButton[][] keyboard = new InlineKeyboardButton[rows][columns];
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				String key = keys.get(columns * i + j);
-				keyboard[i][j] = new InlineKeyboardButton(key).callbackData(CHART + key);
-			}
-		}
-		return new InlineKeyboardMarkup(keyboard);
+		return markup;
 	}
 
 	@Override

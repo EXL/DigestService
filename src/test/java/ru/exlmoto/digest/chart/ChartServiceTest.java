@@ -29,6 +29,13 @@ class ChartServiceTest {
 	}
 
 	@Test
+	public void testMarkdownDescriptions() {
+		String descriptions = chartService.markdownDescriptions();
+		assertThat(descriptions).isNotEmpty();
+		System.out.println(descriptions);
+	}
+
+	@Test
 	public void testGetButtonLabel() {
 		String res = chartService.getButtonLabel("usd_rub");
 		assertThat(res).isNotEmpty();

@@ -65,6 +65,12 @@ public class ChartService {
 		return res;
 	}
 
+	public String markdownDescriptions() {
+		StringBuilder builder = new StringBuilder("```\n");
+		chartMap.forEach((k, v) -> builder.append(v.getDesc()).append("\n"));
+		return builder.append("```").toString();
+	}
+
 	public List<String> getChartKeys() {
 		List<String> keys = new ArrayList<>();
 		chartMap.forEach((k, v) -> keys.add(k));

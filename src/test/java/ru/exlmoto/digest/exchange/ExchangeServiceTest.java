@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ru.exlmoto.digest.exchange.util.ExchangeKeys;
+import ru.exlmoto.digest.exchange.ExchangeService.ExchangeKey;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,19 +21,19 @@ class ExchangeServiceTest {
 
 	@Test
 	public void testMarkdownReports() {
-		assertThat(exchangeService.markdownReport(ExchangeKeys.BANK_RU)).isNotBlank();
-		assertThat(exchangeService.markdownReport(ExchangeKeys.BANK_UA)).isNotBlank();
-		assertThat(exchangeService.markdownReport(ExchangeKeys.BANK_BY)).isNotBlank();
-		assertThat(exchangeService.markdownReport(ExchangeKeys.BANK_KZ)).isNotBlank();
-		assertThat(exchangeService.markdownReport(ExchangeKeys.METAL_RU)).isNotBlank();
+		assertThat(exchangeService.markdownReport(ExchangeKey.bank_ru)).isNotBlank();
+		assertThat(exchangeService.markdownReport(ExchangeKey.bank_ua)).isNotBlank();
+		assertThat(exchangeService.markdownReport(ExchangeKey.bank_by)).isNotBlank();
+		assertThat(exchangeService.markdownReport(ExchangeKey.bank_kz)).isNotBlank();
+		assertThat(exchangeService.markdownReport(ExchangeKey.metal_ru)).isNotBlank();
 	}
 
 	@Test
 	public void testButtonLabels() {
-		assertThat(exchangeService.buttonLabel(ExchangeKeys.BANK_RU)).isNotBlank();
-		assertThat(exchangeService.buttonLabel(ExchangeKeys.BANK_UA)).isNotBlank();
-		assertThat(exchangeService.buttonLabel(ExchangeKeys.BANK_BY)).isNotBlank();
-		assertThat(exchangeService.buttonLabel(ExchangeKeys.BANK_KZ)).isNotBlank();
-		assertThat(exchangeService.buttonLabel(ExchangeKeys.METAL_RU)).isNotBlank();
+		assertThat(exchangeService.buttonLabel(ExchangeKey.bank_ru)).isNotBlank();
+		assertThat(exchangeService.buttonLabel(ExchangeKey.bank_ua)).isNotBlank();
+		assertThat(exchangeService.buttonLabel(ExchangeKey.bank_by)).isNotBlank();
+		assertThat(exchangeService.buttonLabel(ExchangeKey.bank_kz)).isNotBlank();
+		assertThat(exchangeService.buttonLabel(ExchangeKey.metal_ru)).isNotBlank();
 	}
 }

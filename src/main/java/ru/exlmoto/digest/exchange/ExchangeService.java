@@ -5,11 +5,18 @@ import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digest.exchange.generator.TgMarkdownGenerator;
 import ru.exlmoto.digest.exchange.manager.RateGeneralManager;
-import ru.exlmoto.digest.exchange.util.ExchangeKeys;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @Service
 public class ExchangeService {
+	public enum ExchangeKey {
+		bank_ru,
+		bank_ua,
+		bank_by,
+		bank_kz,
+		metal_ru
+	}
+
 	private final TgMarkdownGenerator markdownGenerator;
 	private final RateGeneralManager rateGeneralManager;
 	private final LocalizationHelper localizationHelper;
@@ -27,25 +34,25 @@ public class ExchangeService {
 		rateGeneralManager.commitAllRates();
 	}
 
-	public String markdownReport(String key) {
+	public String markdownReport(ExchangeKey key) {
 		switch (key) {
 			default:
-			case ExchangeKeys.BANK_RU: return markdownGenerator.bankRuReport();
-			case ExchangeKeys.BANK_UA: return markdownGenerator.bankUaReport();
-			case ExchangeKeys.BANK_BY: return markdownGenerator.bankByReport();
-			case ExchangeKeys.BANK_KZ: return markdownGenerator.bankKzReport();
-			case ExchangeKeys.METAL_RU: return markdownGenerator.metalRuReport();
+			case bank_ru: return markdownGenerator.bankRuReport();
+			case bank_ua: return markdownGenerator.bankUaReport();
+			case bank_by: return markdownGenerator.bankByReport();
+			case bank_kz: return markdownGenerator.bankKzReport();
+			case metal_ru: return markdownGenerator.metalRuReport();
 		}
 	}
 
-	public String buttonLabel(String key) {
+	public String buttonLabel(ExchangeKey key) {
 		switch (key) {
 			default:
-			case ExchangeKeys.BANK_RU: return localizationHelper.i18n("exchange.bank.ru.button");
-			case ExchangeKeys.BANK_UA: return localizationHelper.i18n("exchange.bank.ua.button");
-			case ExchangeKeys.BANK_BY: return localizationHelper.i18n("exchange.bank.by.button");
-			case ExchangeKeys.BANK_KZ: return localizationHelper.i18n("exchange.bank.kz.button");
-			case ExchangeKeys.METAL_RU: return localizationHelper.i18n("exchange.metal.ru.button");
+			case bank_ru: return localizationHelper.i18n("exchange.bank.ru.button");
+			case bank_ua: return localizationHelper.i18n("exchange.bank.ua.button");
+			case bank_by: return localizationHelper.i18n("exchange.bank.by.button");
+			case bank_kz: return localizationHelper.i18n("exchange.bank.kz.button");
+			case metal_ru: return localizationHelper.i18n("exchange.metal.ru.button");
 		}
 	}
 }

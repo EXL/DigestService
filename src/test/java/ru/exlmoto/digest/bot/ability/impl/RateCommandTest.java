@@ -27,6 +27,6 @@ class RateCommandTest {
 	@Test
 	public void testRateCommand() {
 		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/rate", "anyone"));
+			new MessageHelper().getSimpleMessage("/rates", "anyone"));
 	}
 }

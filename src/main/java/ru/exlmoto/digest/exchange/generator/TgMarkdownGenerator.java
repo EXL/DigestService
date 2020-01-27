@@ -112,15 +112,16 @@ public class TgMarkdownGenerator {
 		if (difference != null) {
 			report += " " + locale.i18n("exchange.change") + " " + difference;
 		}
-		report += "\n" + String.format(locale.i18n("exchange.metal.header"), filterDate(metalRuEntity.getDate()));
+		report += "\n" + String.format(locale.i18n("exchange.metal.ru.header"),
+			filterDate(metalRuEntity.getDate()));
 		report += "\n```\n";
-		report += String.format("%s %s RUB.\n", filterMetalName(locale.i18n("exchange.metal.gold")),
+		report += String.format("%s %s RUB.\n", filterMetalName(locale.i18n("exchange.metal.ru.gold")),
 			filterValue(metalRuEntity.getGold()));
-		report += String.format("%s %s RUB.\n", filterMetalName(locale.i18n("exchange.metal.silver")),
+		report += String.format("%s %s RUB.\n", filterMetalName(locale.i18n("exchange.metal.ru.silver")),
 			filterValue(metalRuEntity.getSilver()));
-		report += String.format("%s %s RUB.\n", filterMetalName(locale.i18n("exchange.metal.platinum")),
+		report += String.format("%s %s RUB.\n", filterMetalName(locale.i18n("exchange.metal.ru.platinum")),
 			filterValue(metalRuEntity.getPlatinum()));
-		report += String.format("%s %s RUB.\n", filterMetalName(locale.i18n("exchange.metal.palladium")),
+		report += String.format("%s %s RUB.\n", filterMetalName(locale.i18n("exchange.metal.ru.palladium")),
 			filterValue(metalRuEntity.getPalladium()));
 		return report + "```";
 	}

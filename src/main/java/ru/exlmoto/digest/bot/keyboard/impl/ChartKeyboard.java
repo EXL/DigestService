@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot.keyboard.impl;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
@@ -10,6 +11,8 @@ import ru.exlmoto.digest.bot.keyboard.BotKeyboard;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.chart.ChartService;
+import ru.exlmoto.digest.chart.yaml.Chart;
+import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 import javax.annotation.PostConstruct;
@@ -55,6 +58,21 @@ public class ChartKeyboard extends BotKeyboard {
 
 	@Override
 	protected void handle(BotHelper helper, BotSender sender, LocalizationHelper locale, CallbackQuery callback) {
-		sender.sendCallbackQueryAnswer(callback.id(), "Here: " + callback.data());
+		Message message = callback.message();
+		long chatId = message.chat().id();
+		int messageId = message.messageId();
+
+		String key = callback.data().replaceAll(CHART, "");
+
+		sender.sendCallbackQueryAnswer(callback.id(),
+			locale.i18n("bot.inline.chart.selected") + " " + chartService.getTitle(key));
+
+		Answer<Chart> res = chartService.getChart(key);
+		if (res.ok()) {
+			Chart chart = res.answer();
+			sender.replyPhoto(chatId, messageId, chart.getPath(), chart.getTitle());
+		} else {
+			sender.replyMessage(chatId, messageId, String.format(locale.i18n("bot.error.chart"), res.error()));
+		}
 	}
 }

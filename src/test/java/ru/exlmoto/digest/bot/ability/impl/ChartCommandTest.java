@@ -11,9 +11,9 @@ import ru.exlmoto.digest.bot.util.MessageHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @SpringBootTest(properties = "bot.silent=true")
-class CoffeeCommandTest {
+class ChartCommandTest {
 	@Autowired
-	private CoffeeCommand command;
+	private ChartCommand command;
 
 	@Autowired
 	private BotHelper helper;
@@ -25,8 +25,8 @@ class CoffeeCommandTest {
 	private LocalizationHelper locale;
 
 	@Test
-	public void testCoffeeCommand() {
+	public void testChartCommand() {
 		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/coffee", "anyone"));
+			new MessageHelper().getSimpleMessage("/charts", "anyone"));
 	}
 }

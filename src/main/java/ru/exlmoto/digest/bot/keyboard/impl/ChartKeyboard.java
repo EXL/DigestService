@@ -18,17 +18,17 @@ import java.util.List;
 
 @Component
 public class ChartKeyboard extends BotKeyboard {
-	private final ChartService chart;
+	private final ChartService chartService;
 
 	private InlineKeyboardMarkup markup = null;
 
-	public ChartKeyboard(ChartService chart) {
-		this.chart = chart;
+	public ChartKeyboard(ChartService chartService) {
+		this.chartService = chartService;
 	}
 
 	@PostConstruct
 	private void generateKeyboard() {
-		List<String> keys = chart.getChartKeys();
+		List<String> keys = chartService.getChartKeys();
 
 		final int columns = 4;
 		final int size = keys.size();
@@ -41,7 +41,7 @@ public class ChartKeyboard extends BotKeyboard {
 			InlineKeyboardButton[] keyboardRow = new InlineKeyboardButton[columnLength];
 			for (int j = 0; j < columnLength; j++) {
 				String key = keys.get(columns * i + j);
-				keyboardRow[j] = new InlineKeyboardButton(key).callbackData(CHART + key);
+				keyboardRow[j] = new InlineKeyboardButton(chartService.getButtonLabel(key)).callbackData(CHART + key);
 			}
 			keyboard[i] = keyboardRow;
 		}

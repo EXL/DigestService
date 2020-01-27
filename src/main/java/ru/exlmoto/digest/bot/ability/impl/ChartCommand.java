@@ -13,16 +13,18 @@ import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @Component
 public class ChartCommand extends BotAbility {
-	private final ChartKeyboard keyboard;
-	private final ChartService service;
+	private final ChartKeyboard chartKeyboard;
+	private final ChartService chartService;
 
-	public ChartCommand(ChartKeyboard keyboard, ChartService service) {
-		this.keyboard = keyboard;
-		this.service = service;
+	public ChartCommand(ChartKeyboard chartKeyboard, ChartService chartService) {
+		this.chartKeyboard = chartKeyboard;
+		this.chartService = chartService;
 	}
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
-		sender.replyKeyboard(message.chat().id(), message.messageId(), "Test!", keyboard.getMarkup());
+		sender.replyKeyboard(message.chat().id(), message.messageId(),
+			locale.i18n("bot.command.charts") + "\n\n" + chartService.markdownDescriptions(),
+			chartKeyboard.getMarkup());
 	}
 }

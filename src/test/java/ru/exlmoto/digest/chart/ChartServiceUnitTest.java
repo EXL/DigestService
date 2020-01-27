@@ -37,6 +37,9 @@ class ChartServiceUnitTest {
 		assertNotNull(chartSecond);
 		System.out.println(chartFirst);
 		System.out.println(chartSecond);
+
+		final String yamlEmpty = resourceHelper.readFileToString("classpath:chart/charts-empty.yaml");
+		assertThrows(IllegalArgumentException.class, () -> chartService.parseChartsYamlFile(yamlEmpty, "en"));
 	}
 
 	@Test

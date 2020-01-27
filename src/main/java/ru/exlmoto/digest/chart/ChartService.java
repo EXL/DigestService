@@ -53,6 +53,7 @@ public class ChartService {
 
 	public Map<String, Chart> parseChartsYamlFile(String yaml, String lang) {
 		Map<String, Map<String, String>> yamlMap = new Yaml().load(yaml);
+		Assert.notEmpty(yamlMap, "Cannot create Chart object. Is YAML file empty?");
 		Map<String, Chart> res = new LinkedHashMap<>();
 		yamlMap.forEach((k, v) -> res.put(k, new Chart(v, lang)));
 		StringJoiner joiner = new StringJoiner(", ");

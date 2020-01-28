@@ -40,7 +40,7 @@ public class DebugCommand extends BotAbilityAdmin {
 		this.callbackQueriesWorker = callbackQueriesWorker;
 	}
 
-	private enum Argument {
+	private enum Option {
 		VRates,
 		VPosts,
 		VShredder,
@@ -58,7 +58,7 @@ public class DebugCommand extends BotAbilityAdmin {
 		String answer = locale.i18n("bot.command.debug.help");
 		String[] arguments = message.text().split(" ");
 		if (arguments.length == 2) {
-			switch (checkArgument(arguments[1])) {
+			switch (checkOption(arguments[1])) {
 				case VRates: { answer = processRates(locale); break; }
 				case VPosts: { answer = processPosts(locale); break; }
 				//case VShredder: { /* TODO: */ break; }
@@ -73,11 +73,11 @@ public class DebugCommand extends BotAbilityAdmin {
 		sender.replyMessage(message.chat().id(), message.messageId(), answer);
 	}
 
-	private Argument checkArgument(String argument) {
+	private Option checkOption(String argument) {
 		try {
-			return Argument.valueOf(argument);
+			return Option.valueOf(argument);
 		} catch (IllegalArgumentException iae) {
-			return Argument.UNHANDLED_DEFAULT;
+			return Option.UNHANDLED_DEFAULT;
 		}
 	}
 
@@ -100,30 +100,30 @@ public class DebugCommand extends BotAbilityAdmin {
 	private String processStatus(LocalizationHelper locale) {
 		return
 			locale.i18n("bot.command.debug.values") + "\n\n```\n" +
-			Argument.BLogUpdates + ": " + config.isLogUpdates() + "\n" +
-			Argument.BGreetings + ": " + config.isShowGreetings() + "\n" +
-			Argument.BSilent + ": " + config.isSilent() + "\n```";
+			Option.BLogUpdates + ": " + config.isLogUpdates() + "\n" +
+			Option.BGreetings + ": " + config.isShowGreetings() + "\n" +
+			Option.BSilent + ": " + config.isSilent() + "\n```";
 	}
 
 	private String toggleUpdates(LocalizationHelper locale) {
 		boolean value = !config.isLogUpdates();
 		config.setLogUpdates(value);
-		return saveSettingsToDataBase(locale, Argument.BLogUpdates, value);
+		return saveSettingsToDataBase(locale, Option.BLogUpdates, value);
 	}
 
 	private String toggleGreetings(LocalizationHelper locale) {
 		boolean value = !config.isShowGreetings();
 		config.setShowGreetings(value);
-		return saveSettingsToDataBase(locale, Argument.BGreetings, value);
+		return saveSettingsToDataBase(locale, Option.BGreetings, value);
 	}
 
 	private String toggleSilent(LocalizationHelper locale) {
 		boolean value = !config.isSilent();
 		config.setSilent(value);
-		return saveSettingsToDataBase(locale, Argument.BSilent, value);
+		return saveSettingsToDataBase(locale, Option.BSilent, value);
 	}
 
-	private String saveSettingsToDataBase(LocalizationHelper locale, Argument variableName, boolean value) {
+	private String saveSettingsToDataBase(LocalizationHelper locale, Option variableName, boolean value) {
 		try {
 			telegram.saveTelegramBotSettings();
 			return String.format(locale.i18n("bot.command.debug.variable"), variableName, value);

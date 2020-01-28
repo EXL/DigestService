@@ -28,5 +28,23 @@ class DebugCommandTest {
 	public void testDebugCommand() {
 		command.execute(helper, sender, locale,
 			new MessageHelper().getSimpleMessage("/debug", "exlmoto"));
+
+		command.execute(helper, sender, locale,
+			new MessageHelper().getSimpleMessage("/debug Unknown", "exlmoto"));
+
+		command.execute(helper, sender, locale,
+			new MessageHelper().getSimpleMessage("/debug Unknown Unknown", "exlmoto"));
+	}
+
+	@Test
+	public void testDebugCommandOnSomeOptions() {
+		command.execute(helper, sender, locale,
+			new MessageHelper().getSimpleMessage("/debug VStatus", "exlmoto"));
+
+		command.execute(helper, sender, locale,
+			new MessageHelper().getSimpleMessage("/debug VQueries", "exlmoto"));
+
+		command.execute(helper, sender, locale,
+			new MessageHelper().getSimpleMessage("/debug BGreetings", "exlmoto"));
 	}
 }

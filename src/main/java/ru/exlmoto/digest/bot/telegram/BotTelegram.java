@@ -44,9 +44,9 @@ public class BotTelegram {
 			firstName = botUser.firstName();
 			id = botUser.id();
 
-			log.info(String.format("=> Hello! My name is '%s'.", firstName));
-			log.info(String.format("=> My id is '%d'.", id));
-			log.info(String.format("=> And my username is '%s'.", username));
+			log.info(String.format("==> Hello! My name is '%s'.", firstName));
+			log.info(String.format("==> My id is '%d'.", id));
+			log.info(String.format("==> And my username is '%s'.", username));
 
 			log.info("=> End initialize Telegram Bot.");
 		} else {

@@ -16,8 +16,8 @@ public enum ExchangeKey {
 		try {
 			return ExchangeKey.valueOf(key);
 		} catch (IllegalArgumentException iae) {
-			log.error(String.format("Wrong exchange key: '%s', return first default '%s'.", key, bank_ru), iae);
-			return bank_ru;
+			log.error(String.format("Wrong exchange key: '%s', return default '%s'.", key, bank_ru), iae);
 		}
+		return bank_ru;
 	}
 }

@@ -86,9 +86,9 @@ public class SendCommand extends BotAbilityAdmin {
 		try {
 			return Command.valueOf(command);
 		} catch (IllegalArgumentException iae) {
-			log.error(String.format("Wrong command: '%s', return first default '%s'.", command, Command.send), iae);
-			return Command.send;
+			log.error(String.format("Wrong command: '%s', return default '%s'.", command, Command.send), iae);
 		}
+		return Command.send;
 	}
 
 	private Answer<String> checkCommand(String[] commandTokens, Command command, LocalizationHelper locale) {

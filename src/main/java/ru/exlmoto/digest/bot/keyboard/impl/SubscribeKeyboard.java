@@ -2,6 +2,8 @@ package ru.exlmoto.digest.bot.keyboard.impl;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Chat;
+import com.pengrad.telegrambot.model.Chat.Type;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
@@ -15,6 +17,8 @@ import ru.exlmoto.digest.bot.keyboard.BotKeyboard;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.entity.SubDigestEntity;
+import ru.exlmoto.digest.entity.SubMotofanEntity;
 import ru.exlmoto.digest.repository.SubDigestRepository;
 import ru.exlmoto.digest.repository.SubMotofanRepository;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
@@ -77,7 +81,23 @@ public class SubscribeKeyboard extends BotKeyboard {
 
 	@Override
 	protected void handle(BotHelper helper, BotSender sender, LocalizationHelper locale, CallbackQuery callback) {
-		log.warn("Chop: " + callback.data());
+		Message message = callback.message();
+		int messageId = message.messageId();
+		Chat chat = message.chat();
+		long chatId = chat.id();
+
+		String callbackId = callback.id();
+		String key = callback.data().replaceAll(SUBSCRIBE, "");
+
+		if (!chat.type().equals(Type.Private)) {
+			if (!helper.isUserAdmin(callback.from().username())) {
+				handleSubscription(chatId, messageId, chat, callbackId, sender, checkSubscription(key));
+			} else {
+				sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.admin"));
+			}
+		} else {
+			handleSubscription(chatId, messageId, chat, callbackId, sender, checkSubscription(key));
+		}
 	}
 
 	public String getSubscribeStatusMessage(Chat chat) {
@@ -97,5 +117,82 @@ public class SubscribeKeyboard extends BotKeyboard {
 		return (status) ?
 			locale.i18n("bot.command.subscribe.subscribed") :
 			locale.i18n("bot.command.subscribe.unsubscribed");
+	}
+
+	private Subscription checkSubscription(String key) {
+		try {
+			return Subscription.valueOf(key);
+		} catch (IllegalArgumentException iae) {
+			log.error(String.format("Wrong subscribe key: '%s', return default '%s'.",
+				key, Subscription.motofan_subscribe), iae);
+		}
+		return Subscription.motofan_subscribe;
+	}
+
+	private void handleSubscription(long chatId, int messageId, Chat chat, String callbackId, BotSender sender,
+	                                Subscription subscription) {
+		try {
+			switch (subscription) {
+				case motofan_subscribe: {
+					motofanSubscribe(chatId, messageId, chat, callbackId, sender);
+					break;
+				}
+				case motofan_unsubscribe: {
+					motofanUnsubscribe(chatId, messageId, chat, callbackId, sender);
+					break;
+				}
+				case digest_subscribe: {
+					digestSubscribe(chatId, messageId, chat, callbackId, sender);
+					break;
+				}
+				case digest_unsubscribe: {
+					digestUnsubscribe(chatId, messageId, chat, callbackId, sender);
+					break;
+				}
+			}
+		} catch (DataAccessException dae) {
+			log.error("Cannot save or delete object from database.", dae);
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.database"));
+		}
+	}
+
+	private void motofanSubscribe(long chatId, int messageId, Chat chat, String callbackId, BotSender sender) {
+		if (motofanRepository.findSubMotofanEntityBySubscription(chatId) != null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
+		} else {
+			motofanRepository.save(new SubMotofanEntity(chatId));
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
+			sender.editMessage(chatId, messageId, getSubscribeStatusMessage(chat), markup);
+		}
+	}
+
+	private void motofanUnsubscribe(long chatId, int messageId, Chat chat, String callbackId, BotSender sender) {
+		if (motofanRepository.findSubMotofanEntityBySubscription(chatId) == null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
+		} else {
+			motofanRepository.deleteSubMotofanEntityBySubscription(chatId);
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
+			sender.editMessage(chatId, messageId, getSubscribeStatusMessage(chat), markup);
+		}
+	}
+
+	private void digestSubscribe(long chatId, int messageId, Chat chat, String callbackId, BotSender sender) {
+		if (digestRepository.findSubDigestEntityBySubscription(chatId) != null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
+		} else {
+			digestRepository.save(new SubDigestEntity(chatId));
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
+			sender.editMessage(chatId, messageId, getSubscribeStatusMessage(chat), markup);
+		}
+	}
+
+	private void digestUnsubscribe(long chatId, int messageId, Chat chat, String callbackId, BotSender sender) {
+		if (digestRepository.findSubDigestEntityBySubscription(chatId) == null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
+		} else {
+			digestRepository.deleteSubDigestEntityBySubscription(chatId);
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
+			sender.editMessage(chatId, messageId, getSubscribeStatusMessage(chat), markup);
+		}
 	}
 }

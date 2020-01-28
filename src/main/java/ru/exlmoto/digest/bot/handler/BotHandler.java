@@ -8,7 +8,6 @@ import com.pengrad.telegrambot.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.BotAbility;
@@ -60,13 +59,6 @@ public class BotHandler {
 		this.abilityFactory = abilityFactory;
 		this.keyboardFactory = keyboardFactory;
 		this.locale = locale;
-	}
-
-	@Scheduled(cron = "${cron.bot.callbacks.clear}")
-	public void clearCallbackQueriesMap() {
-		log.info(String.format("=> Start clear Callback Queries Map, size: '%d'.", callbackQueriesMap.size()));
-		callbackQueriesMap.clear();
-		log.info(String.format("=> End clear Callback Queries Map, size: '%d'.", callbackQueriesMap.size()));
 	}
 
 	public void onCommand(Message message) {
@@ -184,5 +176,9 @@ public class BotHandler {
 
 	public void onNewPhotos(Message message) {
 		sender.replyMessage(message.chat().id(), message.messageId(), locale.i18n("bot.event.photo.change"));
+	}
+
+	public Map<Long, Long> getCallbackQueriesMap() {
+		return callbackQueriesMap;
 	}
 }

@@ -99,13 +99,17 @@ public class BotTelegram {
 			if (setupBotEntity != null) {
 				return Ok(setupBotEntity);
 			} else {
-				repository.save(new SetupBotEntity(config.isLogUpdates(), config.isShowGreetings(), config.isSilent()));
+				saveTelegramBotSettings();
 				return Error("===> Creating Telegram Bot settings table, because it does not exist. First run?");
 			}
 		} catch (DataAccessException dae) {
-			log.error("Cannot get Telegram Bot settings object from database.", dae);
+			log.error("Cannot operate with Telegram Bot settings object from database.", dae);
 		}
 		throw new IllegalStateException("Telegram Bot settings is damaged.");
+	}
+
+	public void saveTelegramBotSettings() {
+		repository.save(new SetupBotEntity(config.isLogUpdates(), config.isShowGreetings(), config.isSilent()));
 	}
 
 	public TelegramBot getBot() {

@@ -7,9 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ru.exlmoto.digest.bot.util.MessageHelper;
 
+import java.util.Map;
+
 import static com.pengrad.telegrambot.model.MessageEntity.Type.bot_command;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(properties = "bot.silent=true")
 class BotHandlerTest {
@@ -39,6 +42,13 @@ class BotHandlerTest {
 		assertEquals("_", handler.chopCallbackData("_"));
 		assertEquals("_", handler.chopCallbackData("_a"));
 		assertEquals("_", handler.chopCallbackData("_ab"));
+	}
+
+	@Test
+	public void testGetCallbackQueriesMap() {
+		Map<Long, Long> map = handler.getCallbackQueriesMap();
+		assertNotNull(map);
+		assertEquals(0, map.size());
 	}
 
 	@Test

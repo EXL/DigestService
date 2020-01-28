@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.keyboard.impl.ChartKeyboard;
 import ru.exlmoto.digest.bot.keyboard.impl.RateKeyboard;
+import ru.exlmoto.digest.bot.keyboard.impl.SubscribeKeyboard;
 
 import javax.annotation.PostConstruct;
 
@@ -31,6 +32,7 @@ public class BotKeyboardFactory {
 	private void registerKeyboards() {
 		addKeyboard(BotKeyboard.CHART, ChartKeyboard.class);
 		addKeyboard(BotKeyboard.RATE, RateKeyboard.class);
+		addKeyboard(BotKeyboard.SUBSCRIBE, SubscribeKeyboard.class);
 	}
 
 	private <T extends BotKeyboard> void addKeyboard(String keyboard, Class<T> botKeyboardClass) {

@@ -26,13 +26,13 @@ class SendCommandAdditionalTest {
 
 	@Test
 	public void testOnWrongCommand() {
-		/* Wrong command */
+		/* Wrong command. */
 		onCmd("/test error");
 	}
 
 	@Test
 	public void testSendOnWrongChats() {
-		/* Wrong chat */
+		/* Wrong chat. */
 		onCmd("/send 87123336977 ad");
 		onCmd("/sticker 87123336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI");
 		onCmd("/image 87123336977 https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png");
@@ -40,7 +40,7 @@ class SendCommandAdditionalTest {
 
 	@Test
 	public void testSendOnImageError() {
-		/* Image error */
+		/* Image error. */
 		onCmd("/image 87336977 https://exlmoto.ru");
 		onCmd("/image 87336977 https://exlmotor.ru");
 		onCmd("/image 87336977 https://mirror.yandex.ru/astra/current/orel/iso/orel-current.iso");

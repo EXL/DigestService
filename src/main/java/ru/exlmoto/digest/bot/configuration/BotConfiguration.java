@@ -12,6 +12,7 @@ public class BotConfiguration {
 	private int maxUpdates;
 	private int maxSendLength;
 	private int cooldown;
+	private int messageDelay;
 	private boolean logUpdates;
 	private boolean disableNotifications;
 	private boolean silent;
@@ -80,6 +81,14 @@ public class BotConfiguration {
 
 	public void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
+	}
+
+	public int getMessageDelay() {
+		return messageDelay;
+	}
+
+	public void setMessageDelay(int messageDelay) {
+		this.messageDelay = messageDelay;
 	}
 
 	public boolean isLogUpdates() {

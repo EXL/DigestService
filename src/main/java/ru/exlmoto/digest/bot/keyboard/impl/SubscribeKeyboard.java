@@ -123,7 +123,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 				getSubscribeStatus(motofanRepository.findSubMotofanEntityBySubscription(chatId) != null),
 				getSubscribeStatus(digestRepository.findSubDigestEntityBySubscription(chatId) != null)));
 		} catch (DataAccessException dae) {
-			log.error("Cannot get object from database.", dae);
+			log.error("Cannot get subscribe object from database.", dae);
 			return Error(String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage()));
 		}
 	}
@@ -166,7 +166,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 				}
 			}
 		} catch (DataAccessException dae) {
-			log.error("Cannot save or delete object from database.", dae);
+			log.error("Cannot save or delete subscribe object from database.", dae);
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.database"));
 		}
 	}

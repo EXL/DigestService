@@ -47,9 +47,7 @@ public class MotofanService {
 	}
 
 	public List<String> getLastMotofanPostsInHtml() {
-		log.info("=> Start crawling MotoFan.Ru last posts.");
 		List<MotofanPost> motofanPosts = getLastMotofanPosts();
-		log.info("=> End crawling MotoFan.Ru last posts.");
 		if (motofanPosts != null) {
 			List<String> motofanPostsInHtml = new ArrayList<>();
 			for (MotofanPost post : motofanPosts) {
@@ -61,7 +59,9 @@ public class MotofanService {
 	}
 
 	public List<MotofanPost> getLastMotofanPosts() {
+		log.info("=> Start crawling MotoFan.Ru last posts.");
 		MotofanPost[] motofanPosts = getMotofanPostObjects();
+		log.info("=> End crawling MotoFan.Ru last posts.");
 		if (motofanPosts != null) {
 			if (timestamp == 0L) {
 				setLastValues(motofanPosts, 0);

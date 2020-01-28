@@ -1,4 +1,4 @@
-package ru.exlmoto.digest;
+package ru.exlmoto.digest.bot.worker;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,12 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class DigestApplicationTest {
+class MotofanWorkerTest {
 	@Autowired
-	private DigestApplication application;
+	private MotofanWorker worker;
 
 	@Test
 	public void contextLoads() {
-		assertNotNull(application);
+		assertNotNull(worker);
 	}
 }

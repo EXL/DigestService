@@ -100,7 +100,7 @@ public class BotTelegram {
 				return Ok(setupBotEntity);
 			} else {
 				saveTelegramBotSettings();
-				return Error("===> Creating Telegram Bot settings table, because it does not exist. First run?");
+				return Error("===> Creating Telegram Bot settings table because it does not exist. First run?");
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot operate with Telegram Bot settings object from database.", dae);

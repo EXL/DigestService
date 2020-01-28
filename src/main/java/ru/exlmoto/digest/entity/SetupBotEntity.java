@@ -14,6 +14,16 @@ public class SetupBotEntity {
 	private boolean showGreetings;
 	private boolean silentMode;
 
+	public SetupBotEntity() {
+
+	}
+
+	public SetupBotEntity(boolean logUpdates, boolean showGreetings, boolean silentMode) {
+		this.logUpdates = logUpdates;
+		this.showGreetings = showGreetings;
+		this.silentMode = silentMode;
+	}
+
 	public boolean isLogUpdates() {
 		return logUpdates;
 	}

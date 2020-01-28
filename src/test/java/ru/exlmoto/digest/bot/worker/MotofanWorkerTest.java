@@ -14,6 +14,7 @@ class MotofanWorkerTest {
 
 	@Test
 	public void contextLoads() {
+		// TODO: ???
 		assertNotNull(worker);
 	}
 }

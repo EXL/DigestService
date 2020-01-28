@@ -7,15 +7,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.impl.CoffeeCommand;
+import ru.exlmoto.digest.bot.ability.impl.ChartCommand;
+import ru.exlmoto.digest.bot.ability.impl.DebugCommand;
 import ru.exlmoto.digest.bot.ability.impl.GameCommand;
 import ru.exlmoto.digest.bot.ability.impl.HelloCommand;
 import ru.exlmoto.digest.bot.ability.impl.HelpCommand;
 import ru.exlmoto.digest.bot.ability.impl.HostIpCommand;
 import ru.exlmoto.digest.bot.ability.impl.SendCommand;
 import ru.exlmoto.digest.bot.ability.impl.StartCommand;
-import ru.exlmoto.digest.bot.ability.impl.ChartCommand;
-import ru.exlmoto.digest.bot.ability.impl.RateCommand;
 import ru.exlmoto.digest.bot.ability.impl.SubscribeCommand;
+import ru.exlmoto.digest.bot.ability.impl.RateCommand;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 
 import javax.annotation.PostConstruct;
@@ -53,6 +54,9 @@ public class BotAbilityFactory {
 		addCommand("/charts", ChartCommand.class);
 		addCommand("/rates", RateCommand.class);
 		addCommand("/subscribe", SubscribeCommand.class);
+
+
+		addCommand("/debug", DebugCommand.class);
 	}
 
 	/*

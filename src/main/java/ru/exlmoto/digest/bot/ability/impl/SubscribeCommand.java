@@ -22,7 +22,6 @@ public class SubscribeCommand extends BotAbility {
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
 		Chat chat = message.chat();
-		sender.replyKeyboard(chat.id(), message.messageId(),
-			keyboard.getSubscribeStatusMessage(chat), keyboard.getMarkup());
+		keyboard.processSubscribeStatusMessage(chat.id(), message.messageId(), chat, false, sender);
 	}
 }

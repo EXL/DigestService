@@ -80,10 +80,12 @@ public class BotSender {
 	}
 
 	public void editMessage(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
-		executeRequestLog(
-			new EditMessageText(chatId, messageId, shrinkText(text))
-				.parseMode(Markdown).disableWebPagePreview(downloadFile).replyMarkup(keyboard)
-		);
+		EditMessageText editMessageText = new EditMessageText(chatId, messageId, shrinkText(text))
+			.parseMode(Markdown).disableWebPagePreview(downloadFile);
+		if (keyboard != null) {
+			editMessageText.replyMarkup(keyboard);
+		}
+		executeRequestLog(editMessageText);
 	}
 
 	public void replySticker(long chatId, int replyId, String stickerId) {

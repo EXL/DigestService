@@ -21,9 +21,13 @@ import ru.exlmoto.digest.entity.SubDigestEntity;
 import ru.exlmoto.digest.entity.SubMotofanEntity;
 import ru.exlmoto.digest.repository.SubDigestRepository;
 import ru.exlmoto.digest.repository.SubMotofanRepository;
+import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 import javax.annotation.PostConstruct;
+
+import static ru.exlmoto.digest.util.Answer.Ok;
+import static ru.exlmoto.digest.util.Answer.Error;
 
 @Component
 public class SubscribeKeyboard extends BotKeyboard {
@@ -100,16 +104,27 @@ public class SubscribeKeyboard extends BotKeyboard {
 		}
 	}
 
-	public String getSubscribeStatusMessage(Chat chat) {
+	public void processSubscribeStatusMessage(long chatId, int messageId, Chat chat, boolean edit, BotSender sender) {
+		Answer<String> res = generateSubscribeStatusMessage(chat);
+		String answer = res.ok() ? res.answer() : res.error();
+		InlineKeyboardMarkup markup = res.ok() ? getMarkup() : null;
+		if (edit) {
+			sender.editMessage(chatId, messageId, answer, markup);
+		} else {
+			sender.replyKeyboard(chatId, messageId, answer, markup);
+		}
+	}
+
+	private Answer<String> generateSubscribeStatusMessage(Chat chat) {
 		long chatId = chat.id();
 		String chatTitle = helper.getValidChatName(chat, telegram.getFirstName());
 		try {
-			return String.format(locale.i18n("bot.command.subscribe"), chatTitle, chatId,
+			return Ok(String.format(locale.i18n("bot.command.subscribe"), chatTitle, chatId,
 				getSubscribeStatus(motofanRepository.findSubMotofanEntityBySubscription(chatId) != null),
-				getSubscribeStatus(digestRepository.findSubDigestEntityBySubscription(chatId) != null));
+				getSubscribeStatus(digestRepository.findSubDigestEntityBySubscription(chatId) != null)));
 		} catch (DataAccessException dae) {
 			log.error("Cannot get object from database.", dae);
-			return String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage());
+			return Error(String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage()));
 		}
 	}
 
@@ -162,7 +177,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 		} else {
 			motofanRepository.save(new SubMotofanEntity(chatId));
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
-			sender.editMessage(chatId, messageId, getSubscribeStatusMessage(chat), markup);
+			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
 		}
 	}
 
@@ -172,7 +187,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 		} else {
 			motofanRepository.deleteSubMotofanEntityBySubscription(chatId);
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
-			sender.editMessage(chatId, messageId, getSubscribeStatusMessage(chat), markup);
+			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
 		}
 	}
 
@@ -182,7 +197,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 		} else {
 			digestRepository.save(new SubDigestEntity(chatId));
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
-			sender.editMessage(chatId, messageId, getSubscribeStatusMessage(chat), markup);
+			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
 		}
 	}
 
@@ -192,7 +207,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 		} else {
 			digestRepository.deleteSubDigestEntityBySubscription(chatId);
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
-			sender.editMessage(chatId, messageId, getSubscribeStatusMessage(chat), markup);
+			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
 		}
 	}
 }

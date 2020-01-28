@@ -47,15 +47,16 @@ public class MotofanWorker {
 	}
 
 	private void sendNewMotofanPosts(List<String> motofanPosts, List<SubMotofanEntity> subscribers) {
-		if (!motofanPosts.isEmpty()) {
-			new Thread(() -> motofanPosts.forEach(post -> subscribers.forEach(subscriber -> {
-				sender.sendHtmlMessage(subscriber.getSubscription(), post);
-				try {
-					Thread.sleep(config.getMessageDelay() * 1000);
-				} catch (InterruptedException ie) {
-					log.error("Cannot delay Motofan Posts sender thread.", ie);
-				}
-			}))).start();
-		}
+		new Thread(() -> motofanPosts.forEach(post -> subscribers.forEach(subscriber -> {
+			long chatId = subscriber.getSubscription();
+			log.info(String.format("=> Sending Motofan Post to chat '%d', posts: '%d', subscribers: '%d'.",
+				chatId, motofanPosts.size(), subscribers.size()));
+			sender.sendHtmlMessage(chatId, post);
+			try {
+				Thread.sleep(config.getMessageDelay() * 1000);
+			} catch (InterruptedException ie) {
+				log.error("Cannot delay Motofan Posts sender thread.", ie);
+			}
+		}))).start();
 	}
 }

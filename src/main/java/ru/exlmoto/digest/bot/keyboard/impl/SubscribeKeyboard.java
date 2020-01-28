@@ -90,7 +90,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 		String key = callback.data().replaceAll(SUBSCRIBE, "");
 
 		if (!chat.type().equals(Type.Private)) {
-			if (!helper.isUserAdmin(callback.from().username())) {
+			if (helper.isUserAdmin(callback.from().username())) {
 				handleSubscription(chatId, messageId, chat, callbackId, sender, checkSubscription(key));
 			} else {
 				sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.admin"));

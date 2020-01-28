@@ -25,14 +25,21 @@ class BotTelegramTest {
 	}
 
 	@Test
-	public void testUsernameAndToken() {
+	public void testBotParameters() {
+		String name = telegram.getFirstName();
 		String username = telegram.getUsername();
+		int id = telegram.getId();
+
 		String token = config.getToken();
 
+		assertThat(name).isNotEmpty();
 		assertThat(username).isNotEmpty();
+		assertThat(id).isNotZero();
 		assertThat(token).isNotEmpty();
 
+		System.out.println(name);
 		System.out.println(username);
+		System.out.println(id);
 		System.out.println(token);
 	}
 }

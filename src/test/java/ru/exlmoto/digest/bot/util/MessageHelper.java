@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot.util;
 
 import com.pengrad.telegrambot.model.Chat;
+import com.pengrad.telegrambot.model.Chat.Type;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.MessageEntity;
 import com.pengrad.telegrambot.model.User;
@@ -43,6 +44,8 @@ public class MessageHelper {
 
 		Chat chat = new Chat();
 		setField(chat, "id", 4242L);
+		setField(chat, "type", Type.supergroup);
+		setField(chat, "title", "Chat Title");
 		setField(message, "chat", chat);
 
 		return message;

@@ -150,7 +150,7 @@ public class BotSender {
 
 	private Answer<String> getResponse(BaseResponse response) {
 		if (!response.isOk()) {
-			return Error(String.format("Response error: %d, %s.", response.errorCode(), response.description()));
+			return Error(String.format("Response error: '%d, %s'.", response.errorCode(), response.description()));
 		}
 		return Ok("Ok!");
 	}

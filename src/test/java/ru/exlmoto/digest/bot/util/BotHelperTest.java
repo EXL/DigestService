@@ -1,5 +1,7 @@
 package ru.exlmoto.digest.bot.util;
 
+import com.pengrad.telegrambot.model.Chat;
+import com.pengrad.telegrambot.model.Chat.Type;
 import com.pengrad.telegrambot.model.User;
 
 import org.junit.jupiter.api.Test;
@@ -46,5 +48,24 @@ class BotHelperTest {
 		String value = String.valueOf(helper.getCurrentUnixTime());
 		assertEquals(10, value.length());
 		System.out.println("Unix Time: " + value);
+	}
+
+	@Test
+	public void testValidChatName() {
+		Chat chat = new Chat();
+		setField(chat, "type", Chat.Type.Private);
+		assertEquals("bot-username", helper.getValidChatName(chat, "bot-username"));
+
+		setField(chat, "title", "title-chat");
+		assertEquals("bot-username", helper.getValidChatName(chat, "bot-username"));
+
+		setField(chat, "type", Type.channel);
+		assertEquals("title-chat", helper.getValidChatName(chat, "bot-username"));
+
+		setField(chat, "type", Type.group);
+		assertEquals("title-chat", helper.getValidChatName(chat, "bot-username"));
+
+		setField(chat, "type", Type.supergroup);
+		assertEquals("title-chat", helper.getValidChatName(chat, "bot-username"));
 	}
 }

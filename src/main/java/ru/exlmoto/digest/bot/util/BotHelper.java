@@ -1,5 +1,7 @@
 package ru.exlmoto.digest.bot.util;
 
+import com.pengrad.telegrambot.model.Chat;
+import com.pengrad.telegrambot.model.Chat.Type;
 import com.pengrad.telegrambot.model.User;
 
 import org.springframework.stereotype.Component;
@@ -29,5 +31,9 @@ public class BotHelper {
 
 	public boolean isUserAdmin(String username) {
 		return username != null && ArrayUtils.contains(config.getAdmins(), username);
+	}
+
+	public String getValidChatName(Chat chat, String botUsername) {
+		return (chat.type().equals(Type.Private)) ? botUsername : chat.title();
 	}
 }

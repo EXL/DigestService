@@ -5,26 +5,24 @@ import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digest.exchange.generator.TgMarkdownGenerator;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
-import ru.exlmoto.digest.exchange.manager.RateGeneralManager;
+import ru.exlmoto.digest.exchange.manager.RateManager;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @Service
 public class ExchangeService {
+	private final RateManager manager;
 	private final TgMarkdownGenerator markdownGenerator;
-	private final RateGeneralManager rateGeneralManager;
-	private final LocalizationHelper localizationHelper;
+	private final LocalizationHelper locale;
 
-	public ExchangeService(TgMarkdownGenerator markdownGenerator,
-	                       RateGeneralManager rateGeneralManager,
-	                       LocalizationHelper localizationHelper) {
+	public ExchangeService(RateManager manager, TgMarkdownGenerator markdownGenerator, LocalizationHelper locale) {
+		this.manager = manager;
 		this.markdownGenerator = markdownGenerator;
-		this.rateGeneralManager = rateGeneralManager;
-		this.localizationHelper = localizationHelper;
+		this.locale = locale;
 	}
 
 	@Scheduled(cron = "${cron.exchange.rates.update}")
 	public void updateAllRates() {
-		rateGeneralManager.commitAllRates();
+		manager.commitAllRates();
 	}
 
 	public String markdownReport(String key) {
@@ -43,11 +41,11 @@ public class ExchangeService {
 		ExchangeKey exchangeKey = ExchangeKey.checkExchangeKey(key);
 		switch (exchangeKey) {
 			default:
-			case bank_ru: return localizationHelper.i18n("exchange.bank.ru.button");
-			case bank_ua: return localizationHelper.i18n("exchange.bank.ua.button");
-			case bank_by: return localizationHelper.i18n("exchange.bank.by.button");
-			case bank_kz: return localizationHelper.i18n("exchange.bank.kz.button");
-			case metal_ru: return localizationHelper.i18n("exchange.metal.ru.button");
+			case bank_ru: return locale.i18n("exchange.bank.ru.button");
+			case bank_ua: return locale.i18n("exchange.bank.ua.button");
+			case bank_by: return locale.i18n("exchange.bank.by.button");
+			case bank_kz: return locale.i18n("exchange.bank.kz.button");
+			case metal_ru: return locale.i18n("exchange.metal.ru.button");
 		}
 	}
 }

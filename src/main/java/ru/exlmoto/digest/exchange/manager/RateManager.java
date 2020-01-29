@@ -3,30 +3,34 @@ package ru.exlmoto.digest.exchange.manager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.exchange.parser.RateParser;
+import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
+import ru.exlmoto.digest.exchange.parser.impl.*;
+import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.util.rest.RestHelper;
 
-public abstract class RateManager {
+@Component
+public class RateManager {
 	private final Logger log = LoggerFactory.getLogger(RateManager.class);
 
-	public void commitRates(String url) {
-		try {
-			commitRates(url, null);
-		} catch (DataAccessException dae) {
-			log.error("Cannot save object to database.", dae);
-		}
+	private final ExchangeConfiguration config;
+	private final RateRepository repository;
+	private final RestHelper rest;
+
+	public RateManager(ExchangeConfiguration config, RateRepository repository, RestHelper rest) {
+		this.config = config;
+		this.repository = repository;
+		this.rest = rest;
 	}
 
-	protected void logRates(RateParser parser) {
-		String message = "==> Using ";
-		if (parser.isMirror()) {
-			message += "mirror ";
-		}
-		message += parser.getClass().getSimpleName() + ".";
-		log.info(message);
-		parser.logParsedValues();
+	public void commitAllRates() {
+		log.info("=> Start update exchanging rates.");
+		new BankRuParser().commitRates(config.getBankRu(), config.getBankRuMirror(), repository, rest);
+		new BankUaMirrorParser().commitRates(config.getBankUa(), config.getBankUaMirror(), repository, rest);
+		new BankByParser().commitRates(config.getBankBy(), repository, rest);
+		new BankKzParser().commitRates(config.getBankKz(), repository, rest);
+		new MetalRuMirrorParser().commitRates(config.getMetalRu(), config.getMetalRuMirror(), repository, rest);
+		log.info("=> End update exchanging rates.");
 	}
-
-	public abstract void commitRates(String url, String mirror);
 }

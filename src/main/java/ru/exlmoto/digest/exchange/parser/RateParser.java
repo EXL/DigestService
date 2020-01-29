@@ -71,7 +71,7 @@ public abstract class RateParser {
 	}
 
 	public void commit(RateEntity entity, RateRepository repository) {
-		logParsedValues();
+		logRates();
 		BigDecimal prevValue = null;
 		if (entity != null) {
 			prevValue = entity.getPrev();
@@ -86,6 +86,16 @@ public abstract class RateParser {
 		commitGeneralValues(entity);
 
 		repository.save(entity);
+	}
+
+	private void logRates() {
+		String message = "==> Using ";
+		if (mirror) {
+			message += "mirror ";
+		}
+		message += getClass().getSimpleName() + ".";
+		log.info(message);
+		logParsedValues();
 	}
 
 	public abstract void commitRates(String url, String mirror, RateRepository rateRepository, RestHelper restHelper);

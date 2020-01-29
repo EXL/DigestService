@@ -59,9 +59,9 @@ public class MotofanService {
 	}
 
 	public List<MotofanPost> getLastMotofanPosts() {
-		log.info("=> Start crawling MotoFan.Ru last posts.");
+		log.info("=> Start receive last MotoFan.Ru posts.");
 		MotofanPost[] motofanPosts = getMotofanPostObjects();
-		log.info("=> End crawling MotoFan.Ru last posts.");
+		log.info("=> End receive last MotoFan.Ru posts.");
 		if (motofanPosts != null) {
 			if (timestamp == 0L) {
 				setLastValues(motofanPosts, 0);

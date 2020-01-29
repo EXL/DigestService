@@ -125,7 +125,7 @@ public class DebugCommand extends BotAbilityAdmin {
 
 	private String saveSettingsToDataBase(LocalizationHelper locale, Option variableName, boolean value) {
 		try {
-			telegram.saveTelegramBotSettings();
+			telegram.processTelegramBotSettings(false);
 			return String.format(locale.i18n("bot.command.debug.variable"), variableName, value);
 		} catch (DataAccessException dae) {
 			log.error("Cannot save Telegram Bot settings object to database.", dae);

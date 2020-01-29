@@ -22,17 +22,6 @@ public class SetupBotEntity {
 	@Column
 	private boolean silentMode;
 
-	public SetupBotEntity() {
-
-	}
-
-	public SetupBotEntity(int id, boolean logUpdates, boolean showGreetings, boolean silentMode) {
-		this.id = id;
-		this.logUpdates = logUpdates;
-		this.showGreetings = showGreetings;
-		this.silentMode = silentMode;
-	}
-
 	public int getId() {
 		return id;
 	}

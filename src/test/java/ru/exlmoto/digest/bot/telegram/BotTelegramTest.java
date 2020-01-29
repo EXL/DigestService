@@ -25,8 +25,9 @@ class BotTelegramTest {
 	}
 
 	@Test
-	public void testSaveTelegramBotSettings() {
-		telegram.saveTelegramBotSettings();
+	public void testProcessTelegramBotSettings() {
+		telegram.processTelegramBotSettings(true);
+		telegram.processTelegramBotSettings(false);
 	}
 
 	@Test

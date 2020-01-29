@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -97,9 +98,6 @@ public class BotTelegram {
 			config.setSilent(silentMod);
 
 			log.info("===> End apply settings from database.");
-		} else {
-			log.warn(res.error());
-			saveTelegramBotSettings();
 		}
 	}
 
@@ -109,7 +107,9 @@ public class BotTelegram {
 			if (setupBotEntity != null) {
 				return Ok(setupBotEntity);
 			} else {
-				return Error("===> Telegram Bot settings table does not exist. First run?");
+				log.warn("===> Telegram Bot settings table does not exist. First run?");
+				processTelegramBotSettings(true);
+				return Error("Error!");
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot operate with Telegram Bot settings object from database.", dae);
@@ -117,9 +117,21 @@ public class BotTelegram {
 		throw new IllegalStateException("Telegram Bot settings is damaged.");
 	}
 
-	public void saveTelegramBotSettings() {
-		SetupBotEntity setup = new SetupBotEntity(SetupBotEntity.ROW_ID, config.isLogUpdates(),
-			config.isShowGreetings(), config.isSilent());
+	public void processTelegramBotSettings(boolean isFirstRun) {
+		SetupBotEntity setup;
+		if (isFirstRun) {
+			setup = new SetupBotEntity();
+		} else {
+			setup = repository.getSetupBot();
+			if (setup == null) {
+				throw new DataAccessResourceFailureException("Telegram Bot settings row does not exist or empty.");
+			}
+		}
+
+		setup.setLogUpdates(config.isLogUpdates());
+		setup.setShowGreetings(config.isShowGreetings());
+		setup.setSilentMode(config.isSilent());
+
 		log.info(String.format("====> Start save settings: '%s'.", setup.toString()));
 		repository.save(setup);
 		log.info("====> End save settings.");

@@ -11,6 +11,7 @@ import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
 import ru.exlmoto.digest.repository.RateRepository;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static org.mockito.Mockito.when;
 
@@ -28,13 +29,14 @@ class RateManagerTest {
 	@Test
 	public void testRateException() {
 		when(repository.getBankRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
-		manager.commitBankRu(config.getBankRu(), config.getMetalRuMirror());
+		assertThrows(InvalidDataAccessResourceUsageException.class, () ->
+			manager.commitBankRu(config.getBankRu(), config.getMetalRuMirror()));
 
 		when(repository.getBankUa()).thenReturn(null);
 		assertNull(repository.getBankUa());
 
 		when(repository.getMetalRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
-		assertNull(repository.getMetalRu());
+		assertThrows(InvalidDataAccessResourceUsageException.class, () -> repository.getMetalRu());
 	}
 
 	@Test

@@ -46,7 +46,6 @@ public class DebugCommand extends BotAbilityAdmin {
 		VShredder,
 		VAvatars,
 		VQueries,
-		VStatus,
 		BLogUpdates,
 		BGreetings,
 		BSilent,
@@ -55,7 +54,7 @@ public class DebugCommand extends BotAbilityAdmin {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
-		String answer = locale.i18n("bot.command.debug.help");
+		String answer = locale.i18n("bot.command.debug.help") + addStatus(locale);
 		String[] arguments = message.text().split(" ");
 		if (arguments.length == 2) {
 			switch (checkOption(arguments[1])) {
@@ -64,7 +63,6 @@ public class DebugCommand extends BotAbilityAdmin {
 				//case VShredder: { /* TODO: */ break; }
 				//case VAvatars: { /* TODO: */ break; }
 				case VQueries: { answer = processQueries(locale); break; }
-				case VStatus: { answer = processStatus(locale); break; }
 				case BLogUpdates: { answer = toggleUpdates(locale); break; }
 				case BGreetings: { answer = toggleGreetings(locale); break; }
 				case BSilent: { answer = toggleSilent(locale); break; }
@@ -97,9 +95,9 @@ public class DebugCommand extends BotAbilityAdmin {
 		return locale.i18n("bot.command.debug.data");
 	}
 
-	private String processStatus(LocalizationHelper locale) {
+	private String addStatus(LocalizationHelper locale) {
 		return
-			locale.i18n("bot.command.debug.values") + "\n\n```\n" +
+			"\n\n" + locale.i18n("bot.command.debug.values") + "\n```\n" +
 			Option.BLogUpdates + ": " + config.isLogUpdates() + "\n" +
 			Option.BGreetings + ": " + config.isShowGreetings() + "\n" +
 			Option.BSilent + ": " + config.isSilent() + "\n```";

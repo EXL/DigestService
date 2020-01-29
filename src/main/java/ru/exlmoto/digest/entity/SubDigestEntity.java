@@ -3,32 +3,22 @@ package ru.exlmoto.digest.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 
 @Entity
-@Table(name = "bot_sub_digest", uniqueConstraints = { @UniqueConstraint(columnNames = { "subscription" }) })
+@Table(name = "bot_sub_digest")
 public class SubDigestEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
 	private long subscription;
+
+	private String name;
 
 	public SubDigestEntity() {
 
 	}
 
-	public SubDigestEntity(long subscription) {
+	public SubDigestEntity(long subscription, String name) {
 		this.subscription = subscription;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+		this.name = name;
 	}
 
 	public long getSubscription() {
@@ -39,11 +29,18 @@ public class SubDigestEntity {
 		this.subscription = subscription;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
-		return
-			"DigestSubEntity{id=" + id +
-			", subscription=" + subscription +
+		return "SubDigestEntity{subscription=" + subscription +
+			", name='" + name + '\'' +
 			"}";
 	}
 }

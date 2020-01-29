@@ -44,7 +44,7 @@ public class BotTelegram {
 		log.info("=> Start initialize Telegram Bot...");
 
 		bot = new TelegramBot(config.getToken());
-		GetMeResponse response = bot.execute(new GetMe());
+		GetMeResponse response = checkTelegramBotApiConnection();
 		if (response.isOk()) {
 			User botUser = response.user();
 			Assert.notNull(botUser, "Cannot initialize Telegram Bot, bot user is null.");
@@ -63,6 +63,15 @@ public class BotTelegram {
 		} else {
 			throw new IllegalStateException(String.format("Cannot initialize Telegram Bot, error: '%d, %s'.",
 				response.errorCode(), response.description()));
+		}
+	}
+
+	private GetMeResponse checkTelegramBotApiConnection() {
+		try {
+			return bot.execute(new GetMe());
+		} catch (RuntimeException re) {
+			log.error("Cannot connect to the Telegram Bot API services. Shutdown.", re);
+			throw re;
 		}
 	}
 
@@ -90,6 +99,7 @@ public class BotTelegram {
 			log.info("===> End apply settings from database.");
 		} else {
 			log.warn(res.error());
+			saveTelegramBotSettings();
 		}
 	}
 
@@ -99,8 +109,7 @@ public class BotTelegram {
 			if (setupBotEntity != null) {
 				return Ok(setupBotEntity);
 			} else {
-				saveTelegramBotSettings();
-				return Error("===> Creating Telegram Bot settings table because it does not exist. First run?");
+				return Error("===> Telegram Bot settings table does not exist. First run?");
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot operate with Telegram Bot settings object from database.", dae);
@@ -109,7 +118,10 @@ public class BotTelegram {
 	}
 
 	public void saveTelegramBotSettings() {
-		repository.save(new SetupBotEntity(config.isLogUpdates(), config.isShowGreetings(), config.isSilent()));
+		SetupBotEntity setup = new SetupBotEntity(config.isLogUpdates(), config.isShowGreetings(), config.isSilent());
+		log.info(String.format("====> Start save settings: '%s'.", setup.toString()));
+		repository.save(setup);
+		log.info("====> End save settings.");
 	}
 
 	public TelegramBot getBot() {

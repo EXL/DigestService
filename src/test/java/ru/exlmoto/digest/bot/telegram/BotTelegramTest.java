@@ -25,6 +25,11 @@ class BotTelegramTest {
 	}
 
 	@Test
+	public void testSaveTelegramBotSettings() {
+		telegram.saveTelegramBotSettings();
+	}
+
+	@Test
 	public void testBotParameters() {
 		String name = telegram.getFirstName();
 		String username = telegram.getUsername();

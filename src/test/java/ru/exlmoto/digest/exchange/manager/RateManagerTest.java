@@ -3,29 +3,44 @@ package ru.exlmoto.digest.exchange.manager;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
-import ru.exlmoto.digest.exchange.manager.impl.BankUaManager;
+import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
+import ru.exlmoto.digest.repository.RateRepository;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class RateManagerTest {
-	@Value("${exchange.bank-ua}")
-	private String bankUa;
-
-	@MockBean
-	private BankUaRepository bankUaRepository;
+	@Autowired
+	private RateManager manager;
 
 	@Autowired
-	private BankUaManager bankUaManager;
+	private ExchangeConfiguration config;
+
+	@MockBean
+	private RateRepository repository;
 
 	@Test
 	public void testRateException() {
-		when(bankUaRepository.getBankUa()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
-		bankUaManager.commitRates(bankUa);
+		when(repository.getBankRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
+		manager.commitBankRu(config.getBankRu(), config.getMetalRuMirror());
+
+		when(repository.getBankUa()).thenReturn(null);
+		assertNull(repository.getBankUa());
+
+		when(repository.getMetalRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
+		assertNull(repository.getMetalRu());
+	}
+
+	@Test
+	public void testRateMirrors() {
+		manager.commitBankRu(null, config.getBankRuMirror());
+		manager.commitBankUa(null, config.getBankUaMirror());
+		manager.commitMetalRu(null, config.getMetalRuMirror());
 	}
 }

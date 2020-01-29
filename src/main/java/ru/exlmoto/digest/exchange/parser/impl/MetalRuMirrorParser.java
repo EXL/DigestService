@@ -3,9 +3,20 @@ package ru.exlmoto.digest.exchange.parser.impl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import ru.exlmoto.digest.entity.RateEntity;
+import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.util.rest.RestHelper;
+
 import java.math.BigDecimal;
 
 public class MetalRuMirrorParser extends MetalRuParser {
+	@Override
+	protected void commitAlt(String url, RateEntity entity, RateRepository repository, RestHelper rest) {
+		if (parse(rest.getRestResponse(url).answer())) {
+			commit(entity, repository);
+		}
+	}
+
 	@Override
 	protected void parseDocumentAux(Document document) {
 		mirror = true;

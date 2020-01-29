@@ -6,8 +6,13 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import ru.exlmoto.digest.entity.RateEntity;
+import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
@@ -57,6 +62,37 @@ public abstract class RateParser {
 		return checkParsedValues();
 	}
 
+	public void commitRates(String url, RateRepository rateRepository, RestHelper restHelper) {
+		try {
+			commitRates(url, null, rateRepository, restHelper);
+		} catch (DataAccessException dae) {
+			log.error("Cannot save object to database.", dae);
+		}
+	}
+
+	public void commit(RateEntity entity, RateRepository repository) {
+		logParsedValues();
+		BigDecimal prevValue = null;
+		if (entity != null) {
+			prevValue = entity.getPrev();
+		} else {
+			entity = new RateEntity();
+		}
+
+		entity.setDate(date);
+		entity.setPrev((prevValue == null) ? parsedPrevValue() : prevValue);
+
+		commitGeneralValues(entity);
+
+		repository.save(entity);
+	}
+
+	public abstract void commitRates(String url, String mirror, RateRepository rateRepository, RestHelper restHelper);
+
+	protected abstract BigDecimal parsedPrevValue();
+
+	protected abstract void commitGeneralValues(RateEntity entity);
+
 	protected abstract void parseDocumentAux(Document document);
 
 	protected abstract boolean checkParsedValues();
@@ -77,17 +113,5 @@ public abstract class RateParser {
 
 	protected String filterSpaces(String value) {
 		return value.replaceAll(" ", "");
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public boolean isMirror() {
-		return mirror;
-	}
-
-	public void setMirror(boolean mirror) {
-		this.mirror = mirror;
 	}
 }

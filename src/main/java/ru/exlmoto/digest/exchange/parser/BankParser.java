@@ -3,6 +3,8 @@ package ru.exlmoto.digest.exchange.parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.exlmoto.digest.entity.RateEntity;
+
 import java.math.BigDecimal;
 
 public abstract class BankParser extends RateParser {
@@ -15,6 +17,20 @@ public abstract class BankParser extends RateParser {
 	protected BigDecimal uah = null;
 	protected BigDecimal gbp = null;
 	protected BigDecimal rub = null;
+
+	@Override
+	protected BigDecimal parsedPrevValue() {
+		return usd;
+	}
+
+	@Override
+	protected void commitGeneralValues(RateEntity entity) {
+		entity.setUsd(usd);
+		entity.setEur(eur);
+		entity.setGbp(gbp);
+
+		commitAux(entity);
+	}
 
 	@Override
 	protected boolean checkParsedValues() {
@@ -30,31 +46,5 @@ public abstract class BankParser extends RateParser {
 		);
 	}
 
-	public BigDecimal getUsd() {
-		return usd;
-	}
-
-	public BigDecimal getEur() {
-		return eur;
-	}
-
-	public BigDecimal getKzt() {
-		return kzt;
-	}
-
-	public BigDecimal getByn() {
-		return byn;
-	}
-
-	public BigDecimal getUah() {
-		return uah;
-	}
-
-	public BigDecimal getGbp() {
-		return gbp;
-	}
-
-	public BigDecimal getRub() {
-		return rub;
-	}
+	protected abstract void commitAux(RateEntity entity);
 }

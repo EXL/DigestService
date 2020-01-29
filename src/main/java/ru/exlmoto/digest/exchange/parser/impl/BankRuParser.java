@@ -3,11 +3,34 @@ package ru.exlmoto.digest.exchange.parser.impl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import ru.exlmoto.digest.entity.RateEntity;
 import ru.exlmoto.digest.exchange.parser.BankParser;
+import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
 public class BankRuParser extends BankParser {
+	@Override
+	public void commitRates(String url, String mirror, RateRepository rateRepository, RestHelper restHelper) {
+		RateEntity bankRuEntity = rateRepository.getBankRu();
+		if (parse(restHelper.getRestResponse(url).answer())) {
+			commit(bankRuEntity, rateRepository);
+		} else {
+			this.mirror = true;
+			if (parse(restHelper.getRestResponse(mirror).answer())) {
+				commit(bankRuEntity, rateRepository);
+			}
+		}
+	}
+
+	@Override
+	protected void commitAux(RateEntity entity) {
+		entity.setUah(uah);
+		entity.setByn(byn);
+		entity.setKzt(kzt);
+	}
+
 	@Override
 	protected void parseDocumentAux(Document document) {
 		usd = parseValue(document, "R01235");

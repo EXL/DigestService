@@ -3,6 +3,8 @@ package ru.exlmoto.digest.exchange.parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.exlmoto.digest.entity.RateEntity;
+
 import java.math.BigDecimal;
 
 public abstract class MetalParser extends RateParser {
@@ -12,6 +14,19 @@ public abstract class MetalParser extends RateParser {
 	protected BigDecimal silver = null;
 	protected BigDecimal platinum = null;
 	protected BigDecimal palladium = null;
+
+	@Override
+	protected BigDecimal parsedPrevValue() {
+		return gold;
+	}
+
+	@Override
+	protected void commitGeneralValues(RateEntity entity) {
+		entity.setGold(gold);
+		entity.setSilver(silver);
+		entity.setPlatinum(platinum);
+		entity.setPalladium(palladium);
+	}
 
 	@Override
 	protected boolean checkParsedValues() {
@@ -25,21 +40,5 @@ public abstract class MetalParser extends RateParser {
 			date, gold, silver, platinum, palladium
 			)
 		);
-	}
-
-	public BigDecimal getGold() {
-		return gold;
-	}
-
-	public BigDecimal getSilver() {
-		return silver;
-	}
-
-	public BigDecimal getPlatinum() {
-		return platinum;
-	}
-
-	public BigDecimal getPalladium() {
-		return palladium;
 	}
 }

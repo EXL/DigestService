@@ -8,6 +8,6 @@ public interface SetupBotRepository extends CrudRepository<SetupBotEntity, Integ
 	SetupBotEntity getById(int id);
 
 	default SetupBotEntity getSetupBot() {
-		return getById(SetupBotEntity.ROW_ID);
+		return getById(SetupBotEntity.SETUP_ROW);
 	}
 }

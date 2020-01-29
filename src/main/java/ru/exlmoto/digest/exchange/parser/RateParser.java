@@ -77,6 +77,7 @@ public abstract class RateParser {
 			prevValue = entity.getPrev();
 		} else {
 			entity = new RateEntity();
+			entity.setId(entityId());
 		}
 
 		entity.setDate(date);
@@ -90,6 +91,8 @@ public abstract class RateParser {
 	public abstract void commitRates(String url, String mirror, RateRepository rateRepository, RestHelper restHelper);
 
 	protected abstract BigDecimal parsedPrevValue();
+
+	protected abstract int entityId();
 
 	protected abstract void commitGeneralValues(RateEntity entity);
 

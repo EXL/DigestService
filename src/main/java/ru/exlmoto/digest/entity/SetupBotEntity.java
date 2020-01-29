@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "bot_setup")
 public class SetupBotEntity {
-	public static final int ROW_ID = 1;
+	public static final int SETUP_ROW = 1;
 
 	@Id
 	private int id;

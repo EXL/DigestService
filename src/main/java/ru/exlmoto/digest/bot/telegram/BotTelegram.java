@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -118,14 +117,10 @@ public class BotTelegram {
 	}
 
 	public void processTelegramBotSettings(boolean isFirstRun) {
-		SetupBotEntity setup;
-		if (isFirstRun) {
+		SetupBotEntity setup = repository.getSetupBot();
+		if (isFirstRun || setup == null) {
 			setup = new SetupBotEntity();
-		} else {
-			setup = repository.getSetupBot();
-			if (setup == null) {
-				throw new DataAccessResourceFailureException("Telegram Bot settings row does not exist or empty.");
-			}
+			setup.setId(SetupBotEntity.SETUP_ROW);
 		}
 
 		setup.setLogUpdates(config.isLogUpdates());

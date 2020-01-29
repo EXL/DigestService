@@ -29,6 +29,11 @@ public class BankByParser extends BankParser {
 	}
 
 	@Override
+	protected int entityId() {
+		return RateEntity.BANK_BY_ROW;
+	}
+
+	@Override
 	protected void commitAux(RateEntity entity) {
 		entity.setRub(rub);
 		entity.setUah(uah);

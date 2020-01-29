@@ -25,6 +25,11 @@ public class MetalRuParser extends MetalParser {
 	}
 
 	@Override
+	protected int entityId() {
+		return RateEntity.METAL_RU_ROW;
+	}
+
+	@Override
 	protected void parseDocumentAux(Document document) {
 		gold = parseValue(document, "1");
 		silver = parseValue(document, "2");

@@ -2,20 +2,22 @@ package ru.exlmoto.digest.exchange.manager.impl;
 
 import org.springframework.stereotype.Component;
 
+import ru.exlmoto.digest.entity.RateEntity;
 import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankUaMirrorParser;
 import ru.exlmoto.digest.exchange.manager.RateManager;
+import ru.exlmoto.digest.repository.RateRepository;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
 @Component
 public class BankUaManager extends RateManager {
-	private final BankUaRepository bankUaRepository;
+	private final RateRepository rateRepository;
 	private final RestHelper restHelper;
 
-	public BankUaManager(BankUaRepository bankUaRepository, RestHelper restHelper) {
-		this.bankUaRepository = bankUaRepository;
+	public BankUaManager(RateRepository rateRepository, RestHelper restHelper) {
+		this.rateRepository = rateRepository;
 		this.restHelper = restHelper;
 	}
 
@@ -35,21 +37,22 @@ public class BankUaManager extends RateManager {
 	private void commitAux(BankUaParser parser) {
 		logRates(parser);
 		BigDecimal prevUsd = null;
-		BankUaEntity bankUaEntityFromDb = bankUaRepository.getBankUa();
+		RateEntity bankUaEntityFromDb = rateRepository.getBankUa();
 		if (bankUaEntityFromDb != null) {
 			prevUsd = bankUaEntityFromDb.getUsd();
+		} else {
+			bankUaEntityFromDb = new RateEntity();
 		}
-		bankUaRepository.save(
-			new BankUaEntity(
-				parser.getDate(),
-				parser.getUsd(),
-				parser.getEur(),
-				parser.getKzt(),
-				parser.getByn(),
-				parser.getRub(),
-				parser.getGbp(),
-				(prevUsd == null) ? parser.getUsd() : prevUsd
-			)
-		);
+
+		bankUaEntityFromDb.setDate(parser.getDate());
+		bankUaEntityFromDb.setUsd(parser.getUsd());
+		bankUaEntityFromDb.setEur(parser.getEur());
+		bankUaEntityFromDb.setKzt(parser.getKzt());
+		bankUaEntityFromDb.setByn(parser.getByn());
+		bankUaEntityFromDb.setRub(parser.getRub());
+		bankUaEntityFromDb.setGbp(parser.getGbp());
+		bankUaEntityFromDb.setPrev((prevUsd == null) ? parser.getUsd() : prevUsd);
+
+		rateRepository.save(bankUaEntityFromDb);
 	}
 }

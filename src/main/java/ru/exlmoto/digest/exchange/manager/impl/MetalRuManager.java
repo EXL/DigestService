@@ -2,20 +2,22 @@ package ru.exlmoto.digest.exchange.manager.impl;
 
 import org.springframework.stereotype.Component;
 
+import ru.exlmoto.digest.entity.RateEntity;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.exchange.manager.RateManager;
+import ru.exlmoto.digest.repository.RateRepository;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
 @Component
 public class MetalRuManager extends RateManager {
-	private final MetalRuRepository metalRuRepository;
+	private final RateRepository rateRepository;
 	private final RestHelper restHelper;
 
-	public MetalRuManager(MetalRuRepository metalRuRepository, RestHelper restHelper) {
-		this.metalRuRepository = metalRuRepository;
+	public MetalRuManager(RateRepository rateRepository, RestHelper restHelper) {
+		this.rateRepository = rateRepository;
 		this.restHelper = restHelper;
 	}
 
@@ -35,19 +37,20 @@ public class MetalRuManager extends RateManager {
 	private void commitAux(MetalRuParser parser) {
 		logRates(parser);
 		BigDecimal prevGold = null;
-		MetalRuEntity metalRuEntityFromDb = metalRuRepository.getMetalRu();
+		RateEntity metalRuEntityFromDb = rateRepository.getMetalRu();
 		if (metalRuEntityFromDb != null) {
 			prevGold = metalRuEntityFromDb.getGold();
+		} else {
+			metalRuEntityFromDb = new RateEntity();
 		}
-		metalRuRepository.save(
-			new MetalRuEntity(
-				parser.getDate(),
-				parser.getGold(),
-				parser.getSilver(),
-				parser.getPlatinum(),
-				parser.getPalladium(),
-				(prevGold == null) ? parser.getGold() : prevGold
-			)
-		);
+
+		metalRuEntityFromDb.setDate(parser.getDate());
+		metalRuEntityFromDb.setGold(parser.getGold());
+		metalRuEntityFromDb.setSilver(parser.getSilver());
+		metalRuEntityFromDb.setPlatinum(parser.getPlatinum());
+		metalRuEntityFromDb.setPalladium(parser.getPalladium());
+		metalRuEntityFromDb.setPrev((prevGold == null) ? parser.getGold() : prevGold);
+
+		rateRepository.save(metalRuEntityFromDb);
 	}
 }

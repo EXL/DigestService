@@ -54,18 +54,19 @@ class BotHelperTest {
 	public void testValidChatName() {
 		Chat chat = new Chat();
 		setField(chat, "type", Chat.Type.Private);
-		assertEquals("bot-username", helper.getValidChatName(chat, "bot-username"));
+		setField(chat, "username", "username");
+		assertEquals("@username", helper.getValidChatName(chat));
 
 		setField(chat, "title", "title-chat");
-		assertEquals("bot-username", helper.getValidChatName(chat, "bot-username"));
+		assertEquals("@username", helper.getValidChatName(chat));
 
 		setField(chat, "type", Type.channel);
-		assertEquals("title-chat", helper.getValidChatName(chat, "bot-username"));
+		assertEquals("title-chat", helper.getValidChatName(chat));
 
 		setField(chat, "type", Type.group);
-		assertEquals("title-chat", helper.getValidChatName(chat, "bot-username"));
+		assertEquals("title-chat", helper.getValidChatName(chat));
 
 		setField(chat, "type", Type.supergroup);
-		assertEquals("title-chat", helper.getValidChatName(chat, "bot-username"));
+		assertEquals("title-chat", helper.getValidChatName(chat));
 	}
 }

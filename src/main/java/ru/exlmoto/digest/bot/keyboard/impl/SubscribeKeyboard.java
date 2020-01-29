@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.keyboard.BotKeyboard;
 import ru.exlmoto.digest.bot.sender.BotSender;
-import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.SubDigestEntity;
 import ru.exlmoto.digest.entity.SubMotofanEntity;
@@ -43,19 +42,16 @@ public class SubscribeKeyboard extends BotKeyboard {
 	private final LocalizationHelper locale;
 	private final SubDigestRepository digestRepository;
 	private final SubMotofanRepository motofanRepository;
-	private final BotTelegram telegram;
 	private final BotHelper helper;
 
 	private InlineKeyboardMarkup markup = null;
 
 	public SubscribeKeyboard(SubDigestRepository digestRepository,
 	                         SubMotofanRepository motofanRepository,
-	                         BotTelegram telegram,
 	                         BotHelper helper,
 	                         LocalizationHelper locale) {
 		this.digestRepository = digestRepository;
 		this.motofanRepository = motofanRepository;
-		this.telegram = telegram;
 		this.helper = helper;
 		this.locale = locale;
 	}
@@ -117,7 +113,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 
 	private Answer<String> generateSubscribeStatusMessage(Chat chat) {
 		long chatId = chat.id();
-		String chatTitle = helper.getValidChatName(chat, telegram.getFirstName());
+		String chatTitle = helper.getValidChatName(chat);
 		try {
 			return Ok(String.format(locale.i18n("bot.command.subscribe"), chatTitle, chatId,
 				getSubscribeStatus(motofanRepository.findSubMotofanEntityBySubscription(chatId) != null),
@@ -175,7 +171,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 		if (motofanRepository.findSubMotofanEntityBySubscription(chatId) != null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
 		} else {
-			motofanRepository.save(new SubMotofanEntity(chatId));
+			motofanRepository.save(new SubMotofanEntity(chatId, helper.getValidChatName(chat)));
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
 			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
 		}
@@ -195,7 +191,7 @@ public class SubscribeKeyboard extends BotKeyboard {
 		if (digestRepository.findSubDigestEntityBySubscription(chatId) != null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
 		} else {
-			digestRepository.save(new SubDigestEntity(chatId));
+			digestRepository.save(new SubDigestEntity(chatId, helper.getValidChatName(chat)));
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
 			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
 		}

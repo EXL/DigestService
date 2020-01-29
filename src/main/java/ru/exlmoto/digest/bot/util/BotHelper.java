@@ -23,17 +23,19 @@ public class BotHelper {
 	}
 
 	public String getValidUsername(User user) {
-		String username = user.username();
-		String lastName = user.lastName();
-		String firstName = user.firstName();
-		return (username != null) ? "@" + username : (lastName != null) ? firstName + " " + lastName : firstName;
+		return getValidUsernameAux(user.username(), user.lastName(), user.firstName());
 	}
 
 	public boolean isUserAdmin(String username) {
 		return username != null && ArrayUtils.contains(config.getAdmins(), username);
 	}
 
-	public String getValidChatName(Chat chat, String botUsername) {
-		return (chat.type().equals(Type.Private)) ? botUsername : chat.title();
+	public String getValidChatName(Chat chat) {
+		return (!chat.type().equals(Type.Private)) ? chat.title() :
+			getValidUsernameAux(chat.username(), chat.lastName(), chat.firstName());
+	}
+
+	private String getValidUsernameAux(String username, String lastName, String firstName) {
+		return (username != null) ? "@" + username : (lastName != null) ? firstName + " " + lastName : firstName;
 	}
 }

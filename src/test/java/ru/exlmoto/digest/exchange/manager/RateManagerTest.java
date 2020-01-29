@@ -9,7 +9,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
 import ru.exlmoto.digest.exchange.manager.impl.BankUaManager;
-import ru.exlmoto.digest.repository.BankUaRepository;
 
 import static org.mockito.Mockito.when;
 

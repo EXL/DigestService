@@ -5,8 +5,6 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.exchange.manager.RateManager;
-import ru.exlmoto.digest.entity.MetalRuEntity;
-import ru.exlmoto.digest.repository.MetalRuRepository;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;

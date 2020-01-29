@@ -4,8 +4,6 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.exchange.parser.impl.BankByParser;
 import ru.exlmoto.digest.exchange.manager.RateManager;
-import ru.exlmoto.digest.entity.BankByEntity;
-import ru.exlmoto.digest.repository.BankByRepository;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;

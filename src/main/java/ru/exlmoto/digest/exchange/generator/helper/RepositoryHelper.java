@@ -6,17 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.entity.BankRuEntity;
-import ru.exlmoto.digest.entity.BankUaEntity;
-import ru.exlmoto.digest.entity.BankByEntity;
-import ru.exlmoto.digest.entity.BankKzEntity;
-import ru.exlmoto.digest.entity.MetalRuEntity;
-import ru.exlmoto.digest.repository.BankRuRepository;
-import ru.exlmoto.digest.repository.BankUaRepository;
-import ru.exlmoto.digest.repository.BankByRepository;
-import ru.exlmoto.digest.repository.BankKzRepository;
-import ru.exlmoto.digest.repository.MetalRuRepository;
-
 @Component
 public class RepositoryHelper {
 	private final Logger log = LoggerFactory.getLogger(RepositoryHelper.class);

@@ -8,12 +8,6 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import ru.exlmoto.digest.repository.BankByRepository;
-import ru.exlmoto.digest.repository.BankRuRepository;
-import ru.exlmoto.digest.repository.BankUaRepository;
-import ru.exlmoto.digest.repository.BankKzRepository;
-import ru.exlmoto.digest.repository.MetalRuRepository;
-
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static org.mockito.Mockito.when;

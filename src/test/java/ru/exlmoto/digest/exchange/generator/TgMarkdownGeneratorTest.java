@@ -6,15 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import ru.exlmoto.digest.entity.BankByEntity;
-import ru.exlmoto.digest.entity.BankRuEntity;
-import ru.exlmoto.digest.entity.BankUaEntity;
-import ru.exlmoto.digest.entity.MetalRuEntity;
-import ru.exlmoto.digest.repository.BankByRepository;
-import ru.exlmoto.digest.repository.BankRuRepository;
-import ru.exlmoto.digest.repository.BankUaRepository;
-import ru.exlmoto.digest.repository.MetalRuRepository;
-
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;

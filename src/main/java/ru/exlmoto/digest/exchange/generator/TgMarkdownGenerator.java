@@ -2,12 +2,6 @@ package ru.exlmoto.digest.exchange.generator;
 
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.entity.BankRuEntity;
-import ru.exlmoto.digest.entity.BankUaEntity;
-import ru.exlmoto.digest.entity.BankByEntity;
-import ru.exlmoto.digest.entity.BankKzEntity;
-import ru.exlmoto.digest.entity.MetalRuEntity;
-
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.generator.helper.RepositoryHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;

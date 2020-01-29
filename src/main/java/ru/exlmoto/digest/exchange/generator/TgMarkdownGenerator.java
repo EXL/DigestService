@@ -2,8 +2,9 @@ package ru.exlmoto.digest.exchange.generator;
 
 import org.springframework.stereotype.Component;
 
+import ru.exlmoto.digest.entity.RateEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
-import ru.exlmoto.digest.exchange.generator.helper.RepositoryHelper;
+import ru.exlmoto.digest.repository.RateRepository;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 import java.math.BigDecimal;
@@ -12,36 +13,36 @@ import java.util.Optional;
 @Component
 public class TgMarkdownGenerator {
 	private final GeneratorHelper helper;
-	private final RepositoryHelper repos;
 	private final LocalizationHelper locale;
+	private final RateRepository repository;
 
-	public TgMarkdownGenerator(GeneratorHelper helper, RepositoryHelper repos, LocalizationHelper locale) {
+	public TgMarkdownGenerator(GeneratorHelper helper, RateRepository repository, LocalizationHelper locale) {
 		this.helper = helper;
-		this.repos = repos;
+		this.repository = repository;
 		this.locale = locale;
 	}
 
 	public String bankRuReport() {
-		return Optional.ofNullable(repos.getBankRu()).map(this::bankRuReportAux).orElse(errorReport());
+		return Optional.ofNullable(repository.getBankRu()).map(this::bankRuReportAux).orElse(errorReport());
 	}
 
 	public String bankUaReport() {
-		return Optional.ofNullable(repos.getBankUa()).map(this::bankUaReportAux).orElse(errorReport());
+		return Optional.ofNullable(repository.getBankUa()).map(this::bankUaReportAux).orElse(errorReport());
 	}
 
 	public String bankByReport() {
-		return Optional.ofNullable(repos.getBankBy()).map(this::bankByReportAux).orElse(errorReport());
+		return Optional.ofNullable(repository.getBankBy()).map(this::bankByReportAux).orElse(errorReport());
 	}
 
 	public String bankKzReport() {
-		return Optional.ofNullable(repos.getBankKz()).map(this::bankKzReportAux).orElse(errorReport());
+		return Optional.ofNullable(repository.getBankKz()).map(this::bankKzReportAux).orElse(errorReport());
 	}
 
 	public String metalRuReport() {
-		return Optional.ofNullable(repos.getMetalRu()).map(this::metalRuReportAux).orElse(errorReport());
+		return Optional.ofNullable(repository.getMetalRu()).map(this::metalRuReportAux).orElse(errorReport());
 	}
 
-	private String bankRuReportAux(BankRuEntity bankRuEntity) {
+	private String bankRuReportAux(RateEntity bankRuEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.ru"), "RUB", bankRuEntity.getDate(),
 			bankRuEntity.getUsd(), bankRuEntity.getEur(), bankRuEntity.getGbp(), bankRuEntity.getPrev()
@@ -52,7 +53,7 @@ public class TgMarkdownGenerator {
 		return report + "```";
 	}
 
-	private String bankUaReportAux(BankUaEntity bankUaEntity) {
+	private String bankUaReportAux(RateEntity bankUaEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.ua"), "UAH", bankUaEntity.getDate(),
 			bankUaEntity.getUsd(), bankUaEntity.getEur(), bankUaEntity.getGbp(), bankUaEntity.getPrev()
@@ -63,7 +64,7 @@ public class TgMarkdownGenerator {
 		return report + "```";
 	}
 
-	private String bankByReportAux(BankByEntity bankByEntity) {
+	private String bankByReportAux(RateEntity bankByEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.by"), "BYN", bankByEntity.getDate(),
 			bankByEntity.getUsd(), bankByEntity.getEur(), bankByEntity.getGbp(), bankByEntity.getPrev()
@@ -74,7 +75,7 @@ public class TgMarkdownGenerator {
 		return report + "```";
 	}
 
-	private String bankKzReportAux(BankKzEntity bankKzEntity) {
+	private String bankKzReportAux(RateEntity bankKzEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.kz"), "KZT", bankKzEntity.getDate(),
 			bankKzEntity.getUsd(), bankKzEntity.getEur(), bankKzEntity.getGbp(), bankKzEntity.getPrev()
@@ -100,7 +101,7 @@ public class TgMarkdownGenerator {
 		return general;
 	}
 
-	private String metalRuReportAux(MetalRuEntity metalRuEntity) {
+	private String metalRuReportAux(RateEntity metalRuEntity) {
 		String report = locale.i18n("exchange.bank.ru");
 		String difference = filterDifference(metalRuEntity.getPrev(), metalRuEntity.getGold());
 		if (difference != null) {

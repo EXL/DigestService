@@ -118,7 +118,8 @@ public class BotTelegram {
 	}
 
 	public void saveTelegramBotSettings() {
-		SetupBotEntity setup = new SetupBotEntity(config.isLogUpdates(), config.isShowGreetings(), config.isSilent());
+		SetupBotEntity setup = new SetupBotEntity(SetupBotEntity.ROW_ID, config.isLogUpdates(),
+			config.isShowGreetings(), config.isSilent());
 		log.info(String.format("====> Start save settings: '%s'.", setup.toString()));
 		repository.save(setup);
 		log.info("====> End save settings.");

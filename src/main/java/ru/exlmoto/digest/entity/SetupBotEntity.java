@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -7,21 +8,37 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "bot_setup")
 public class SetupBotEntity {
-	@Id
-	private final int id = 1;
+	public static final int ROW_ID = 1;
 
+	@Id
+	private int id;
+
+	@Column
 	private boolean logUpdates;
+
+	@Column
 	private boolean showGreetings;
+
+	@Column
 	private boolean silentMode;
 
 	public SetupBotEntity() {
 
 	}
 
-	public SetupBotEntity(boolean logUpdates, boolean showGreetings, boolean silentMode) {
+	public SetupBotEntity(int id, boolean logUpdates, boolean showGreetings, boolean silentMode) {
+		this.id = id;
 		this.logUpdates = logUpdates;
 		this.showGreetings = showGreetings;
 		this.silentMode = silentMode;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public boolean isLogUpdates() {

@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import ru.exlmoto.digest.entity.RateEntity;
+import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.repository.RateRepository;
 
 import java.math.BigDecimal;
@@ -35,7 +36,7 @@ class TgMarkdownGeneratorTest {
 		bankRuEntity.setPrev(new BigDecimal("88.100000000000000001"));
 
 		when(repository.getBankRu()).thenReturn(bankRuEntity);
-		String report = generator.bankRuReport();
+		String report = generator.rateReportByKey(ExchangeKey.bank_ru.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
 	}
@@ -53,7 +54,7 @@ class TgMarkdownGeneratorTest {
 		bankUaEntity.setPrev(new BigDecimal("1233"));
 
 		when(repository.getBankUa()).thenReturn(bankUaEntity);
-		String report = generator.bankUaReport();
+		String report = generator.rateReportByKey(ExchangeKey.bank_ua.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
 	}
@@ -71,7 +72,7 @@ class TgMarkdownGeneratorTest {
 		bankByEntity.setPrev(new BigDecimal("1235.0002"));
 
 		when(repository.getBankBy()).thenReturn(bankByEntity);
-		String report = generator.bankByReport();
+		String report = generator.rateReportByKey(ExchangeKey.bank_by.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
 	}
@@ -87,7 +88,7 @@ class TgMarkdownGeneratorTest {
 		metalRuEntity.setPrev(new BigDecimal("3031.15"));
 
 		when(repository.getMetalRu()).thenReturn(metalRuEntity);
-		String report = generator.metalRuReport();
+		String report = generator.rateReportByKey(ExchangeKey.metal_ru.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
 	}

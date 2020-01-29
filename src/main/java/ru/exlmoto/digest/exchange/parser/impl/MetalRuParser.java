@@ -10,14 +10,17 @@ import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
-public abstract class MetalRuParser extends MetalParser {
+public class MetalRuParser extends MetalParser {
 	@Override
 	public void commitRates(String url, String mirror, RateRepository rateRepository, RestHelper restHelper) {
 		RateEntity metalRuEntity = rateRepository.getMetalRu();
 		if (parse(restHelper.getRestResponse(url).answer())) {
 			commit(metalRuEntity, rateRepository);
 		} else {
-			commitAlt(mirror, metalRuEntity, rateRepository, restHelper);
+			MetalRuMirrorParser metalRuMirrorParser = new MetalRuMirrorParser();
+			if (metalRuMirrorParser.parse(restHelper.getRestResponse(mirror).answer())) {
+				metalRuMirrorParser.commit(metalRuEntity, rateRepository);
+			}
 		}
 	}
 
@@ -46,6 +49,4 @@ public abstract class MetalRuParser extends MetalParser {
 		Element element = document.getElementsByClass("table").first();
 		return element.select("tr").get(1).selectFirst("td").text();
 	}
-
-	protected abstract void commitAlt(String url, RateEntity entity, RateRepository repository, RestHelper rest);
 }

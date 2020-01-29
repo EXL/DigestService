@@ -10,14 +10,17 @@ import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
-public abstract class BankUaParser extends BankParser {
+public class BankUaParser extends BankParser {
 	@Override
 	public void commitRates(String url, String mirror, RateRepository rateRepository, RestHelper restHelper) {
 		RateEntity bankUaEntity = rateRepository.getBankUa();
 		if (parse(restHelper.getRestResponse(url).answer())) {
 			commit(bankUaEntity, rateRepository);
 		} else {
-			commitAlt(mirror, bankUaEntity, rateRepository, restHelper);
+			BankUaMirrorParser bankUaMirrorParser = new BankUaMirrorParser();
+			if (bankUaMirrorParser.parse(restHelper.getRestResponse(mirror).answer())) {
+				bankUaMirrorParser.commit(bankUaEntity, rateRepository);
+			}
 		}
 	}
 
@@ -49,6 +52,4 @@ public abstract class BankUaParser extends BankParser {
 		Element element = document.selectFirst("r030:contains(840)").parent();
 		return element.selectFirst("exchangedate").text();
 	}
-
-	protected abstract void commitAlt(String url, RateEntity entity, RateRepository repository, RestHelper rest);
 }

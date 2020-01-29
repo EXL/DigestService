@@ -27,10 +27,10 @@ public class RateManager {
 	public void commitAllRates() {
 		log.info("=> Start update exchanging rates.");
 		new BankRuParser().commitRates(config.getBankRu(), config.getBankRuMirror(), repository, rest);
-		new BankUaMirrorParser().commitRates(config.getBankUa(), config.getBankUaMirror(), repository, rest);
+		new BankUaParser().commitRates(config.getBankUa(), config.getBankUaMirror(), repository, rest);
 		new BankByParser().commitRates(config.getBankBy(), repository, rest);
 		new BankKzParser().commitRates(config.getBankKz(), repository, rest);
-		new MetalRuMirrorParser().commitRates(config.getMetalRu(), config.getMetalRuMirror(), repository, rest);
+		new MetalRuParser().commitRates(config.getMetalRu(), config.getMetalRuMirror(), repository, rest);
 		log.info("=> End update exchanging rates.");
 	}
 }

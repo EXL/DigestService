@@ -29,6 +29,9 @@ public class RateEntity {
 	private BigDecimal eur;
 
 	@Column
+	private BigDecimal byn;
+
+	@Column
 	private BigDecimal kzt;
 
 	@Column
@@ -85,6 +88,14 @@ public class RateEntity {
 
 	public void setEur(BigDecimal eur) {
 		this.eur = eur;
+	}
+
+	public BigDecimal getByn() {
+		return byn;
+	}
+
+	public void setByn(BigDecimal byn) {
+		this.byn = byn;
 	}
 
 	public BigDecimal getKzt() {

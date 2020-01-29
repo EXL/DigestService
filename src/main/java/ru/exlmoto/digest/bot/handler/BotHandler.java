@@ -18,10 +18,9 @@ import ru.exlmoto.digest.bot.keyboard.BotKeyboardFactory;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Optional;
@@ -34,15 +33,13 @@ import static com.pengrad.telegrambot.model.MessageEntity.Type.hashtag;
 public class BotHandler {
 	private final Logger log = LoggerFactory.getLogger(BotHandler.class);
 
-	private int delay = 0;
-	private final Map<Long, Long> callbackQueriesMap = new HashMap<>();
-
 	private final BotConfiguration config;
 	private final BotSender sender;
 	private final BotHelper helper;
 	private final BotTelegram telegram;
 	private final BotAbilityFactory abilityFactory;
 	private final BotKeyboardFactory keyboardFactory;
+	private final CallbackQueriesWorker callbackQueriesWorker;
 	private final LocalizationHelper locale;
 
 	public BotHandler(BotConfiguration config,
@@ -51,6 +48,7 @@ public class BotHandler {
 	                  BotTelegram telegram,
 	                  BotAbilityFactory abilityFactory,
 	                  BotKeyboardFactory keyboardFactory,
+	                  CallbackQueriesWorker callbackQueriesWorker,
 	                  LocalizationHelper locale) {
 		this.config = config;
 		this.sender = sender;
@@ -58,6 +56,7 @@ public class BotHandler {
 		this.telegram = telegram;
 		this.abilityFactory = abilityFactory;
 		this.keyboardFactory = keyboardFactory;
+		this.callbackQueriesWorker = callbackQueriesWorker;
 		this.locale = locale;
 	}
 
@@ -91,23 +90,19 @@ public class BotHandler {
 	}
 
 	public void onCallbackQuery(CallbackQuery callbackQuery) {
-		int cooldown = config.getCooldown();
 		if (config.isUseStack()) {
-			long chatId = callbackQuery.message().chat().id();
-			long currentTime = helper.getCurrentUnixTime();
-			if (!callbackQueriesMap.containsKey(chatId) || callbackQueriesMap.get(chatId) <= currentTime - cooldown) {
-				callbackQueriesMap.put(chatId, currentTime);
-				onKeyboard(callbackQuery);
-			} else {
-				sendCooldownAnswer(callbackQuery.id(),
-					cooldown - (currentTime - callbackQueriesMap.get(chatId)));
-			}
-		} else {
-			if (delay == 0) {
-				delayCooldown(cooldown);
+			long delay = callbackQueriesWorker.getDelayForChat(callbackQuery.message().chat().id());
+			if (delay == 0L) {
 				onKeyboard(callbackQuery);
 			} else {
 				sendCooldownAnswer(callbackQuery.id(), delay);
+			}
+		} else {
+			if (callbackQueriesWorker.getDelay() == 0) {
+				callbackQueriesWorker.delayCooldown();
+				onKeyboard(callbackQuery);
+			} else {
+				sendCooldownAnswer(callbackQuery.id(), callbackQueriesWorker.getDelay());
 			}
 		}
 	}
@@ -128,21 +123,6 @@ public class BotHandler {
 	private void sendCooldownAnswer(String callbackQueryId, long cooldownSec) {
 		sender.sendCallbackQueryAnswer(callbackQueryId,
 			String.format(locale.i18n("bot.inline.error.cooldown"), cooldownSec));
-	}
-
-	private void delayCooldown(int cooldown) {
-		delay = cooldown;
-		new Thread(() -> {
-			try {
-				while (delay > 0) {
-					// Seconds to milliseconds, 1 second.
-					Thread.sleep(1000);
-					delay -= 1;
-				}
-			} catch (InterruptedException ie) {
-				log.error("Cannot delay cooldown thread.", ie);
-			}
-		}).start();
 	}
 
 	public void onNewUsers(Message message) {
@@ -176,9 +156,5 @@ public class BotHandler {
 
 	public void onNewPhotos(Message message) {
 		sender.replyMessage(message.chat().id(), message.messageId(), locale.i18n("bot.event.photo.change"));
-	}
-
-	public Map<Long, Long> getCallbackQueriesMap() {
-		return callbackQueriesMap;
 	}
 }

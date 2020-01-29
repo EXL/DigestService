@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -10,6 +11,7 @@ public class SubDigestEntity {
 	@Id
 	private long subscription;
 
+	@Column
 	private String name;
 
 	public SubDigestEntity() {

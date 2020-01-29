@@ -47,4 +47,14 @@ public class SetupBotEntity {
 	public void setSilentMode(boolean silentMode) {
 		this.silentMode = silentMode;
 	}
+
+	@Override
+	public String toString() {
+		return
+			"SetupBotEntity{id=" + id +
+			", logUpdates=" + logUpdates +
+			", showGreetings=" + showGreetings +
+			", silentMode=" + silentMode +
+			"}";
+	}
 }

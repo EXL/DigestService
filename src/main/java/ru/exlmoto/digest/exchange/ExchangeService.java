@@ -1,9 +1,5 @@
 package ru.exlmoto.digest.exchange;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.dao.DataAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +10,6 @@ import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @Service
 public class ExchangeService {
-	private final Logger log = LoggerFactory.getLogger(ExchangeService.class);
-
 	private final RateManager manager;
 	private final TgMarkdownGenerator markdownGenerator;
 	private final LocalizationHelper locale;
@@ -32,25 +26,11 @@ public class ExchangeService {
 	}
 
 	public String markdownReport(String key) {
-		try {
-			ExchangeKey exchangeKey = ExchangeKey.checkExchangeKey(key);
-			switch (exchangeKey) {
-				default:
-				case bank_ru: return markdownGenerator.bankRuReport();
-				case bank_ua: return markdownGenerator.bankUaReport();
-				case bank_by: return markdownGenerator.bankByReport();
-				case bank_kz: return markdownGenerator.bankKzReport();
-				case metal_ru: return markdownGenerator.metalRuReport();
-			}
-		} catch (DataAccessException dae) {
-			log.error("Cannot get object from database.", dae);
-			return markdownGenerator.errorReport();
-		}
+		return markdownGenerator.rateReportByKey(key);
 	}
 
 	public String buttonLabel(String key) {
-		ExchangeKey exchangeKey = ExchangeKey.checkExchangeKey(key);
-		switch (exchangeKey) {
+		switch (ExchangeKey.checkExchangeKey(key)) {
 			default:
 			case bank_ru: return locale.i18n("exchange.bank.ru.button");
 			case bank_ua: return locale.i18n("exchange.bank.ua.button");

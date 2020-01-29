@@ -1,9 +1,14 @@
 package ru.exlmoto.digest.exchange.generator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.entity.RateEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
+import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.repository.RateRepository;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
@@ -12,6 +17,8 @@ import java.util.Optional;
 
 @Component
 public class TgMarkdownGenerator {
+	private final Logger log = LoggerFactory.getLogger(TgMarkdownGenerator.class);
+
 	private final GeneratorHelper helper;
 	private final LocalizationHelper locale;
 	private final RateRepository repository;
@@ -22,27 +29,28 @@ public class TgMarkdownGenerator {
 		this.locale = locale;
 	}
 
-	public String bankRuReport() {
-		return Optional.ofNullable(repository.getBankRu()).map(this::bankRuReportAux).orElse(errorReport());
+	public String rateReportByKey(String key) {
+		ExchangeKey exchangeKey = ExchangeKey.checkExchangeKey(key);
+		try {
+			switch (exchangeKey) {
+				case bank_ru:
+					return Optional.ofNullable(repository.getBankRu()).map(this::bankRuReport).orElse(errorReport());
+				case bank_ua:
+					return Optional.ofNullable(repository.getBankUa()).map(this::bankUaReport).orElse(errorReport());
+				case bank_by:
+					return Optional.ofNullable(repository.getBankBy()).map(this::bankByReport).orElse(errorReport());
+				case bank_kz:
+					return Optional.ofNullable(repository.getBankKz()).map(this::bankKzReport).orElse(errorReport());
+				case metal_ru:
+					return Optional.ofNullable(repository.getMetalRu()).map(this::metalRuReport).orElse(errorReport());
+			}
+		} catch (DataAccessException dae) {
+			log.error("Cannot get object from database.", dae);
+		}
+		return errorReport();
 	}
 
-	public String bankUaReport() {
-		return Optional.ofNullable(repository.getBankUa()).map(this::bankUaReportAux).orElse(errorReport());
-	}
-
-	public String bankByReport() {
-		return Optional.ofNullable(repository.getBankBy()).map(this::bankByReportAux).orElse(errorReport());
-	}
-
-	public String bankKzReport() {
-		return Optional.ofNullable(repository.getBankKz()).map(this::bankKzReportAux).orElse(errorReport());
-	}
-
-	public String metalRuReport() {
-		return Optional.ofNullable(repository.getMetalRu()).map(this::metalRuReportAux).orElse(errorReport());
-	}
-
-	private String bankRuReportAux(RateEntity bankRuEntity) {
+	private String bankRuReport(RateEntity bankRuEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.ru"), "RUB", bankRuEntity.getDate(),
 			bankRuEntity.getUsd(), bankRuEntity.getEur(), bankRuEntity.getGbp(), bankRuEntity.getPrev()
@@ -53,7 +61,7 @@ public class TgMarkdownGenerator {
 		return report + "```";
 	}
 
-	private String bankUaReportAux(RateEntity bankUaEntity) {
+	private String bankUaReport(RateEntity bankUaEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.ua"), "UAH", bankUaEntity.getDate(),
 			bankUaEntity.getUsd(), bankUaEntity.getEur(), bankUaEntity.getGbp(), bankUaEntity.getPrev()
@@ -64,7 +72,7 @@ public class TgMarkdownGenerator {
 		return report + "```";
 	}
 
-	private String bankByReportAux(RateEntity bankByEntity) {
+	private String bankByReport(RateEntity bankByEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.by"), "BYN", bankByEntity.getDate(),
 			bankByEntity.getUsd(), bankByEntity.getEur(), bankByEntity.getGbp(), bankByEntity.getPrev()
@@ -75,7 +83,7 @@ public class TgMarkdownGenerator {
 		return report + "```";
 	}
 
-	private String bankKzReportAux(RateEntity bankKzEntity) {
+	private String bankKzReport(RateEntity bankKzEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.kz"), "KZT", bankKzEntity.getDate(),
 			bankKzEntity.getUsd(), bankKzEntity.getEur(), bankKzEntity.getGbp(), bankKzEntity.getPrev()
@@ -101,7 +109,7 @@ public class TgMarkdownGenerator {
 		return general;
 	}
 
-	private String metalRuReportAux(RateEntity metalRuEntity) {
+	private String metalRuReport(RateEntity metalRuEntity) {
 		String report = locale.i18n("exchange.bank.ru");
 		String difference = filterDifference(metalRuEntity.getPrev(), metalRuEntity.getGold());
 		if (difference != null) {
@@ -144,7 +152,7 @@ public class TgMarkdownGenerator {
 		return helper.isDateNotEmpty(date) ? date : "`" + locale.i18n("exchange.error.value") + "`";
 	}
 
-	public String errorReport() {
+	private String errorReport() {
 		return locale.i18n("exchange.error.report");
 	}
 }

@@ -144,7 +144,7 @@ public class TgMarkdownGenerator {
 		return helper.isDateNotEmpty(date) ? date : "`" + locale.i18n("exchange.error.value") + "`";
 	}
 
-	private String errorReport() {
+	public String errorReport() {
 		return locale.i18n("exchange.error.report");
 	}
 }

@@ -6,7 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
-import ru.exlmoto.digest.exchange.parser.impl.*;
+import ru.exlmoto.digest.exchange.parser.impl.BankRuParser;
+import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
+import ru.exlmoto.digest.exchange.parser.impl.BankByParser;
+import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
+import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.repository.RateRepository;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
@@ -26,11 +30,31 @@ public class RateManager {
 
 	public void commitAllRates() {
 		log.info("=> Start update exchanging rates.");
-		new BankRuParser().commitRates(config.getBankRu(), config.getBankRuMirror(), repository, rest);
-		new BankUaParser().commitRates(config.getBankUa(), config.getBankUaMirror(), repository, rest);
-		new BankByParser().commitRates(config.getBankBy(), repository, rest);
-		new BankKzParser().commitRates(config.getBankKz(), repository, rest);
-		new MetalRuParser().commitRates(config.getMetalRu(), config.getMetalRuMirror(), repository, rest);
+		commitBankRu(config.getBankRu(), config.getBankRuMirror());
+		commitBankUa(config.getBankUa(), config.getBankUaMirror());
+		commitBankBy(config.getBankBy());
+		commitBankKz(config.getBankKz());
+		commitMetalRu(config.getMetalRu(), config.getMetalRuMirror());
 		log.info("=> End update exchanging rates.");
+	}
+
+	public void commitBankRu(String url, String mirror) {
+		new BankRuParser().commitRates(url, mirror, repository, rest);
+	}
+
+	public void commitBankUa(String url, String mirror) {
+		new BankUaParser().commitRates(url, mirror, repository, rest);
+	}
+
+	public void commitBankBy(String url) {
+		new BankByParser().commitRates(url, repository, rest);
+	}
+
+	public void commitBankKz(String url) {
+		new BankKzParser().commitRates(url, repository, rest);
+	}
+
+	public void commitMetalRu(String url, String mirror) {
+		new MetalRuParser().commitRates(url, mirror, repository, rest);
 	}
 }

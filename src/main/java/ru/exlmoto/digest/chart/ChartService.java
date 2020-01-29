@@ -61,7 +61,7 @@ public class ChartService {
 			Assert.isTrue(v.isValid(), "Cannot check Chart object. Is YAML file valid?");
 			joiner.add(k);
 		});
-		log.info(String.format("Loaded chart keys: [%s]", joiner));
+		log.info(String.format("Loaded %d chart keys: [%s]", res.size(), joiner));
 		return res;
 	}
 

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
-import ru.exlmoto.digest.entity.SetupBotEntity;
-import ru.exlmoto.digest.repository.SetupBotRepository;
+import ru.exlmoto.digest.entity.BotSetupEntity;
+import ru.exlmoto.digest.repository.BotSetupRepository;
 import ru.exlmoto.digest.util.Answer;
 
 import javax.annotation.PostConstruct;
@@ -27,14 +27,14 @@ public class BotTelegram {
 	private final Logger log = LoggerFactory.getLogger(BotTelegram.class);
 
 	private final BotConfiguration config;
-	private final SetupBotRepository repository;
+	private final BotSetupRepository repository;
 
 	private TelegramBot bot;
 	private String username;
 	private String firstName;
 	private int id;
 
-	public BotTelegram(BotConfiguration config, SetupBotRepository repository) {
+	public BotTelegram(BotConfiguration config, BotSetupRepository repository) {
 		this.config = config;
 		this.repository = repository;
 	}
@@ -76,9 +76,9 @@ public class BotTelegram {
 	}
 
 	private void overrideBotSettingsFromDataBase() {
-		Answer<SetupBotEntity> res = getBotSetup();
+		Answer<BotSetupEntity> res = getBotSetup();
 		if (res.ok()) {
-			SetupBotEntity setup = res.answer();
+			BotSetupEntity setup = res.answer();
 			log.info("===> Start apply settings from database.");
 
 			boolean logUpdates = setup.isLogUpdates();
@@ -100,11 +100,11 @@ public class BotTelegram {
 		}
 	}
 
-	private Answer<SetupBotEntity> getBotSetup() {
+	private Answer<BotSetupEntity> getBotSetup() {
 		try {
-			SetupBotEntity setupBotEntity = repository.getSetupBot();
-			if (setupBotEntity != null) {
-				return Ok(setupBotEntity);
+			BotSetupEntity botSetupEntity = repository.getSetupBot();
+			if (botSetupEntity != null) {
+				return Ok(botSetupEntity);
 			} else {
 				log.warn("===> Telegram Bot settings table does not exist. First run?");
 				processTelegramBotSettings(true);
@@ -117,10 +117,10 @@ public class BotTelegram {
 	}
 
 	public void processTelegramBotSettings(boolean isFirstRun) {
-		SetupBotEntity setup = repository.getSetupBot();
+		BotSetupEntity setup = repository.getSetupBot();
 		if (isFirstRun || setup == null) {
-			setup = new SetupBotEntity();
-			setup.setId(SetupBotEntity.SETUP_ROW);
+			setup = new BotSetupEntity();
+			setup.setId(BotSetupEntity.SETUP_ROW);
 		}
 
 		setup.setLogUpdates(config.isLogUpdates());

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bot_setup")
-public class SetupBotEntity {
+public class BotSetupEntity {
 	public static final int SETUP_ROW = 1;
 
 	@Id

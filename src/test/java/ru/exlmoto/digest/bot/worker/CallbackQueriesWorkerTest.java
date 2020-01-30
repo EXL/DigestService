@@ -41,4 +41,36 @@ class CallbackQueriesWorkerTest {
 		Thread.sleep((config.getCooldown() + 1) * 1000);
 		assertEquals(0, worker.getDelay());
 	}
+
+	@Test
+	public void testDelayCooldownOnConcurrency() throws InterruptedException {
+		assertEquals(0, worker.getDelay());
+
+		int delay = config.getCooldown() * 2 * 1000;
+
+		new Thread(() -> {
+			int cooldown = delay;
+			while (cooldown > 0) {
+				System.out.println(worker.getDelay());
+				cooldown -= 1;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
+		new Thread(() -> worker.delayCooldown()).start();
+		Thread.sleep(2000);
+		new Thread(() -> worker.delayCooldown()).start();
+		Thread.sleep(2000);
+		new Thread(() -> worker.delayCooldown()).start();
+		Thread.sleep(5500);
+		new Thread(() -> worker.delayCooldown()).start();
+
+		Thread.sleep(delay);
+
+		assertEquals(0, worker.getDelay());
+	}
 }

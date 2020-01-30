@@ -47,14 +47,17 @@ public class CallbackQueriesWorker {
 	public void delayCooldown() {
 		delay = config.getCooldown();
 		new Thread(() -> {
-			try {
+			synchronized (this) {
 				while (delay > 0) {
-					// Seconds to milliseconds, 1 second.
-					Thread.sleep(1000);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException ie) {
+						log.error("Cannot delay cooldown thread.", ie);
+						Thread.currentThread().interrupt();
+						break;
+					}
 					delay -= 1;
 				}
-			} catch (InterruptedException ie) {
-				log.error("Cannot delay cooldown thread.", ie);
 			}
 		}).start();
 	}

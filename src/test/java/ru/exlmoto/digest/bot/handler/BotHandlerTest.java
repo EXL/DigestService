@@ -9,8 +9,6 @@ import ru.exlmoto.digest.bot.util.MessageHelper;
 
 import static com.pengrad.telegrambot.model.MessageEntity.Type.bot_command;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @SpringBootTest(properties = "bot.silent=true")
 class BotHandlerTest {
 	@Autowired
@@ -26,19 +24,6 @@ class BotHandlerTest {
 			"/hi", bot_command, 0, "anyone"));
 		handler.onCommand(new MessageHelper().getMessageWithEntities(
 			"/unknown", bot_command, 0, "anyone"));
-	}
-
-	@Test
-	public void testChopCallbackData() {
-		assertEquals("chart_", handler.chopCallbackData("chart_rub"));
-		assertEquals("chart_", handler.chopCallbackData("chart_rub_eur"));
-		assertEquals("chart", handler.chopCallbackData("chart"));
-		assertEquals("chart_", handler.chopCallbackData("chart___"));
-		assertEquals("chart_", handler.chopCallbackData("chart__"));
-		assertEquals("chart_", handler.chopCallbackData("chart_"));
-		assertEquals("_", handler.chopCallbackData("_"));
-		assertEquals("_", handler.chopCallbackData("_a"));
-		assertEquals("_", handler.chopCallbackData("_ab"));
 	}
 
 	@Test

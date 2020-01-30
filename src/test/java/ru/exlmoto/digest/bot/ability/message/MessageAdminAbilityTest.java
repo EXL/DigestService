@@ -12,7 +12,7 @@ import ru.exlmoto.digest.bot.util.MessageHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @SpringBootTest(properties = "bot.silent=true")
-class BotAbilityAdminTest {
+class MessageAdminAbilityTest {
 	@Autowired
 	private HelloCommand command;
 
@@ -27,10 +27,10 @@ class BotAbilityAdminTest {
 
 	@Test
 	public void testProcessAux() {
-		command.processAux(helper, sender, locale,
+		command.process(helper, sender, locale,
 			new MessageHelper().getSimpleMessage("/hi", "exlmoto"));
 
-		command.processAux(helper, sender, locale,
+		command.process(helper, sender, locale,
 			new MessageHelper().getSimpleMessage("/hi", "anyone"));
 	}
 }

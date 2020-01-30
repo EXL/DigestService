@@ -1,12 +1,11 @@
-package ru.exlmoto.digest.bot.keyboard.impl;
+package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ru.exlmoto.digest.bot.ability.keyboard.impl.ChartKeyboard;
-import ru.exlmoto.digest.bot.keyboard.BotKeyboard;
+import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.CallbackQueryHelper;
@@ -35,12 +34,13 @@ class ChartKeyboardTest {
 
 	@Test
 	public void testHandle() {
-		keyboard.handle(helper, sender, locale, new CallbackQueryHelper().getCallbackQuery(BotKeyboard.CHART));
+		keyboard.execute(helper, sender, locale,
+			new CallbackQueryHelper().getCallbackQuery(Keyboard.chart.withName()));
 
-		keyboard.handle(helper, sender, locale,
-			new CallbackQueryHelper().getCallbackQuery(BotKeyboard.CHART + "key"));
+		keyboard.execute(helper, sender, locale,
+			new CallbackQueryHelper().getCallbackQuery(Keyboard.chart.withName() + "key"));
 
-		keyboard.handle(helper, sender, locale,
-			new CallbackQueryHelper().getCallbackQuery(BotKeyboard.CHART + "usd_rub"));
+		keyboard.execute(helper, sender, locale,
+			new CallbackQueryHelper().getCallbackQuery(Keyboard.chart.withName() + "usd_rub"));
 	}
 }

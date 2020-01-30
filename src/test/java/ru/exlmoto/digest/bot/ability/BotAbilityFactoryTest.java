@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -14,8 +16,14 @@ class BotAbilityFactoryTest {
 	private BotAbilityFactory abilityFactory;
 
 	@Test
-	public void testGetAbility() {
-		assertTrue(abilityFactory.getAbility("/hi").isPresent());
-		assertFalse(abilityFactory.getAbility("/unknown-ability").isPresent());
+	public void testMessageAbility() {
+		assertTrue(abilityFactory.getMessageAbility("/hi").isPresent());
+		assertFalse(abilityFactory.getMessageAbility("/unknown-ability").isPresent());
+	}
+
+	@Test
+	public void testKeyboardAbility() {
+		assertTrue(abilityFactory.getKeyboardAbility(Keyboard.chart.withName()).isPresent());
+		assertFalse(abilityFactory.getKeyboardAbility(Keyboard.chart.withName()).isPresent());
 	}
 }

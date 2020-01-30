@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.bot.keyboard.impl;
+package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Chat;
@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ru.exlmoto.digest.bot.ability.keyboard.impl.SubscribeKeyboard;
-import ru.exlmoto.digest.bot.keyboard.BotKeyboard;
+import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.CallbackQueryHelper;
@@ -64,17 +63,18 @@ class SubscribeKeyboardTest {
 	}
 
 	private void testHandleOnUsername(String username) {
-		keyboard.handle(helper, sender, locale, callbackQueryHelper(BotKeyboard.SUBSCRIBE, username));
-		keyboard.handle(helper, sender, locale,
-			callbackQueryHelper(BotKeyboard.SUBSCRIBE + "key", username));
-		keyboard.handle(helper, sender, locale,
-			callbackQueryHelper(BotKeyboard.SUBSCRIBE + "digest_subscribe", username));
-		keyboard.handle(helper, sender, locale,
-			callbackQueryHelper(BotKeyboard.SUBSCRIBE + "digest_unsubscribe", username));
-		keyboard.handle(helper, sender, locale,
-			callbackQueryHelper(BotKeyboard.SUBSCRIBE + "motofan_subscribe", username));
-		keyboard.handle(helper, sender, locale,
-			callbackQueryHelper(BotKeyboard.SUBSCRIBE + "motofan_unsubscribe", username));
+		keyboard.execute(helper, sender, locale,
+			callbackQueryHelper(Keyboard.subscribe.withName(), username));
+		keyboard.execute(helper, sender, locale,
+			callbackQueryHelper(Keyboard.subscribe.withName() + "key", username));
+		keyboard.execute(helper, sender, locale,
+			callbackQueryHelper(Keyboard.subscribe.withName() + "digest_subscribe", username));
+		keyboard.execute(helper, sender, locale,
+			callbackQueryHelper(Keyboard.subscribe.withName() + "digest_unsubscribe", username));
+		keyboard.execute(helper, sender, locale,
+			callbackQueryHelper(Keyboard.subscribe.withName() + "motofan_subscribe", username));
+		keyboard.execute(helper, sender, locale,
+			callbackQueryHelper(Keyboard.subscribe.withName() + "motofan_unsubscribe", username));
 	}
 
 	private CallbackQuery callbackQueryHelper(String data, String username) {

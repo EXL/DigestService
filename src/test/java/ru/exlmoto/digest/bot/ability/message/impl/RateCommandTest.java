@@ -1,11 +1,10 @@
-package ru.exlmoto.digest.bot.ability.impl;
+package ru.exlmoto.digest.bot.ability.message.impl;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ru.exlmoto.digest.bot.ability.message.impl.RateCommand;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.MessageHelper;

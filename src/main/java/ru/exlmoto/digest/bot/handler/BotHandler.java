@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.bot.ability.BotAbility;
 import ru.exlmoto.digest.bot.ability.BotAbilityFactory;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
-import ru.exlmoto.digest.bot.keyboard.BotKeyboard;
-import ru.exlmoto.digest.bot.keyboard.BotKeyboardFactory;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
@@ -38,7 +36,6 @@ public class BotHandler {
 	private final BotHelper helper;
 	private final BotTelegram telegram;
 	private final BotAbilityFactory abilityFactory;
-	private final BotKeyboardFactory keyboardFactory;
 	private final CallbackQueriesWorker callbackQueriesWorker;
 	private final LocalizationHelper locale;
 
@@ -47,7 +44,6 @@ public class BotHandler {
 	                  BotHelper helper,
 	                  BotTelegram telegram,
 	                  BotAbilityFactory abilityFactory,
-	                  BotKeyboardFactory keyboardFactory,
 	                  CallbackQueriesWorker callbackQueriesWorker,
 	                  LocalizationHelper locale) {
 		this.config = config;
@@ -55,7 +51,6 @@ public class BotHandler {
 		this.helper = helper;
 		this.telegram = telegram;
 		this.abilityFactory = abilityFactory;
-		this.keyboardFactory = keyboardFactory;
 		this.callbackQueriesWorker = callbackQueriesWorker;
 		this.locale = locale;
 	}
@@ -64,8 +59,8 @@ public class BotHandler {
 		final int START = 0;
 		for (MessageEntity entity : message.entities()) {
 			if (entity.type().equals(bot_command) && entity.offset() == START) {
-				Optional<BotAbility> ability =
-					abilityFactory.getAbility(message.text().substring(START, entity.length()));
+				Optional<BotAbility<Message>> ability =
+					abilityFactory.getMessageAbility(message.text().substring(START, entity.length()));
 				if (ability.isPresent()) {
 					ability.get().process(helper, sender, locale, message);
 					return;
@@ -79,8 +74,8 @@ public class BotHandler {
 	public void onHashTag(Message message) {
 		for (MessageEntity entity : message.entities()) {
 			if (entity.type().equals(hashtag)) {
-				Optional<BotAbility> ability =
-					abilityFactory.getAbility(message.text().substring(entity.offset(), entity.length()));
+				Optional<BotAbility<Message>> ability =
+					abilityFactory.getMessageAbility(message.text().substring(entity.offset(), entity.length()));
 				if (ability.isPresent()) {
 					ability.get().process(helper, sender, locale, message);
 					return;
@@ -108,16 +103,8 @@ public class BotHandler {
 	}
 
 	public void onKeyboard(CallbackQuery callbackQuery) {
-		keyboardFactory.getKeyboard(chopCallbackData(callbackQuery.data()))
-			.ifPresent(botKeyboard -> botKeyboard.process(helper, sender, locale, callbackQuery));
-	}
-
-	public String chopCallbackData(String data) {
-		int find = data.indexOf(BotKeyboard.DELIMITER);
-		if (find != -1) {
-			return data.substring(0, find) + BotKeyboard.DELIMITER;
-		}
-		return data;
+		abilityFactory.getKeyboardAbility(callbackQuery.data()).ifPresent(keyboard ->
+			keyboard.process(helper, sender, locale, callbackQuery));
 	}
 
 	private void sendCooldownAnswer(String callbackQueryId, long cooldownSec) {

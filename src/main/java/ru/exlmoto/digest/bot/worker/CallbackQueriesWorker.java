@@ -53,6 +53,7 @@ public class CallbackQueriesWorker {
 						Thread.sleep(1000);
 					} catch (InterruptedException ie) {
 						log.error("Cannot delay cooldown thread.", ie);
+						delay = 0;
 						Thread.currentThread().interrupt();
 						break;
 					}

@@ -57,7 +57,6 @@ public class MotofanWorker {
 			try {
 				Thread.sleep(config.getMessageDelay() * 1000);
 			} catch (InterruptedException ie) {
-				Thread.currentThread().interrupt();
 				throw new RuntimeException(ie);
 			}
 		}));

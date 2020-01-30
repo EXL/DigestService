@@ -91,10 +91,9 @@ public class BotAbilityFactory {
 	}
 
 	private <T extends KeyboardAbility> void addKeyboard(Keyboard keyboard, Class<T> botKeyboardClass) {
-		String keyboardName = keyboard.withName();
-		keyboardMap.put(keyboardName, context.getBean(botKeyboardClass));
+		keyboardMap.put(keyboard.withName(), context.getBean(botKeyboardClass));
 		log.info(String.format("Registered bot Keyboard: '%s' on '%s' class.",
-			Keyboard.chopKeyboardNameRight(keyboardName), botKeyboardClass.getSimpleName()));
+			keyboard.name(), botKeyboardClass.getSimpleName()));
 	}
 
 	public Optional<BotAbility<Message>> getMessageAbility(String ability) {

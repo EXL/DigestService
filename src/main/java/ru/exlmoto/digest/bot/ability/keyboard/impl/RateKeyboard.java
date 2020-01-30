@@ -33,7 +33,7 @@ public class RateKeyboard extends KeyboardAbility {
 		int i = 0;
 		for(ExchangeKey key: ExchangeKey.values()) {
 			keyboardRow[i++] = new InlineKeyboardButton(service.buttonLabel(key.name()))
-				.callbackData(Keyboard.chart.withName() + key);
+				.callbackData(Keyboard.rate.withName() + key);
 		}
 		markup = new InlineKeyboardMarkup(keyboardRow);
 	}

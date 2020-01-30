@@ -169,4 +169,24 @@ public class ExchangeRateEntity {
 	public void setPrev(BigDecimal prev) {
 		this.prev = prev;
 	}
+
+	@Override
+	public String toString() {
+		return
+			"ExchangeRateEntity{id=" + id +
+			", date=" + date +
+			", usd=" + usd +
+			", eur=" + eur +
+			", byn=" + byn +
+			", kzt=" + kzt +
+			", uah=" + uah +
+			", rub=" + rub +
+			", gbp=" + gbp +
+			", gold=" + gold +
+			", silver=" + silver +
+			", platinum=" + platinum +
+			", palladium=" + palladium +
+			", prev=" + prev +
+			"}";
+	}
 }

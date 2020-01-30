@@ -3,7 +3,7 @@ package ru.exlmoto.digest.exchange.parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.exlmoto.digest.entity.RateEntity;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
 
 import java.math.BigDecimal;
 
@@ -24,7 +24,7 @@ public abstract class BankParser extends RateParser {
 	}
 
 	@Override
-	protected void commitGeneralValues(RateEntity entity) {
+	protected void commitGeneralValues(ExchangeRateEntity entity) {
 		entity.setUsd(usd);
 		entity.setEur(eur);
 		entity.setGbp(gbp);
@@ -46,5 +46,5 @@ public abstract class BankParser extends RateParser {
 		);
 	}
 
-	protected abstract void commitAux(RateEntity entity);
+	protected abstract void commitAux(ExchangeRateEntity entity);
 }

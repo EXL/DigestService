@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
 import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
-import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.repository.ExchangeRateRepository;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,7 +24,7 @@ class RateManagerTest {
 	private ExchangeConfiguration config;
 
 	@MockBean
-	private RateRepository repository;
+	private ExchangeRateRepository repository;
 
 	@Test
 	public void testRateException() {

@@ -3,34 +3,34 @@ package ru.exlmoto.digest.exchange.parser.impl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import ru.exlmoto.digest.entity.RateEntity;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.parser.BankParser;
-import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.repository.ExchangeRateRepository;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
 public class BankRuParser extends BankParser {
 	@Override
-	public void commitRates(String url, String mirror, RateRepository rateRepository, RestHelper restHelper) {
-		RateEntity bankRuEntity = rateRepository.getBankRu();
-		if (parse(restHelper.getRestResponse(url).answer())) {
-			commit(bankRuEntity, rateRepository);
+	public void commitRates(String url, String mirror, ExchangeRateRepository repository, RestHelper rest) {
+		ExchangeRateEntity bankRuEntity = repository.getBankRu();
+		if (parse(rest.getRestResponse(url).answer())) {
+			commit(bankRuEntity, repository);
 		} else {
 			this.mirror = true;
-			if (parse(restHelper.getRestResponse(mirror).answer())) {
-				commit(bankRuEntity, rateRepository);
+			if (parse(rest.getRestResponse(mirror).answer())) {
+				commit(bankRuEntity, repository);
 			}
 		}
 	}
 
 	@Override
 	protected int entityId() {
-		return RateEntity.BANK_RU_ROW;
+		return ExchangeRateEntity.BANK_RU_ROW;
 	}
 
 	@Override
-	protected void commitAux(RateEntity entity) {
+	protected void commitAux(ExchangeRateEntity entity) {
 		entity.setUah(uah);
 		entity.setByn(byn);
 		entity.setKzt(kzt);

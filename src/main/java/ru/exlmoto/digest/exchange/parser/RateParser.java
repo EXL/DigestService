@@ -10,8 +10,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import ru.exlmoto.digest.entity.RateEntity;
-import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
+import ru.exlmoto.digest.repository.ExchangeRateRepository;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
@@ -62,21 +62,21 @@ public abstract class RateParser {
 		return checkParsedValues();
 	}
 
-	public void commitRates(String url, RateRepository rateRepository, RestHelper restHelper) {
+	public void commitRates(String url, ExchangeRateRepository repository, RestHelper rest) {
 		try {
-			commitRates(url, null, rateRepository, restHelper);
+			commitRates(url, null, repository, rest);
 		} catch (DataAccessException dae) {
 			log.error("Cannot save object to database.", dae);
 		}
 	}
 
-	public void commit(RateEntity entity, RateRepository repository) {
+	public void commit(ExchangeRateEntity entity, ExchangeRateRepository repository) {
 		logRates();
 		BigDecimal prevValue = null;
 		if (entity != null) {
 			prevValue = entity.getPrev();
 		} else {
-			entity = new RateEntity();
+			entity = new ExchangeRateEntity();
 			entity.setId(entityId());
 		}
 
@@ -98,13 +98,13 @@ public abstract class RateParser {
 		logParsedValues();
 	}
 
-	public abstract void commitRates(String url, String mirror, RateRepository rateRepository, RestHelper restHelper);
+	public abstract void commitRates(String url, String mirror, ExchangeRateRepository repository, RestHelper rest);
 
 	protected abstract BigDecimal parsedPrevValue();
 
 	protected abstract int entityId();
 
-	protected abstract void commitGeneralValues(RateEntity entity);
+	protected abstract void commitGeneralValues(ExchangeRateEntity entity);
 
 	protected abstract void parseDocumentAux(Document document);
 

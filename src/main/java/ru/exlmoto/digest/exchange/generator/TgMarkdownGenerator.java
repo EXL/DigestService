@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.entity.RateEntity;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
-import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.repository.ExchangeRateRepository;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 import java.math.BigDecimal;
@@ -21,9 +21,9 @@ public class TgMarkdownGenerator {
 
 	private final GeneratorHelper helper;
 	private final LocalizationHelper locale;
-	private final RateRepository repository;
+	private final ExchangeRateRepository repository;
 
-	public TgMarkdownGenerator(GeneratorHelper helper, RateRepository repository, LocalizationHelper locale) {
+	public TgMarkdownGenerator(GeneratorHelper helper, ExchangeRateRepository repository, LocalizationHelper locale) {
 		this.helper = helper;
 		this.repository = repository;
 		this.locale = locale;
@@ -50,7 +50,7 @@ public class TgMarkdownGenerator {
 		return errorReport();
 	}
 
-	private String bankRuReport(RateEntity bankRuEntity) {
+	private String bankRuReport(ExchangeRateEntity bankRuEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.ru"), "RUB", bankRuEntity.getDate(),
 			bankRuEntity.getUsd(), bankRuEntity.getEur(), bankRuEntity.getGbp(), bankRuEntity.getPrev()
@@ -61,7 +61,7 @@ public class TgMarkdownGenerator {
 		return report + "```";
 	}
 
-	private String bankUaReport(RateEntity bankUaEntity) {
+	private String bankUaReport(ExchangeRateEntity bankUaEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.ua"), "UAH", bankUaEntity.getDate(),
 			bankUaEntity.getUsd(), bankUaEntity.getEur(), bankUaEntity.getGbp(), bankUaEntity.getPrev()
@@ -72,7 +72,7 @@ public class TgMarkdownGenerator {
 		return report + "```";
 	}
 
-	private String bankByReport(RateEntity bankByEntity) {
+	private String bankByReport(ExchangeRateEntity bankByEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.by"), "BYN", bankByEntity.getDate(),
 			bankByEntity.getUsd(), bankByEntity.getEur(), bankByEntity.getGbp(), bankByEntity.getPrev()
@@ -83,7 +83,7 @@ public class TgMarkdownGenerator {
 		return report + "```";
 	}
 
-	private String bankKzReport(RateEntity bankKzEntity) {
+	private String bankKzReport(ExchangeRateEntity bankKzEntity) {
 		String report = generalData(
 			locale.i18n("exchange.bank.kz"), "KZT", bankKzEntity.getDate(),
 			bankKzEntity.getUsd(), bankKzEntity.getEur(), bankKzEntity.getGbp(), bankKzEntity.getPrev()
@@ -109,7 +109,7 @@ public class TgMarkdownGenerator {
 		return general;
 	}
 
-	private String metalRuReport(RateEntity metalRuEntity) {
+	private String metalRuReport(ExchangeRateEntity metalRuEntity) {
 		String report = locale.i18n("exchange.bank.ru");
 		String difference = filterDifference(metalRuEntity.getPrev(), metalRuEntity.getGold());
 		if (difference != null) {

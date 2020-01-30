@@ -40,17 +40,17 @@ public class ImageHelper {
 	@Value("${image.download-file}")
 	private boolean downloadFile;
 
-	private final RestHelper restHelper;
+	private final RestHelper rest;
 
-	public ImageHelper(RestHelper restHelper) {
-		this.restHelper = restHelper;
+	public ImageHelper(RestHelper rest) {
+		this.rest = rest;
 	}
 
 	public Answer<String> getImageByLink(String url) {
 		if (!downloadFile) {
 			return Ok(url);
 		}
-		Answer<String> res = restHelper.getRestFile(url);
+		Answer<String> res = rest.getRestFile(url);
 		if (res.ok()) {
 			String path = res.answer();
 			if (isFileImage(path)) {

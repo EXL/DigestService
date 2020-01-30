@@ -3,7 +3,7 @@ package ru.exlmoto.digest.exchange.parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.exlmoto.digest.entity.RateEntity;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
 
 import java.math.BigDecimal;
 
@@ -21,7 +21,7 @@ public abstract class MetalParser extends RateParser {
 	}
 
 	@Override
-	protected void commitGeneralValues(RateEntity entity) {
+	protected void commitGeneralValues(ExchangeRateEntity entity) {
 		entity.setGold(gold);
 		entity.setSilver(silver);
 		entity.setPlatinum(platinum);

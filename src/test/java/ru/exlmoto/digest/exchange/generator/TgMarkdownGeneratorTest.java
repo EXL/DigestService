@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import ru.exlmoto.digest.entity.RateEntity;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
-import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.repository.ExchangeRateRepository;
 
 import java.math.BigDecimal;
 
@@ -21,11 +21,11 @@ class TgMarkdownGeneratorTest {
 	@Autowired
 	private TgMarkdownGenerator generator;
 
-	@MockBean private RateRepository repository;
+	@MockBean private ExchangeRateRepository repository;
 
 	@Test
 	public void testBankRuMarkdownReport() {
-		RateEntity bankRuEntity = new RateEntity();
+		ExchangeRateEntity bankRuEntity = new ExchangeRateEntity();
 		bankRuEntity.setDate("08/01/2020");
 		bankRuEntity.setUsd(new BigDecimal("78"));
 		bankRuEntity.setEur(new BigDecimal("79.5600"));
@@ -43,7 +43,7 @@ class TgMarkdownGeneratorTest {
 
 	@Test
 	public void testBankUaMarkdownReport() {
-		RateEntity bankUaEntity = new RateEntity();
+		ExchangeRateEntity bankUaEntity = new ExchangeRateEntity();
 		bankUaEntity.setDate("08-JAN-2020");
 		bankUaEntity.setUsd(new BigDecimal("1235"));
 		bankUaEntity.setEur(new BigDecimal("0.0013"));
@@ -61,7 +61,7 @@ class TgMarkdownGeneratorTest {
 
 	@Test
 	public void testBankByMarkdownReport() {
-		RateEntity bankByEntity = new RateEntity();
+		ExchangeRateEntity bankByEntity = new ExchangeRateEntity();
 		bankByEntity.setDate("10.01.2020");
 		bankByEntity.setUsd(new BigDecimal("1235.0001"));
 		bankByEntity.setEur(new BigDecimal("013113"));
@@ -79,7 +79,7 @@ class TgMarkdownGeneratorTest {
 
 	@Test
 	public void testMetalRuMarkdownReport() {
-		RateEntity metalRuEntity = new RateEntity();
+		ExchangeRateEntity metalRuEntity = new ExchangeRateEntity();
 		metalRuEntity.setDate("08.01.2020");
 		metalRuEntity.setGold(new BigDecimal("3031.25"));
 		metalRuEntity.setSilver(new BigDecimal("3821.40"));

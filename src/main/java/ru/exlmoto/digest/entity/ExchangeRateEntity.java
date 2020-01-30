@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "exchange_rate")
-public class RateEntity {
+public class ExchangeRateEntity {
 	public static final int BANK_RU_ROW = 1;
 	public static final int BANK_UA_ROW = 2;
 	public static final int BANK_BY_ROW = 3;

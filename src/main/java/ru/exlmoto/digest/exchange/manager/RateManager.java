@@ -11,7 +11,7 @@ import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankByParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
-import ru.exlmoto.digest.repository.RateRepository;
+import ru.exlmoto.digest.repository.ExchangeRateRepository;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 @Component
@@ -19,10 +19,10 @@ public class RateManager {
 	private final Logger log = LoggerFactory.getLogger(RateManager.class);
 
 	private final ExchangeConfiguration config;
-	private final RateRepository repository;
+	private final ExchangeRateRepository repository;
 	private final RestHelper rest;
 
-	public RateManager(ExchangeConfiguration config, RateRepository repository, RestHelper rest) {
+	public RateManager(ExchangeConfiguration config, ExchangeRateRepository repository, RestHelper rest) {
 		this.config = config;
 		this.repository = repository;
 		this.rest = rest;

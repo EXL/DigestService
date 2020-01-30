@@ -20,7 +20,7 @@ public class MotofanService {
 	@Value("${motofan.last-post-url}")
 	private String lastPostUrl;
 
-	private final RestHelper restHelper;
+	private final RestHelper rest;
 	private final TgHtmlGenerator htmlGenerator;
 
 	private Long timestamp = 0L;
@@ -28,13 +28,13 @@ public class MotofanService {
 	private String author = null;
 	private String text = null;
 
-	public MotofanService(RestHelper restHelper, TgHtmlGenerator htmlGenerator) {
-		this.restHelper = restHelper;
+	public MotofanService(RestHelper rest, TgHtmlGenerator htmlGenerator) {
+		this.rest = rest;
 		this.htmlGenerator = htmlGenerator;
 	}
 
 	public MotofanPost[] getMotofanPostObjects() {
-		MotofanPost[] posts = restHelper.getRestResponse(lastPostUrl, MotofanPost[].class).answer();
+		MotofanPost[] posts = rest.getRestResponse(lastPostUrl, MotofanPost[].class).answer();
 		if (posts != null && posts.length > 0) {
 			for (MotofanPost post : posts) {
 				if (!post.isValid()) {

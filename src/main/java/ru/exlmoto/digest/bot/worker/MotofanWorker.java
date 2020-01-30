@@ -43,11 +43,13 @@ public class MotofanWorker {
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get subscribe object from database.", dae);
+		} catch (RuntimeException re) {
+			log.error("Cannot delay Motofan Posts sender thread.", re);
 		}
 	}
 
 	private void sendNewMotofanPosts(List<String> motofanPosts, List<SubMotofanEntity> subscribers) {
-		new Thread(() -> motofanPosts.forEach(post -> subscribers.forEach(subscriber -> {
+		motofanPosts.forEach(post -> subscribers.forEach(subscriber -> {
 			long chatId = subscriber.getSubscription();
 			log.info(String.format("=> Send Motofan Post to chat '%d', posts: '%d', subscribers: '%d'.",
 				chatId, motofanPosts.size(), subscribers.size()));
@@ -55,8 +57,9 @@ public class MotofanWorker {
 			try {
 				Thread.sleep(config.getMessageDelay() * 1000);
 			} catch (InterruptedException ie) {
-				log.error("Cannot delay Motofan Posts sender thread.", ie);
+				Thread.currentThread().interrupt();
+				throw new RuntimeException(ie);
 			}
-		}))).start();
+		}));
 	}
 }

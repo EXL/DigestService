@@ -7,18 +7,18 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bot_sub_motofan")
-public class SubMotofanEntity {
+public class BotSubMotofanEntity {
 	@Id
 	private long subscription;
 
 	@Column
 	private String name;
 
-	public SubMotofanEntity() {
+	public BotSubMotofanEntity() {
 
 	}
 
-	public SubMotofanEntity(long subscription, String name) {
+	public BotSubMotofanEntity(long subscription, String name) {
 		this.subscription = subscription;
 		this.name = name;
 	}

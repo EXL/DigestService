@@ -18,9 +18,9 @@ import ru.exlmoto.digest.bot.ability.keyboard.KeyboardAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
-import ru.exlmoto.digest.entity.SubMotofanEntity;
+import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.repository.BotSubDigestRepository;
-import ru.exlmoto.digest.repository.SubMotofanRepository;
+import ru.exlmoto.digest.repository.BotSubMotofanRepository;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
@@ -42,13 +42,13 @@ public class SubscribeKeyboard extends KeyboardAbility {
 
 	private final LocalizationHelper locale;
 	private final BotSubDigestRepository digestRepository;
-	private final SubMotofanRepository motofanRepository;
+	private final BotSubMotofanRepository motofanRepository;
 	private final BotHelper helper;
 
 	private InlineKeyboardMarkup markup = null;
 
 	public SubscribeKeyboard(BotSubDigestRepository digestRepository,
-	                         SubMotofanRepository motofanRepository,
+	                         BotSubMotofanRepository motofanRepository,
 	                         BotHelper helper,
 	                         LocalizationHelper locale) {
 		this.digestRepository = digestRepository;
@@ -172,7 +172,7 @@ public class SubscribeKeyboard extends KeyboardAbility {
 		if (motofanRepository.findSubMotofanEntityBySubscription(chatId) != null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
 		} else {
-			motofanRepository.save(new SubMotofanEntity(chatId, helper.getValidChatName(chat)));
+			motofanRepository.save(new BotSubMotofanEntity(chatId, helper.getValidChatName(chat)));
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
 			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
 		}

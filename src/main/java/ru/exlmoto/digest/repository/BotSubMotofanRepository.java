@@ -3,14 +3,14 @@ package ru.exlmoto.digest.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.exlmoto.digest.entity.SubMotofanEntity;
+import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 
 import java.util.List;
 
-public interface SubMotofanRepository extends CrudRepository<SubMotofanEntity, Integer> {
-	List<SubMotofanEntity> findAll();
+public interface BotSubMotofanRepository extends CrudRepository<BotSubMotofanEntity, Integer> {
+	List<BotSubMotofanEntity> findAll();
 
-	SubMotofanEntity findSubMotofanEntityBySubscription(long subscription);
+	BotSubMotofanEntity findSubMotofanEntityBySubscription(long subscription);
 
 	@Transactional
 	void deleteSubMotofanEntityBySubscription(long subscription);

@@ -1,17 +1,13 @@
 package ru.exlmoto.digest.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 
-import java.util.List;
-
-public interface BotSubDigestRepository extends CrudRepository<BotSubDigestEntity, Integer> {
-	List<BotSubDigestEntity> findAll();
-
-	BotSubDigestEntity findSubDigestEntityBySubscription(long subscription);
+public interface BotSubDigestRepository extends JpaRepository<BotSubDigestEntity, Integer> {
+	BotSubDigestEntity findBotSubDigestEntityBySubscription(long subscription);
 
 	@Transactional
-	void deleteSubDigestEntityBySubscription(long subscription);
+	void deleteBotSubDigestEntityBySubscription(long subscription);
 }

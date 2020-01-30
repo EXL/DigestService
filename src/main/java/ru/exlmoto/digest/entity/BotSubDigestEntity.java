@@ -11,7 +11,7 @@ public class BotSubDigestEntity {
 	@Id
 	private long subscription;
 
-	@Column
+	@Column(nullable = false)
 	private String name;
 
 	public BotSubDigestEntity() {
@@ -41,8 +41,9 @@ public class BotSubDigestEntity {
 
 	@Override
 	public String toString() {
-		return "SubDigestEntity{subscription=" + subscription +
-			", name='" + name + '\'' +
+		return
+			"SubDigestEntity{subscription=" + subscription +
+			", name=" + name +
 			"}";
 	}
 }

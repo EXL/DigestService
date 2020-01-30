@@ -13,13 +13,13 @@ public class BotSetupEntity {
 	@Id
 	private int id;
 
-	@Column
+	@Column(nullable = false)
 	private boolean logUpdates;
 
-	@Column
+	@Column(nullable = false)
 	private boolean showGreetings;
 
-	@Column
+	@Column(nullable = false)
 	private boolean silentMode;
 
 	public int getId() {

@@ -19,7 +19,7 @@ public class ExchangeRateEntity {
 	@Id
 	private int id;
 
-	@Column
+	@Column(nullable = false)
 	private String date;
 
 	@Column
@@ -55,7 +55,7 @@ public class ExchangeRateEntity {
 	@Column
 	private BigDecimal palladium;
 
-	@Column
+	@Column(nullable = false)
 	private BigDecimal prev;
 
 	public int getId() {

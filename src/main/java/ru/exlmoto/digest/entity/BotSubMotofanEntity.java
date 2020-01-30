@@ -11,7 +11,7 @@ public class BotSubMotofanEntity {
 	@Id
 	private long subscription;
 
-	@Column
+	@Column(nullable = false)
 	private String name;
 
 	public BotSubMotofanEntity() {
@@ -43,7 +43,7 @@ public class BotSubMotofanEntity {
 	public String toString() {
 		return
 			"SubMotofanEntity{subscription=" + subscription +
-			", name='" + name + '\'' +
+			", name=" + name +
 			"}";
 	}
 }

@@ -3,6 +3,8 @@ package ru.exlmoto.digest.bot.keyboard;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
+import org.springframework.scheduling.annotation.Async;
+
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
@@ -13,8 +15,9 @@ public abstract class BotKeyboard {
 	public static final String CHART = "chart" + DELIMITER;
 	public static final String SUBSCRIBE = "subscribe" + DELIMITER;
 
+	@Async
 	public void process(BotHelper helper, BotSender sender, LocalizationHelper locale, CallbackQuery callback) {
-		new Thread(() -> handle(helper, sender, locale, callback)).start();
+		handle(helper, sender, locale, callback);
 	}
 
 	public abstract InlineKeyboardMarkup getMarkup();

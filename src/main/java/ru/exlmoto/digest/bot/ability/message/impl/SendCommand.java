@@ -81,8 +81,16 @@ public class SendCommand extends MessageAdminAbility {
 		}
 	}
 
+	protected String isolateCommand(String message) {
+		int find = message.indexOf("@");
+		if (find != -1) {
+			return message.substring(0, find).substring(1);
+		}
+		return message.substring(1);
+	}
+
 	private Command determineCommand(String message) {
-		String command = message.substring(1);
+		String command = isolateCommand(message);
 		try {
 			return Command.valueOf(command);
 		} catch (IllegalArgumentException iae) {

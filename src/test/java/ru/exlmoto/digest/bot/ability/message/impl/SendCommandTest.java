@@ -10,6 +10,8 @@ import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.MessageHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(properties = { "bot.silent=true", "image.download-file=false" })
 class SendCommandTest {
 	@Autowired
@@ -85,6 +87,21 @@ class SendCommandTest {
 		onCmd("/image 87336977 https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png");
 		onCmd("/image -1001148683293 https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png");
 		System.out.println("===");
+	}
+
+	@Test
+	public void testIsolateCommand() {
+		assertEquals("send", command.isolateCommand("/send"));
+		assertEquals("send", command.isolateCommand("/send@Somebot"));
+		assertEquals("send", command.isolateCommand("/send@Somebot_test"));
+
+		assertEquals("sticker", command.isolateCommand("/sticker"));
+		assertEquals("sticker", command.isolateCommand("/sticker@Somebot"));
+		assertEquals("sticker", command.isolateCommand("/sticker@Somebot_test"));
+
+		assertEquals("image", command.isolateCommand("/image"));
+		assertEquals("image", command.isolateCommand("/image@Somebot"));
+		assertEquals("image", command.isolateCommand("/image@Somebot_test"));
 	}
 
 	private void onCmd(String message) {

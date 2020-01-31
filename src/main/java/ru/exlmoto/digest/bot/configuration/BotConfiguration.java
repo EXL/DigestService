@@ -18,6 +18,8 @@ public class BotConfiguration {
 	private boolean silent;
 	private boolean useStack;
 	private boolean showGreetings;
+	private long motofanChatId;
+	private String motofanChatUrl;
 
 	public String getToken() {
 		return token;
@@ -129,5 +131,21 @@ public class BotConfiguration {
 
 	public void setShowGreetings(boolean showGreetings) {
 		this.showGreetings = showGreetings;
+	}
+
+	public long getMotofanChatId() {
+		return motofanChatId;
+	}
+
+	public void setMotofanChatId(long motofanChatId) {
+		this.motofanChatId = motofanChatId;
+	}
+
+	public String getMotofanChatUrl() {
+		return motofanChatUrl;
+	}
+
+	public void setMotofanChatUrl(String motofanChatUrl) {
+		this.motofanChatUrl = motofanChatUrl;
 	}
 }

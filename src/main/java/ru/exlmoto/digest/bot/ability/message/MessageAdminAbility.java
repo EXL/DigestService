@@ -16,4 +16,7 @@ public abstract class MessageAdminAbility extends MessageAbility {
 				locale.i18nU("bot.error.access", helper.getValidUsername(message.from())));
 		}
 	}
+
+	@Override
+	protected abstract void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message);
 }

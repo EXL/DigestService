@@ -42,7 +42,7 @@ public class MotofanWorker {
 				sendNewMotofanPosts(motofanPosts, repository.findAll());
 			}
 		} catch (DataAccessException dae) {
-			log.error("Cannot get subscribe object from database.", dae);
+			log.error("Cannot get Motofan subscribe object from database.", dae);
 		} catch (RuntimeException re) {
 			log.error("Cannot delay Motofan Posts sender thread.", re);
 		}

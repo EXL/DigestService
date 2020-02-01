@@ -51,6 +51,17 @@ class DigestHashTagTest {
 	}
 
 	@Test
+	public void testDigestHashTagLong() {
+		StringBuilder longMessage = new StringBuilder("#news");
+		for (int i = 0; i < 100; i++) {
+			longMessage.append(" ").append("check");
+		}
+
+		hashTag.execute(helper, sender, locale,
+			new MessageHelper().getSimpleMessage(longMessage.toString(), "anyone"));
+	}
+
+	@Test
 	public void testIsolateMessageText() {
 		assertEquals("check", hashTag.isolateMessageText("#digest  check"));
 		assertEquals("check", hashTag.isolateMessageText("#news  check"));

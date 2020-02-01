@@ -51,27 +51,29 @@ public class DigestHashTag extends MessageAbility {
 		long userId = user.id();
 
 		String messageText = isolateMessageText(message.text());
-		// TODO: Check length of digest message
-
 		if (!messageText.isEmpty()) {
-			sender.replyMessage(chatId, messageId,
-				locale.i18nRU("bot.hashtag.digest.ok", helper.getValidUsername(user)));
+			if (messageText.length() <= config.getMaxDigestLength()) {
+				sender.replyMessage(chatId, messageId,
+					locale.i18nRU("bot.hashtag.digest.ok", helper.getValidUsername(user)));
 
-			try {
-				BotDigestUserEntity digestUserEntity =
-					digestUserRepository.findById(userId).orElseGet(() -> new BotDigestUserEntity(userId));
-				digestUserEntity.setAvatar(avatarWorker.getAvatarLink(user));
-				digestUserEntity.setUsername(helper.getValidUsername(user));
-				digestUserRepository.save(digestUserEntity);
+				try {
+					BotDigestUserEntity digestUserEntity =
+						digestUserRepository.findById(userId).orElseGet(() -> new BotDigestUserEntity(userId));
+					digestUserEntity.setAvatar(avatarWorker.getAvatarLink(user));
+					digestUserEntity.setUsername(helper.getValidUsername(user));
+					digestUserRepository.save(digestUserEntity);
 
-				digestRepository.save(new BotDigestEntity(chatId,
-					message.date(), messageId, messageText, digestUserEntity));
-			} catch (DataAccessException dae) {
-				log.error("Cannot save digest entity to database.", dae);
-			}
+					digestRepository.save(new BotDigestEntity(chatId,
+						message.date(), messageId, messageText, digestUserEntity));
+				} catch (DataAccessException dae) {
+					log.error("Cannot save digest entity to database.", dae);
+				}
 
-			if (chatId == config.getMotofanChatId()) {
-				// TODO: Sends message to subs
+				if (chatId == config.getMotofanChatId()) {
+					// TODO: Sends message to subs
+				}
+			} else {
+				sender.replyMessage(chatId, messageId, locale.i18n("bot.hashtag.digest.length.error"));
 			}
 		}
 	}

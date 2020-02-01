@@ -21,6 +21,7 @@ public class BotConfiguration {
 	private long motofanChatId;
 	private String motofanChatUrl;
 	private String telegramShortUrl;
+	private int maxDigestLength;
 
 	public String getToken() {
 		return token;
@@ -156,5 +157,13 @@ public class BotConfiguration {
 
 	public void setTelegramShortUrl(String telegramShortUrl) {
 		this.telegramShortUrl = telegramShortUrl;
+	}
+
+	public int getMaxDigestLength() {
+		return maxDigestLength;
+	}
+
+	public void setMaxDigestLength(int maxDigestLength) {
+		this.maxDigestLength = maxDigestLength;
 	}
 }

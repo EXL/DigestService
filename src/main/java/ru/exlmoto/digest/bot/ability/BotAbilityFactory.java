@@ -23,10 +23,11 @@ import ru.exlmoto.digest.bot.ability.message.impl.GameCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HelloCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HelpCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HostIpCommand;
+import ru.exlmoto.digest.bot.ability.message.impl.RateCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.SendCommand;
+import ru.exlmoto.digest.bot.ability.message.impl.ShowCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.StartCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.SubscribeCommand;
-import ru.exlmoto.digest.bot.ability.message.impl.RateCommand;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 
 import javax.annotation.PostConstruct;
@@ -65,6 +66,7 @@ public class BotAbilityFactory {
 		addCommand("/charts", ChartCommand.class);
 		addCommand("/rates", RateCommand.class);
 		addCommand("/subscribe", SubscribeCommand.class);
+		addCommand("/show", ShowCommand.class);
 
 		addCommand("/debug", DebugCommand.class);
 

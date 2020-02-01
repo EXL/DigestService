@@ -22,6 +22,9 @@ public class BotConfiguration {
 	private String motofanChatUrl;
 	private String telegramShortUrl;
 	private int maxDigestLength;
+	private int showPagePosts;
+	private int showChopShort;
+	private int showChopLong;
 
 	public String getToken() {
 		return token;
@@ -165,5 +168,29 @@ public class BotConfiguration {
 
 	public void setMaxDigestLength(int maxDigestLength) {
 		this.maxDigestLength = maxDigestLength;
+	}
+
+	public int getShowPagePosts() {
+		return showPagePosts;
+	}
+
+	public void setShowPagePosts(int showPagePosts) {
+		this.showPagePosts = showPagePosts;
+	}
+
+	public int getShowChopShort() {
+		return showChopShort;
+	}
+
+	public void setShowChopShort(int showChopShort) {
+		this.showChopShort = showChopShort;
+	}
+
+	public int getShowChopLong() {
+		return showChopLong;
+	}
+
+	public void setShowChopLong(int showChopLong) {
+		this.showChopLong = showChopLong;
 	}
 }

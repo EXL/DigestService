@@ -56,6 +56,7 @@ public class DigestHashTag extends MessageAbility {
 			try {
 				BotDigestUserEntity digestUserEntity =
 					digestUserRepository.findById(userId).orElseGet(() -> new BotDigestUserEntity(userId));
+				// TODO:
 				digestUserEntity.setAvatar("avatar");
 				digestUserEntity.setUsername(helper.getValidUsername(user));
 				digestUserRepository.save(digestUserEntity);
@@ -67,7 +68,7 @@ public class DigestHashTag extends MessageAbility {
 			}
 
 			if (chatId == config.getMotofanChatId()) {
-				// Sends message to subs
+				// TODO: Sends message to subs
 			}
 		}
 	}

@@ -20,6 +20,7 @@ public class BotConfiguration {
 	private boolean showGreetings;
 	private long motofanChatId;
 	private String motofanChatUrl;
+	private String telegramShortUrl;
 
 	public String getToken() {
 		return token;
@@ -147,5 +148,13 @@ public class BotConfiguration {
 
 	public void setMotofanChatUrl(String motofanChatUrl) {
 		this.motofanChatUrl = motofanChatUrl;
+	}
+
+	public String getTelegramShortUrl() {
+		return telegramShortUrl;
+	}
+
+	public void setTelegramShortUrl(String telegramShortUrl) {
+		this.telegramShortUrl = telegramShortUrl;
 	}
 }

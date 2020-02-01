@@ -18,7 +18,6 @@ class FilterTextHelperUnitTest {
 		assertEquals("test text test", filterTextHelper.removeHtmlTags("test <blockquote> text test</block"));
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void testRemoveBbTags() {
 		assertThrows(NullPointerException.class, () -> filterTextHelper.removeBbCodes(null));
@@ -26,5 +25,11 @@ class FilterTextHelperUnitTest {
 		assertEquals("test text test", filterTextHelper.removeBbCodes("test [b]text[/b] test"));
 		assertEquals("test text test bl", filterTextHelper.removeBbCodes("test [b]text[/b] test [bl"));
 		assertEquals("test text test bl", filterTextHelper.removeBbCodes("test [b]text[/b] test [\\bl"));
+	}
+
+	@Test
+	public void testCheckLink() {
+		assertEquals("https://t.me/", filterTextHelper.checkLink("https://t.me"));
+		assertEquals("https://t.me/", filterTextHelper.checkLink("https://t.me/"));
 	}
 }

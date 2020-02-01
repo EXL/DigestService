@@ -21,4 +21,8 @@ public class FilterTextHelper {
 			.replaceAll("\\[", " ").trim()
 			.replaceAll(" +", " ");
 	}
+
+	public String checkLink(String url) {
+		return url.endsWith("/") ? url : url + "/";
+	}
 }

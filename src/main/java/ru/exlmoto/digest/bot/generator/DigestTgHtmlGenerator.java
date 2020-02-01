@@ -12,7 +12,7 @@ import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 import ru.exlmoto.digest.util.text.FilterTextHelper;
 
 @Component
-public class TgHtmlGenerator {
+public class DigestTgHtmlGenerator {
 	private final FilterTextHelper filterText;
 	private final BotConfiguration config;
 	private final BotHelper helper;
@@ -21,10 +21,10 @@ public class TgHtmlGenerator {
 	@Value("${general.date-format}")
 	private String dateFormat;
 
-	public TgHtmlGenerator(FilterTextHelper filterText,
-	                       BotConfiguration config,
-	                       BotHelper helper,
-	                       LocalizationHelper locale) {
+	public DigestTgHtmlGenerator(FilterTextHelper filterText,
+	                             BotConfiguration config,
+	                             BotHelper helper,
+	                             LocalizationHelper locale) {
 		this.filterText = filterText;
 		this.config = config;
 		this.helper = helper;
@@ -34,7 +34,7 @@ public class TgHtmlGenerator {
 	public String generateDigestMessageHtmlReport(Chat chat, User user, int messageId, long timeStamp, String digest) {
 		return
 			String.format(locale.i18n("bot.hashtag.digest.subscribe.title"), helper.getValidChatName(chat)) +
-			"\n\n<b>" + helper.getValidUsername(user) + "</b>" +
+			"\n\n<b>" + helper.getValidUsername(user) + "</b> " +
 			locale.i18n("bot.hashtag.digest.subscribe.wrote") + " (" +
 			filterText.getDateFromTimeStamp(dateFormat, timeStamp) + "):\n<i>" + digest + "</i>\n\n" +
 			locale.i18n("bot.hashtag.digest.subscribe.read") +

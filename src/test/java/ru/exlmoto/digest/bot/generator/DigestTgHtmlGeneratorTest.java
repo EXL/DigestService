@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.exlmoto.digest.bot.util.MessageHelper;
 
 @SpringBootTest
-class TgHtmlGeneratorTest {
+class DigestTgHtmlGeneratorTest {
 	@Autowired
-	private TgHtmlGenerator htmlGenerator;
+	private DigestTgHtmlGenerator htmlGenerator;
 
 	@Test
 	public void testGenerateDigestMessageHtmlReport() {

@@ -3,6 +3,10 @@ package ru.exlmoto.digest.bot.ability.message.impl;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.User;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.message.MessageAbility;
@@ -18,6 +22,8 @@ import ru.exlmoto.digest.util.text.FilterTextHelper;
 
 @Component
 public class DigestHashTag extends MessageAbility {
+	private final Logger log = LoggerFactory.getLogger(DigestHashTag.class);
+
 	private final BotConfiguration config;
 	private final FilterTextHelper filterText;
 	private final BotDigestRepository digestRepository;
@@ -47,14 +53,18 @@ public class DigestHashTag extends MessageAbility {
 			sender.replyMessage(chatId, messageId,
 				locale.i18nRU("bot.hashtag.digest.ok", helper.getValidUsername(user)));
 
-			BotDigestUserEntity digestUserEntity =
-				digestUserRepository.findById(userId).orElseGet(() -> new BotDigestUserEntity(userId));
-			digestUserEntity.setAvatar("avatar");
-			digestUserEntity.setUsername(helper.getValidUsername(user));
-			digestUserRepository.save(digestUserEntity);
+			try {
+				BotDigestUserEntity digestUserEntity =
+					digestUserRepository.findById(userId).orElseGet(() -> new BotDigestUserEntity(userId));
+				digestUserEntity.setAvatar("avatar");
+				digestUserEntity.setUsername(helper.getValidUsername(user));
+				digestUserRepository.save(digestUserEntity);
 
-			digestRepository.save(new BotDigestEntity(chatId,
-				message.date(), messageId, messageText, digestUserEntity));
+				digestRepository.save(new BotDigestEntity(chatId,
+					message.date(), messageId, messageText, digestUserEntity));
+			} catch (DataAccessException dae) {
+				log.error("Cannot save digest entity to database.", dae);
+			}
 
 			if (chatId == config.getMotofanChatId()) {
 				// Sends message to subs

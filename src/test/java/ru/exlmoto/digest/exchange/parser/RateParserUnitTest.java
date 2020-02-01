@@ -143,7 +143,7 @@ class RateParserUnitTest {
 		assertFalse(parserHelper.process(new MetalRuParser(),
 			parserHelper.fileContent("metalRuErrors.html")));
 		assertFalse(parserHelper.process(new MetalRuParser(),
-			parserHelper.fileContent("metalOtherSite.html")));
+			parserHelper.fileContent("metalOtherSite.html", "ISO-8859-1")));
 
 		generalTests(new MetalRuParser());
 	}

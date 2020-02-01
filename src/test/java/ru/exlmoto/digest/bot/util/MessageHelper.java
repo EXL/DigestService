@@ -22,9 +22,7 @@ public class MessageHelper {
 		entities[0] = entity;
 		setField(message, "entities", entities);
 
-		User user = new User();
-		setField(user, "username", username);
-		setField(message, "from", user);
+		setField(message, "from", getUser(username));
 
 		Chat chat = new Chat();
 		setField(chat, "id", 4242L);
@@ -39,10 +37,7 @@ public class MessageHelper {
 		setField(message, "message_id", 42);
 		setField(message, "date", 42);
 
-		User user = new User();
-		setField(user, "id", 100);
-		setField(user, "username", username);
-		setField(message, "from", user);
+		setField(message, "from", getUser(username));
 
 		Chat chat = new Chat();
 		setField(chat, "id", 4242L);
@@ -51,5 +46,12 @@ public class MessageHelper {
 		setField(message, "chat", chat);
 
 		return message;
+	}
+
+	public User getUser(String username) {
+		User user = new User();
+		setField(user, "id", 100);
+		setField(user, "username", username);
+		return user;
 	}
 }

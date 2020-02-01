@@ -22,7 +22,7 @@ public class BotDigestEntity {
 	@Column(nullable = false)
 	private long date;
 
-	@Column(nullable = false)
+	@Column
 	private long messageId;
 
 	@Column(nullable = false, length = 4095)
@@ -31,6 +31,18 @@ public class BotDigestEntity {
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	private BotDigestUserEntity user;
+
+	public BotDigestEntity() {
+
+	}
+
+	public BotDigestEntity(long chat, long date, long messageId, String digest, BotDigestUserEntity user) {
+		this.chat = chat;
+		this.date = date;
+		this.messageId = messageId;
+		this.digest = digest;
+		this.user = user;
+	}
 
 	public long getId() {
 		return id;

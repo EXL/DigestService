@@ -37,8 +37,10 @@ public class MessageHelper {
 		Message message = new Message();
 		setField(message, "text", text);
 		setField(message, "message_id", 42);
+		setField(message, "date", 42);
 
 		User user = new User();
+		setField(user, "id", 100);
 		setField(user, "username", username);
 		setField(message, "from", user);
 

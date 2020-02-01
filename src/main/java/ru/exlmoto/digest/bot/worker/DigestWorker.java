@@ -32,13 +32,13 @@ public class DigestWorker {
 	public void sendDigestToSubscribers(BotSender sender, Message message, String digest) {
 		try {
 			new Thread(() -> repository.findAll().forEach(subscriber -> {
-				sender.sendHtmlMessage(subscriber.getSubscription(),
-					htmlGenerator.generateDigestMessageHtmlReport(message, digest));
 				try {
 					Thread.sleep(config.getMessageDelay() * 1000);
 				} catch (InterruptedException ie) {
 					throw new RuntimeException(ie);
 				}
+				sender.sendHtmlMessage(subscriber.getSubscription(),
+					htmlGenerator.generateDigestMessageHtmlReport(message, digest));
 			})).start();
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Digest subscribe object from database.", dae);

@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot.generator;
 
 import com.pengrad.telegrambot.model.Chat;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.User;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,14 +32,14 @@ public class DigestTgHtmlGenerator {
 		this.locale = locale;
 	}
 
-	public String generateDigestMessageHtmlReport(Chat chat, User user, int messageId, long timeStamp, String digest) {
+	public String generateDigestMessageHtmlReport(Message message, String digest) {
 		return
-			String.format(locale.i18n("bot.hashtag.digest.subscribe.title"), helper.getValidChatName(chat)) +
-			"\n\n<b>" + helper.getValidUsername(user) + "</b> " +
-			locale.i18n("bot.hashtag.digest.subscribe.wrote") + " (" +
-			filterText.getDateFromTimeStamp(dateFormat, timeStamp) + "):\n<i>" + digest + "</i>\n\n" +
-			locale.i18n("bot.hashtag.digest.subscribe.read") +
-			" <a href=\"" + filterText.checkLink(config.getMotofanChatUrl()) + messageId + "\">" +
+			String.format(locale.i18n("bot.hashtag.digest.subscribe.title"),
+				helper.getValidChatName(message.chat())) + "\n\n<b>" +
+			helper.getValidUsername(message.from()) + "</b> " + locale.i18n("bot.hashtag.digest.subscribe.wrote") +
+			" (" + filterText.getDateFromTimeStamp(dateFormat, message.date()) + "):\n<i>" +
+			digest + "</i>\n\n" + locale.i18n("bot.hashtag.digest.subscribe.read") +
+			" <a href=\"" + filterText.checkLink(config.getMotofanChatUrl()) + message.messageId() + "\">" +
 			locale.i18n("bot.hashtag.digest.subscribe.link") + "</a>";
 	}
 }

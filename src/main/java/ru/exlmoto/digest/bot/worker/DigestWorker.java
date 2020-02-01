@@ -1,5 +1,7 @@
 package ru.exlmoto.digest.bot.worker;
 
+import com.pengrad.telegrambot.model.Message;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+import ru.exlmoto.digest.bot.generator.DigestTgHtmlGenerator;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.repository.BotSubDigestRepository;
 
@@ -16,16 +19,21 @@ public class DigestWorker {
 
 	private final BotConfiguration config;
 	private final BotSubDigestRepository repository;
+	private final DigestTgHtmlGenerator htmlGenerator;
 
-	public DigestWorker(BotConfiguration config, BotSubDigestRepository repository) {
+	public DigestWorker(BotConfiguration config,
+	                    BotSubDigestRepository repository,
+	                    DigestTgHtmlGenerator htmlGenerator) {
 		this.config = config;
 		this.repository = repository;
+		this.htmlGenerator = htmlGenerator;
 	}
 
-	public void sendDigestToSubscribers(BotSender sender) {
+	public void sendDigestToSubscribers(BotSender sender, Message message, String digest) {
 		try {
 			new Thread(() -> repository.findAll().forEach(subscriber -> {
-				sender.sendHtmlMessage(subscriber.getSubscription(), "");
+				sender.sendHtmlMessage(subscriber.getSubscription(),
+					htmlGenerator.generateDigestMessageHtmlReport(message, digest));
 				try {
 					Thread.sleep(config.getMessageDelay() * 1000);
 				} catch (InterruptedException ie) {

@@ -14,6 +14,7 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.worker.AvatarWorker;
+import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
@@ -30,17 +31,20 @@ public class DigestHashTag extends MessageAbility {
 	private final BotDigestRepository digestRepository;
 	private final BotDigestUserRepository digestUserRepository;
 	private final AvatarWorker avatarWorker;
+	private final DigestWorker digestWorker;
 
 	public DigestHashTag(BotConfiguration config,
 	                     FilterTextHelper filterText,
 	                     BotDigestRepository digestRepository,
 	                     BotDigestUserRepository digestUserRepository,
-	                     AvatarWorker avatarWorker) {
+	                     AvatarWorker avatarWorker,
+	                     DigestWorker digestWorker) {
 		this.config = config;
 		this.filterText = filterText;
 		this.digestRepository = digestRepository;
 		this.digestUserRepository = digestUserRepository;
 		this.avatarWorker = avatarWorker;
+		this.digestWorker = digestWorker;
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class DigestHashTag extends MessageAbility {
 				}
 
 				if (chatId == config.getMotofanChatId()) {
-					// TODO: Sends message to subs
+					digestWorker.sendDigestToSubscribers(sender, message, messageText);
 				}
 			} else {
 				sender.replyMessage(chatId, messageId, locale.i18n("bot.hashtag.digest.length.error"));

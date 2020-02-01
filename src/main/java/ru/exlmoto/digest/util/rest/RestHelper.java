@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import ru.exlmoto.digest.util.Answer;
@@ -92,10 +94,20 @@ public class RestHelper {
 	}
 
 	private void checkForLength(RestTemplate template, String url) {
-		Assert.isTrue(
-			template.headForHeaders(url).getContentLength() <= maxBodySize,
-			String.format("Response data is too large (> %d bytes).", maxBodySize)
-		);
+		try {
+			Assert.isTrue(
+				template.headForHeaders(url).getContentLength() <= maxBodySize,
+				String.format("Response data is too large (> %d bytes).", maxBodySize)
+			);
+		} catch (HttpServerErrorException hsee) {
+			/*
+			 * Some servers (i.e. Telegram servers) send error "501 Not Implemented" on head request.
+			 * Ignore this exception here for such cases.
+			 */
+			if (hsee.getStatusCode() != HttpStatus.NOT_IMPLEMENTED) {
+				throw hsee;
+			}
+		}
 	}
 
 	public RestTemplate getRestTemplate() {

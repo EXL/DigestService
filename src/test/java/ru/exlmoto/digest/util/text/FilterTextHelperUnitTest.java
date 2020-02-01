@@ -32,4 +32,10 @@ class FilterTextHelperUnitTest {
 		assertEquals("https://t.me/", filterTextHelper.checkLink("https://t.me"));
 		assertEquals("https://t.me/", filterTextHelper.checkLink("https://t.me/"));
 	}
+
+	@Test
+	public void testGetDateFromTimeStamp() {
+		System.out.println(filterTextHelper.getDateFromTimeStamp("dd.MM.yyyy HH:mm", 1580520624L));
+		System.out.println(filterTextHelper.getDateFromTimeStamp("dd-MM-yyyy HH:mm", 1580585762L));
+	}
 }

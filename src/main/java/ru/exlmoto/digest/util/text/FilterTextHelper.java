@@ -4,6 +4,10 @@ import org.jsoup.Jsoup;
 
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class FilterTextHelper {
 	/*
@@ -24,5 +28,10 @@ public class FilterTextHelper {
 
 	public String checkLink(String url) {
 		return url.endsWith("/") ? url : url + "/";
+	}
+
+	public String getDateFromTimeStamp(String dateFormat, long timestamp) {
+		return DateTimeFormatter.ofPattern(dateFormat)
+			.withZone(ZoneId.systemDefault()).format(Instant.ofEpochSecond(timestamp));
 	}
 }

@@ -13,6 +13,7 @@ import ru.exlmoto.digest.bot.ability.message.MessageAbility;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
@@ -28,15 +29,18 @@ public class DigestHashTag extends MessageAbility {
 	private final FilterTextHelper filterText;
 	private final BotDigestRepository digestRepository;
 	private final BotDigestUserRepository digestUserRepository;
+	private final AvatarWorker avatarWorker;
 
 	public DigestHashTag(BotConfiguration config,
 	                     FilterTextHelper filterText,
 	                     BotDigestRepository digestRepository,
-	                     BotDigestUserRepository digestUserRepository) {
+	                     BotDigestUserRepository digestUserRepository,
+	                     AvatarWorker avatarWorker) {
 		this.config = config;
 		this.filterText = filterText;
 		this.digestRepository = digestRepository;
 		this.digestUserRepository = digestUserRepository;
+		this.avatarWorker = avatarWorker;
 	}
 
 	@Override
@@ -57,7 +61,7 @@ public class DigestHashTag extends MessageAbility {
 				BotDigestUserEntity digestUserEntity =
 					digestUserRepository.findById(userId).orElseGet(() -> new BotDigestUserEntity(userId));
 				// TODO:
-				digestUserEntity.setAvatar("avatar");
+				digestUserEntity.setAvatar(avatarWorker.getAvatarLink(user));
 				digestUserEntity.setUsername(helper.getValidUsername(user));
 				digestUserRepository.save(digestUserEntity);
 

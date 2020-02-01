@@ -19,8 +19,8 @@ public class MotofanTgHtmlGenerator {
 	public String generateMotofanPostHtmlReport(MotofanPost post) {
 		return
 			locale.i18n("motofan.title") + "\n\n" +
-			"<b>" + post.getAuthor() + "</b> " + locale.i18n("motofan.wrote") + " (" + post.getTime() + "):\n" +
-			"<i>" + filterMotofanPost(post.getText()) + "</i>\n\n" +
+			"<b>" + post.getAuthor() + "</b> " + locale.i18n("motofan.wrote") +
+			" (<i>" + post.getTime() + "</i>):\n" + "<i>" + filterMotofanPost(post.getText()) + "</i>\n\n" +
 			locale.i18n("motofan.read") + " <a href=\"" + post.getPost_link() + "\">" + post.getTitle() + "</a>";
 	}
 

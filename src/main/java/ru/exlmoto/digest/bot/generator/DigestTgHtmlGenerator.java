@@ -37,7 +37,7 @@ public class DigestTgHtmlGenerator {
 			String.format(locale.i18n("bot.hashtag.digest.subscribe.title"),
 				helper.getValidChatName(message.chat())) + "\n\n<b>" +
 			helper.getValidUsername(message.from()) + "</b> " + locale.i18n("bot.hashtag.digest.subscribe.wrote") +
-			" (" + filterText.getDateFromTimeStamp(dateFormat, message.date()) + "):\n<i>" +
+			" (<i>" + filterText.getDateFromTimeStamp(dateFormat, message.date()) + "</i>):\n<i>" +
 			digest + "</i>\n\n" + locale.i18n("bot.hashtag.digest.subscribe.read") +
 			" <a href=\"" + filterText.checkLink(config.getMotofanChatUrl()) + message.messageId() + "\">" +
 			locale.i18n("bot.hashtag.digest.subscribe.link") + "</a>";

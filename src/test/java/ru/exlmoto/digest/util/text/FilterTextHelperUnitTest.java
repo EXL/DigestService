@@ -36,6 +36,8 @@ class FilterTextHelperUnitTest {
 	@Test
 	public void testGetDateFromTimeStamp() {
 		System.out.println(filterTextHelper.getDateFromTimeStamp("dd.MM.yyyy HH:mm", 1580520624L));
+		System.out.println(filterTextHelper.getDateFromTimeStamp("dd.MMM.yyyy HH:mm", 1580520624L));
 		System.out.println(filterTextHelper.getDateFromTimeStamp("dd-MM-yyyy HH:mm", 1580585762L));
+		System.out.println(filterTextHelper.getDateFromTimeStamp("dd-MMM-yyyy HH:mm", 1580585762L));
 	}
 }

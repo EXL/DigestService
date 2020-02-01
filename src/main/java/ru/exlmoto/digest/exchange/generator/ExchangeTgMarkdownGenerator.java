@@ -16,14 +16,16 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Component
-public class TgMarkdownGenerator {
-	private final Logger log = LoggerFactory.getLogger(TgMarkdownGenerator.class);
+public class ExchangeTgMarkdownGenerator {
+	private final Logger log = LoggerFactory.getLogger(ExchangeTgMarkdownGenerator.class);
 
 	private final GeneratorHelper helper;
 	private final LocalizationHelper locale;
 	private final ExchangeRateRepository repository;
 
-	public TgMarkdownGenerator(GeneratorHelper helper, ExchangeRateRepository repository, LocalizationHelper locale) {
+	public ExchangeTgMarkdownGenerator(GeneratorHelper helper,
+	                                   ExchangeRateRepository repository,
+	                                   LocalizationHelper locale) {
 		this.helper = helper;
 		this.repository = repository;
 		this.locale = locale;

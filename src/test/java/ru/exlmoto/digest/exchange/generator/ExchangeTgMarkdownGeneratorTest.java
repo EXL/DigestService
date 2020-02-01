@@ -17,9 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class TgMarkdownGeneratorTest {
+class ExchangeTgMarkdownGeneratorTest {
 	@Autowired
-	private TgMarkdownGenerator generator;
+	private ExchangeTgMarkdownGenerator generator;
 
 	@MockBean private ExchangeRateRepository repository;
 

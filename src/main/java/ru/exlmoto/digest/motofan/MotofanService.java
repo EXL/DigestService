@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ru.exlmoto.digest.motofan.generator.TgHtmlGenerator;
+import ru.exlmoto.digest.motofan.generator.MotofanTgHtmlGenerator;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
@@ -21,14 +21,14 @@ public class MotofanService {
 	private String lastPostUrl;
 
 	private final RestHelper rest;
-	private final TgHtmlGenerator htmlGenerator;
+	private final MotofanTgHtmlGenerator htmlGenerator;
 
 	private Long timestamp = 0L;
 	private Long topic = 0L;
 	private String author = null;
 	private String text = null;
 
-	public MotofanService(RestHelper rest, TgHtmlGenerator htmlGenerator) {
+	public MotofanService(RestHelper rest, MotofanTgHtmlGenerator htmlGenerator) {
 		this.rest = rest;
 		this.htmlGenerator = htmlGenerator;
 	}

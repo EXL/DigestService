@@ -7,11 +7,11 @@ import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.util.text.FilterTextHelper;
 
 @Component
-public class TgHtmlGenerator {
+public class MotofanTgHtmlGenerator {
 	private final LocalizationHelper locale;
 	private final FilterTextHelper filterTextHelper;
 
-	public TgHtmlGenerator(LocalizationHelper locale, FilterTextHelper filterTextHelper) {
+	public MotofanTgHtmlGenerator(LocalizationHelper locale, FilterTextHelper filterTextHelper) {
 		this.locale = locale;
 		this.filterTextHelper = filterTextHelper;
 	}

@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class TgHtmlGeneratorTest {
+class MotofanTgHtmlGeneratorTest {
 	@Autowired
-	private TgHtmlGenerator htmlGenerator;
+	private MotofanTgHtmlGenerator htmlGenerator;
 
 	@SuppressWarnings("ConstantConditions")
 	@Test

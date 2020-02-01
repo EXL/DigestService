@@ -60,7 +60,6 @@ public class DigestHashTag extends MessageAbility {
 			try {
 				BotDigestUserEntity digestUserEntity =
 					digestUserRepository.findById(userId).orElseGet(() -> new BotDigestUserEntity(userId));
-				// TODO:
 				digestUserEntity.setAvatar(avatarWorker.getAvatarLink(user));
 				digestUserEntity.setUsername(helper.getValidUsername(user));
 				digestUserRepository.save(digestUserEntity);

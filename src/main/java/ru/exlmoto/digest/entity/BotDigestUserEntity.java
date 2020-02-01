@@ -11,7 +11,7 @@ public class BotDigestUserEntity {
 	@Id
 	private long id;
 
-	@Column(nullable = false, length = 4095)
+	@Column(length = 4095)
 	private String avatar;
 
 	@Column(nullable = false)

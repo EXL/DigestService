@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
-import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.rest.RestHelper;
 import ru.exlmoto.digest.util.text.FilterTextHelper;
@@ -69,8 +68,7 @@ public class AvatarWorker {
 					username, resContent.error()));
 			}
 		}
-		// TODO: Default telegram avatar!
-		return "default-avatar link";
+		return null;
 	}
 
 	protected Answer<String> isolateAvatar(String content) {

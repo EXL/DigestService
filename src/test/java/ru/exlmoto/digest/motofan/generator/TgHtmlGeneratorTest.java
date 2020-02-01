@@ -20,7 +20,7 @@ class TgHtmlGeneratorTest {
 	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void testGeneratorTgHtmlOnNulls() {
-		assertThrows(NullPointerException.class, () -> htmlGenerator.generateHtmlReport(null));
+		assertThrows(NullPointerException.class, () -> htmlGenerator.generateMotofanPostHtmlReport(null));
 		assertThrows(NullPointerException.class, () -> htmlGenerator.filterMotofanPost(null));
 	}
 
@@ -42,7 +42,8 @@ class TgHtmlGeneratorTest {
 	}
 
 	private void generateHtmlReports(long timestamp) {
-		String result = htmlGenerator.generateHtmlReport(new MotofanPostHelper().getRandomMotofanPost(timestamp));
+		String result =
+			htmlGenerator.generateMotofanPostHtmlReport(new MotofanPostHelper().getRandomMotofanPost(timestamp));
 		assertThat(result).isNotEmpty();
 		System.out.println(result + "\n");
 	}

@@ -16,7 +16,7 @@ public class TgHtmlGenerator {
 		this.filterTextHelper = filterTextHelper;
 	}
 
-	public String generateHtmlReport(MotofanPost post) {
+	public String generateMotofanPostHtmlReport(MotofanPost post) {
 		return
 			locale.i18n("motofan.title") + "\n\n" +
 			"<b>" + post.getAuthor() + "</b> " + locale.i18n("motofan.wrote") + " (" + post.getTime() + "):\n" +

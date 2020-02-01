@@ -51,7 +51,7 @@ public class MotofanService {
 		if (motofanPosts != null) {
 			List<String> motofanPostsInHtml = new ArrayList<>();
 			for (MotofanPost post : motofanPosts) {
-				motofanPostsInHtml.add(htmlGenerator.generateHtmlReport(post));
+				motofanPostsInHtml.add(htmlGenerator.generateMotofanPostHtmlReport(post));
 			}
 			return motofanPostsInHtml;
 		}

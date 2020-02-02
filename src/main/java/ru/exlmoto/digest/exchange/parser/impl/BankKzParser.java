@@ -6,16 +6,13 @@ import org.jsoup.nodes.Element;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.parser.BankParser;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
-import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
 public class BankKzParser extends BankParser {
 	@Override
-	public void commitRates(String url, String mirror, ExchangeRateRepository repository, RestHelper rest) {
-		if (parse(rest.getRestResponse(url).answer())) {
-			commit(repository.getBankKz(), repository);
-		}
+	protected ExchangeRateEntity getEntity(ExchangeRateRepository repository) {
+		return repository.getBankKz().orElse(null);
 	}
 
 	@Override

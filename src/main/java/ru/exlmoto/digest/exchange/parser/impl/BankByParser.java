@@ -6,11 +6,15 @@ import org.jsoup.nodes.Element;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.parser.BankParser;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
-import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
 public class BankByParser extends BankParser {
+	@Override
+	protected ExchangeRateEntity getEntity(ExchangeRateRepository repository) {
+		return repository.getBankBy().orElse(null);
+	}
+
 	@Override
 	protected void parseDocumentAux(Document document) {
 		usd = parseValue(document, "145");
@@ -19,13 +23,6 @@ public class BankByParser extends BankParser {
 		rub = parseValue(document, "298");
 		uah = parseValue(document, "290");
 		gbp = parseValue(document, "143");
-	}
-
-	@Override
-	public void commitRates(String url, String mirror, ExchangeRateRepository repository, RestHelper rest) {
-		if (parse(rest.getRestResponse(url).answer())) {
-			commit(repository.getBankBy(), repository);
-		}
 	}
 
 	@Override

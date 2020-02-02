@@ -13,7 +13,6 @@ import ru.exlmoto.digest.repository.ExchangeRateRepository;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Component
 public class ExchangeTgMarkdownGenerator {
@@ -36,15 +35,15 @@ public class ExchangeTgMarkdownGenerator {
 		try {
 			switch (exchangeKey) {
 				case bank_ru:
-					return Optional.ofNullable(repository.getBankRu()).map(this::bankRuReport).orElse(errorReport());
+					return repository.getBankRu().map(this::bankRuReport).orElse(errorReport());
 				case bank_ua:
-					return Optional.ofNullable(repository.getBankUa()).map(this::bankUaReport).orElse(errorReport());
+					return repository.getBankUa().map(this::bankUaReport).orElse(errorReport());
 				case bank_by:
-					return Optional.ofNullable(repository.getBankBy()).map(this::bankByReport).orElse(errorReport());
+					return repository.getBankBy().map(this::bankByReport).orElse(errorReport());
 				case bank_kz:
-					return Optional.ofNullable(repository.getBankKz()).map(this::bankKzReport).orElse(errorReport());
+					return repository.getBankKz().map(this::bankKzReport).orElse(errorReport());
 				case metal_ru:
-					return Optional.ofNullable(repository.getMetalRu()).map(this::metalRuReport).orElse(errorReport());
+					return repository.getMetalRu().map(this::metalRuReport).orElse(errorReport());
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get object from database.", dae);

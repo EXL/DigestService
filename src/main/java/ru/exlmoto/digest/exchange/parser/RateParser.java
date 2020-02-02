@@ -63,8 +63,16 @@ public abstract class RateParser {
 	}
 
 	public void commitRates(String url, ExchangeRateRepository repository, RestHelper rest) {
+		commitRates(url, null, repository, rest);
+	}
+
+	public void commitRates(String url, String mirror, ExchangeRateRepository repository, RestHelper rest) {
 		try {
-			commitRates(url, null, repository, rest);
+			if (parse(rest.getRestResponse(url).answer())) {
+				commit(getEntity(repository), repository);
+			} else if (getMirrorParser() != null && getMirrorParser().parse(rest.getRestResponse(mirror).answer())) {
+				getMirrorParser().commit(getEntity(repository), repository);
+			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot save object to database.", dae);
 		}
@@ -98,7 +106,11 @@ public abstract class RateParser {
 		logParsedValues();
 	}
 
-	public abstract void commitRates(String url, String mirror, ExchangeRateRepository repository, RestHelper rest);
+	protected RateParser getMirrorParser() {
+		return null;
+	}
+
+	protected abstract ExchangeRateEntity getEntity(ExchangeRateRepository repository);
 
 	protected abstract BigDecimal parsedPrevValue();
 

@@ -5,23 +5,20 @@ import org.jsoup.nodes.Element;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.parser.MetalParser;
+import ru.exlmoto.digest.exchange.parser.RateParser;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
-import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
 public class MetalRuParser extends MetalParser {
 	@Override
-	public void commitRates(String url, String mirror, ExchangeRateRepository repository, RestHelper rest) {
-		ExchangeRateEntity metalRuEntity = repository.getMetalRu();
-		if (parse(rest.getRestResponse(url).answer())) {
-			commit(metalRuEntity, repository);
-		} else {
-			MetalRuMirrorParser metalRuMirrorParser = new MetalRuMirrorParser();
-			if (metalRuMirrorParser.parse(rest.getRestResponse(mirror).answer())) {
-				metalRuMirrorParser.commit(metalRuEntity, repository);
-			}
-		}
+	protected ExchangeRateEntity getEntity(ExchangeRateRepository repository) {
+		return repository.getMetalRu().orElse(null);
+	}
+
+	@Override
+	protected RateParser getMirrorParser() {
+		return new MetalRuMirrorParser();
 	}
 
 	@Override

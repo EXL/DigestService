@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
 import ru.exlmoto.digest.exchange.parser.impl.BankRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
+import ru.exlmoto.digest.exchange.parser.impl.BankUaMirrorParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankByParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
+import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
@@ -39,11 +41,15 @@ public class RateManager {
 	}
 
 	public void commitBankRu(String url, String mirror) {
-		new BankRuParser().commitRates(url, mirror, repository, rest);
+		if (!new BankRuParser().commitRates(url, repository, rest)) {
+			new BankRuParser().commitRatesMirror(mirror, repository, rest);
+		}
 	}
 
 	public void commitBankUa(String url, String mirror) {
-		new BankUaParser().commitRates(url, mirror, repository, rest);
+		if (!new BankUaParser().commitRates(url, repository, rest)) {
+			new BankUaMirrorParser().commitRates(mirror, repository, rest);
+		}
 	}
 
 	public void commitBankBy(String url) {
@@ -55,6 +61,8 @@ public class RateManager {
 	}
 
 	public void commitMetalRu(String url, String mirror) {
-		new MetalRuParser().commitRates(url, mirror, repository, rest);
+		if (!new MetalRuParser().commitRates(url, repository, rest)) {
+			new MetalRuMirrorParser().commitRates(mirror, repository, rest);
+		}
 	}
 }

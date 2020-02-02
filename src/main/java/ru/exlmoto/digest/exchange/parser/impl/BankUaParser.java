@@ -5,7 +5,6 @@ import org.jsoup.nodes.Element;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.parser.BankParser;
-import ru.exlmoto.digest.exchange.parser.RateParser;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
 
 import java.math.BigDecimal;
@@ -14,11 +13,6 @@ public class BankUaParser extends BankParser {
 	@Override
 	protected ExchangeRateEntity getEntity(ExchangeRateRepository repository) {
 		return repository.getBankUa().orElse(null);
-	}
-
-	@Override
-	protected RateParser getMirrorParser() {
-		return new BankUaMirrorParser();
 	}
 
 	@Override

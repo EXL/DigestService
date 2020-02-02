@@ -5,8 +5,8 @@ import org.jsoup.nodes.Element;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.parser.BankParser;
-import ru.exlmoto.digest.exchange.parser.RateParser;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
+import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
@@ -16,10 +16,9 @@ public class BankRuParser extends BankParser {
 		return repository.getBankRu().orElse(null);
 	}
 
-	@Override
-	protected RateParser getMirrorParser() {
-		this.mirror = true;
-		return this;
+	public boolean commitRatesMirror(String url, ExchangeRateRepository repository, RestHelper rest) {
+		mirror = true;
+		return commitRates(url, repository, rest);
 	}
 
 	@Override

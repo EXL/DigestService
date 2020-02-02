@@ -62,20 +62,16 @@ public abstract class RateParser {
 		return checkParsedValues();
 	}
 
-	public void commitRates(String url, ExchangeRateRepository repository, RestHelper rest) {
-		commitRates(url, null, repository, rest);
-	}
-
-	public void commitRates(String url, String mirror, ExchangeRateRepository repository, RestHelper rest) {
+	public boolean commitRates(String url, ExchangeRateRepository repository, RestHelper rest) {
 		try {
 			if (parse(rest.getRestResponse(url).answer())) {
 				commit(getEntity(repository), repository);
-			} else if (getMirrorParser() != null && getMirrorParser().parse(rest.getRestResponse(mirror).answer())) {
-				getMirrorParser().commit(getEntity(repository), repository);
+				return true;
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot save object to database.", dae);
 		}
+		return false;
 	}
 
 	public void commit(ExchangeRateEntity entity, ExchangeRateRepository repository) {
@@ -104,10 +100,6 @@ public abstract class RateParser {
 		message += getClass().getSimpleName() + ".";
 		log.info(message);
 		logParsedValues();
-	}
-
-	protected RateParser getMirrorParser() {
-		return null;
 	}
 
 	protected abstract ExchangeRateEntity getEntity(ExchangeRateRepository repository);

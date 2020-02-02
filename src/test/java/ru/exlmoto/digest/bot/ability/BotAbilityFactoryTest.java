@@ -24,6 +24,6 @@ class BotAbilityFactoryTest {
 	@Test
 	public void testKeyboardAbility() {
 		assertTrue(abilityFactory.getKeyboardAbility(Keyboard.chart.withName()).isPresent());
-		assertFalse(abilityFactory.getKeyboardAbility(Keyboard.chart.withName()).isPresent());
+		assertFalse(abilityFactory.getKeyboardAbility("unknown-keyboard").isPresent());
 	}
 }

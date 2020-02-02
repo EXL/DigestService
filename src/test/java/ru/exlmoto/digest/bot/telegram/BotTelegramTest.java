@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
+@SpringBootTest(properties = "bot.silent=true")
 class BotTelegramTest {
 	@Autowired
 	private BotTelegram telegram;

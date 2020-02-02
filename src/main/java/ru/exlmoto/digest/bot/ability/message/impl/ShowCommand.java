@@ -105,12 +105,15 @@ public class ShowCommand extends MessageAdminAbility {
 	}
 
 	protected String ellipsisString(String string, int length, String ellipsis, boolean right) {
-		int stringLength = string.length();
-		if (stringLength < length) {
-			return arrangeString(string, length);
+		if (length > 0) {
+			int stringLength = string.length();
+			if (stringLength < length) {
+				return arrangeString(string, length);
+			}
+			return (right) ?
+				string.substring(0, length - 1) + ellipsis :
+				ellipsis + string.substring(stringLength - length + 1);
 		}
-		return (right) ?
-			string.substring(0, length - 1) + ellipsis :
-			ellipsis + string.substring(stringLength - length + 1);
+		return string;
 	}
 }

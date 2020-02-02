@@ -48,7 +48,7 @@ public class ShowCommand extends MessageAdminAbility {
 				text = generateShowReport(digestEntities, locale);
 			}
 		} catch (DataAccessException dae) {
-			log.error("Cannot get digest objects from database.", dae);
+			log.error("Cannot get BotDigestEntity objects from database.", dae);
 			text = String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage());
 		}
 

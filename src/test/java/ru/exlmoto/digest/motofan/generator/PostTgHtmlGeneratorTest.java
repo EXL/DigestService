@@ -13,11 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class MotofanTgHtmlGeneratorTest {
+class PostTgHtmlGeneratorTest {
 	@Autowired
-	private MotofanTgHtmlGenerator htmlGenerator;
+	private PostTgHtmlGenerator htmlGenerator;
 
-	@SuppressWarnings("ConstantConditions")
 	@Test
 	public void testGeneratorTgHtmlOnNulls() {
 		assertThrows(NullPointerException.class, () -> htmlGenerator.generateMotofanPostHtmlReport(null));

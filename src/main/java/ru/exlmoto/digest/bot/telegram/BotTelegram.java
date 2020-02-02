@@ -19,6 +19,8 @@ import ru.exlmoto.digest.util.Answer;
 
 import javax.annotation.PostConstruct;
 
+import java.util.Optional;
+
 import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
 
@@ -102,12 +104,12 @@ public class BotTelegram {
 
 	private Answer<BotSetupEntity> getBotSetup() {
 		try {
-			BotSetupEntity botSetupEntity = repository.getSetupBot();
-			if (botSetupEntity != null) {
-				return Ok(botSetupEntity);
+			Optional<BotSetupEntity> botSetupEntityOptional = repository.getSetupBot();
+			if (botSetupEntityOptional.isPresent()) {
+				return Ok(botSetupEntityOptional.get());
 			} else {
 				log.warn("===> Telegram Bot settings table does not exist. First run?");
-				processTelegramBotSettings(true);
+				createTelegramBotSettings();
 				return Error("Error!");
 			}
 		} catch (DataAccessException dae) {
@@ -116,13 +118,17 @@ public class BotTelegram {
 		throw new IllegalStateException("Telegram Bot settings is damaged.");
 	}
 
-	public void processTelegramBotSettings(boolean isFirstRun) {
-		BotSetupEntity setup = repository.getSetupBot();
-		if (isFirstRun || setup == null) {
-			setup = new BotSetupEntity();
-			setup.setId(BotSetupEntity.SETUP_ROW);
-		}
+	protected void createTelegramBotSettings() {
+		BotSetupEntity setup = new BotSetupEntity();
+		setup.setId(BotSetupEntity.SETUP_ROW);
+		updateTelegramBotSettingsAux(setup);
+	}
 
+	public void updateTelegramBotSettings() {
+		repository.getSetupBot().ifPresent(this::updateTelegramBotSettingsAux);
+	}
+
+	private void updateTelegramBotSettingsAux(BotSetupEntity setup) {
 		setup.setLogUpdates(config.isLogUpdates());
 		setup.setShowGreetings(config.isShowGreetings());
 		setup.setSilentMode(config.isSilent());

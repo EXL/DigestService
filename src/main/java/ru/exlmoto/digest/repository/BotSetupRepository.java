@@ -4,10 +4,10 @@ import org.springframework.data.repository.CrudRepository;
 
 import ru.exlmoto.digest.entity.BotSetupEntity;
 
-public interface BotSetupRepository extends CrudRepository<BotSetupEntity, Integer> {
-	BotSetupEntity getById(int id);
+import java.util.Optional;
 
-	default BotSetupEntity getSetupBot() {
-		return getById(BotSetupEntity.SETUP_ROW);
+public interface BotSetupRepository extends CrudRepository<BotSetupEntity, Integer> {
+	default Optional<BotSetupEntity> getSetupBot() {
+		return findById(BotSetupEntity.SETUP_ROW);
 	}
 }

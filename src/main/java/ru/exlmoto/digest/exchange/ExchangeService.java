@@ -5,16 +5,16 @@ import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digest.exchange.generator.ExchangeTgMarkdownGenerator;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
-import ru.exlmoto.digest.exchange.manager.RateManager;
+import ru.exlmoto.digest.exchange.manager.ExchangeManager;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 
 @Service
 public class ExchangeService {
-	private final RateManager manager;
+	private final ExchangeManager manager;
 	private final ExchangeTgMarkdownGenerator markdownGenerator;
 	private final LocalizationHelper locale;
 
-	public ExchangeService(RateManager manager,
+	public ExchangeService(ExchangeManager manager,
 	                       ExchangeTgMarkdownGenerator markdownGenerator,
 	                       LocalizationHelper locale) {
 		this.manager = manager;

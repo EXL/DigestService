@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class RateManagerTest {
+class ExchangeManagerTest {
 	@Autowired
-	private RateManager manager;
+	private ExchangeManager manager;
 
 	@Autowired
 	private ExchangeConfiguration config;

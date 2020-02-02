@@ -27,9 +27,11 @@ public class AvatarWorker {
 		gif;
 
 		public static boolean checkImageExtension(String link) {
-			for (Extension value: values()) {
-				if (link.endsWith("." + value.name()) || link.endsWith("." + value.name().toUpperCase())) {
-					return true;
+			if (link != null) {
+				for (Extension value : values()) {
+					if (link.endsWith("." + value.name()) || link.endsWith("." + value.name().toUpperCase())) {
+						return true;
+					}
 				}
 			}
 			return false;

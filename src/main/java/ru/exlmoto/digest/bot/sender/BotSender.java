@@ -138,12 +138,19 @@ public class BotSender {
 	}
 
 	private Answer<String> executeRequestLog(BaseRequest<?, ?> request) {
-		final String error = request.getMethod() + " " + request.getParameters();
+		String error = request.getMethod() + " " + request.getParameters();
 		if (config.isSilent()) {
 			log.info(String.format("Silent mode is activated. Cannot execute request: '%s'.", error));
 			return Ok("Ok!");
 		}
-		Answer<String> res = getResponse(telegram.getBot().execute(request));
+		Answer<String> res;
+		try {
+			res = getResponse(telegram.getBot().execute(request));
+		} catch (RuntimeException re) {
+			error = String.format("Exception while execute request: '%s'.", re.getLocalizedMessage());
+			log.error(error, re);
+			return Error(error);
+		}
 		if (!res.ok()) {
 			log.error(res.error());
 		}

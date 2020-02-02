@@ -15,16 +15,16 @@ import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 import java.math.BigDecimal;
 
 @Component
-public class ExchangeTgMarkdownGenerator {
-	private final Logger log = LoggerFactory.getLogger(ExchangeTgMarkdownGenerator.class);
+public class RateTgMarkdownGenerator {
+	private final Logger log = LoggerFactory.getLogger(RateTgMarkdownGenerator.class);
 
 	private final GeneratorHelper helper;
 	private final LocalizationHelper locale;
 	private final ExchangeRateRepository repository;
 
-	public ExchangeTgMarkdownGenerator(GeneratorHelper helper,
-	                                   ExchangeRateRepository repository,
-	                                   LocalizationHelper locale) {
+	public RateTgMarkdownGenerator(GeneratorHelper helper,
+	                               ExchangeRateRepository repository,
+	                               LocalizationHelper locale) {
 		this.helper = helper;
 		this.repository = repository;
 		this.locale = locale;

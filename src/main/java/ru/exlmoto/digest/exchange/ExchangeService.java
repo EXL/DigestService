@@ -3,7 +3,7 @@ package ru.exlmoto.digest.exchange;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import ru.exlmoto.digest.exchange.generator.ExchangeTgMarkdownGenerator;
+import ru.exlmoto.digest.exchange.generator.RateTgMarkdownGenerator;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.exchange.manager.ExchangeManager;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
@@ -11,11 +11,11 @@ import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 @Service
 public class ExchangeService {
 	private final ExchangeManager manager;
-	private final ExchangeTgMarkdownGenerator markdownGenerator;
+	private final RateTgMarkdownGenerator markdownGenerator;
 	private final LocalizationHelper locale;
 
 	public ExchangeService(ExchangeManager manager,
-	                       ExchangeTgMarkdownGenerator markdownGenerator,
+	                       RateTgMarkdownGenerator markdownGenerator,
 	                       LocalizationHelper locale) {
 		this.manager = manager;
 		this.markdownGenerator = markdownGenerator;

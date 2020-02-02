@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.rest.RestHelper;
-import ru.exlmoto.digest.util.text.FilterTextHelper;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
@@ -38,17 +38,17 @@ public class AvatarWorker {
 
 	private final BotConfiguration config;
 	private final RestHelper rest;
-	private final FilterTextHelper filterText;
+	private final FilterHelper filter;
 
-	public AvatarWorker(BotConfiguration config, RestHelper rest, FilterTextHelper filterText) {
+	public AvatarWorker(BotConfiguration config, RestHelper rest, FilterHelper filter) {
 		this.config = config;
 		this.rest = rest;
-		this.filterText = filterText;
+		this.filter = filter;
 	}
 
 	public String getAvatarLink(User user) {
 		String username = user.username();
-		String url = filterText.checkLink(config.getTelegramShortUrl()) + username;
+		String url = filter.checkLink(config.getTelegramShortUrl()) + username;
 
 		if (username != null) {
 			Answer<String> resContent = rest.getRestResponse(url);

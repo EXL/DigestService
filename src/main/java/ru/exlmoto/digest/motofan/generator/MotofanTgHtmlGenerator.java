@@ -4,16 +4,16 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
-import ru.exlmoto.digest.util.text.FilterTextHelper;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 
 @Component
 public class MotofanTgHtmlGenerator {
 	private final LocalizationHelper locale;
-	private final FilterTextHelper filterTextHelper;
+	private final FilterHelper filter;
 
-	public MotofanTgHtmlGenerator(LocalizationHelper locale, FilterTextHelper filterTextHelper) {
+	public MotofanTgHtmlGenerator(LocalizationHelper locale, FilterHelper filter) {
 		this.locale = locale;
-		this.filterTextHelper = filterTextHelper;
+		this.filter = filter;
 	}
 
 	public String generateMotofanPostHtmlReport(MotofanPost post) {
@@ -25,6 +25,6 @@ public class MotofanTgHtmlGenerator {
 	}
 
 	public String filterMotofanPost(String text) {
-		return filterTextHelper.removeBbCodes(filterTextHelper.removeHtmlTags(text));
+		return filter.removeBbCodes(filter.removeHtmlTags(text));
 	}
 }

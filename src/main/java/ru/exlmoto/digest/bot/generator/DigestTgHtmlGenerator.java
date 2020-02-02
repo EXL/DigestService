@@ -1,8 +1,6 @@
 package ru.exlmoto.digest.bot.generator;
 
-import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.User;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,11 +8,11 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
-import ru.exlmoto.digest.util.text.FilterTextHelper;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 
 @Component
 public class DigestTgHtmlGenerator {
-	private final FilterTextHelper filterText;
+	private final FilterHelper filter;
 	private final BotConfiguration config;
 	private final BotHelper helper;
 	private final LocalizationHelper locale;
@@ -22,11 +20,11 @@ public class DigestTgHtmlGenerator {
 	@Value("${general.date-format}")
 	private String dateFormat;
 
-	public DigestTgHtmlGenerator(FilterTextHelper filterText,
+	public DigestTgHtmlGenerator(FilterHelper filter,
 	                             BotConfiguration config,
 	                             BotHelper helper,
 	                             LocalizationHelper locale) {
-		this.filterText = filterText;
+		this.filter = filter;
 		this.config = config;
 		this.helper = helper;
 		this.locale = locale;
@@ -37,9 +35,9 @@ public class DigestTgHtmlGenerator {
 			String.format(locale.i18n("bot.hashtag.digest.subscribe.title"),
 				helper.getValidChatName(message.chat())) + "\n\n<b>" +
 			helper.getValidUsername(message.from()) + "</b> " + locale.i18n("bot.hashtag.digest.subscribe.wrote") +
-			" (<i>" + filterText.getDateFromTimeStamp(dateFormat, message.date()) + "</i>):\n<i>" +
+			" (<i>" + filter.getDateFromTimeStamp(dateFormat, message.date()) + "</i>):\n<i>" +
 			digest + "</i>\n\n" + locale.i18n("bot.hashtag.digest.subscribe.read") +
-			" <a href=\"" + filterText.checkLink(config.getMotofanChatUrl()) + message.messageId() + "\">" +
+			" <a href=\"" + filter.checkLink(config.getMotofanChatUrl()) + message.messageId() + "\">" +
 			locale.i18n("bot.hashtag.digest.subscribe.link") + "</a>";
 	}
 }

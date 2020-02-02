@@ -1,4 +1,4 @@
-package ru.exlmoto.digest.util.text;
+package ru.exlmoto.digest.util.filter;
 
 import org.jsoup.Jsoup;
 
@@ -9,7 +9,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class FilterTextHelper {
+public class FilterHelper {
 	/*
 	 * Remove html tags from text.
 	 * See: https://stackoverflow.com/questions/14445386/how-to-remove-text-in-brackets-from-the-start-of-a-string

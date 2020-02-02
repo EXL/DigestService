@@ -20,27 +20,27 @@ import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.util.i18n.LocalizationHelper;
-import ru.exlmoto.digest.util.text.FilterTextHelper;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 
 @Component
 public class DigestHashTag extends MessageAbility {
 	private final Logger log = LoggerFactory.getLogger(DigestHashTag.class);
 
 	private final BotConfiguration config;
-	private final FilterTextHelper filterText;
+	private final FilterHelper filter;
 	private final BotDigestRepository digestRepository;
 	private final BotDigestUserRepository digestUserRepository;
 	private final AvatarWorker avatarWorker;
 	private final DigestWorker digestWorker;
 
 	public DigestHashTag(BotConfiguration config,
-	                     FilterTextHelper filterText,
+	                     FilterHelper filter,
 	                     BotDigestRepository digestRepository,
 	                     BotDigestUserRepository digestUserRepository,
 	                     AvatarWorker avatarWorker,
 	                     DigestWorker digestWorker) {
 		this.config = config;
-		this.filterText = filterText;
+		this.filter = filter;
 		this.digestRepository = digestRepository;
 		this.digestUserRepository = digestUserRepository;
 		this.avatarWorker = avatarWorker;
@@ -83,6 +83,6 @@ public class DigestHashTag extends MessageAbility {
 	}
 
 	protected String isolateMessageText(String message) {
-		return filterText.removeHtmlTags(message.replaceAll("#digest|#news", "")).trim();
+		return filter.removeHtmlTags(message.replaceAll("#digest|#news", "")).trim();
 	}
 }

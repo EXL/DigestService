@@ -29,8 +29,7 @@ class RateManagerTest {
 	@Test
 	public void testRateException() {
 		when(repository.getBankRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
-		assertThrows(InvalidDataAccessResourceUsageException.class, () ->
-			manager.commitBankRu(config.getBankRu(), config.getMetalRuMirror()));
+		manager.commitBankRu(config.getBankRu(), config.getBankRuMirror());
 
 		when(repository.getBankUa()).thenReturn(null);
 		assertNull(repository.getBankUa());

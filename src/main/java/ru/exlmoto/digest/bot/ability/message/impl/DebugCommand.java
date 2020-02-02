@@ -54,21 +54,21 @@ public class DebugCommand extends MessageAdminAbility {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
-		String answer = locale.i18n("bot.command.debug.help") + addStatus(locale);
+		String text = locale.i18n("bot.command.debug.help") + addStatus(locale);
 		String[] arguments = message.text().split(" ");
 		if (arguments.length == 2) {
 			switch (checkOption(arguments[1])) {
-				case VRates: { answer = processRates(locale); break; }
-				case VPosts: { answer = processPosts(locale); break; }
+				case VRates: { text = processRates(locale); break; }
+				case VPosts: { text = processPosts(locale); break; }
 				//case VShredder: { /* TODO: */ break; }
 				//case VAvatars: { /* TODO: */ break; }
-				case VQueries: { answer = processQueries(locale); break; }
-				case BLogUpdates: { answer = toggleUpdates(locale); break; }
-				case BGreetings: { answer = toggleGreetings(locale); break; }
-				case BSilent: { answer = toggleSilent(locale); break; }
+				case VQueries: { text = processQueries(locale); break; }
+				case BLogUpdates: { text = toggleUpdates(locale); break; }
+				case BGreetings: { text = toggleGreetings(locale); break; }
+				case BSilent: { text = toggleSilent(locale); break; }
 			}
 		}
-		sender.replyMessage(message.chat().id(), message.messageId(), answer);
+		sender.replyMessage(message.chat().id(), message.messageId(), text);
 	}
 
 	private Option checkOption(String argument) {

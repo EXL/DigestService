@@ -35,7 +35,7 @@ public class DeleteCommand extends MessageAdminAbility {
 			try {
 				digestId = NumberUtils.parseNumber(args[1], Long.class);
 				digestRepository.deleteById(digestId);
-				text = locale.i18n("bot.command.delete.ok");
+				text = String.format(locale.i18n("bot.command.delete.ok"), digestId);
 			} catch (NumberFormatException nfe) {
 				log.warn(String.format("Cannot parse delete command argument: '%s' as Long.", args[1]), nfe);
 				text = String.format(locale.i18n("bot.error.delete.id"), args[1]);

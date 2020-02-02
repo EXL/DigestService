@@ -18,6 +18,7 @@ import ru.exlmoto.digest.bot.ability.message.MessageAbility;
 import ru.exlmoto.digest.bot.ability.message.impl.CoffeeCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.ChartCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.DebugCommand;
+import ru.exlmoto.digest.bot.ability.message.impl.DeleteCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.DigestHashTag;
 import ru.exlmoto.digest.bot.ability.message.impl.GameCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HelloCommand;
@@ -67,6 +68,7 @@ public class BotAbilityFactory {
 		addCommand("/rates", RateCommand.class);
 		addCommand("/subscribe", SubscribeCommand.class);
 		addCommand("/show", ShowCommand.class);
+		addCommand("/delete", ShowCommand.class);
 
 		addCommand("/debug", DebugCommand.class);
 

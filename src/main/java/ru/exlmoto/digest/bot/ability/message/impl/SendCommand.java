@@ -115,7 +115,7 @@ public class SendCommand extends MessageAdminAbility {
 		try {
 			return Ok(NumberUtils.parseNumber(chatId, Long.class));
 		} catch (NumberFormatException nfe) {
-			return Error(locale.i18n("bot.error.chatid"));
+			return Error(String.format(locale.i18n("bot.error.chatid"), chatId));
 		}
 	}
 }

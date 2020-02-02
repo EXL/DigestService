@@ -11,6 +11,7 @@ import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,7 +36,7 @@ class ExchangeTgMarkdownGeneratorTest {
 		bankRuEntity.setGbp(new BigDecimal("13456.45566"));
 		bankRuEntity.setPrev(new BigDecimal("88.100000000000000001"));
 
-		when(repository.getBankRu()).thenReturn(bankRuEntity);
+		when(repository.getBankRu()).thenReturn(Optional.of(bankRuEntity));
 		String report = generator.rateReportByKey(ExchangeKey.bank_ru.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
@@ -53,7 +54,7 @@ class ExchangeTgMarkdownGeneratorTest {
 		bankUaEntity.setGbp(null);
 		bankUaEntity.setPrev(new BigDecimal("1233"));
 
-		when(repository.getBankUa()).thenReturn(bankUaEntity);
+		when(repository.getBankUa()).thenReturn(Optional.of(bankUaEntity));
 		String report = generator.rateReportByKey(ExchangeKey.bank_ua.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
@@ -71,7 +72,7 @@ class ExchangeTgMarkdownGeneratorTest {
 		bankByEntity.setGbp(new BigDecimal("1000.1"));
 		bankByEntity.setPrev(new BigDecimal("1235.0002"));
 
-		when(repository.getBankBy()).thenReturn(bankByEntity);
+		when(repository.getBankBy()).thenReturn(Optional.of(bankByEntity));
 		String report = generator.rateReportByKey(ExchangeKey.bank_by.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
@@ -87,7 +88,7 @@ class ExchangeTgMarkdownGeneratorTest {
 		metalRuEntity.setPalladium(new BigDecimal("35.48"));
 		metalRuEntity.setPrev(new BigDecimal("3031.15"));
 
-		when(repository.getMetalRu()).thenReturn(metalRuEntity);
+		when(repository.getMetalRu()).thenReturn(Optional.of(metalRuEntity));
 		String report = generator.rateReportByKey(ExchangeKey.metal_ru.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);

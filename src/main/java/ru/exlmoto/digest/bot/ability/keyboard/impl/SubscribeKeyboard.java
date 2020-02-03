@@ -14,7 +14,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
-import ru.exlmoto.digest.bot.ability.keyboard.KeyboardAbility;
+import ru.exlmoto.digest.bot.ability.keyboard.KeyboardSimpleAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
@@ -30,7 +30,7 @@ import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
 
 @Component
-public class SubscribeKeyboard extends KeyboardAbility {
+public class SubscribeKeyboard extends KeyboardSimpleAbility {
 	private final Logger log = LoggerFactory.getLogger(SubscribeKeyboard.class);
 
 	private enum Subscription {

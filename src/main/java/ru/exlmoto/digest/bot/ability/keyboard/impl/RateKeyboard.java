@@ -8,7 +8,7 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
-import ru.exlmoto.digest.bot.ability.keyboard.KeyboardAbility;
+import ru.exlmoto.digest.bot.ability.keyboard.KeyboardSimpleAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.exchange.ExchangeService;
@@ -18,7 +18,7 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import javax.annotation.PostConstruct;
 
 @Component
-public class RateKeyboard extends KeyboardAbility {
+public class RateKeyboard extends KeyboardSimpleAbility {
 	private final ExchangeService service;
 
 	private InlineKeyboardMarkup markup = null;

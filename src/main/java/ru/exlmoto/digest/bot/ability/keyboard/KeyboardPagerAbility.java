@@ -1,21 +1,17 @@
 package ru.exlmoto.digest.bot.ability.keyboard;
 
-import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
 import org.thymeleaf.util.ArrayUtils;
 
-import ru.exlmoto.digest.bot.ability.BotAbility;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
-import ru.exlmoto.digest.bot.sender.BotSender;
-import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class KeyboardPagerAbility extends BotAbility<CallbackQuery> {
+public abstract class KeyboardPagerAbility extends KeyboardAbility {
 	/*
 	 * Intelligent pager from https://lab.exlmoto.ru/digests page ported for Telegram.
 	 * Source: https://github.com/EXL/DigestBot/blob/master/Stuff/DigestHistorySite/index.php#L50
@@ -68,7 +64,4 @@ public abstract class KeyboardPagerAbility extends BotAbility<CallbackQuery> {
 	}
 
 	protected abstract Keyboard getKeyboard();
-
-	@Override
-	protected abstract void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback);
 }

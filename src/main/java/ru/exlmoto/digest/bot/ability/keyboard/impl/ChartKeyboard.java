@@ -8,7 +8,7 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
-import ru.exlmoto.digest.bot.ability.keyboard.KeyboardAbility;
+import ru.exlmoto.digest.bot.ability.keyboard.KeyboardSimpleAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.chart.ChartService;
@@ -21,7 +21,7 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Component
-public class ChartKeyboard extends KeyboardAbility {
+public class ChartKeyboard extends KeyboardSimpleAbility {
 	private final ChartService chartService;
 
 	private InlineKeyboardMarkup markup = null;

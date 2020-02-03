@@ -3,7 +3,8 @@ package ru.exlmoto.digest.bot.ability.keyboard;
 public enum Keyboard {
 	rate,
 	chart,
-	subscribe;
+	subscribe,
+	digest;
 
 	private static final String DELIMITER = "_";
 

@@ -23,6 +23,8 @@ public class BotConfiguration {
 	private String telegramShortUrl;
 	private int maxDigestLength;
 	private int showPagePosts;
+	private int digestPagePosts;
+	private int digestPageCount;
 
 	public String getToken() {
 		return token;
@@ -174,5 +176,21 @@ public class BotConfiguration {
 
 	public void setShowPagePosts(int showPagePosts) {
 		this.showPagePosts = showPagePosts;
+	}
+
+	public int getDigestPagePosts() {
+		return digestPagePosts;
+	}
+
+	public void setDigestPagePosts(int digestPagePosts) {
+		this.digestPagePosts = digestPagePosts;
+	}
+
+	public int getDigestPageCount() {
+		return digestPageCount;
+	}
+
+	public void setDigestPageCount(int digestPageCount) {
+		this.digestPageCount = digestPageCount;
 	}
 }

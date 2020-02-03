@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.KeyboardAbility;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.ChartKeyboard;
+import ru.exlmoto.digest.bot.ability.keyboard.impl.DigestKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.RateKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.SubscribeKeyboard;
 import ru.exlmoto.digest.bot.ability.message.MessageAbility;
@@ -19,6 +20,7 @@ import ru.exlmoto.digest.bot.ability.message.impl.CoffeeCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.ChartCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.DebugCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.DeleteCommand;
+import ru.exlmoto.digest.bot.ability.message.impl.DigestCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.DigestHashTag;
 import ru.exlmoto.digest.bot.ability.message.impl.GameCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HelloCommand;
@@ -69,7 +71,7 @@ public class BotAbilityFactory {
 		addCommand("/subscribe", SubscribeCommand.class);
 		addCommand("/show", ShowCommand.class);
 		addCommand("/delete", DeleteCommand.class);
-
+		addCommand("/digest", DigestCommand.class);
 		addCommand("/debug", DebugCommand.class);
 
 		addHashTag("#digest", DigestHashTag.class);
@@ -78,6 +80,7 @@ public class BotAbilityFactory {
 		addKeyboard(Keyboard.chart, ChartKeyboard.class);
 		addKeyboard(Keyboard.rate, RateKeyboard.class);
 		addKeyboard(Keyboard.subscribe, SubscribeKeyboard.class);
+		addKeyboard(Keyboard.digest, DigestKeyboard.class);
 	}
 
 	/*

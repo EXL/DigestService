@@ -3,8 +3,6 @@ package ru.exlmoto.digest.bot.ability.keyboard.impl;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.User;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
 
-import org.thymeleaf.util.ArrayUtils;
-
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
-import ru.exlmoto.digest.bot.ability.keyboard.KeyboardAbility;
+import ru.exlmoto.digest.bot.ability.keyboard.KeyboardPagerAbility;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
@@ -28,11 +24,8 @@ import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
-public class DigestKeyboard extends KeyboardAbility {
+public class DigestKeyboard extends KeyboardPagerAbility {
 	private final Logger log = LoggerFactory.getLogger(DigestKeyboard.class);
 
 	private final BotConfiguration config;
@@ -54,55 +47,8 @@ public class DigestKeyboard extends KeyboardAbility {
 	}
 
 	@Override
-	public InlineKeyboardMarkup getMarkup() {
-		return null;
-	}
-
-	/*
-	 * Intelligent pager from https://lab.exlmoto.ru/digests page ported for Telegram.
-	 * Source: https://github.com/EXL/DigestBot/blob/master/Stuff/DigestHistorySite/index.php#L50
-	 */
-	public InlineKeyboardMarkup getMarkup(int page, int totalPages) {
-		int paginPP = config.getDigestPageDeep();
-		if (totalPages <= 1) {
-			return null;
-		}
-
-		int start = page - ((paginPP / 2) + 1);
-		if (start < 0) {
-			start = 0;
-		}
-
-		int end = page + (paginPP / 2);
-		if (end > totalPages) {
-			end = totalPages;
-		}
-
-		List<InlineKeyboardButton> keyboardRow = new ArrayList<>();
-		if (start > 0) {
-			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.command.digest.pager.left.first"))
-				.callbackData(callbackPageData(1)));
-		}
-		if (page > 1) {
-			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.command.digest.pager.left"))
-				.callbackData(callbackPageData(page - 1)));
-		}
-		for (int i = start; i < end; i++) {
-			keyboardRow.add(new InlineKeyboardButton(
-				(i == page - 1) ?
-					"|" + (i + 1) + "|" :
-					String.valueOf(i + 1)
-			).callbackData(callbackPageData(i + 1)));
-		}
-		if (page < totalPages) {
-			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.command.digest.pager.right"))
-				.callbackData(callbackPageData(page + 1)));
-		}
-		if (end < totalPages) {
-			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.command.digest.pager.right.last"))
-				.callbackData(callbackPageData(totalPages)));
-		}
-		return new InlineKeyboardMarkup((InlineKeyboardButton[]) ArrayUtils.toArray(keyboardRow));
+	protected Keyboard getKeyboard() {
+		return Keyboard.digest;
 	}
 
 	@Override
@@ -125,7 +71,6 @@ public class DigestKeyboard extends KeyboardAbility {
 
 		processDigestMessage(chatId, messageId, callback.from(), page - 1, true, sender);
 	}
-
 
 	public void processDigestMessage(long chatId, int messageId, User user, int page, boolean edit, BotSender sender) {
 		int NEW_MARKERS_COUNT = 3;
@@ -170,13 +115,9 @@ public class DigestKeyboard extends KeyboardAbility {
 			text += stringBuilder.toString();
 		}
 		if (edit) {
-			sender.editHtmlMessage(chatId, messageId, text, getMarkup(page + 1, totalPages));
+			sender.editHtmlMessage(chatId, messageId, text, getMarkup(locale, config, page + 1, totalPages));
 		} else {
-			sender.replyHtmlMessage(chatId, messageId, text, getMarkup(page + 1, totalPages));
+			sender.replyHtmlMessage(chatId, messageId, text, getMarkup(locale, config,page + 1, totalPages));
 		}
-	}
-
-	private String callbackPageData(int page) {
-		return Keyboard.digest.withName() + Keyboard.PAGE + page;
 	}
 }

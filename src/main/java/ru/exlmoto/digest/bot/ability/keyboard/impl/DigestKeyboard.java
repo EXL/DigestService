@@ -179,9 +179,9 @@ public class DigestKeyboard extends KeyboardAbility {
 			text += stringBuilder.toString();
 		}
 		if (edit) {
-			sender.editMessage(chatId, messageId, text, getMarkup(page + 1, totalPages));
+			sender.editHtmlMessage(chatId, messageId, text, getMarkup(page + 1, totalPages));
 		} else {
-			sender.replyKeyboard(chatId, messageId, text, getMarkup(page + 1, totalPages));
+			sender.replyHtmlMessage(chatId, messageId, text, getMarkup(page + 1, totalPages));
 		}
 	}
 

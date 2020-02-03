@@ -41,6 +41,11 @@ class BotSenderTest {
 		sender.editMessage(0L, 0, "Fake text", inlineKeyboardMarkup);
 		sender.editMessage(0L, 0, "Fake text", null);
 		System.out.println("===");
+
+		sender.replyHtmlMessage(0L, 0, "Fake text", inlineKeyboardMarkup);
+		sender.editHtmlMessage(0L, 0, "Fake text", inlineKeyboardMarkup);
+		sender.editHtmlMessage(0L, 0, "Fake text", null);
+		System.out.println("===");
 	}
 
 	@Test

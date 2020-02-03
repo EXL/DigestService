@@ -54,6 +54,10 @@ public class BotSender {
 		sendMessage(chatId, replyId, text, Markdown, keyboard);
 	}
 
+	public void replyHtmlMessage(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
+		sendMessage(chatId, replyId, text, HTML, keyboard);
+	}
+
 	public void sendHtmlMessage(long chatId, String text) {
 		sendMessage(chatId, null, text, HTML, null);
 	}
@@ -80,8 +84,16 @@ public class BotSender {
 	}
 
 	public void editMessage(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
+		editMessage(chatId, messageId, text, Markdown, keyboard);
+	}
+
+	public void editHtmlMessage(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
+		editMessage(chatId, messageId, text, HTML, keyboard);
+	}
+
+	private void editMessage(long chatId, int messageId, String text, ParseMode mode, InlineKeyboardMarkup keyboard) {
 		EditMessageText editMessageText = new EditMessageText(chatId, messageId, shrinkText(text))
-			.parseMode(Markdown).disableWebPagePreview(downloadFile);
+			.parseMode(mode).disableWebPagePreview(downloadFile);
 		if (keyboard != null) {
 			editMessageText.replyMarkup(keyboard);
 		}

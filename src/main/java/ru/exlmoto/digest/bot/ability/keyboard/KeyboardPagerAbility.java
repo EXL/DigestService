@@ -31,14 +31,7 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 		long chatId = message.chat().id();
 
 		String callbackId = callback.id();
-		String key = Keyboard.chopKeyboardNameLast(callback.data());
-
-		int page = 1;
-		try {
-			page = NumberUtils.parseNumber(key, Integer.class);
-		} catch (NumberFormatException nfe) {
-			log.warn(String.format("Cannot parse inline page key: '%s' as Integer.", key), nfe);
-		}
+		int page = getPageFromArgument(Keyboard.chopKeyboardNameLast(callback.data()));
 
 		sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.pager.page") + " " + page);
 
@@ -92,8 +85,18 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 		return new InlineKeyboardMarkup((InlineKeyboardButton[]) ArrayUtils.toArray(keyboardRow));
 	}
 
-	protected String callbackPageData(int page) {
+	private String callbackPageData(int page) {
 		return getKeyboard().withName() + Keyboard.PAGE + page;
+	}
+
+	protected int getPageFromArgument(String key) {
+		int page = 1;
+		try {
+			page = NumberUtils.parseNumber(key, Integer.class);
+		} catch (NumberFormatException nfe) {
+			log.warn(String.format("Cannot parse inline page key: '%s' as Integer.", key), nfe);
+		}
+		return page;
 	}
 
 	protected abstract Keyboard getKeyboard();

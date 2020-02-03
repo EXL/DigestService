@@ -1,17 +1,50 @@
 package ru.exlmoto.digest.bot.ability.keyboard;
 
+import com.pengrad.telegrambot.model.CallbackQuery;
+import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.util.NumberUtils;
 
 import org.thymeleaf.util.ArrayUtils;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+import ru.exlmoto.digest.bot.sender.BotSender;
+import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class KeyboardPagerAbility extends KeyboardAbility {
+	private final Logger log = LoggerFactory.getLogger(KeyboardPagerAbility.class);
+
+	@Override
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
+		Message message = callback.message();
+		int messageId = message.messageId();
+		long chatId = message.chat().id();
+
+		String callbackId = callback.id();
+		String key = Keyboard.chopKeyboardNameLast(callback.data());
+
+		int page = 1;
+		try {
+			page = NumberUtils.parseNumber(key, Integer.class);
+		} catch (NumberFormatException nfe) {
+			log.warn(String.format("Cannot parse inline page key: '%s' as Integer.", key), nfe);
+		}
+
+		sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.pager.page") + " " + page);
+
+		handle(chatId, messageId, callback.from(), page, true, sender);
+	}
+
 	/*
 	 * Intelligent pager from https://lab.exlmoto.ru/digests page ported for Telegram.
 	 * Source: https://github.com/EXL/DigestBot/blob/master/Stuff/DigestHistorySite/index.php#L50
@@ -53,7 +86,7 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 				.callbackData(callbackPageData(page + 1)));
 		}
 		if (end < totalPages) {
-			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.right.last"))
+			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.pager.right.last"))
 				.callbackData(callbackPageData(totalPages)));
 		}
 		return new InlineKeyboardMarkup((InlineKeyboardButton[]) ArrayUtils.toArray(keyboardRow));
@@ -64,4 +97,6 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 	}
 
 	protected abstract Keyboard getKeyboard();
+
+	public abstract void handle(long chatId, int messageId, User user, int page, boolean edit, BotSender sender);
 }

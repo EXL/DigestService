@@ -1,7 +1,5 @@
 package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
-import com.pengrad.telegrambot.model.CallbackQuery;
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.User;
 
 import org.slf4j.Logger;
@@ -12,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.springframework.util.NumberUtils;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.KeyboardPagerAbility;
@@ -52,27 +49,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
-		Message message = callback.message();
-		int messageId = message.messageId();
-		long chatId = message.chat().id();
-
-		String callbackId = callback.id();
-		String key = Keyboard.chopKeyboardNameLast(callback.data());
-
-		int page = 1;
-		try {
-			page = NumberUtils.parseNumber(key, Integer.class);
-		} catch (NumberFormatException nfe) {
-			log.warn(String.format("Cannot parse inline digest page key: '%s' as Integer.", key), nfe);
-		}
-
-		sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.digest.page") + " " + page);
-
-		processDigestMessage(chatId, messageId, callback.from(), page - 1, true, sender);
-	}
-
-	public void processDigestMessage(long chatId, int messageId, User user, int page, boolean edit, BotSender sender) {
+	public void handle(long chatId, int messageId, User user, int page, boolean edit, BotSender sender) {
 		int NEW_MARKERS_COUNT = 3;
 		String username = helper.getValidUsername(user);
 		String text = locale.i18nRU("bot.command.digest.empty", username);
@@ -80,7 +57,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 		Page<BotDigestEntity> digestEntities = null;
 		int totalPages = 0;
 		try {
-			digestEntities = digestRepository.findBotDigestEntitiesByChat(PageRequest.of(page,
+			digestEntities = digestRepository.findBotDigestEntitiesByChat(PageRequest.of(page - 1,
 				config.getDigestPagePosts(), Sort.by(Sort.Order.desc("id"))), chatId);
 		} catch (DataAccessException dae) {
 			log.error("Cannot get BotDigestEntity objects from database.", dae);
@@ -90,7 +67,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 			totalPages = digestEntities.getTotalPages();
 
 			text = "<i>" + locale.i18nRU("bot.command.digest.hello", username) + "\n";
-			text += locale.i18nR("bot.command.digest.header") + " " + (page + 1) + "/" + totalPages + "</i>:\n\n";
+			text += locale.i18nR("bot.command.digest.header") + " " + page + "/" + totalPages + "</i>:\n\n";
 
 			String marker = locale.i18n("bot.command.digest.marker");
 			String newMarker = locale.i18n("bot.command.digest.marker.new");
@@ -99,7 +76,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 			StringBuilder stringBuilder = new StringBuilder();
 			for (BotDigestEntity entity : digestEntities) {
 				stringBuilder.append(marker).append(" ");
-				if (page == 0 && newMarkerCount > 0) {
+				if (page == 1 && newMarkerCount > 0) {
 					stringBuilder.append(newMarker).append(" ");
 				}
 				stringBuilder.append(entity.getDigest());
@@ -115,9 +92,9 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 			text += stringBuilder.toString();
 		}
 		if (edit) {
-			sender.editHtmlMessage(chatId, messageId, text, getMarkup(locale, config, page + 1, totalPages));
+			sender.editHtmlMessage(chatId, messageId, text, getMarkup(locale, config, page, totalPages));
 		} else {
-			sender.replyHtmlMessage(chatId, messageId, text, getMarkup(locale, config,page + 1, totalPages));
+			sender.replyHtmlMessage(chatId, messageId, text, getMarkup(locale, config, page, totalPages));
 		}
 	}
 }

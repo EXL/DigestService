@@ -14,6 +14,7 @@ import ru.exlmoto.digest.bot.ability.keyboard.KeyboardAbility;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.ChartKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.DigestKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.RateKeyboard;
+import ru.exlmoto.digest.bot.ability.keyboard.impl.ShowKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.SubscribeKeyboard;
 import ru.exlmoto.digest.bot.ability.message.MessageAbility;
 import ru.exlmoto.digest.bot.ability.message.impl.CoffeeCommand;
@@ -81,6 +82,7 @@ public class BotAbilityFactory {
 		addKeyboard(Keyboard.rate, RateKeyboard.class);
 		addKeyboard(Keyboard.subscribe, SubscribeKeyboard.class);
 		addKeyboard(Keyboard.digest, DigestKeyboard.class);
+		addKeyboard(Keyboard.show, ShowKeyboard.class);
 	}
 
 	/*

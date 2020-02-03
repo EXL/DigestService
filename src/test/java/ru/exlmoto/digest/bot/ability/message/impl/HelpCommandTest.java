@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.MessageHelper;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @SpringBootTest(properties = "bot.silent=true")
 class HelpCommandTest {
@@ -22,7 +22,7 @@ class HelpCommandTest {
 	private BotSender sender;
 
 	@Autowired
-	private LocalizationHelper locale;
+	private LocaleHelper locale;
 
 	@Test
 	public void testHelpCommand() {

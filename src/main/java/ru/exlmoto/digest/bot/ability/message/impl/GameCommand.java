@@ -10,7 +10,7 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.file.ImageHelper;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
 public class GameCommand extends MessageAbility {
@@ -23,7 +23,7 @@ public class GameCommand extends MessageAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		Answer<String> res = rest.getImageByLink(config.getUrlGame());
 		if (res.ok()) {
 			sender.replyPhoto(message.chat().id(), message.messageId(), res.answer(),

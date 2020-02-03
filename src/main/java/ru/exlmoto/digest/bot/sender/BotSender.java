@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.util.Answer;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.io.File;
 
@@ -35,12 +35,12 @@ public class BotSender {
 
 	private final BotConfiguration config;
 	private final BotTelegram telegram;
-	private final LocalizationHelper locale;
+	private final LocaleHelper locale;
 
 	@Value("${image.download-file}")
 	private boolean downloadFile;
 
-	public BotSender(BotConfiguration config, BotTelegram telegram, LocalizationHelper locale) {
+	public BotSender(BotConfiguration config, BotTelegram telegram, LocaleHelper locale) {
 		this.config = config;
 		this.telegram = telegram;
 		this.locale = locale;

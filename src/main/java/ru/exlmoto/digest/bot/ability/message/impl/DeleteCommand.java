@@ -13,7 +13,7 @@ import ru.exlmoto.digest.bot.ability.message.MessageAdminAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.repository.BotDigestRepository;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
 public class DeleteCommand extends MessageAdminAbility {
@@ -26,7 +26,7 @@ public class DeleteCommand extends MessageAdminAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		String[] args = message.text().split(" ");
 		String text = locale.i18n("bot.error.delete.format");
 

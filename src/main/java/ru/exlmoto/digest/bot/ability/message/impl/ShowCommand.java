@@ -18,7 +18,7 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
 public class ShowCommand extends MessageAdminAbility {
@@ -33,7 +33,7 @@ public class ShowCommand extends MessageAdminAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		String[] args = message.text().split(" ");
 		String text = locale.i18n("bot.error.show.empty");
 		int page = 0;
@@ -55,7 +55,7 @@ public class ShowCommand extends MessageAdminAbility {
 		sender.replyMessage(message.chat().id(), message.messageId(), text);
 	}
 
-	protected String generateShowReport(Page<BotDigestEntity> digestEntities, LocalizationHelper locale) {
+	protected String generateShowReport(Page<BotDigestEntity> digestEntities, LocaleHelper locale) {
 		final int CHOP_NUMBER = 5;
 		final int CHOP_USER = 7;
 		final int CHOP_DIGEST = 25;

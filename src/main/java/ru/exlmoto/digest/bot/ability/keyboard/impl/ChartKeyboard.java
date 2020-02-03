@@ -14,7 +14,7 @@ import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.chart.ChartService;
 import ru.exlmoto.digest.chart.yaml.Chart;
 import ru.exlmoto.digest.util.Answer;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import javax.annotation.PostConstruct;
 
@@ -59,7 +59,7 @@ public class ChartKeyboard extends KeyboardAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, CallbackQuery callback) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
 		Message message = callback.message();
 		long chatId = message.chat().id();
 		int messageId = message.messageId();

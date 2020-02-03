@@ -9,7 +9,7 @@ import ru.exlmoto.digest.bot.ability.message.impl.HelloCommand;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.MessageHelper;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @SpringBootTest(properties = "bot.silent=true")
 class MessageAdminAbilityTest {
@@ -23,7 +23,7 @@ class MessageAdminAbilityTest {
 	private BotSender sender;
 
 	@Autowired
-	private LocalizationHelper locale;
+	private LocaleHelper locale;
 
 	@Test
 	public void testProcessAux() {

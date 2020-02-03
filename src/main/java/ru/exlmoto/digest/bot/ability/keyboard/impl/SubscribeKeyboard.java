@@ -22,7 +22,7 @@ import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.repository.BotSubDigestRepository;
 import ru.exlmoto.digest.repository.BotSubMotofanRepository;
 import ru.exlmoto.digest.util.Answer;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import javax.annotation.PostConstruct;
 
@@ -40,21 +40,21 @@ public class SubscribeKeyboard extends KeyboardAbility {
 		motofan_unsubscribe
 	}
 
-	private final LocalizationHelper locale;
+	private final BotHelper helper;
+	private final LocaleHelper locale;
 	private final BotSubDigestRepository digestRepository;
 	private final BotSubMotofanRepository motofanRepository;
-	private final BotHelper helper;
 
 	private InlineKeyboardMarkup markup = null;
 
-	public SubscribeKeyboard(BotSubDigestRepository digestRepository,
-	                         BotSubMotofanRepository motofanRepository,
-	                         BotHelper helper,
-	                         LocalizationHelper locale) {
-		this.digestRepository = digestRepository;
-		this.motofanRepository = motofanRepository;
+	public SubscribeKeyboard(BotHelper helper,
+	                         LocaleHelper locale,
+	                         BotSubDigestRepository digestRepository,
+	                         BotSubMotofanRepository motofanRepository) {
 		this.helper = helper;
 		this.locale = locale;
+		this.digestRepository = digestRepository;
+		this.motofanRepository = motofanRepository;
 	}
 
 	@PostConstruct
@@ -81,7 +81,7 @@ public class SubscribeKeyboard extends KeyboardAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, CallbackQuery callback) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
 		Message message = callback.message();
 		int messageId = message.messageId();
 		Chat chat = message.chat();

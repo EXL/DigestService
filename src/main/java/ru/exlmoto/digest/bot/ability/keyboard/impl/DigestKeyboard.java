@@ -21,7 +21,7 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.repository.BotDigestRepository;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +31,10 @@ public class DigestKeyboard extends KeyboardAbility {
 	private final Logger log = LoggerFactory.getLogger(DigestKeyboard.class);
 
 	private final BotConfiguration config;
-	private final LocalizationHelper locale;
+	private final LocaleHelper locale;
 	private final BotDigestRepository digestRepository;
 
-	public DigestKeyboard(BotConfiguration config, LocalizationHelper locale, BotDigestRepository digestRepository) {
+	public DigestKeyboard(BotConfiguration config, LocaleHelper locale, BotDigestRepository digestRepository) {
 		this.config = config;
 		this.locale = locale;
 		this.digestRepository = digestRepository;
@@ -120,7 +120,7 @@ public class DigestKeyboard extends KeyboardAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, CallbackQuery callback) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
 		Message message = callback.message();
 		int messageId = message.messageId();
 		Chat chat = message.chat();

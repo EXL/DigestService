@@ -2,16 +2,16 @@ package ru.exlmoto.digest.motofan.generator;
 
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
 @Component
 public class PostTgHtmlGenerator {
-	private final LocalizationHelper locale;
+	private final LocaleHelper locale;
 	private final FilterHelper filter;
 
-	public PostTgHtmlGenerator(LocalizationHelper locale, FilterHelper filter) {
+	public PostTgHtmlGenerator(LocaleHelper locale, FilterHelper filter) {
 		this.locale = locale;
 		this.filter = filter;
 	}

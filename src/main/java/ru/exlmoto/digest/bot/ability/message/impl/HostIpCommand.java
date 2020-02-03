@@ -9,7 +9,7 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.Answer;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 @Component
@@ -23,7 +23,7 @@ public class HostIpCommand extends MessageAdminAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		Answer<String> res = rest.getRestResponse(config.getUrlHostIp());
 		sender.replyMessage(message.chat().id(), message.messageId(),
 			(res.ok()) ?

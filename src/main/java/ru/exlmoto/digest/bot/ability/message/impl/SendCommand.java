@@ -13,7 +13,7 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.file.ImageHelper;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
@@ -35,7 +35,7 @@ public class SendCommand extends MessageAdminAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		long origChatId = message.chat().id();
 		int origMessageId = message.messageId();
 		String text = message.text();
@@ -99,7 +99,7 @@ public class SendCommand extends MessageAdminAbility {
 		return Command.send;
 	}
 
-	private Answer<String> checkCommand(String[] commandTokens, Command command, LocalizationHelper locale) {
+	private Answer<String> checkCommand(String[] commandTokens, Command command, LocaleHelper locale) {
 		boolean isTextMode = (command == Command.send);
 		if ((isTextMode && commandTokens.length < 3) || (!isTextMode && commandTokens.length != 3)) {
 			switch (command) {
@@ -111,7 +111,7 @@ public class SendCommand extends MessageAdminAbility {
 		return Ok("Ok!");
 	}
 
-	private Answer<Long> getChatId(String chatId, LocalizationHelper locale) {
+	private Answer<Long> getChatId(String chatId, LocaleHelper locale) {
 		try {
 			return Ok(NumberUtils.parseNumber(chatId, Long.class));
 		} catch (NumberFormatException nfe) {

@@ -16,7 +16,7 @@ import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
 public class DebugCommand extends MessageAdminAbility {
@@ -53,7 +53,7 @@ public class DebugCommand extends MessageAdminAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		String text = locale.i18n("bot.command.debug.help") + addStatus(locale);
 		String[] arguments = message.text().split(" ");
 		if (arguments.length == 2) {
@@ -79,23 +79,23 @@ public class DebugCommand extends MessageAdminAbility {
 		}
 	}
 
-	private String processRates(LocalizationHelper locale) {
+	private String processRates(LocaleHelper locale) {
 		exchangeService.updateAllRates();
 		return locale.i18n("bot.command.debug.data");
 	}
 
-	private String processPosts(LocalizationHelper locale) {
+	private String processPosts(LocaleHelper locale) {
 		motofanWorker.workOnMotofanPosts();
 		return locale.i18n("bot.command.debug.data");
 	}
 
 
-	private String processQueries(LocalizationHelper locale) {
+	private String processQueries(LocaleHelper locale) {
 		callbackQueriesWorker.clearCallbackQueriesMap();
 		return locale.i18n("bot.command.debug.data");
 	}
 
-	private String addStatus(LocalizationHelper locale) {
+	private String addStatus(LocaleHelper locale) {
 		return
 			"\n\n" + locale.i18n("bot.command.debug.values") + "\n```\n" +
 			Option.BLogUpdates + ": " + config.isLogUpdates() + "\n" +
@@ -103,25 +103,25 @@ public class DebugCommand extends MessageAdminAbility {
 			Option.BSilent + ": " + config.isSilent() + "\n```";
 	}
 
-	private String toggleUpdates(LocalizationHelper locale) {
+	private String toggleUpdates(LocaleHelper locale) {
 		boolean value = !config.isLogUpdates();
 		config.setLogUpdates(value);
 		return saveSettingsToDataBase(locale, Option.BLogUpdates, value);
 	}
 
-	private String toggleGreetings(LocalizationHelper locale) {
+	private String toggleGreetings(LocaleHelper locale) {
 		boolean value = !config.isShowGreetings();
 		config.setShowGreetings(value);
 		return saveSettingsToDataBase(locale, Option.BGreetings, value);
 	}
 
-	private String toggleSilent(LocalizationHelper locale) {
+	private String toggleSilent(LocaleHelper locale) {
 		boolean value = !config.isSilent();
 		config.setSilent(value);
 		return saveSettingsToDataBase(locale, Option.BSilent, value);
 	}
 
-	private String saveSettingsToDataBase(LocalizationHelper locale, Option variableName, boolean value) {
+	private String saveSettingsToDataBase(LocaleHelper locale, Option variableName, boolean value) {
 		try {
 			telegram.updateTelegramBotSettings();
 			return String.format(locale.i18n("bot.command.debug.variable"), variableName, value);

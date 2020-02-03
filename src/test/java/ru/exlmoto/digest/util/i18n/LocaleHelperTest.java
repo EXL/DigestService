@@ -9,9 +9,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class LocalizationHelperTest {
+class LocaleHelperTest {
 	@Autowired
-	private LocalizationHelper locale;
+	private LocaleHelper locale;
 
 	@Test
 	public void testLocalizationService() {

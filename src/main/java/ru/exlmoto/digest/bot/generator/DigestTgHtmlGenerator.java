@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
 @Component
@@ -15,15 +15,12 @@ public class DigestTgHtmlGenerator {
 	private final FilterHelper filter;
 	private final BotConfiguration config;
 	private final BotHelper helper;
-	private final LocalizationHelper locale;
+	private final LocaleHelper locale;
 
 	@Value("${general.date-format}")
 	private String dateFormat;
 
-	public DigestTgHtmlGenerator(FilterHelper filter,
-	                             BotConfiguration config,
-	                             BotHelper helper,
-	                             LocalizationHelper locale) {
+	public DigestTgHtmlGenerator(FilterHelper filter, BotConfiguration config, BotHelper helper, LocaleHelper locale) {
 		this.filter = filter;
 		this.config = config;
 		this.helper = helper;

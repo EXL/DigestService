@@ -19,7 +19,7 @@ import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
 @Component
@@ -48,7 +48,7 @@ public class DigestHashTag extends MessageAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		long chatId = message.chat().id();
 		int messageId = message.messageId();
 		User user = message.from();

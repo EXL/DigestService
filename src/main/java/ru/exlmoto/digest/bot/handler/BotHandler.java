@@ -17,7 +17,7 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.List;
 import java.util.Arrays;
@@ -32,20 +32,20 @@ public class BotHandler {
 	private final Logger log = LoggerFactory.getLogger(BotHandler.class);
 
 	private final BotConfiguration config;
-	private final BotSender sender;
-	private final BotHelper helper;
 	private final BotTelegram telegram;
+	private final BotHelper helper;
+	private final LocaleHelper locale;
+	private final BotSender sender;
 	private final BotAbilityFactory abilityFactory;
 	private final CallbackQueriesWorker callbackQueriesWorker;
-	private final LocalizationHelper locale;
 
 	public BotHandler(BotConfiguration config,
-	                  BotSender sender,
-	                  BotHelper helper,
 	                  BotTelegram telegram,
+	                  BotHelper helper,
+	                  LocaleHelper locale,
+	                  BotSender sender,
 	                  BotAbilityFactory abilityFactory,
-	                  CallbackQueriesWorker callbackQueriesWorker,
-	                  LocalizationHelper locale) {
+	                  CallbackQueriesWorker callbackQueriesWorker) {
 		this.config = config;
 		this.sender = sender;
 		this.helper = helper;

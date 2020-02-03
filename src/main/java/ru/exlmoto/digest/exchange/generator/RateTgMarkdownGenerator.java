@@ -10,7 +10,7 @@ import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.math.BigDecimal;
 
@@ -19,12 +19,10 @@ public class RateTgMarkdownGenerator {
 	private final Logger log = LoggerFactory.getLogger(RateTgMarkdownGenerator.class);
 
 	private final GeneratorHelper helper;
-	private final LocalizationHelper locale;
+	private final LocaleHelper locale;
 	private final ExchangeRateRepository repository;
 
-	public RateTgMarkdownGenerator(GeneratorHelper helper,
-	                               ExchangeRateRepository repository,
-	                               LocalizationHelper locale) {
+	public RateTgMarkdownGenerator(GeneratorHelper helper, ExchangeRateRepository repository, LocaleHelper locale) {
 		this.helper = helper;
 		this.repository = repository;
 		this.locale = locale;

@@ -13,7 +13,7 @@ import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.CallbackQueryHelper;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -31,7 +31,7 @@ class SubscribeKeyboardTest {
 	private BotSender sender;
 
 	@Autowired
-	private LocalizationHelper locale;
+	private LocaleHelper locale;
 
 	@Test
 	public void testGetMarkup() {

@@ -12,8 +12,8 @@ import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Component
-public class LocalizationHelper {
-	private final Logger log = LoggerFactory.getLogger(LocalizationHelper.class);
+public class LocaleHelper {
+	private final Logger log = LoggerFactory.getLogger(LocaleHelper.class);
 
 	@Value("${general.lang}")
 	private String lang;
@@ -23,7 +23,7 @@ public class LocalizationHelper {
 
 	private final MessageSource messageSource;
 
-	public LocalizationHelper(MessageSource messageSource) {
+	public LocaleHelper(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
 

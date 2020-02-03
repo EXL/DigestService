@@ -8,7 +8,7 @@ import ru.exlmoto.digest.bot.ability.keyboard.impl.DigestKeyboard;
 import ru.exlmoto.digest.bot.ability.message.MessageAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
 public class DigestCommand extends MessageAbility {
@@ -19,7 +19,7 @@ public class DigestCommand extends MessageAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		sender.replyKeyboard(message.chat().id(), message.messageId(), "TEST", keyboard.getMarkup());
 	}
 }

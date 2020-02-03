@@ -9,7 +9,7 @@ import ru.exlmoto.digest.bot.ability.keyboard.impl.ChartKeyboard;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.chart.ChartService;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
 public class ChartCommand extends MessageAbility {
@@ -22,7 +22,7 @@ public class ChartCommand extends MessageAbility {
 	}
 
 	@Override
-	protected void execute(BotHelper helper, BotSender sender, LocalizationHelper locale, Message message) {
+	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		sender.replyKeyboard(message.chat().id(), message.messageId(),
 			locale.i18n("bot.command.charts") + "\n\n" + chartService.markdownDescriptions(),
 			chartKeyboard.getMarkup());

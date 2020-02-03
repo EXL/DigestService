@@ -11,7 +11,7 @@ import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.MessageHelper;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
-import ru.exlmoto.digest.util.i18n.LocalizationHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,7 +33,7 @@ class DigestHashTagTest {
 	private BotSender sender;
 
 	@Autowired
-	private LocalizationHelper locale;
+	private LocaleHelper locale;
 
 	@Test
 	public void testDigestHashTag() {

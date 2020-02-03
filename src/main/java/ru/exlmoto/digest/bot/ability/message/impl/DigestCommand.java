@@ -20,6 +20,7 @@ public class DigestCommand extends MessageAbility {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
-		sender.replyKeyboard(message.chat().id(), message.messageId(), "TEST", keyboard.getMarkup());
+		keyboard.processDigestMessage(message.chat().id(), message.messageId(), message.from(),
+			0, false, sender);
 	}
 }

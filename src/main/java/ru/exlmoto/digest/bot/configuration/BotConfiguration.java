@@ -24,7 +24,6 @@ public class BotConfiguration {
 	private int maxDigestLength;
 	private int showPagePosts;
 	private int digestPagePosts;
-	private int digestPageCount;
 
 	public String getToken() {
 		return token;
@@ -184,13 +183,5 @@ public class BotConfiguration {
 
 	public void setDigestPagePosts(int digestPagePosts) {
 		this.digestPagePosts = digestPagePosts;
-	}
-
-	public int getDigestPageCount() {
-		return digestPageCount;
-	}
-
-	public void setDigestPageCount(int digestPageCount) {
-		this.digestPageCount = digestPageCount;
 	}
 }

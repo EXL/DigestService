@@ -33,7 +33,6 @@ public class DigestWorker {
 	}
 
 	public void sendDigestToSubscribers(BotSender sender, Message message, String digest) {
-		log.info("=> Start send digests to subscribers.");
 		try {
 			List<BotSubDigestEntity> subscribers = repository.findAll();
 			new Thread(() -> subscribers.forEach(subscriber -> {
@@ -43,7 +42,7 @@ public class DigestWorker {
 					throw new RuntimeException(ie);
 				}
 				long subscription = subscriber.getSubscription();
-				log.info(String.format("==> Send Digest Message to chat '%s', id: '%d', subscribers: '%d'.",
+				log.info(String.format("=> Send Digest Message to chat '%s', id: '%d', subscribers: '%d'.",
 					subscriber.getName(), subscription, subscribers.size()));
 				sender.sendHtmlMessage(subscription, htmlGenerator.generateDigestMessageHtmlReport(message, digest));
 			})).start();
@@ -52,6 +51,5 @@ public class DigestWorker {
 		} catch (RuntimeException re) {
 			log.error("Cannot delay Digest message sender thread.", re);
 		}
-		log.info("=> End send digests to subscribers.");
 	}
 }

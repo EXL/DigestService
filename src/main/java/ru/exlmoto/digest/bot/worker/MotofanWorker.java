@@ -51,7 +51,7 @@ public class MotofanWorker {
 	private void sendNewMotofanPosts(List<String> motofanPosts, List<BotSubMotofanEntity> subscribers) {
 		motofanPosts.forEach(post -> subscribers.forEach(subscriber -> {
 			long chatId = subscriber.getSubscription();
-			log.info(String.format("==> Send Motofan Post to chat '%d', posts: '%d', subscribers: '%d'.",
+			log.info(String.format("=> Send Motofan Post to chat '%d', posts: '%d', subscribers: '%d'.",
 				chatId, motofanPosts.size(), subscribers.size()));
 			sender.sendHtmlMessage(chatId, post);
 			try {

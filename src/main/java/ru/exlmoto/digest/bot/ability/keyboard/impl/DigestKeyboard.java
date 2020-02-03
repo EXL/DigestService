@@ -58,13 +58,13 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 		long chatId = message.chat().id();
 
 		String callbackId = callback.id();
-		String key = Keyboard.chopKeyboardNameLeft(Keyboard.chopKeyboardNameLeft(callback.data()));
+		String key = Keyboard.chopKeyboardNameLast(callback.data());
 
 		int page = 1;
 		try {
 			page = NumberUtils.parseNumber(key, Integer.class);
 		} catch (NumberFormatException nfe) {
-			log.warn(String.format("Cannot parse inline page key: '%s' as Integer.", key), nfe);
+			log.warn(String.format("Cannot parse inline digest page key: '%s' as Integer.", key), nfe);
 		}
 
 		sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.digest.page") + " " + page);

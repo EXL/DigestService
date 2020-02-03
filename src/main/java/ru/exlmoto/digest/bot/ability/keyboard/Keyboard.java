@@ -22,4 +22,9 @@ public enum Keyboard {
 		int find = key.indexOf(DELIMITER);
 		return (find != -1) ? key.substring(find + 1) : key;
 	}
+
+	public static String chopKeyboardNameLast(String key) {
+		int find = key.lastIndexOf(DELIMITER);
+		return (find != -1) ? key.substring(find + 1) : key;
+	}
 }

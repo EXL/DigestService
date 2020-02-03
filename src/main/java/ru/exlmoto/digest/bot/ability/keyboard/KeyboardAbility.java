@@ -9,7 +9,7 @@ import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 public abstract class KeyboardAbility extends BotAbility<CallbackQuery> {
-	public abstract InlineKeyboardMarkup getMarkup();
+	public abstract InlineKeyboardMarkup getMarkup(int page, int totalPages);
 
 	@Override
 	protected abstract void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback);

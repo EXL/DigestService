@@ -39,7 +39,7 @@ public class RateKeyboard extends KeyboardAbility {
 	}
 
 	@Override
-	public InlineKeyboardMarkup getMarkup() {
+	public InlineKeyboardMarkup getMarkup(int page, int totalPages) {
 		return markup;
 	}
 
@@ -54,6 +54,6 @@ public class RateKeyboard extends KeyboardAbility {
 		sender.sendCallbackQueryAnswer(callback.id(),
 			locale.i18n("bot.inline.selected") + " " + service.buttonLabel(key));
 
-		sender.editMessage(chatId, messageId, service.markdownReport(key), getMarkup());
+		sender.editMessage(chatId, messageId, service.markdownReport(key), markup);
 	}
 }

@@ -54,7 +54,7 @@ public class ChartKeyboard extends KeyboardAbility {
 	}
 
 	@Override
-	public InlineKeyboardMarkup getMarkup() {
+	public InlineKeyboardMarkup getMarkup(int page, int totalPages) {
 		return markup;
 	}
 

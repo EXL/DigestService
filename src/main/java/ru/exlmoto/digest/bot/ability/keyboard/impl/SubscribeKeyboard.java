@@ -76,7 +76,7 @@ public class SubscribeKeyboard extends KeyboardAbility {
 	}
 
 	@Override
-	public InlineKeyboardMarkup getMarkup() {
+	public InlineKeyboardMarkup getMarkup(int page, int totalPages) {
 		return markup;
 	}
 
@@ -104,11 +104,11 @@ public class SubscribeKeyboard extends KeyboardAbility {
 	public void processSubscribeStatusMessage(long chatId, int messageId, Chat chat, boolean edit, BotSender sender) {
 		Answer<String> res = generateSubscribeStatusMessage(chat);
 		String answer = res.ok() ? res.answer() : res.error();
-		InlineKeyboardMarkup markup = res.ok() ? getMarkup() : null;
+		InlineKeyboardMarkup inlineKeyboardMarkup = res.ok() ? markup : null;
 		if (edit) {
-			sender.editMessage(chatId, messageId, answer, markup);
+			sender.editMessage(chatId, messageId, answer, inlineKeyboardMarkup);
 		} else {
-			sender.replyKeyboard(chatId, messageId, answer, markup);
+			sender.replyKeyboard(chatId, messageId, answer, inlineKeyboardMarkup);
 		}
 	}
 

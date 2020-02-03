@@ -7,6 +7,7 @@ public enum Keyboard {
 	digest;
 
 	private static final String DELIMITER = "_";
+	public static final String PAGE = "page" + DELIMITER;
 
 	public String withName() {
 		return name() + DELIMITER;

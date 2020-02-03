@@ -63,40 +63,27 @@ public class DigestKeyboard extends KeyboardAbility {
 	 * Source: https://github.com/EXL/DigestBot/blob/master/Stuff/DigestHistorySite/index.php#L50
 	 */
 	public InlineKeyboardMarkup getMarkup(int page, int totalPages) {
+		int paginPP = config.getDigestPageDeep();
 		if (totalPages <= 1) {
 			return null;
 		}
 
-		int start = page - 1;
+		int start = page - ((paginPP / 2) + 1);
 		if (start < 0) {
 			start = 0;
 		}
 
-		int end = page;
+		int end = page + (paginPP / 2);
 		if (end > totalPages) {
 			end = totalPages;
 		}
 
-		/* Patched for one width. */
-		if (page == 1) {
-			end += 2;
-		} else if (page == 2) {
-			end += 1;
-			start -= 1;
-		}
-		if (page == totalPages) {
-			start -= 2;
-		} else if (page == totalPages - 1) {
-			start -= 1;
-			end += 1;
-		}
-
 		List<InlineKeyboardButton> keyboardRow = new ArrayList<>();
-		if (start > 1) {
+		if (start > 0) {
 			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.command.digest.pager.left.first"))
 				.callbackData(callbackPageData(1)));
 		}
-		if (page > 2) {
+		if (page > 1) {
 			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.command.digest.pager.left"))
 				.callbackData(callbackPageData(page - 1)));
 		}
@@ -107,11 +94,11 @@ public class DigestKeyboard extends KeyboardAbility {
 					String.valueOf(i + 1)
 			).callbackData(callbackPageData(i + 1)));
 		}
-		if (page < totalPages - 1) {
+		if (page < totalPages) {
 			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.command.digest.pager.right"))
 				.callbackData(callbackPageData(page + 1)));
 		}
-		if (end < totalPages - 1) {
+		if (end < totalPages) {
 			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.command.digest.pager.right.last"))
 				.callbackData(callbackPageData(totalPages)));
 		}
@@ -157,8 +144,8 @@ public class DigestKeyboard extends KeyboardAbility {
 		if (digestEntities != null && !digestEntities.isEmpty()) {
 			totalPages = digestEntities.getTotalPages();
 
-			text = locale.i18nRU("bot.command.digest.hello", username) + "\n";
-			text += locale.i18nR("bot.command.digest.header") + " " + (page + 1) + "/" + totalPages + ":\n";
+			text = "<i>" + locale.i18nRU("bot.command.digest.hello", username) + "\n";
+			text += locale.i18nR("bot.command.digest.header") + " " + (page + 1) + "/" + totalPages + "</i>:\n\n";
 
 			String marker = locale.i18n("bot.command.digest.marker");
 			String newMarker = locale.i18n("bot.command.digest.marker.new");

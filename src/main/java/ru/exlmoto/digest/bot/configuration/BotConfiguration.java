@@ -24,6 +24,7 @@ public class BotConfiguration {
 	private int maxDigestLength;
 	private int showPagePosts;
 	private int digestPagePosts;
+	private int digestPageDeep;
 
 	public String getToken() {
 		return token;
@@ -183,5 +184,13 @@ public class BotConfiguration {
 
 	public void setDigestPagePosts(int digestPagePosts) {
 		this.digestPagePosts = digestPagePosts;
+	}
+
+	public int getDigestPageDeep() {
+		return digestPageDeep;
+	}
+
+	public void setDigestPageDeep(int digestPageDeep) {
+		this.digestPageDeep = digestPageDeep;
 	}
 }

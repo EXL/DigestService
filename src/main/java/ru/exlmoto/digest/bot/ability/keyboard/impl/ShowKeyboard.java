@@ -92,16 +92,6 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 		return stringBuilder.toString();
 	}
 
-	protected int getPageFromArgument(String argument) {
-		int page = 0;
-		try {
-			page = NumberUtils.parseNumber(argument, Integer.class) - 1;
-		} catch (NumberFormatException nfe) {
-			log.warn(String.format("Cannot parse show command argument: '%s' as Integer.", argument), nfe);
-		}
-		return Math.max(page, 0);
-	}
-
 	protected String arrangeString(String string, int length) {
 		int stringLength = string.length();
 		StringBuilder stringBuilder = new StringBuilder();

@@ -53,11 +53,15 @@ public class DigestKeyboard extends KeyboardAbility {
 		this.digestRepository = digestRepository;
 	}
 
+	@Override
+	public InlineKeyboardMarkup getMarkup() {
+		return null;
+	}
+
 	/*
 	 * Intelligent pager from https://lab.exlmoto.ru/digests page ported for Telegram.
 	 * Source: https://github.com/EXL/DigestBot/blob/master/Stuff/DigestHistorySite/index.php#L50
 	 */
-	@Override
 	public InlineKeyboardMarkup getMarkup(int page, int totalPages) {
 		if (totalPages <= 1) {
 			return null;

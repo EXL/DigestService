@@ -39,7 +39,7 @@ public class RateKeyboard extends KeyboardAbility {
 	}
 
 	@Override
-	public InlineKeyboardMarkup getMarkup(int page, int totalPages) {
+	public InlineKeyboardMarkup getMarkup() {
 		return markup;
 	}
 

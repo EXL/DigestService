@@ -74,8 +74,9 @@ public class BotHandler {
 	public void onHashTag(Message message) {
 		for (MessageEntity entity : message.entities()) {
 			if (entity.type().equals(hashtag)) {
+				int offset = entity.offset();
 				Optional<BotAbility<Message>> ability =
-					abilityFactory.getMessageAbility(message.text().substring(entity.offset(), entity.length()));
+					abilityFactory.getMessageAbility(message.text().substring(offset, offset + entity.length()));
 				if (ability.isPresent()) {
 					ability.get().process(helper, sender, locale, message);
 					return;

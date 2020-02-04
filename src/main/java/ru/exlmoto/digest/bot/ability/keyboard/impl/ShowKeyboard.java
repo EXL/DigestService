@@ -54,6 +54,7 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 	public void handle(int messageId, Chat chat, User user, int page, boolean edit, BotSender sender) {
 		String text = locale.i18n("bot.error.show.empty");
 		int totalPages = 0;
+		long totalEntries;
 
 		Page<BotDigestEntity> digestEntities = null;
 		try {
@@ -65,7 +66,10 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 		}
 		if (digestEntities != null && !digestEntities.isEmpty()) {
 			totalPages = digestEntities.getTotalPages();
-			text = generateShowReport(digestEntities, locale, totalPages, page);
+			totalEntries = digestEntities.getTotalElements();
+			text = generateShowReport(digestEntities, locale,
+				locale.i18n("bot.command.show.header") + " " +
+					String.format(locale.i18n("bot.info.digest.stats"), totalEntries, page, totalPages));
 		}
 
 		if (edit) {
@@ -75,14 +79,13 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 		}
 	}
 
-	protected String generateShowReport(Page<BotDigestEntity> entities, LocaleHelper locale, int totalPages, int page) {
+	protected String generateShowReport(Page<BotDigestEntity> entities, LocaleHelper locale, String header) {
 		final int CHOP_NUMBER = 5;
 		final int CHOP_USER = 7;
 		final int CHOP_DIGEST = 25;
 		String ellipsis = locale.i18n("bot.command.show.ellipsis");
 
-		StringBuilder stringBuilder =
-			new StringBuilder(String.format(locale.i18n("bot.command.show.header"), page, totalPages));
+		StringBuilder stringBuilder = new StringBuilder(header);
 		stringBuilder.append("\n\n");
 		stringBuilder.append("```\n");
 		stringBuilder.append(arrangeString("id", CHOP_NUMBER)).append(" ");

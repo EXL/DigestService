@@ -85,7 +85,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 				text += locale.i18nRU("bot.command.digest.hello", username) + "\n";
 				text += locale.i18nR("bot.command.digest.header") + "\n";
 			}
-			text += String.format(locale.i18n("bot.command.digest.stats"), totalEntries, page, totalPages);
+			text += String.format(locale.i18n("bot.info.digest.stats"), totalEntries, page, totalPages);
 			text += "</i>\n\n";
 
 			String marker = locale.i18n("bot.command.digest.marker");

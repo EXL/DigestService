@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
+import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.User;
 
 import org.slf4j.Logger;
@@ -50,7 +51,7 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 	}
 
 	@Override
-	public void handle(long chatId, int messageId, User user, int page, boolean edit, BotSender sender) {
+	public void handle(int messageId, Chat chat, User user, int page, boolean edit, BotSender sender) {
 		String text = locale.i18n("bot.error.show.empty");
 		int totalPages = 0;
 
@@ -68,9 +69,9 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 		}
 
 		if (edit) {
-			sender.editMessage(chatId, messageId, text, getMarkup(locale, config, page, totalPages));
+			sender.editMessage(chat.id(), messageId, text, getMarkup(locale, config, page, totalPages));
 		} else {
-			sender.replyKeyboard(chatId, messageId, text, getMarkup(locale, config, page, totalPages));
+			sender.replyKeyboard(chat.id(), messageId, text, getMarkup(locale, config, page, totalPages));
 		}
 	}
 

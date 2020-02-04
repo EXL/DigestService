@@ -20,6 +20,6 @@ public class DigestCommand extends MessageAbility {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
-		keyboard.handle(message.chat().id(), message.messageId(), message.from(), 1, false, sender);
+		keyboard.handle(message.messageId(), message.chat(), message.from(), 1, false, sender);
 	}
 }

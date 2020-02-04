@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot.ability.keyboard;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
+import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
@@ -29,12 +30,11 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 		Message message = callback.message();
 		User user = callback.from();
 		int messageId = message.messageId();
-		long chatId = message.chat().id();
 
 		int page = getPageFromArgument(Keyboard.chopKeyboardNameLast(callback.data()));
 
 		if (handleQuery(callback.id(), user, page, sender, helper, locale)) {
-			handle(chatId, messageId, callback.from(), page, true, sender);
+			handle(messageId, message.chat(), callback.from(), page, true, sender);
 		}
 	}
 
@@ -115,5 +115,5 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 	protected abstract boolean handleQuery(String callbackId, User user, int page,
 	                                       BotSender sender, BotHelper helper, LocaleHelper locale);
 
-	public abstract void handle(long chatId, int messageId, User user, int page, boolean edit, BotSender sender);
+	public abstract void handle(int messageId, Chat chat, User user, int page, boolean edit, BotSender sender);
 }

@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
+import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.User;
 
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
+
+import static com.pengrad.telegrambot.model.Chat.Type.Private;
 
 @Component
 public class DigestKeyboard extends KeyboardPagerAbility {
@@ -55,13 +58,15 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 	}
 
 	@Override
-	public void handle(long chatId, int messageId, User user, int page, boolean edit, BotSender sender) {
+	public void handle(int messageId, Chat chat, User user, int page, boolean edit, BotSender sender) {
 		int NEW_MARKERS_COUNT = 3;
+		long chatId = chat.id();
 		String username = helper.getValidUsername(user);
 		String text = locale.i18nRU("bot.command.digest.empty", username);
 
 		Page<BotDigestEntity> digestEntities = null;
 		int totalPages = 0;
+		long totalEntries;
 		try {
 			digestEntities = digestRepository.findBotDigestEntitiesByChat(PageRequest.of(page - 1,
 				config.getDigestPagePosts(), Sort.by(Sort.Order.desc("id"))), chatId);
@@ -71,9 +76,17 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 		}
 		if (digestEntities != null && !digestEntities.isEmpty()) {
 			totalPages = digestEntities.getTotalPages();
+			totalEntries = digestEntities.getTotalElements();
 
-			text = "<i>" + locale.i18nRU("bot.command.digest.hello", username) + "\n";
-			text += locale.i18nR("bot.command.digest.header") + " " + page + "/" + totalPages + "</i>:\n\n";
+			text = "<i>";
+			if (chat.type().equals(Private)) {
+				text += locale.i18nU("bot.command.digest.private", username) + "\n";
+			} else {
+				text += locale.i18nRU("bot.command.digest.hello", username) + "\n";
+				text += locale.i18nR("bot.command.digest.header") + "\n";
+			}
+			text += String.format(locale.i18n("bot.command.digest.stats"), totalEntries, page, totalPages);
+			text += "</i>\n\n";
 
 			String marker = locale.i18n("bot.command.digest.marker");
 			String newMarker = locale.i18n("bot.command.digest.marker.new");

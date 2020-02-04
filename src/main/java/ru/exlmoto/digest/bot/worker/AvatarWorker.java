@@ -79,9 +79,9 @@ public class AvatarWorker {
 	}
 
 	public String getAvatarLink(String username) {
-		String url = filter.checkLink(config.getTelegramShortUrl()) + username;
-
 		if (username != null) {
+			String url = filter.checkLink(config.getTelegramShortUrl()) + username;
+
 			Answer<String> resContent = rest.getRestResponse(url);
 			if (resContent.ok()) {
 				Answer<String> resAvatarLink = isolateAvatar(resContent.answer());

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
+import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.MessageHelper;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
@@ -31,6 +32,9 @@ class ShowKeyboardTest {
 	private BotDigestRepository botDigestRepository;
 
 	@Autowired
+	private BotHelper helper;
+
+	@Autowired
 	private BotSender sender;
 
 	@Autowired
@@ -46,6 +50,15 @@ class ShowKeyboardTest {
 		assertNull(keyboard.getMarkup(locale, config, 1, 0));
 		assertNotNull(keyboard.getMarkup(locale, config, 3, 2));
 		assertNull(keyboard.getMarkup(locale, config, 3, 1));
+	}
+
+	@Test
+	public void testHandleQuery() {
+		keyboard.handleQuery("Fake callbackId",
+			new MessageHelper().getUser("exlmoto"), 1, sender, helper, locale);
+
+		keyboard.handleQuery("Fake callbackId",
+			new MessageHelper().getUser("anyone"), 1, sender, helper, locale);
 	}
 
 	@Test

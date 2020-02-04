@@ -5,6 +5,8 @@ import com.pengrad.telegrambot.model.User;
 import org.junit.jupiter.api.Test;
 
 import ru.exlmoto.digest.bot.sender.BotSender;
+import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,6 +16,12 @@ class KeyboardPagerAbilityUnitTest {
 		@Override
 		protected Keyboard getKeyboard() {
 			return Keyboard.show;
+		}
+
+		@Override
+		protected boolean handleQuery(String callbackId, User user, int page,
+		                              BotSender sender, BotHelper helper, LocaleHelper locale) {
+			return false;
 		}
 
 		@Override

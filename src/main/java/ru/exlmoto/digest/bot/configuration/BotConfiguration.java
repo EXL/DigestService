@@ -25,6 +25,7 @@ public class BotConfiguration {
 	private int showPagePosts;
 	private int digestPagePosts;
 	private int digestPageDeep;
+	private long obsoleteDataDelay;
 
 	public String getToken() {
 		return token;
@@ -192,5 +193,13 @@ public class BotConfiguration {
 
 	public void setDigestPageDeep(int digestPageDeep) {
 		this.digestPageDeep = digestPageDeep;
+	}
+
+	public long getObsoleteDataDelay() {
+		return obsoleteDataDelay;
+	}
+
+	public void setObsoleteDataDelay(long obsoleteDataDelay) {
+		this.obsoleteDataDelay = obsoleteDataDelay;
 	}
 }

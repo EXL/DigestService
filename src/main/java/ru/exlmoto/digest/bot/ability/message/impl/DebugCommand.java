@@ -15,6 +15,7 @@ import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
+import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
@@ -28,6 +29,7 @@ public class DebugCommand extends MessageAdminAbility {
 	private final ExchangeService exchangeService;
 	private final MotofanWorker motofanWorker;
 	private final AvatarWorker avatarWorker;
+	private final DigestWorker digestWorker;
 	private final CallbackQueriesWorker callbackQueriesWorker;
 
 	public DebugCommand(BotTelegram telegram,
@@ -35,12 +37,14 @@ public class DebugCommand extends MessageAdminAbility {
 	                    ExchangeService exchangeService,
 	                    MotofanWorker motofanWorker,
 	                    AvatarWorker avatarWorker,
+	                    DigestWorker digestWorker,
 	                    CallbackQueriesWorker callbackQueriesWorker) {
 		this.telegram = telegram;
 		this.config = config;
 		this.exchangeService = exchangeService;
 		this.motofanWorker = motofanWorker;
 		this.avatarWorker = avatarWorker;
+		this.digestWorker = digestWorker;
 		this.callbackQueriesWorker = callbackQueriesWorker;
 	}
 
@@ -64,7 +68,7 @@ public class DebugCommand extends MessageAdminAbility {
 			switch (checkOption(arguments[1])) {
 				case VRates: { text = processRates(locale); break; }
 				case VPosts: { text = processPosts(locale); break; }
-				//case VShredder: { /* TODO: */ break; }
+				case VShredder: { text = processShredder(locale); break; }
 				case VAvatars: { text = processAvatars(locale); break; }
 				case VQueries: { text = processQueries(locale); break; }
 				case BLogUpdates: { text = toggleUpdates(locale); break; }
@@ -90,6 +94,11 @@ public class DebugCommand extends MessageAdminAbility {
 
 	private String processPosts(LocaleHelper locale) {
 		motofanWorker.workOnMotofanPosts();
+		return locale.i18n("bot.command.debug.data");
+	}
+
+	private String processShredder(LocaleHelper locale) {
+		digestWorker.obsoleteDataShredder();
 		return locale.i18n("bot.command.debug.data");
 	}
 

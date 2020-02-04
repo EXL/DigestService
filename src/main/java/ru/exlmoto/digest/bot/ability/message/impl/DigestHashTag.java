@@ -77,8 +77,10 @@ public class DigestHashTag extends MessageAbility {
 					digestWorker.sendDigestToSubscribers(sender, message, messageText);
 				}
 			} else {
-				sender.replyMessage(chatId, messageId, locale.i18n("bot.hashtag.digest.length.error"));
+				sender.replyMessage(chatId, messageId, locale.i18n("bot.hashtag.digest.error.length"));
 			}
+		} else {
+			sender.replyMessage(chatId, messageId, locale.i18n("bot.hashtag.digest.error.empty"));
 		}
 	}
 

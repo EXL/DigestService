@@ -4,58 +4,175 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
+import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.repository.BotDigestUserRepository;
 
-import static com.pengrad.telegrambot.model.MessageEntity.Type.bot_command;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(properties = "bot.silent=true")
 class BotHandlerTest {
 	@Autowired
 	private BotHandler handler;
 
+	@Autowired
+	private BotConfiguration config;
+
+	@MockBean
+	private BotDigestRepository botDigestRepository;
+
+	@MockBean
+	private BotDigestUserRepository botDigestUserRepository;
+
 	private final UpdateHelper update = new UpdateHelper();
 
 	@Test
-	public void testOnCommand() {
-		handler.onCommand(update.getMessageWithEntities("/start", bot_command, 0, "exlmoto"));
-		handler.onCommand(update.getMessageWithEntities("/hi", bot_command, 0, "exlmoto"));
-		handler.onCommand(update.getMessageWithEntities("/hi", bot_command, 0, "anyone"));
-		handler.onCommand(update.getMessageWithEntities("/unknown", bot_command, 0, "anyone"));
+	public void testOnCommand() throws InterruptedException {
+		handler.onCommand(update.getCommand("/start", "exlmoto"));
+		Thread.sleep(1000);
+		handler.onCommand(update.getCommand("/hi", "exlmoto"));
+		Thread.sleep(1000);
+		handler.onCommand(update.getCommand("/hi", "anyone"));
+		Thread.sleep(1000);
+		handler.onCommand(update.getCommand("/unknown", "anyone"));
+		Thread.sleep(1000);
+
+		handler.onCommand(update.getCommand("asdsa /start sdasd", "exlmoto"));
+		Thread.sleep(1000);
 	}
 
 	@Test
-	public void testClearCallbackQueriesMap() {
-		// TODO:
+	public void testOnHashTag() throws InterruptedException {
+		handler.onHashTag(update.getHashTag("#news test", 0, 5, "exlmoto"));
+		Thread.sleep(1000);
+		handler.onHashTag(update.getHashTag("#digest test", 0, 7, "exlmoto"));
+		Thread.sleep(1000);
+		handler.onHashTag(update.getHashTag("#news test", 0, 5, "anyone"));
+		Thread.sleep(1000);
+		handler.onHashTag(update.getHashTag("#digest test", 0, 7 ,"anyone"));
+		Thread.sleep(1000);
 	}
 
 	@Test
-	public void testOnHashTag() {
-		// TODO:
+	public void testOnHashTagEmpty() throws InterruptedException {
+		handler.onHashTag(update.getHashTag("#digest", 0, 7, "anyone"));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getHashTag("#news", 0, 5, "anyone"));
+		Thread.sleep(1000);
+
+		assertThrows(NullPointerException.class, () ->
+			handler.onHashTag(update.getSimpleMessage("#digest#news", "anyone")));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getTwoHashTags("#digest #news",
+			0, 7, 8, 5, "anyone"));
+		Thread.sleep(1000);
 	}
 
 	@Test
-	public void testOnCallbackQuery() {
-		// TODO:
+	public void testOnHashTagTwice() throws InterruptedException {
+		handler.onHashTag(update.getTwoHashTags("#digest #news test",
+			0, 7, 8, 5, "anyone"));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getTwoHashTags("#new #digest test",
+			0, 4, 5, 7, "anyone"));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getTwoHashTags("#news #digest test",
+			0, 5, 6, 7, "anyone"));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getTwoHashTags("#digest #digest test",
+			0, 7, 8, 7, "anyone"));
+		Thread.sleep(1000);
 	}
 
 	@Test
-	public void testOnKeyboard() {
-		// TODO:
+	public void testOnHashTagMiddle() throws InterruptedException {
+		handler.onHashTag(update.getHashTag("test #digest asd", 5, 7, "anyone"));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getHashTag("test #news asd", 5, 5, "anyone"));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getTwoHashTags("test #digest #news asd",
+			5, 7, 13, 5, "anyone"));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getTwoHashTags("test #news #digest asd",
+			5, 5, 11, 7, "anyone"));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getTwoHashTags("test #digest #digest asd",
+			5, 7, 13, 7, "anyone"));
+		Thread.sleep(1000);
+	}
+
+	@Test
+	public void testOnHashTagCastsAnsLinks() throws InterruptedException {
+		assertThrows(NullPointerException.class, () ->
+			handler.onHashTag(update.getSimpleMessage("https://exlmoto.ru/manual#digest", "anyone")));
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getHashTag("#digest Check nicknames: @exlmoto @ZorgeR",
+			0, 7, "exlmoto"));
+		Thread.sleep(1000);
+
+		handler.onHashTag(
+			update.getHashTag("#digest Check links: https://exlmoto.ru tg://t.me/exlmoto file:///usr/local/",
+				0, 7, "exlmoto")
+		);
+		Thread.sleep(1000);
+
+		handler.onHashTag(update.getHashTag("#digest Check nickname and links: @exlmoto и https://exlmoto.ru",
+			0, 7, "anyone"));
+		Thread.sleep(1000);
+	}
+
+	@Test
+	public void testOnCallbackQuery() throws InterruptedException {
+		handler.onCallbackQuery(update.getCallbackQueryUsername("show_page_1", "anyone"));
+		Thread.sleep(config.getCooldown() * 1000);
+		handler.onCallbackQuery(update.getCallbackQueryUsername("show_page_2", "exlmoto"));
+		Thread.sleep(config.getCooldown() * 1000);
+	}
+
+	@Test
+	public void testOnKeyboard() throws InterruptedException {
+		handler.onKeyboard(update.getCallbackQueryUsername("unknown", "anyone"));
+		Thread.sleep(config.getCooldown() * 1000);
+		handler.onKeyboard(update.getCallbackQueryUsername("digest", "anyone"));
+		Thread.sleep(config.getCooldown() * 1000);
+
+		handler.onKeyboard(update.getCallbackQueryUsername("digest_1", "anyone"));
+		Thread.sleep(config.getCooldown() * 1000);
+		handler.onKeyboard(update.getCallbackQueryUsername("chart_usd_rub", "anyone"));
+		Thread.sleep(config.getCooldown() * 1000);
 	}
 
 	@Test
 	public void testOnNewUsers() {
-		// TODO:
+		handler.onNewUsers(update.getNewUsers(1));
+		handler.onNewUsers(update.getNewUsers(2));
+		handler.onNewUsers(update.getNewUsers(3));
+		handler.onNewUsers(update.getNewUsers(4));
 	}
 
 	@Test
 	public void testOnLeftUser() {
-		// TODO:
+		handler.onLeftUser(update.getLeftUser());
 	}
 
 	@Test
 	public void testOnNewPhotos() {
-		// TODO:
+		handler.onNewPhotos(update.getNewPhotos(1));
+		handler.onNewPhotos(update.getNewPhotos(2));
+		handler.onNewPhotos(update.getNewPhotos(3));
+		handler.onNewPhotos(update.getNewPhotos(4));
 	}
 }

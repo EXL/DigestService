@@ -28,13 +28,15 @@ class LocaleHelperTest {
 
 	@Test
 	public void testUsernameAndRandomLocalizations() {
-		// TODO: Check username replacing
+		String stringWithUsername = locale.i18nU("bot.error.access", "Fake username");
+		assertThat(stringWithUsername).isInstanceOf(String.class).isNotEmpty();
+		System.out.println(stringWithUsername);
 
 		String randomString = locale.i18nR("bot.event.user.new");
 		assertThat(randomString).isInstanceOf(String.class).isNotEmpty();
 		System.out.println(randomString);
 
-		String randomStringWithUsername = locale.i18nRU("bot.event.user.new", "My Username");
+		String randomStringWithUsername = locale.i18nRU("bot.event.user.new", "Fake username");
 		assertThat(randomStringWithUsername).isInstanceOf(String.class).isNotEmpty();
 		System.out.println(randomStringWithUsername);
 	}

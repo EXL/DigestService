@@ -72,9 +72,9 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 		}
 
 		if (edit) {
-			sender.editMessage(chat.id(), messageId, text, getMarkup(locale, config, page, totalPages));
+			sender.editMarkdown(chat.id(), messageId, text, getMarkup(locale, config, page, totalPages));
 		} else {
-			sender.replyKeyboard(chat.id(), messageId, text, getMarkup(locale, config, page, totalPages));
+			sender.replyMarkdown(chat.id(), messageId, text, getMarkup(locale, config, page, totalPages));
 		}
 	}
 

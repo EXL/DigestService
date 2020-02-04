@@ -13,7 +13,7 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 public class HelloCommand extends MessageAdminAbility {
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
-		sender.replyMessage(message.chat().id(), message.messageId(),
+		sender.replySimple(message.chat().id(), message.messageId(),
 			locale.i18nRU("bot.command.hello", helper.getValidUsername(message.from())));
 	}
 }

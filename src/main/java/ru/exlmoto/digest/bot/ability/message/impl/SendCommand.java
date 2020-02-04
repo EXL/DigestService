@@ -45,13 +45,13 @@ public class SendCommand extends MessageAdminAbility {
 
 		Answer<String> commandRes = checkCommand(commandWithArgs, command, locale);
 		if (!commandRes.ok()) {
-			sender.replyMessage(origChatId, origMessageId, commandRes.error());
+			sender.replyMarkdown(origChatId, origMessageId, commandRes.error());
 			return;
 		}
 
 		Answer<Long> chatIdRes = getChatId(commandWithArgs[1], locale);
 		if (!chatIdRes.ok()) {
-			sender.replyMessage(origChatId, origMessageId, chatIdRes.error());
+			sender.replyMarkdown(origChatId, origMessageId, chatIdRes.error());
 			return;
 		}
 
@@ -61,7 +61,7 @@ public class SendCommand extends MessageAdminAbility {
 
 		switch (command) {
 			case send: {
-				sender.sendMessageToChat(chatId, text, origChatId, origMessageId);
+				sender.sendSimpleToChat(chatId, text, origChatId, origMessageId);
 				break;
 			}
 			case sticker: {
@@ -73,7 +73,7 @@ public class SendCommand extends MessageAdminAbility {
 				if (imageRes.ok()) {
 					sender.sendPhotoToChat(chatId, imageRes.answer(), origChatId, origMessageId);
 				} else {
-					sender.replyMessage(origChatId, origMessageId,
+					sender.replyMarkdown(origChatId, origMessageId,
 						String.format(locale.i18n("bot.error.send.image"), text, chatId, imageRes.error()));
 				}
 				break;

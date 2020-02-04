@@ -74,7 +74,7 @@ public class ChartKeyboard extends KeyboardSimpleAbility {
 			Chart chart = res.answer();
 			sender.replyPhoto(chatId, messageId, chart.getPath(), chart.getTitle());
 		} else {
-			sender.replyMessage(chatId, messageId, String.format(locale.i18n("bot.error.chart"), res.error()));
+			sender.replyMarkdown(chatId, messageId, String.format(locale.i18n("bot.error.chart"), res.error()));
 		}
 	}
 }

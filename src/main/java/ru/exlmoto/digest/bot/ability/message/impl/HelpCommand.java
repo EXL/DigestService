@@ -17,6 +17,6 @@ public class HelpCommand extends MessageAbility {
 		if (helper.isUserAdmin(message.from().username())) {
 			answer += "\n" + locale.i18n("bot.command.help.admin");
 		}
-		sender.replyMessage(message.chat().id(), message.messageId(), answer);
+		sender.replyMarkdown(message.chat().id(), message.messageId(), answer);
 	}
 }

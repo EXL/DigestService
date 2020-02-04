@@ -17,16 +17,17 @@ class BotSenderTest {
 
 	@Test
 	public void testBotSenderMethods() {
-		sender.replyMessage(0L, 0, "Fake text");
+		sender.replySimple(0L, 0, "Fake text");
+		sender.replyMarkdown(0L, 0, "*Fake text*");
 		sender.replySticker(0L, 0, "Fake stickerId");
 		sender.replyPhoto(0L, 0, "Fake uri", "Fake title");
 		System.out.println("===");
 
-		sender.sendHtmlMessage(0L, "Fake html");
+		sender.sendHtml(0L, "<b>Fake text</b>");
 		sender.sendCallbackQueryAnswer("0", "Fake callbackQueryAnswer");
 		System.out.println("===");
 
-		sender.sendMessageToChat(0L, "Fake text", 0L, 0);
+		sender.sendSimpleToChat(0L, "Fake text", 0L, 0);
 		sender.sendStickerToChat(0L, "Fake stickerId", 0L, 0);
 		sender.sendPhotoToChat(0L, "Fake uri", 0L, 0);
 		System.out.println("===");
@@ -37,14 +38,14 @@ class BotSenderTest {
 		buttons[1][1] = new InlineKeyboardButton("Button 3");
 		InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(buttons);
 
-		sender.replyKeyboard(0L, 0, "Fake text", inlineKeyboardMarkup);
-		sender.editMessage(0L, 0, "Fake text", inlineKeyboardMarkup);
-		sender.editMessage(0L, 0, "Fake text", null);
+		sender.replyMarkdown(0L, 0, "*Fake text*", inlineKeyboardMarkup);
+		sender.editMarkdown(0L, 0, "*Fake text*", inlineKeyboardMarkup);
+		sender.editMarkdown(0L, 0, "*Fake text*", null);
 		System.out.println("===");
 
-		sender.replyHtmlMessage(0L, 0, "Fake text", inlineKeyboardMarkup);
-		sender.editHtmlMessage(0L, 0, "Fake text", inlineKeyboardMarkup);
-		sender.editHtmlMessage(0L, 0, "Fake text", null);
+		sender.replyHtml(0L, 0, "<b>Fake text</b>", inlineKeyboardMarkup);
+		sender.editHtml(0L, 0, "<b>Fake text</b>", inlineKeyboardMarkup);
+		sender.editHtml(0L, 0, "<b>Fake text</b>", null);
 		System.out.println("===");
 	}
 

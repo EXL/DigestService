@@ -25,7 +25,7 @@ public class HostIpCommand extends MessageAdminAbility {
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
 		Answer<String> res = rest.getRestResponse(config.getUrlHostIp());
-		sender.replyMessage(message.chat().id(), message.messageId(),
+		sender.replyMarkdown(message.chat().id(), message.messageId(),
 			(res.ok()) ?
 				String.format(locale.i18n("bot.command.hostip"), res.answer()) :
 				String.format(locale.i18n("bot.error.hostip"), res.error())

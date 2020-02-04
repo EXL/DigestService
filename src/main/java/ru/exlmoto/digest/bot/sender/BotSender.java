@@ -46,24 +46,28 @@ public class BotSender {
 		this.locale = locale;
 	}
 
-	public void replyMessage(long chatId, int replyId, String text) {
+	public void replySimple(long chatId, int replyId, String text) {
+		sendMessage(chatId, replyId, text, null, null);
+	}
+
+	public void replyMarkdown(long chatId, int replyId, String text) {
 		sendMessage(chatId, replyId, text, Markdown, null);
 	}
 
-	public void replyKeyboard(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
+	public void replyMarkdown(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
 		sendMessage(chatId, replyId, text, Markdown, keyboard);
 	}
 
-	public void replyHtmlMessage(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
+	public void replyHtml(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
 		sendMessage(chatId, replyId, text, HTML, keyboard);
 	}
 
-	public void sendHtmlMessage(long chatId, String text) {
+	public void sendHtml(long chatId, String text) {
 		sendMessage(chatId, null, text, HTML, null);
 	}
 
-	public void sendMessageToChat(long chatId, String text, long origChatId, int origReplyId) {
-		Answer<String> res = executeRequestLog(new SendMessage(chatId, shrinkText(text)).parseMode(Markdown));
+	public void sendSimpleToChat(long chatId, String text, long origChatId, int origReplyId) {
+		Answer<String> res = executeRequestLog(new SendMessage(chatId, shrinkText(text)));
 		if (!res.ok()) {
 			sendError(origChatId, origReplyId,
 				shrinkText(String.format(locale.i18n("bot.error.send.message"), text, chatId, res.error())));
@@ -71,9 +75,11 @@ public class BotSender {
 	}
 
 	private void sendMessage(long chatId, Integer replyId, String text, ParseMode mode, InlineKeyboardMarkup keyboard) {
-		SendMessage sendMessage = new SendMessage(chatId, shrinkText(text)).parseMode(mode)
-			.disableWebPagePreview(downloadFile)
+		SendMessage sendMessage = new SendMessage(chatId, shrinkText(text)).disableWebPagePreview(downloadFile)
 			.disableNotification(config.isDisableNotifications());
+		if (mode != null) {
+			sendMessage.parseMode(mode);
+		}
 		if (replyId != null) {
 			sendMessage.replyToMessageId(replyId);
 		}
@@ -83,11 +89,11 @@ public class BotSender {
 		executeRequestLog(sendMessage);
 	}
 
-	public void editMessage(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
+	public void editMarkdown(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
 		editMessage(chatId, messageId, text, Markdown, keyboard);
 	}
 
-	public void editHtmlMessage(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
+	public void editHtml(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
 		editMessage(chatId, messageId, text, HTML, keyboard);
 	}
 
@@ -189,6 +195,6 @@ public class BotSender {
 
 	private void sendError(long chatId, int replyId, String error) {
 		log.error(error);
-		replyMessage(chatId, replyId, error);
+		replyMarkdown(chatId, replyId, error);
 	}
 }

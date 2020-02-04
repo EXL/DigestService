@@ -54,6 +54,6 @@ public class RateKeyboard extends KeyboardSimpleAbility {
 		sender.sendCallbackQueryAnswer(callback.id(),
 			locale.i18n("bot.inline.selected") + " " + service.buttonLabel(key));
 
-		sender.editMessage(chatId, messageId, service.markdownReport(key), markup);
+		sender.editMarkdown(chatId, messageId, service.markdownReport(key), markup);
 	}
 }

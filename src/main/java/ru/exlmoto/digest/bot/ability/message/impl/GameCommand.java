@@ -29,7 +29,7 @@ public class GameCommand extends MessageAbility {
 			sender.replyPhoto(message.chat().id(), message.messageId(), res.answer(),
 				locale.i18n("bot.command.game"));
 		} else {
-			sender.replyMessage(message.chat().id(), message.messageId(),
+			sender.replyMarkdown(message.chat().id(), message.messageId(),
 				String.format(locale.i18n("bot.error.game"), res.error()));
 		}
 	}

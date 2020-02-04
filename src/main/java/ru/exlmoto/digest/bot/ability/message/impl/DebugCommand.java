@@ -76,7 +76,7 @@ public class DebugCommand extends MessageAdminAbility {
 				case BSilent: { text = toggleSilent(locale); break; }
 			}
 		}
-		sender.replyMessage(message.chat().id(), message.messageId(), text);
+		sender.replyMarkdown(message.chat().id(), message.messageId(), text);
 	}
 
 	private Option checkOption(String argument) {

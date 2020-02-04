@@ -81,7 +81,7 @@ public class DigestWorker {
 				long subscription = subscriber.getSubscription();
 				log.info(String.format("=> Send Digest Message to chat '%s', id: '%d', subscribers: '%d'.",
 					subscriber.getName(), subscription, subscribers.size()));
-				sender.sendHtmlMessage(subscription, htmlGenerator.generateDigestMessageHtmlReport(message, digest));
+				sender.sendHtml(subscription, htmlGenerator.generateDigestMessageHtmlReport(message, digest));
 			})).start();
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Digest subscribe object from database.", dae);

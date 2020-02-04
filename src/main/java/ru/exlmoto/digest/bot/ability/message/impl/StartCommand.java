@@ -13,6 +13,6 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 public class StartCommand extends MessageAbility {
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
-		sender.replyMessage(message.chat().id(), message.messageId(), locale.i18n("bot.command.start"));
+		sender.replySimple(message.chat().id(), message.messageId(), locale.i18n("bot.command.start"));
 	}
 }

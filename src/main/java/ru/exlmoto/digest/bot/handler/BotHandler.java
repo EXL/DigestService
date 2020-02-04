@@ -128,7 +128,7 @@ public class BotHandler {
 			String botAnswer = (isBotHere) ?
 				locale.i18n("bot.event.added") :
 				locale.i18nRU("bot.event.user.new", usernames);
-			sender.replyMessage(message.chat().id(), message.messageId(), botAnswer);
+			sender.replySimple(message.chat().id(), message.messageId(), botAnswer);
 		}
 	}
 
@@ -136,13 +136,13 @@ public class BotHandler {
 		if (config.isShowGreetings()) {
 			String username = helper.getValidUsername(message.leftChatMember());
 			if (!username.equals(telegram.getUsername())) {
-				sender.replyMessage(message.chat().id(), message.messageId(),
+				sender.replySimple(message.chat().id(), message.messageId(),
 					locale.i18nRU("bot.event.user.left", username));
 			}
 		}
 	}
 
 	public void onNewPhotos(Message message) {
-		sender.replyMessage(message.chat().id(), message.messageId(), locale.i18n("bot.event.photo.change"));
+		sender.replySimple(message.chat().id(), message.messageId(), locale.i18n("bot.event.photo.change"));
 	}
 }

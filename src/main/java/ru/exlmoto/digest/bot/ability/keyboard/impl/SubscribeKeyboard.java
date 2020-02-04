@@ -106,9 +106,9 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		String answer = res.ok() ? res.answer() : res.error();
 		InlineKeyboardMarkup inlineKeyboardMarkup = res.ok() ? markup : null;
 		if (edit) {
-			sender.editMessage(chatId, messageId, answer, inlineKeyboardMarkup);
+			sender.editMarkdown(chatId, messageId, answer, inlineKeyboardMarkup);
 		} else {
-			sender.replyKeyboard(chatId, messageId, answer, inlineKeyboardMarkup);
+			sender.replyMarkdown(chatId, messageId, answer, inlineKeyboardMarkup);
 		}
 	}
 

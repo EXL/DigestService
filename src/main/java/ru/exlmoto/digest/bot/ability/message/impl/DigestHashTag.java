@@ -57,7 +57,7 @@ public class DigestHashTag extends MessageAbility {
 		String messageText = isolateMessageText(message.text());
 		if (!messageText.isEmpty()) {
 			if (messageText.length() <= config.getMaxDigestLength()) {
-				sender.replyMessage(chatId, messageId,
+				sender.replySimple(chatId, messageId,
 					locale.i18nRU("bot.hashtag.digest.ok", helper.getValidUsername(user)));
 
 				try {
@@ -77,10 +77,10 @@ public class DigestHashTag extends MessageAbility {
 					digestWorker.sendDigestToSubscribers(sender, message, messageText);
 				}
 			} else {
-				sender.replyMessage(chatId, messageId, locale.i18n("bot.hashtag.digest.error.length"));
+				sender.replySimple(chatId, messageId, locale.i18n("bot.hashtag.digest.error.length"));
 			}
 		} else {
-			sender.replyMessage(chatId, messageId, locale.i18n("bot.hashtag.digest.error.empty"));
+			sender.replySimple(chatId, messageId, locale.i18n("bot.hashtag.digest.error.empty"));
 		}
 	}
 

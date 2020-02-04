@@ -12,7 +12,7 @@ public abstract class MessageAdminAbility extends MessageAbility {
 		if (helper.isUserAdmin(message.from().username())) {
 			execute(helper, sender, locale, message);
 		} else {
-			sender.replyMessage(message.chat().id(), message.messageId(),
+			sender.replySimple(message.chat().id(), message.messageId(),
 				locale.i18nU("bot.error.access", helper.getValidUsername(message.from())));
 		}
 	}

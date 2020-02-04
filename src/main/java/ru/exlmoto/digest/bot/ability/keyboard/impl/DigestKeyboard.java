@@ -110,9 +110,9 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 			text += stringBuilder.toString();
 		}
 		if (edit) {
-			sender.editHtmlMessage(chatId, messageId, text, getMarkup(locale, config, page, totalPages));
+			sender.editHtml(chatId, messageId, text, getMarkup(locale, config, page, totalPages));
 		} else {
-			sender.replyHtmlMessage(chatId, messageId, text, getMarkup(locale, config, page, totalPages));
+			sender.replyHtml(chatId, messageId, text, getMarkup(locale, config, page, totalPages));
 		}
 	}
 }

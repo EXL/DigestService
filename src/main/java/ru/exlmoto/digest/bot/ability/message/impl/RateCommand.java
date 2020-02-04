@@ -24,7 +24,7 @@ public class RateCommand extends MessageAbility {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
-		sender.replyKeyboard(message.chat().id(), message.messageId(),
+		sender.replyMarkdown(message.chat().id(), message.messageId(),
 			service.markdownReport(ExchangeKey.bank_ru.name()), keyboard.getMarkup());
 	}
 }

@@ -53,7 +53,7 @@ public class MotofanWorker {
 			long chatId = subscriber.getSubscription();
 			log.info(String.format("=> Send Motofan Post to chat '%d', posts: '%d', subscribers: '%d'.",
 				chatId, motofanPosts.size(), subscribers.size()));
-			sender.sendHtmlMessage(chatId, post);
+			sender.sendHtml(chatId, post);
 			try {
 				Thread.sleep(config.getMessageDelay() * 1000);
 			} catch (InterruptedException ie) {

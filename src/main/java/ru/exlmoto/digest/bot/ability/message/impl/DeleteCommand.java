@@ -45,6 +45,6 @@ public class DeleteCommand extends MessageAdminAbility {
 			}
 		}
 
-		sender.replyMessage(message.chat().id(), message.messageId(), text);
+		sender.replyMarkdown(message.chat().id(), message.messageId(), text);
 	}
 }

@@ -60,14 +60,18 @@ public class BotService implements UpdatesListener {
 	}
 
 	public void processUpdate(Update update) {
-		if (config.isLogUpdates()) {
-			log.info(update.toString());
-		}
-		Message message = checkForward(checkMessage(update));
-		if (message != null) {
-			processMessage(message);
-		} else if (checkCallbackQuery(update)) {
-			handler.onCallbackQuery(update.callbackQuery());
+		try {
+			if (config.isLogUpdates()) {
+				log.info(update.toString());
+			}
+			Message message = checkForward(checkMessage(update));
+			if (message != null) {
+				processMessage(message);
+			} else if (checkCallbackQuery(update)) {
+				handler.onCallbackQuery(update.callbackQuery());
+			}
+		} catch (Exception e) {
+			log.error("Unexpected exception on Bot Service.", e);
 		}
 	}
 

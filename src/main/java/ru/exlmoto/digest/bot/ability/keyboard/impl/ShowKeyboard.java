@@ -15,6 +15,7 @@ import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.KeyboardPagerAbility;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
+import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
@@ -36,6 +37,16 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 	@Override
 	protected Keyboard getKeyboard() {
 		return Keyboard.show;
+	}
+
+	@Override
+	protected boolean handleQuery(String callbackId, User user, int page,
+	                              BotSender sender, BotHelper helper, LocaleHelper locale) {
+		if (helper.isUserAdmin(user.username())) {
+			return sendCallbackQueryPage(callbackId, locale, page, sender);
+		}
+		sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.show.admin"));
+		return false;
 	}
 
 	@Override

@@ -49,6 +49,12 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 	}
 
 	@Override
+	protected boolean handleQuery(String callbackId, User user, int page,
+	                              BotSender sender, BotHelper helper, LocaleHelper locale) {
+		return sendCallbackQueryPage(callbackId, locale, page, sender);
+	}
+
+	@Override
 	public void handle(long chatId, int messageId, User user, int page, boolean edit, BotSender sender) {
 		int NEW_MARKERS_COUNT = 3;
 		String username = helper.getValidUsername(user);

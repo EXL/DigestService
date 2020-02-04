@@ -1,32 +1,65 @@
 package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
+import org.springframework.data.domain.Pageable;
+
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
-import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.bot.util.MessageHelper;
+import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest(properties = "bot.silent=true")
 class DigestKeyboardTest {
 	@Autowired
 	private DigestKeyboard keyboard;
 
-	@Autowired
-	private BotHelper helper;
+	@MockBean
+	private BotDigestRepository botDigestRepository;
 
 	@Autowired
 	private BotSender sender;
 
 	@Autowired
+	private BotConfiguration config;
+
+	@Autowired
 	private LocaleHelper locale;
 
 	@Test
-	public void testGetMarkup() {
-//		assertNull(keyboard.getMarkup());
+	public void testGetKeyboard() {
+		assertNotNull(keyboard.getMarkup(locale, config, 2, 2));
+		assertNull(keyboard.getMarkup(locale, config, 1, 1));
+		assertNull(keyboard.getMarkup(locale, config, 1, 0));
+		assertNotNull(keyboard.getMarkup(locale, config, 3, 2));
+		assertNull(keyboard.getMarkup(locale, config, 3, 1));
 	}
 
-	// TODO:!
+	@Test
+	public void testHandle() {
+		assertThrows(IllegalArgumentException.class, () -> keyboard.handle(0L, 0,
+			new MessageHelper().getUser("exlmoto"), 0, true, sender));
+
+		keyboard.handle(0L, 0,
+			new MessageHelper().getUser("exlmoto"), 1, true, sender);
+
+		doThrow(new InvalidDataAccessResourceUsageException("Test!"))
+			.when(botDigestRepository).findBotDigestEntitiesByChat(any(Pageable.class), anyLong());
+
+		keyboard.handle(0L, 0,
+			new MessageHelper().getUser("exlmoto"), 2, true, sender);
+	}
 }

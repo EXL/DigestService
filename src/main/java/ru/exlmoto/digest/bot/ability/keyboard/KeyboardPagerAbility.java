@@ -43,17 +43,23 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 	 * Source: https://github.com/EXL/DigestBot/blob/master/Stuff/DigestHistorySite/index.php#L50
 	 */
 	public InlineKeyboardMarkup getMarkup(LocaleHelper locale, BotConfiguration config, int page, int totalPages) {
-		int paginPP = config.getDigestPageDeep();
 		if (totalPages <= 1) {
 			return null;
 		}
 
-		int start = page - ((paginPP / 2) + 1);
+		int current = page;
+		if (current > totalPages) {
+			current = totalPages;
+		}
+
+		int paginPP = config.getDigestPageDeep();
+
+		int start = current - ((paginPP / 2) + 1);
 		if (start < 0) {
 			start = 0;
 		}
 
-		int end = page + (paginPP / 2);
+		int end = current + (paginPP / 2);
 		if (end > totalPages) {
 			end = totalPages;
 		}
@@ -63,20 +69,20 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.pager.left.first"))
 				.callbackData(callbackPageData(1)));
 		}
-		if (page > 1) {
+		if (current > 1) {
 			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.pager.left"))
-				.callbackData(callbackPageData(page - 1)));
+				.callbackData(callbackPageData(current - 1)));
 		}
 		for (int i = start; i < end; i++) {
 			keyboardRow.add(new InlineKeyboardButton(
-				(i == page - 1) ?
+				(i == current - 1) ?
 					"|" + (i + 1) + "|" :
 					String.valueOf(i + 1)
 			).callbackData(callbackPageData(i + 1)));
 		}
-		if (page < totalPages) {
+		if (current < totalPages) {
 			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.pager.right"))
-				.callbackData(callbackPageData(page + 1)));
+				.callbackData(callbackPageData(current + 1)));
 		}
 		if (end < totalPages) {
 			keyboardRow.add(new InlineKeyboardButton(locale.i18n("bot.pager.right.last"))
@@ -85,7 +91,7 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 		return new InlineKeyboardMarkup((InlineKeyboardButton[]) ArrayUtils.toArray(keyboardRow));
 	}
 
-	private String callbackPageData(int page) {
+	protected String callbackPageData(int page) {
 		return getKeyboard().withName() + Keyboard.PAGE + page;
 	}
 
@@ -96,7 +102,7 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 		} catch (NumberFormatException nfe) {
 			log.warn(String.format("Cannot parse inline page key: '%s' as Integer.", key), nfe);
 		}
-		return page;
+		return Math.max(page, 1);
 	}
 
 	protected abstract Keyboard getKeyboard();

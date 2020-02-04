@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.springframework.util.NumberUtils;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.KeyboardPagerAbility;
@@ -44,16 +43,17 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 		String text = locale.i18n("bot.error.show.empty");
 		int totalPages = 0;
 
+		Page<BotDigestEntity> digestEntities = null;
 		try {
-			Page<BotDigestEntity> digestEntities = digestRepository.findAll(PageRequest.of(page - 1,
+			digestEntities = digestRepository.findAll(PageRequest.of(page - 1,
 				config.getShowPagePosts(), Sort.by(Sort.Order.desc("id"))));
-			if (!digestEntities.isEmpty()) {
-				totalPages = digestEntities.getTotalPages();
-				text = generateShowReport(digestEntities, locale, totalPages, page);
-			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get BotDigestEntity objects from database.", dae);
 			text = String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage());
+		}
+		if (digestEntities != null && !digestEntities.isEmpty()) {
+			totalPages = digestEntities.getTotalPages();
+			text = generateShowReport(digestEntities, locale, totalPages, page);
 		}
 
 		if (edit) {

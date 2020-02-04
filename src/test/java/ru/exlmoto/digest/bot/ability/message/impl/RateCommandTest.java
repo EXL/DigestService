@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.bot.util.MessageHelper;
+import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @SpringBootTest(properties = "bot.silent=true")
@@ -24,9 +24,10 @@ class RateCommandTest {
 	@Autowired
 	private LocaleHelper locale;
 
+	private final UpdateHelper update = new UpdateHelper();
+
 	@Test
 	public void testRateCommand() {
-		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/rates", "anyone"));
+		command.execute(helper, sender, locale, update.getSimpleMessage("/rates", "anyone"));
 	}
 }

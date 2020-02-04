@@ -1,14 +1,15 @@
 package ru.exlmoto.digest.bot.util;
 
-import com.pengrad.telegrambot.model.Chat;
-import com.pengrad.telegrambot.model.Chat.Type;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.MessageEntity;
 import com.pengrad.telegrambot.model.User;
+import com.pengrad.telegrambot.model.Chat;
+import com.pengrad.telegrambot.model.CallbackQuery;
+import com.pengrad.telegrambot.model.Chat.Type;
 
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
-public class MessageHelper {
+public class UpdateHelper {
 	public Message getMessageWithEntities(String entityText, MessageEntity.Type type, int offset, String username) {
 		Message message = new Message();
 		setField(message, "text", entityText);
@@ -53,5 +54,24 @@ public class MessageHelper {
 		setField(chat, "type", Type.supergroup);
 		setField(chat, "title", "Chat Title");
 		return chat;
+	}
+
+	public CallbackQuery getCallbackQuery(String data) {
+		CallbackQuery callbackQuery = new CallbackQuery();
+		setField(callbackQuery, "message", new UpdateHelper().getSimpleMessage("test", "anyone"));
+		setField(callbackQuery, "data", data);
+		return callbackQuery;
+	}
+
+	public CallbackQuery getCallbackQueryUsername(String data, String username) {
+		CallbackQuery callbackQuery = new CallbackQuery();
+		setField(callbackQuery, "message", new UpdateHelper().getSimpleMessage("test", "anyone"));
+		setField(callbackQuery, "data", data);
+
+		User user = new User();
+		setField(user, "username", username);
+		setField(callbackQuery, "from", user);
+
+		return callbackQuery;
 	}
 }

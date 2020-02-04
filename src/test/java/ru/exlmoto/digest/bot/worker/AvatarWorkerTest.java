@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ru.exlmoto.digest.bot.util.MessageHelper;
+import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.file.ResourceHelper;
 import ru.exlmoto.digest.bot.worker.AvatarWorker.Extension;
@@ -22,13 +22,15 @@ class AvatarWorkerTest {
 
 	@Autowired
 	private ResourceHelper resourceHelper;
+	
+	private final UpdateHelper update = new UpdateHelper();
 
 	@Test
 	public void testGetAvatarLink() {
-		String avatar = worker.getAvatarLink(new MessageHelper().getUser("exlmoto"));
+		String avatar = worker.getAvatarLink(update.getUser("exlmoto"));
 		assertTrue(Extension.checkImageExtension(avatar));
 
-		avatar = worker.getAvatarLink(new MessageHelper().getUser("unknown_username_321003131"));
+		avatar = worker.getAvatarLink(update.getUser("unknown_username_321003131"));
 		assertFalse(Extension.checkImageExtension(avatar));
 	}
 

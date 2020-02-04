@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.bot.util.MessageHelper;
+import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
@@ -35,19 +35,14 @@ class DigestHashTagTest {
 	@Autowired
 	private LocaleHelper locale;
 
+	private final UpdateHelper update = new UpdateHelper();
+
 	@Test
 	public void testDigestHashTag() {
-		hashTag.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("#digest Test!", "anyone"));
-
-		hashTag.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("#news Test!", "anyone"));
-
-		hashTag.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("#digest  ", "anyone"));
-
-		hashTag.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("#news", "anyone"));
+		hashTag.execute(helper, sender, locale, update.getSimpleMessage("#digest Test!", "anyone"));
+		hashTag.execute(helper, sender, locale, update.getSimpleMessage("#news Test!", "anyone"));
+		hashTag.execute(helper, sender, locale, update.getSimpleMessage("#digest  ", "anyone"));
+		hashTag.execute(helper, sender, locale, update.getSimpleMessage("#news", "anyone"));
 	}
 
 	@Test
@@ -56,9 +51,7 @@ class DigestHashTagTest {
 		for (int i = 0; i < 100; i++) {
 			longMessage.append(" ").append("check");
 		}
-
-		hashTag.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage(longMessage.toString(), "anyone"));
+		hashTag.execute(helper, sender, locale, update.getSimpleMessage(longMessage.toString(), "anyone"));
 	}
 
 	@Test

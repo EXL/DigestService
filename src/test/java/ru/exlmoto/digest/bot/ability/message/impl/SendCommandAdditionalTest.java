@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.bot.util.MessageHelper;
+import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @SpringBootTest(properties = { "bot.silent=false", "image.download-file=true" })
@@ -23,6 +23,8 @@ class SendCommandAdditionalTest {
 
 	@Autowired
 	private LocaleHelper locale;
+
+	private final UpdateHelper update = new UpdateHelper();
 
 	@Test
 	public void testOnWrongCommand() {
@@ -47,6 +49,6 @@ class SendCommandAdditionalTest {
 	}
 
 	private void onCmd(String message) {
-		command.execute(helper, sender, locale, new MessageHelper().getSimpleMessage(message, "exlmoto"));
+		command.execute(helper, sender, locale, update.getSimpleMessage(message, "exlmoto"));
 	}
 }

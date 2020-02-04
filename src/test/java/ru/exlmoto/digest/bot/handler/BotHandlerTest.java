@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ru.exlmoto.digest.bot.util.MessageHelper;
+import ru.exlmoto.digest.bot.util.UpdateHelper;
 
 import static com.pengrad.telegrambot.model.MessageEntity.Type.bot_command;
 
@@ -14,16 +14,14 @@ class BotHandlerTest {
 	@Autowired
 	private BotHandler handler;
 
+	private final UpdateHelper update = new UpdateHelper();
+
 	@Test
 	public void testOnCommand() {
-		handler.onCommand(new MessageHelper().getMessageWithEntities(
-			"/start", bot_command, 0, "exlmoto"));
-		handler.onCommand(new MessageHelper().getMessageWithEntities(
-			"/hi", bot_command, 0, "exlmoto"));
-		handler.onCommand(new MessageHelper().getMessageWithEntities(
-			"/hi", bot_command, 0, "anyone"));
-		handler.onCommand(new MessageHelper().getMessageWithEntities(
-			"/unknown", bot_command, 0, "anyone"));
+		handler.onCommand(update.getMessageWithEntities("/start", bot_command, 0, "exlmoto"));
+		handler.onCommand(update.getMessageWithEntities("/hi", bot_command, 0, "exlmoto"));
+		handler.onCommand(update.getMessageWithEntities("/hi", bot_command, 0, "anyone"));
+		handler.onCommand(update.getMessageWithEntities("/unknown", bot_command, 0, "anyone"));
 	}
 
 	@Test

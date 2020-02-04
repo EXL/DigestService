@@ -10,6 +10,8 @@ class MotofanPostUnitTest {
 	private final MotofanPost motofanPostSecond = new MotofanPost();
 	private final MotofanPost motofanPostThird = new MotofanPost();
 
+	private final MotofanPostHelper post = new MotofanPostHelper();
+
 	@Test
 	public void testMotofanPost() {
 		assertFalse(motofanPostFirst.isValid());
@@ -30,6 +32,6 @@ class MotofanPostUnitTest {
 		motofanPostThird.setTopic(1L);
 		assertTrue(motofanPostThird.isValid());
 
-		assertTrue(new MotofanPostHelper().getRandomMotofanPost(1L).isValid());
+		assertTrue(post.getRandomMotofanPost(1L).isValid());
 	}
 }

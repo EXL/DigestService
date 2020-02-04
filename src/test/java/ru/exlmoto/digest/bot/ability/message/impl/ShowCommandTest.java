@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.bot.util.MessageHelper;
+import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -34,15 +34,15 @@ class ShowCommandTest {
 	@Autowired
 	private LocaleHelper locale;
 
+	private final UpdateHelper update = new UpdateHelper();
+
 	@Test
 	public void testShowCommand() {
-		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/show", "exlmoto"));
+		command.execute(helper, sender, locale, update.getSimpleMessage("/show", "exlmoto"));
 
 		doThrow(new InvalidDataAccessResourceUsageException("Test!"))
 			.when(botDigestRepository).findAll(any(Pageable.class));
 
-		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/show", "exlmoto"));
+		command.execute(helper, sender, locale, update.getSimpleMessage("/show", "exlmoto"));
 	}
 }

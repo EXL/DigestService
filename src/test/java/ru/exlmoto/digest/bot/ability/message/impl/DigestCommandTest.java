@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.bot.util.MessageHelper;
+import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -35,15 +35,15 @@ class DigestCommandTest {
 	@Autowired
 	private LocaleHelper locale;
 
+	private final UpdateHelper update = new UpdateHelper();
+
 	@Test
 	public void testDigestCommand() {
-		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/digest", "anyone"));
+		command.execute(helper, sender, locale, update.getSimpleMessage("/digest", "anyone"));
 
 		doThrow(new InvalidDataAccessResourceUsageException("Test!"))
 			.when(botDigestRepository).findBotDigestEntitiesByChat(any(Pageable.class), anyLong());
 
-		command.execute(helper, sender, locale,
-			new MessageHelper().getSimpleMessage("/digest", "anyone"));
+		command.execute(helper, sender, locale, update.getSimpleMessage("/digest", "anyone"));
 	}
 }

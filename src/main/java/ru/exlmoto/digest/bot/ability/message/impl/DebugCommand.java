@@ -13,6 +13,7 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
@@ -26,17 +27,20 @@ public class DebugCommand extends MessageAdminAbility {
 	private final BotConfiguration config;
 	private final ExchangeService exchangeService;
 	private final MotofanWorker motofanWorker;
+	private final AvatarWorker avatarWorker;
 	private final CallbackQueriesWorker callbackQueriesWorker;
 
 	public DebugCommand(BotTelegram telegram,
 	                    BotConfiguration config,
 	                    ExchangeService exchangeService,
 	                    MotofanWorker motofanWorker,
+	                    AvatarWorker avatarWorker,
 	                    CallbackQueriesWorker callbackQueriesWorker) {
 		this.telegram = telegram;
 		this.config = config;
 		this.exchangeService = exchangeService;
 		this.motofanWorker = motofanWorker;
+		this.avatarWorker = avatarWorker;
 		this.callbackQueriesWorker = callbackQueriesWorker;
 	}
 
@@ -61,7 +65,7 @@ public class DebugCommand extends MessageAdminAbility {
 				case VRates: { text = processRates(locale); break; }
 				case VPosts: { text = processPosts(locale); break; }
 				//case VShredder: { /* TODO: */ break; }
-				//case VAvatars: { /* TODO: */ break; }
+				case VAvatars: { text = processAvatars(locale); break; }
 				case VQueries: { text = processQueries(locale); break; }
 				case BLogUpdates: { text = toggleUpdates(locale); break; }
 				case BGreetings: { text = toggleGreetings(locale); break; }
@@ -89,6 +93,10 @@ public class DebugCommand extends MessageAdminAbility {
 		return locale.i18n("bot.command.debug.data");
 	}
 
+	private String processAvatars(LocaleHelper locale) {
+		avatarWorker.updateUserAvatars();
+		return locale.i18n("bot.command.debug.data");
+	}
 
 	private String processQueries(LocaleHelper locale) {
 		callbackQueriesWorker.clearCallbackQueriesMap();

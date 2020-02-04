@@ -52,8 +52,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 	}
 
 	@Override
-	protected boolean handleQuery(String callbackId, User user, int page,
-	                              BotSender sender, BotHelper helper, LocaleHelper locale) {
+	protected boolean handleQuery(String callbackId, User user, int page, BotSender sender, BotHelper helper) {
 		return sendCallbackQueryPage(callbackId, locale, page, sender);
 	}
 

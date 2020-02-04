@@ -33,7 +33,7 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 
 		int page = getPageFromArgument(Keyboard.chopKeyboardNameLast(callback.data()));
 
-		if (handleQuery(callback.id(), user, page, sender, helper, locale)) {
+		if (handleQuery(callback.id(), user, page, sender, helper)) {
 			handle(messageId, message.chat(), callback.from(), page, true, sender);
 		}
 	}
@@ -112,8 +112,7 @@ public abstract class KeyboardPagerAbility extends KeyboardAbility {
 
 	protected abstract Keyboard getKeyboard();
 
-	protected abstract boolean handleQuery(String callbackId, User user, int page,
-	                                       BotSender sender, BotHelper helper, LocaleHelper locale);
+	protected abstract boolean handleQuery(String callbackId, User user, int page, BotSender sender, BotHelper helper);
 
 	public abstract void handle(int messageId, Chat chat, User user, int page, boolean edit, BotSender sender);
 }

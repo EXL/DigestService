@@ -41,8 +41,7 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 	}
 
 	@Override
-	protected boolean handleQuery(String callbackId, User user, int page,
-	                              BotSender sender, BotHelper helper, LocaleHelper locale) {
+	protected boolean handleQuery(String callbackId, User user, int page, BotSender sender, BotHelper helper) {
 		if (helper.isUserAdmin(user.username())) {
 			return sendCallbackQueryPage(callbackId, locale, page, sender);
 		}

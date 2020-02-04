@@ -23,10 +23,7 @@ public class MessageHelper {
 		setField(message, "entities", entities);
 
 		setField(message, "from", getUser(username));
-
-		Chat chat = new Chat();
-		setField(chat, "id", 4242L);
-		setField(message, "chat", chat);
+		setField(message, "chat", getChat());
 
 		return message;
 	}
@@ -38,12 +35,7 @@ public class MessageHelper {
 		setField(message, "date", 42);
 
 		setField(message, "from", getUser(username));
-
-		Chat chat = new Chat();
-		setField(chat, "id", 4242L);
-		setField(chat, "type", Type.supergroup);
-		setField(chat, "title", "Chat Title");
-		setField(message, "chat", chat);
+		setField(message, "chat", getChat());
 
 		return message;
 	}
@@ -53,5 +45,13 @@ public class MessageHelper {
 		setField(user, "id", 100);
 		setField(user, "username", username);
 		return user;
+	}
+
+	public Chat getChat() {
+		Chat chat = new Chat();
+		setField(chat, "id", 4242L);
+		setField(chat, "type", Type.supergroup);
+		setField(chat, "title", "Chat Title");
+		return chat;
 	}
 }

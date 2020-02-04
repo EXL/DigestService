@@ -1,17 +1,16 @@
 package ru.exlmoto.digest.bot.ability.keyboard;
 
+import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.User;
 
 import org.junit.jupiter.api.Test;
 
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class KeyboardPagerAbilityUnitTest {
-
 	private final KeyboardPagerAbility keyboard = new KeyboardPagerAbility() {
 		@Override
 		protected Keyboard getKeyboard() {
@@ -19,13 +18,12 @@ class KeyboardPagerAbilityUnitTest {
 		}
 
 		@Override
-		protected boolean handleQuery(String callbackId, User user, int page,
-		                              BotSender sender, BotHelper helper, LocaleHelper locale) {
+		protected boolean handleQuery(String callbackId, User user, int page, BotSender sender, BotHelper helper) {
 			return false;
 		}
 
 		@Override
-		public void handle(long chatId, int messageId, User user, int page, boolean edit, BotSender sender) {
+		public void handle(int messageId, Chat chat, User user, int page, boolean edit, BotSender sender) {
 
 		}
 	};

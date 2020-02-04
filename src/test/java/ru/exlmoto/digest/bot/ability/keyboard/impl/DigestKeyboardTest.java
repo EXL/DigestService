@@ -55,24 +55,24 @@ class DigestKeyboardTest {
 	@Test
 	public void testHandleQuery() {
 		keyboard.handleQuery("Fake callbackId",
-			new MessageHelper().getUser("exlmoto"), 1, sender, helper, locale);
+			new MessageHelper().getUser("exlmoto"), 1, sender, helper);
 
 		keyboard.handleQuery("Fake callbackId",
-			new MessageHelper().getUser("anyone"), 1, sender, helper, locale);
+			new MessageHelper().getUser("anyone"), 1, sender, helper);
 	}
 
 	@Test
 	public void testHandle() {
-		assertThrows(IllegalArgumentException.class, () -> keyboard.handle(0L, 0,
+		assertThrows(IllegalArgumentException.class, () -> keyboard.handle(0, new MessageHelper().getChat(),
 			new MessageHelper().getUser("exlmoto"), 0, true, sender));
 
-		keyboard.handle(0L, 0,
+		keyboard.handle(0, new MessageHelper().getChat(),
 			new MessageHelper().getUser("exlmoto"), 1, true, sender);
 
 		doThrow(new InvalidDataAccessResourceUsageException("Test!"))
 			.when(botDigestRepository).findBotDigestEntitiesByChat(any(Pageable.class), anyLong());
 
-		keyboard.handle(0L, 0,
+		keyboard.handle(0, new MessageHelper().getChat(),
 			new MessageHelper().getUser("exlmoto"), 2, true, sender);
 	}
 }

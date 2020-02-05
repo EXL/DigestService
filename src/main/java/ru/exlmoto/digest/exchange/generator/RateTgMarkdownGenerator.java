@@ -92,7 +92,7 @@ public class RateTgMarkdownGenerator {
 		general += String.format("1 USD = %s %s.\n", filterValue(entity.getUsd()), currency);
 		general += String.format("1 EUR = %s %s.\n", filterValue(entity.getEur()), currency);
 		general += String.format("1 CNY = %s %s.\n", filterValue(entity.getCny()), currency);
-		general += String.format("1 GBP = %s %s.\n", filterValue(entity.getCny()), currency);
+		general += String.format("1 GBP = %s %s.\n", filterValue(entity.getGbp()), currency);
 		return general;
 	}
 

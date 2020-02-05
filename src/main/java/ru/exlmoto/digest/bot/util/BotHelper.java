@@ -36,6 +36,12 @@ public class BotHelper {
 	}
 
 	private String getValidUsernameAux(String username, String lastName, String firstName) {
-		return (username != null) ? "@" + username : (lastName != null) ? firstName + " " + lastName : firstName;
+		return (username != null) ? "@" + username : (lastName != null) ?
+			removeCastsInName(firstName + " " + lastName) :
+			removeCastsInName(firstName);
+	}
+
+	private String removeCastsInName(String name) {
+		return name.replaceAll("@", "");
 	}
 }

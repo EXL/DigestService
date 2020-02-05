@@ -1,34 +1,33 @@
 #!/usr/bin/env python3
 
 import os
+import time
+
 import mysql.connector
 import psycopg2
-import time
-import subprocess
-
-from telethon import TelegramClient, events, sync
+import telethon.sync
 
 
 class Logger:
-	def __init__(self, name):
+	def __init__(self):
 		self.log = open('import.log', 'w')
-		self.name = name
 
-	def __del__(self):
+	def close(self):
+		self.debug('Exiting...')
 		self.log.close()
 
 	def debug(self, output):
-		print(self.name + ': ' + output)
-		print(self.name + ': ' + output, file=self.log)
+		print(output)
+		print(output, file=self.log)
 
 	def error(self, output):
 		self.debug(output)
+		self.close()
 		exit(1)
 
 
 class Config:
-	def __init__(self):
-		log = Logger(self.__class__.__name__)
+	def __init__(self, log):
 		try:
 			self.cfg = dict(
 				TG_API_ID=os.environ['TG_API_ID'],
@@ -58,15 +57,16 @@ class Config:
 
 class Telegram:
 	def __init__(self, cfg):
-		self.client = TelegramClient('get_ids', cfg['TG_API_ID'], cfg['TG_API_ID'])
+		self.client = telethon.TelegramClient('get_ids', cfg['TG_API_ID'], cfg['TG_API_HASH'])
 		self.client.start()
 
 
 class Importer:
-	def __init__(self, cfg, tg):
+	def __init__(self, cfg, tg, log):
 		self.tg = tg
 		self.cfg = cfg
-		self.log = Logger(self.__class__.__name__)
+		self.log = log
+
 		self.conn_db_1 = mysql.connector.connect(
 			user=cfg['DB_USER_1'], password=cfg['DB_PASS_1'], database=cfg['DB_NAME_1'], host=cfg['DB_HOST_1']
 		)
@@ -77,11 +77,63 @@ class Importer:
 			self.log.error(str.format('Cannot connect to the {} database.', cfg['DB_NAME_1']))
 		if not self.conn_db_2:
 			self.log.error(str.format('Cannot connect to the {} database.', cfg['DB_NAME_2']))
+
 		self.curr_db_1 = self.conn_db_1.cursor()
 		self.curr_db_2 = self.conn_db_2.cursor()
 
+	def close(self):
+		self.curr_db_2.close()
+		self.curr_db_1.close()
+		self.conn_db_2.close()
+		self.conn_db_1.close()
+
+	def import_digest(self):
+		self.log.debug('=> Start commit digests')
+		self.curr_db_2.execute('TRUNCATE TABLE bot_digest')
+		self.conn_db_2.commit()
+
+		self.curr_db_1.execute('SELECT * FROM digests')
+		digest_id = 1
+		for (date, username, msg) in self.curr_db_1:
+			self.curr_db_2.execute('SELECT id FROM bot_digest_user WHERE username LIKE %s', ('@' + username,))
+			user_id = self.curr_db_2.fetchone()[0]
+			self.log.debug(str.format('Commit digest {} from {} at timestamp {}.', digest_id, username, date))
+			self.curr_db_2.execute(
+				'INSERT INTO bot_digest (id, chat, date, message_id, digest, user_id) VALUES (%s, %s, %s, %s, %s, %s)',
+				(digest_id, self.cfg['MF_CHAT_ID'], date, None, msg, user_id)
+			)
+			self.conn_db_2.commit()
+			digest_id += 1
+		self.log.debug('=> End commit digests')
+
+	def import_users(self):
+		self.log.debug('=> Start commit digest users.')
+		self.curr_db_2.execute('TRUNCATE TABLE bot_digest_user CASCADE')
+
+		user_without_id = 0
+		self.curr_db_1.execute('SELECT * FROM digests_users')
+		for (username, avatar) in self.curr_db_1:
+			try:
+				user_id = self.tg.get_entity(username).id
+			except ValueError:
+				user_id = user_without_id + 2
+				user_without_id += 1
+			time.sleep(2)
+			self.log.debug(str.format('Commit user {}: {}', username, user_id))
+			self.curr_db_2.execute(
+				'INSERT INTO bot_digest_user (id, avatar, username) VALUES (%s, %s, %s)',
+				(user_id, avatar, '@' + username)
+			)
+			self.conn_db_2.commit()
+		self.log.debug('=> End commit digest users.')
+
 
 if __name__ == '__main__':
-	config = Config().cfg
-	telegram = Telegram(config)
-	importer = Importer(config, telegram)
+	logger = Logger()
+	config = Config(logger).cfg
+	client = Telegram(config).client
+	importer = Importer(config, client, logger)
+	importer.import_users()
+	importer.import_digest()
+	importer.close()
+	logger.close()

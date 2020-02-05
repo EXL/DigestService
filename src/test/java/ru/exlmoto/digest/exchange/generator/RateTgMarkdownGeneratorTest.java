@@ -33,6 +33,7 @@ class RateTgMarkdownGeneratorTest {
 		bankRuEntity.setKzt(new BigDecimal("1.1334231"));
 		bankRuEntity.setUah(new BigDecimal("1866.45565"));
 		bankRuEntity.setByn(new BigDecimal("184.0"));
+		bankRuEntity.setCny(new BigDecimal("423.0"));
 		bankRuEntity.setGbp(new BigDecimal("13456.45566"));
 		bankRuEntity.setPrev(new BigDecimal("88.100000000000000001"));
 
@@ -51,6 +52,7 @@ class RateTgMarkdownGeneratorTest {
 		bankUaEntity.setKzt(new BigDecimal("0.0"));
 		bankUaEntity.setByn(new BigDecimal("0"));
 		bankUaEntity.setRub(new BigDecimal("1.00"));
+		bankUaEntity.setCny(new BigDecimal("1111.00"));
 		bankUaEntity.setGbp(null);
 		bankUaEntity.setPrev(new BigDecimal("1233"));
 
@@ -69,6 +71,7 @@ class RateTgMarkdownGeneratorTest {
 		bankByEntity.setKzt(new BigDecimal("-0.12"));
 		bankByEntity.setRub(new BigDecimal("1.234"));
 		bankByEntity.setUah(null);
+		bankByEntity.setCny(new BigDecimal("11"));
 		bankByEntity.setGbp(new BigDecimal("1000.1"));
 		bankByEntity.setPrev(new BigDecimal("1235.0002"));
 

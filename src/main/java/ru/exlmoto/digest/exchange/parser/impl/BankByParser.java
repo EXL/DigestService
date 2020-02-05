@@ -22,6 +22,7 @@ public class BankByParser extends BankParser {
 		kzt = parseValue(document, "301");
 		rub = parseValue(document, "298");
 		uah = parseValue(document, "290");
+		cny = parseValue(document, "304");
 		gbp = parseValue(document, "143");
 	}
 

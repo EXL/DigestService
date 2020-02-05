@@ -34,6 +34,7 @@ public class BankKzParser extends BankParser {
 		rub = parseValue(document, "RUB");
 		byn = parseValue(document, "BYN");
 		uah = parseValue(document, "UAH");
+		cny = parseValue(document, "CNY");
 		gbp = parseValue(document, "GBP");
 	}
 

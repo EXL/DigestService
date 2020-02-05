@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "bot_digest")
 public class BotDigestEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Column(nullable = false)

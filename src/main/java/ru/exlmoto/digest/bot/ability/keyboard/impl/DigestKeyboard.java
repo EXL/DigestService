@@ -98,8 +98,8 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 					stringBuilder.append(newMarker).append(" ");
 				}
 				stringBuilder.append(entity.getDigest());
-				long messageEntityId = entity.getMessageId();
-				if (chatId == config.getMotofanChatId() && messageEntityId != 0L) {
+				Long messageEntityId = entity.getMessageId();
+				if (chatId == config.getMotofanChatId() && messageEntityId != null) {
 					stringBuilder.append(" <a href=\"").append(filter.checkLink(config.getMotofanChatUrl()))
 						.append(messageEntityId).append("\">").append(locale.i18n("bot.command.digest.link"))
 						.append("</a>");

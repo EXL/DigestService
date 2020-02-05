@@ -23,7 +23,7 @@ public class BotDigestEntity {
 	private long date;
 
 	@Column
-	private long messageId;
+	private Long messageId;
 
 	@Column(nullable = false, length = 4095)
 	private String digest;
@@ -68,11 +68,11 @@ public class BotDigestEntity {
 		this.date = date;
 	}
 
-	public long getMessageId() {
+	public Long getMessageId() {
 		return messageId;
 	}
 
-	public void setMessageId(long messageId) {
+	public void setMessageId(Long messageId) {
 		this.messageId = messageId;
 	}
 

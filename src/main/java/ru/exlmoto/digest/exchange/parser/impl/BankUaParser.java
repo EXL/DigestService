@@ -34,6 +34,7 @@ public class BankUaParser extends BankParser {
 		kzt = parseValue(document, "398");
 		byn = parseValue(document, "933");
 		rub = parseValue(document, "643");
+		cny = parseValue(document, "156");
 		gbp = parseValue(document, "826");
 	}
 

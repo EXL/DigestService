@@ -50,10 +50,7 @@ public class RateTgMarkdownGenerator {
 	}
 
 	private String bankRuReport(ExchangeRateEntity bankRuEntity) {
-		String report = generalData(
-			locale.i18n("exchange.bank.ru"), "RUB", bankRuEntity.getDate(),
-			bankRuEntity.getUsd(), bankRuEntity.getEur(), bankRuEntity.getGbp(), bankRuEntity.getPrev()
-		);
+		String report = generalData(locale.i18n("exchange.bank.ru"), "RUB", bankRuEntity);
 		report += String.format("1 UAH = %s RUB.\n", filterValue(bankRuEntity.getUah()));
 		report += String.format("1 BYN = %s RUB.\n", filterValue(bankRuEntity.getByn()));
 		report += String.format("1 KZT = %s RUB.\n", filterValue(bankRuEntity.getKzt()));
@@ -61,10 +58,7 @@ public class RateTgMarkdownGenerator {
 	}
 
 	private String bankUaReport(ExchangeRateEntity bankUaEntity) {
-		String report = generalData(
-			locale.i18n("exchange.bank.ua"), "UAH", bankUaEntity.getDate(),
-			bankUaEntity.getUsd(), bankUaEntity.getEur(), bankUaEntity.getGbp(), bankUaEntity.getPrev()
-		);
+		String report = generalData(locale.i18n("exchange.bank.ua"), "UAH", bankUaEntity);
 		report += String.format("1 RUB = %s UAH.\n", filterValue(bankUaEntity.getRub()));
 		report += String.format("1 BYN = %s UAH.\n", filterValue(bankUaEntity.getByn()));
 		report += String.format("1 KZT = %s UAH.\n", filterValue(bankUaEntity.getKzt()));
@@ -72,10 +66,7 @@ public class RateTgMarkdownGenerator {
 	}
 
 	private String bankByReport(ExchangeRateEntity bankByEntity) {
-		String report = generalData(
-			locale.i18n("exchange.bank.by"), "BYN", bankByEntity.getDate(),
-			bankByEntity.getUsd(), bankByEntity.getEur(), bankByEntity.getGbp(), bankByEntity.getPrev()
-		);
+		String report = generalData(locale.i18n("exchange.bank.by"), "BYN", bankByEntity);
 		report += String.format("1 RUB = %s BYN.\n", filterValue(bankByEntity.getRub()));
 		report += String.format("1 UAH = %s BYN.\n", filterValue(bankByEntity.getUah()));
 		report += String.format("1 KZT = %s BYN.\n", filterValue(bankByEntity.getKzt()));
@@ -83,28 +74,25 @@ public class RateTgMarkdownGenerator {
 	}
 
 	private String bankKzReport(ExchangeRateEntity bankKzEntity) {
-		String report = generalData(
-			locale.i18n("exchange.bank.kz"), "KZT", bankKzEntity.getDate(),
-			bankKzEntity.getUsd(), bankKzEntity.getEur(), bankKzEntity.getGbp(), bankKzEntity.getPrev()
-		);
+		String report = generalData(locale.i18n("exchange.bank.kz"), "KZT", bankKzEntity);
 		report += String.format("1 RUB = %s KZT.\n", filterValue(bankKzEntity.getRub()));
 		report += String.format("1 UAH = %s KZT.\n", filterValue(bankKzEntity.getUah()));
 		report += String.format("1 BYN = %s KZT.\n", filterValue(bankKzEntity.getByn()));
 		return report + "```";
 	}
 
-	private String generalData(String header, String currency, String date,
-	                           BigDecimal usd, BigDecimal eur, BigDecimal gbp, BigDecimal prev) {
+	private String generalData(String header, String currency, ExchangeRateEntity entity) {
 		String general = header;
-		String difference = filterDifference(prev, usd);
+		String difference = filterDifference(entity.getPrev(), entity.getUsd());
 		if (difference != null) {
 			general += " " + locale.i18n("exchange.change") + " " + difference;
 		}
-		general += "\n" + String.format(locale.i18n("exchange.bank.header"), filterDate(date));
+		general += "\n" + String.format(locale.i18n("exchange.bank.header"), filterDate(entity.getDate()));
 		general += "\n```\n";
-		general += String.format("1 USD = %s %s.\n", filterValue(usd), currency);
-		general += String.format("1 EUR = %s %s.\n", filterValue(eur), currency);
-		general += String.format("1 GBP = %s %s.\n", filterValue(gbp), currency);
+		general += String.format("1 USD = %s %s.\n", filterValue(entity.getUsd()), currency);
+		general += String.format("1 EUR = %s %s.\n", filterValue(entity.getEur()), currency);
+		general += String.format("1 CNY = %s %s.\n", filterValue(entity.getCny()), currency);
+		general += String.format("1 GBP = %s %s.\n", filterValue(entity.getCny()), currency);
 		return general;
 	}
 

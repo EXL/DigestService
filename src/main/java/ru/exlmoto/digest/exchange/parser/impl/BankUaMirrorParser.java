@@ -14,6 +14,7 @@ public class BankUaMirrorParser extends BankUaParser {
 		kzt = parseValue(document, "10");
 		byn = parseValue(document, "48");
 		rub = parseValue(document, "17");
+		cny = parseValue(document, "28");
 		gbp = parseValue(document, "3");
 	}
 

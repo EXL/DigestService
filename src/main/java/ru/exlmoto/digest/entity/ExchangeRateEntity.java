@@ -41,6 +41,9 @@ public class ExchangeRateEntity {
 	private BigDecimal rub;
 
 	@Column
+	private BigDecimal cny;
+
+	@Column
 	private BigDecimal gbp;
 
 	@Column
@@ -120,6 +123,14 @@ public class ExchangeRateEntity {
 
 	public void setRub(BigDecimal rub) {
 		this.rub = rub;
+	}
+
+	public BigDecimal getCny() {
+		return cny;
+	}
+
+	public void setCny(BigDecimal cny) {
+		this.cny = cny;
 	}
 
 	public BigDecimal getGbp() {

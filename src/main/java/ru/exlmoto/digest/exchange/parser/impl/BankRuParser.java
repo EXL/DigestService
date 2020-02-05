@@ -40,6 +40,7 @@ public class BankRuParser extends BankParser {
 		kzt = parseValue(document, "R01335");
 		byn = parseValue(document, "R01090B");
 		uah = parseValue(document, "R01720");
+		cny = parseValue(document, "R01375");
 		gbp = parseValue(document, "R01035");
 	}
 

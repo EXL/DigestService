@@ -15,8 +15,9 @@ public abstract class BankParser extends RateParser {
 	protected BigDecimal kzt = null;
 	protected BigDecimal byn = null;
 	protected BigDecimal uah = null;
-	protected BigDecimal gbp = null;
 	protected BigDecimal rub = null;
+	protected BigDecimal cny = null;
+	protected BigDecimal gbp = null;
 
 	@Override
 	protected BigDecimal parsedPrevValue() {
@@ -27,6 +28,7 @@ public abstract class BankParser extends RateParser {
 	protected void commitGeneralValues(ExchangeRateEntity entity) {
 		entity.setUsd(usd);
 		entity.setEur(eur);
+		entity.setCny(cny);
 		entity.setGbp(gbp);
 
 		commitAux(entity);
@@ -34,14 +36,14 @@ public abstract class BankParser extends RateParser {
 
 	@Override
 	protected boolean checkParsedValues() {
-		return usd != null || eur != null || kzt != null || byn != null || rub != null || uah != null || gbp != null;
+		return usd != null && eur != null && cny != null && gbp != null;
 	}
 
 	@Override
 	public void logParsedValues() {
 		log.info(String.format(
-			"===> Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, UAH: %s, GBP: %s",
-			date, usd, eur, kzt, byn, rub, uah, gbp
+				"===> Date: %s, USD: %s, EUR: %s, KZT: %s, BYN: %s, RUB: %s, UAH: %s, CNY: %s, GBP: %s",
+				date, usd, eur, kzt, byn, rub, uah, cny, gbp
 			)
 		);
 	}

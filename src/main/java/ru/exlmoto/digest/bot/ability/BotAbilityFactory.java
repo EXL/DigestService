@@ -67,8 +67,8 @@ public class BotAbilityFactory {
 		addCommand("/send", SendCommand.class);
 		addCommand("/sticker", SendCommand.class);
 		addCommand("/image", SendCommand.class);
-		addCommand("/charts", ChartCommand.class);
-		addCommand("/rates", RateCommand.class);
+		addCommand("/chart", ChartCommand.class);
+		addCommand("/rate", RateCommand.class);
 		addCommand("/subscribe", SubscribeCommand.class);
 		addCommand("/show", ShowCommand.class);
 		addCommand("/delete", DeleteCommand.class);

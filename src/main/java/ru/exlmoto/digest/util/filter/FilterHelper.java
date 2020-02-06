@@ -39,6 +39,10 @@ public class FilterHelper {
 		return str.replaceAll("\\s+", " ").trim();
 	}
 
+	public String escapeTags(String str) {
+		return str.replaceAll("<", "&#60;").replaceAll(">", "&#62;");
+	}
+
 	public String removeUserCasts(String str) {
 		return str.replaceAll("\\B@", "");
 	}

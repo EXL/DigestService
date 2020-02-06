@@ -97,7 +97,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 				if (page == 1 && newMarkerCount > 0) {
 					stringBuilder.append(newMarker).append(" ");
 				}
-				stringBuilder.append(filter.removeUserCasts(entity.getDigest()));
+				stringBuilder.append(filter.removeUserCasts(filter.escapeTags(entity.getDigest())));
 				Long messageEntityId = entity.getMessageId();
 				if (chatId == config.getMotofanChatId() && messageEntityId != null) {
 					stringBuilder.append(" <a href=\"").append(filter.checkLink(config.getMotofanChatUrl()))

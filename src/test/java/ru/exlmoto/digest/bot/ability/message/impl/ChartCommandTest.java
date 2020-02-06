@@ -28,6 +28,6 @@ class ChartCommandTest {
 
 	@Test
 	public void testChartCommand() {
-		command.execute(helper, sender, locale, update.getSimpleMessage("/charts", "anyone"));
+		command.execute(helper, sender, locale, update.getSimpleMessage("/chart", "anyone"));
 	}
 }

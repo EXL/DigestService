@@ -85,6 +85,6 @@ public class DigestHashTag extends MessageAbility {
 	}
 
 	protected String isolateMessageText(String message) {
-		return filter.removeHtmlTags(message.replaceAll("#digest|#news", "")).trim();
+		return filter.strip(filter.removeHtmlTags(message.replaceAll("#digest|#news", "")));
 	}
 }

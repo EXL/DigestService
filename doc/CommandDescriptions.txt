@@ -1,0 +1,10 @@
+digest — Show latest digest for current chat.
+rate — Show exchange rates.
+chart — Show chart of exchange rates.
+start — Show start greeting.
+coffee — Send sticker with coffee.
+game — Show game servers statistic.
+subscribe — Subscribe to various channels.
+help — Show extended help for bot commands.
+
+// TODO: ADD HERE BOT DESCRIPTION???

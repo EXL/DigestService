@@ -18,8 +18,8 @@ public class FilterHelper {
 		return Jsoup.parse(html).text();
 	}
 
-	public String removeBbCodes(String text) {
-		return text
+	public String removeBbCodes(String str) {
+		return str
 			.replaceAll("\\[.*?]", " ")
 			.replaceAll("\\[\\\\", " ")
 			.replaceAll("\\[", " ").trim()
@@ -33,5 +33,13 @@ public class FilterHelper {
 	public String getDateFromTimeStamp(String dateFormat, long timestamp) {
 		return DateTimeFormatter.ofPattern(dateFormat)
 			.withZone(ZoneId.systemDefault()).format(Instant.ofEpochSecond(timestamp));
+	}
+
+	public String strip(String str) {
+		return str.replaceAll("\\s+", " ").trim();
+	}
+
+	public String removeUserCasts(String str) {
+		return str.replaceAll("\\B@", "");
 	}
 }

@@ -20,3 +20,5 @@ $ TG_API_ID=<id> TG_API_HASH=<hash> MF_CHAT_ID=<id> \
     DB_USER_2=<user> DB_PASS_2=<password> DB_NAME_2=<database> DB_HOST_2=<host> \
     ./db_import.py
 ```
+
+Do not forget to create tables before running the import script. After execution, user avatars should be updated.

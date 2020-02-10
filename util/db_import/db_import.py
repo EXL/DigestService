@@ -12,6 +12,8 @@ Run as:
 	DB_USER_1=<user> DB_PASS_1=<password> DB_NAME_1=<database> DB_HOST_1=<host> \
 	DB_USER_2=<user> DB_PASS_2=<password> DB_NAME_2=<database> DB_HOST_2=<host> \
 	./db_import.py
+
+Do not forget to create tables before running the import script. After execution, user avatars should be updated.
 """
 
 import os
@@ -107,7 +109,7 @@ class Importer:
 			except ValueError:
 				user_id = user_without_id + 2
 				user_without_id += 1
-			time.sleep(5)
+			time.sleep(5)  # Without delay, you can run into a ban.
 			self.log.debug(str.format('Commit user {}: {}', username, user_id))
 			self.curr_db_2.execute(
 				'INSERT INTO bot_digest_user (id, avatar, username) VALUES (%s, %s, %s)',

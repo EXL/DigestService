@@ -67,19 +67,29 @@ public class UpdateHelper {
 		return message;
 	}
 
+	public Message getNewUsersWithUsername(String username) {
+		Message message = getSimpleMessage("Text", "Username");
+		User[] users = new User[3];
+		users[0] = getUser("NewUser1");
+		users[1] = getUser(username);
+		users[2] = getUser("NewUser3");
+		setField(message, "new_chat_members", users);
+		return message;
+	}
+
 	public Message getNewUsers(int count) {
 		Message message = getSimpleMessage("Text", "Username");
 		User[] users = new User[count];
 		for (int i = 0; i < count; i++) {
-			users[i] = getUser("NewUser" + i);
+			users[i] = getUser("NewUser" + (i + 1));
 		}
 		setField(message, "new_chat_members", users);
 		return message;
 	}
 
-	public Message getLeftUser() {
+	public Message getLeftUser(String username) {
 		Message message = getSimpleMessage("Text", "Username");
-		setField(message, "left_chat_member", getUser("Left"));
+		setField(message, "left_chat_member", getUser(username));
 		return message;
 	}
 

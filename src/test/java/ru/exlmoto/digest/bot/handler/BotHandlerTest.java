@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
@@ -20,6 +21,9 @@ class BotHandlerTest {
 
 	@Autowired
 	private BotConfiguration config;
+
+	@Autowired
+	private BotTelegram telegram;
 
 	@MockBean
 	private BotDigestRepository botDigestRepository;
@@ -161,11 +165,20 @@ class BotHandlerTest {
 		handler.onNewUsers(update.getNewUsers(2));
 		handler.onNewUsers(update.getNewUsers(3));
 		handler.onNewUsers(update.getNewUsers(4));
+		System.out.println("---");
+		for (int i = 0; i < 20; i++) {
+			handler.onNewUsers(update.getNewUsersWithUsername(telegram.getUsername().substring(1)));
+		}
+		System.out.println("---");
 	}
 
 	@Test
 	public void testOnLeftUser() {
-		handler.onLeftUser(update.getLeftUser());
+		handler.onLeftUser(update.getLeftUser("Left"));
+		System.out.println("---");
+		/* Empty, no send. */
+		handler.onLeftUser(update.getLeftUser(telegram.getUsername().substring(1)));
+		System.out.println("---");
 	}
 
 	@Test

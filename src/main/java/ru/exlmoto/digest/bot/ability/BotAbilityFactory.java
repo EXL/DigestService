@@ -90,7 +90,7 @@ public class BotAbilityFactory {
 	 * Example: "/hello" and "/hello@Digest_bot" commands.
 	 */
 	private <T extends MessageAbility> void addCommand(String command, Class<T> botAbilityClass) {
-		String fullCommand = command + "@" + telegram.getUsername();
+		String fullCommand = command + telegram.getUsername();
 		messageMap.put(command, context.getBean(botAbilityClass));
 		messageMap.put(fullCommand, context.getBean(botAbilityClass));
 		log.info(String.format("Registered bot Command: '%s' alias '%s' on '%s' class.",

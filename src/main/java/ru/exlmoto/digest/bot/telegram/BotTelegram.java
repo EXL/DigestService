@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSetupEntity;
 import ru.exlmoto.digest.repository.BotSetupRepository;
 import ru.exlmoto.digest.util.Answer;
@@ -30,15 +31,17 @@ public class BotTelegram {
 
 	private final BotConfiguration config;
 	private final BotSetupRepository repository;
+	private final BotHelper helper;
 
 	private TelegramBot bot;
 	private String username;
 	private String firstName;
 	private int id;
 
-	public BotTelegram(BotConfiguration config, BotSetupRepository repository) {
+	public BotTelegram(BotConfiguration config, BotSetupRepository repository, BotHelper helper) {
 		this.config = config;
 		this.repository = repository;
+		this.helper = helper;
 	}
 
 	@PostConstruct
@@ -51,7 +54,7 @@ public class BotTelegram {
 			User botUser = response.user();
 			Assert.notNull(botUser, "Cannot initialize Telegram Bot, bot user is null.");
 
-			username = botUser.username();
+			username = helper.getValidUsername(botUser);
 			firstName = botUser.firstName();
 			id = botUser.id();
 

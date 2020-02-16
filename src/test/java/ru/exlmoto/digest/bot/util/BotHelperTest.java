@@ -39,10 +39,14 @@ class BotHelperTest {
 		assertEquals("First", helper.getValidUsername(user));
 
 		setField(user, "first_name", "@First");
-		assertEquals("First", helper.getValidUsername(user));
+		assertEquals("AFirst", helper.getValidUsername(user));
 
 		setField(user, "last_name", "@Last");
-		assertEquals("First Last", helper.getValidUsername(user));
+		assertEquals("AFirst ALast", helper.getValidUsername(user));
+
+		setField(user, "first_name", "@rt@mk@");
+		setField(user, "last_name", "@L@st");
+		assertEquals("Art@mk@ AL@st", helper.getValidUsername(user));
 	}
 
 	@Test

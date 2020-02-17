@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:lang="${@environment.getProperty('general.lang')}">
-<head>
-    <meta charset="UTF-8"/>
-    <title th:text="#{site.title}"></title>
-</head>
-<body>
-<h1>Hello, World!</h1>
-</body>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru" th:lang="${@environment.getProperty('general.lang')}">
+	<head>
+		<title th:text="#{site.title}"></title>
+		<meta charset="UTF-8"/>
+
+<!--		<link rel="icon" type="image/x-icon" href="../static/icon/favicon.ico" th:href="@{/icon/favicon.ico}"/>-->
+		<link rel="stylesheet" type="text/css" href="../static/style/motofan.css" th:href="@{/style/motofan.css}"/>
+	</head>
+	<body>
+		<h1>Hello, World!</h1>
+		<div th:replace="~{footer :: copyright}"></div>
+	</body>
 </html>

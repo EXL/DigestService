@@ -1,0 +1,30 @@
+body {
+	background: #FFF;
+	font-family: Verdana, Tahoma, Arial, sans-serif;
+	max-width: 1366px;
+	min-width: 240px;
+	margin: auto;
+	padding: 10px;
+}
+a:link,
+a:visited,
+a:active {
+	background: transparent;
+	color: #222;
+	text-decoration: underline;
+}
+a:hover {
+	background: transparent;
+	color: #FF6600;
+	text-decoration: underline;
+}
+.copyright {
+	background: #EEE;
+	font-size: 11px;
+	padding: 8px;
+	text-align: center;
+	line-height: 135%;
+}
+.copyright a {
+	text-decoration: none;
+}

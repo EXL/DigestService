@@ -10,6 +10,9 @@ import java.util.Locale;
 
 @ConfigurationProperties(prefix = "site")
 public class SiteConfiguration {
+	private int pagePosts;
+	private int pageDeep;
+
 	/*
 	@Bean
 	public LocaleResolver localeResolver(@Value("general.lang") String defaultLanguage) {
@@ -18,4 +21,20 @@ public class SiteConfiguration {
 		return sessionLocaleResolver;
 	}
 	 */
+
+	public int getPagePosts() {
+		return pagePosts;
+	}
+
+	public void setPagePosts(int pagePosts) {
+		this.pagePosts = pagePosts;
+	}
+
+	public int getPageDeep() {
+		return pageDeep;
+	}
+
+	public void setPageDeep(int pageDeep) {
+		this.pageDeep = pageDeep;
+	}
 }

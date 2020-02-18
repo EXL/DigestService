@@ -1,9 +1,9 @@
 /* General */
 body {
-	background: #FFF;
+	background: #F5F5F5;
 	font-family: Verdana, Tahoma, Arial, sans-serif;
 	max-width: 1366px;
-	min-width: 240px;
+	min-width: 1024px;
 	margin: auto;
 	padding: 10px;
 }
@@ -22,6 +22,10 @@ a:hover {
 table, tr, td {
 	font-size: 11px;
 	color: #222;
+}
+.page {
+	background: #FFF;
+	border: 1px solid #222;
 }
 
 /* Header */

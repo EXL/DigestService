@@ -8,8 +8,10 @@
 		<link rel="stylesheet" type="text/css" href="../static/style/motofan.css" th:href="@{/style/motofan.css}"/>
 	</head>
 	<body>
-		<div th:replace="~{header :: banner}"></div>
-		<div class="data"></div>
-		<div th:replace="~{footer :: copyright}"></div>
+		<div class="page">
+			<div th:replace="~{header :: banner}"></div>
+			<div class="data"></div>
+			<div th:replace="~{footer :: copyright}"></div>
+		</div>
 	</body>
 </html>

@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:lang="${@environment.getProperty('general.lang')}">
 <head>
-	<title th:text="#{site.title}"></title>
-	<meta charset="UTF-8"/>
-	<link rel="apple-touch-icon" sizes="180x180" href="../static/icon/apple-touch-icon.png" th:href="@{/icon/apple-touch-icon.png}">
-	<link rel="icon" type="image/png" sizes="32x32" href="../static/icon/favicon-32x32.png" th:href="@{/icon/favicon-32x32.png}">
-	<link rel="icon" type="image/png" sizes="16x16" href="../static/icon/favicon-16x16.png" th:href="@{/icon/favicon-16x16.png}">
-	<link rel="stylesheet" type="text/css" href="../static/style/motofan.css" th:href="@{/style/motofan.css}"/>
+<title th:text="#{site.title}"></title>
+<meta charset="UTF-8"/>
+<link rel="apple-touch-icon" sizes="180x180" href="../static/icon/apple-touch-icon.png" th:href="@{/icon/apple-touch-icon.png}">
+<link rel="icon" type="image/png" sizes="32x32" href="../static/icon/favicon-32x32.png" th:href="@{/icon/favicon-32x32.png}">
+<link rel="icon" type="image/png" sizes="16x16" href="../static/icon/favicon-16x16.png" th:href="@{/icon/favicon-16x16.png}">
+<link rel="stylesheet" type="text/css" href="../static/style/motofan.css" th:href="@{/style/motofan.css}"/>
 </head>
 <body>
-	<div class="page">
-		<div th:replace="~{header :: banner}"></div>
-		<div class="data"></div>
-		<div th:replace="~{footer :: copyright}"></div>
-	</div>
+<div class="page">
+	<div th:replace="~{header :: banner}"></div>
+	<div th:replace="~{pager :: paginator}"></div>
+	<div class="data"></div>
+	<div th:replace="~{pager :: paginator}"></div>
+	<div th:replace="~{footer :: copyright}"></div>
+</div>
 </body>
 </html>

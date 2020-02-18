@@ -5,13 +5,15 @@ public class GoToPageForm {
 	private String path;
 	private String text;
 
-	public GoToPageForm(String page) {
-		this.page = page;
-	}
-
 	public GoToPageForm(String page, String path) {
 		this.page = page;
 		this.path = path;
+	}
+
+	public GoToPageForm(String page, String path, String text) {
+		this.page = page;
+		this.path = path;
+		this.text = text;
 	}
 
 	public String getPage() {

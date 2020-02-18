@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
-	<body>
-		<div th:fragment="copyright" class="copyright">
-			<div th:utext="#{site.footer.created}"></div>
-			<div th:with="block=#{site.footer.copyright}"
-			     th:utext="${#strings.replace(block, '%date%', #dates.year(#dates.createNow()))}">
-			</div>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+	<div th:fragment="copyright" class="copyright">
+		<div th:utext="#{site.footer.created}"></div>
+		<div th:with="block=#{site.footer.copyright}"
+		     th:utext="${#strings.replace(block, '%date%', #dates.year(#dates.createNow()))}">
 		</div>
-	</body>
+	</div>
+</body>
 </html>

@@ -28,11 +28,17 @@ table, tr, td {
 .telegram-chat {
 	color: #0088CC !important;
 }
+.telegram-chat:hover {
+	color: #FF6600 !important;
+}
 /*.banner {*/
 /*	width: 100%;*/
 /*}*/
 .logo {
 	vertical-align: top;
+}
+.data {
+	min-height: 700px;
 }
 .copyright {
 	background: #EEE;

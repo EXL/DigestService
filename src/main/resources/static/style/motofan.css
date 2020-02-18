@@ -1,3 +1,4 @@
+/* General */
 body {
 	background: #FFF;
 	font-family: Verdana, Tahoma, Arial, sans-serif;
@@ -22,8 +23,67 @@ table, tr, td {
 	font-size: 11px;
 	color: #222;
 }
-.pad {
+
+/* Header */
+.banner {
+	width: 100%;
+	border: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
 	padding: 0;
+}
+.logo {
+	vertical-align: top;
+	border: 0;
+}
+.td-logo {
+	padding: 0;
+	text-align: left;
+	vertical-align: top;
+}
+#td-logo-chunk-1 {
+	width: 370px;
+}
+#td-logo-chunk-2 {
+	width: 141px;
+}
+#td-logo-chunk-3 {
+	width: 52px;
+	height: 103px;
+}
+#td-logo-chunk-4 {
+	width: 335px;
+	height: 103px;
+}
+#td-logo-chunk-5 {
+	width: 100%;
+	height: 103px;
+}
+#td-logo-chunk-6 {
+	height: 47px;
+}
+#td-logo-chunk-7 {
+	height: 50px;
+}
+#img-logo-chunk-1 {
+	width: 370px;
+	height: 200px;
+}
+#img-logo-chunk-2 {
+	width: 141px;
+	height: 200px;
+}
+#img-logo-chunk-3 {
+	width: 52px;
+	height: 103px;
+}
+#img-logo-chunk-4 {
+	width: 335px;
+	height: 103px;
+}
+#img-logo-chunk-5 {
+	width: 100%;
+	height: 103px;
 }
 .telegram-chat {
 	color: #0088CC !important;
@@ -31,15 +91,13 @@ table, tr, td {
 .telegram-chat:hover {
 	color: #FF6600 !important;
 }
-/*.banner {*/
-/*	width: 100%;*/
-/*}*/
-.logo {
-	vertical-align: top;
-}
+
+/* Content */
 .data {
 	min-height: 700px;
 }
+
+/* Footer */
 .copyright {
 	background: #EEE;
 	font-size: 11px;

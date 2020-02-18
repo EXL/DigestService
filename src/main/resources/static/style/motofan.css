@@ -9,14 +9,30 @@ body {
 a:link,
 a:visited,
 a:active {
-	background: transparent;
 	color: #222;
+	background: transparent;
 	text-decoration: underline;
 }
 a:hover {
 	background: transparent;
 	color: #FF6600;
 	text-decoration: underline;
+}
+table, tr, td {
+	font-size: 11px;
+	color: #222;
+}
+.pad {
+	padding: 0;
+}
+.telegram-chat {
+	color: #0088CC !important;
+}
+/*.banner {*/
+/*	width: 100%;*/
+/*}*/
+.logo {
+	vertical-align: top;
 }
 .copyright {
 	background: #EEE;

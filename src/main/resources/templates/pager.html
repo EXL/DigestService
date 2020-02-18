@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
-	<form th:fragment="pager" class="pager" method="get" th:object="paginator" th:action="@{__${paginator.path}__}" action="#" th:if="${all gt 1}" th:with="start=${T(Math).max(0, startAux)}, end=${T(Math).min(all, endAux)}">
-		<span th:text="${all} + ' ' + #{site.pager.pages}"></span>
-		<span th:if="${start gt 0}">
-			<a th:href="@{__${paginator.path}__(page=1)}" th:text="#{site.pager.left.first}" th:title="#{site.pager.page} + ' 1'"></a>
-		</span>
-		<span th:if="${current gt 1}">
-			<a th:href="@{__${paginator.path}__(page=${current - 1})}" th:text="#{site.pager.left}" th:title="#{site.pager.page} + ' ' + ${current - 1}"></a>
-		</span>
-		<span th:each="i : ${#numbers.sequence(start + 1, end)}" th:class="${i eq current ? 'page-general' : 'page-active'}">
-			<a th:href="@{__${paginator.path}__(page=${i})}" th:text="${i}" th:title="#{site.pager.page} + ' ' + ${i}"></a>
-		</span>
-		<span th:if="${current lt all}">
-			<a th:href="@{__${paginator.path}__(page=${current + 1})}" th:text="#{site.pager.right}" th:title="#{site.pager.page} + ' ' + ${current + 1}"></a>
-		</span>
-		<span th:if="${end lt all}">
-			<a th:href="@{__${paginator.path}__(page=${all})}" th:text="#{site.pager.right.last}" th:title="#{site.pager.page} + ' ' + ${all}"></a>
-		</span>
-		<input th:if="*{text != null}" type="hidden" th:field="*{text}"/>
-		<input type="text" th:field="*{page}" size="3" th:placeholder="#{site.pager.placeholder}"/>
-		<input type="submit" th:value="#{site.pager.ok}"/>
-	</form>
+<form th:fragment="paginator" class="paginator" method="get" th:object="${pager}" th:action="@{__${pager.path}__}" action="#" th:if="${all gt 1}" th:with="start=${T(Math).max(0, startAux)}, end=${T(Math).min(all, endAux)}">
+	<span th:text="${all} + ' ' + #{site.pager.pages}"></span>
+	<span th:if="${start gt 0}">
+		<a th:href="@{__${pager.path}__(page=1)}" th:text="#{site.pager.left.first}" th:title="#{site.pager.page} + ' 1'"></a>
+	</span>
+	<span th:if="${current gt 1}">
+		<a th:href="@{__${pager.path}__(page=${current - 1})}" th:text="#{site.pager.left}" th:title="#{site.pager.page} + ' ' + ${current - 1}"></a>
+	</span>
+	<span th:each="i : ${#numbers.sequence(start + 1, end)}" th:class="${i eq current ? 'page-active' : 'page-general'}">
+		<a th:href="@{__${pager.path}__(page=${i})}" th:text="${i}" th:title="#{site.pager.page} + ' ' + ${i}"></a>
+	</span>
+	<span th:if="${current lt all}">
+		<a th:href="@{__${pager.path}__(page=${current + 1})}" th:text="#{site.pager.right}" th:title="#{site.pager.page} + ' ' + ${current + 1}"></a>
+	</span>
+	<span th:if="${end lt all}">
+		<a th:href="@{__${pager.path}__(page=${all})}" th:text="#{site.pager.right.last}" th:title="#{site.pager.page} + ' ' + ${all}"></a>
+	</span>
+	<input th:if="*{text != null}" type="hidden" th:field="*{text}"/>
+	<input type="text" th:field="*{page}" size="3" th:placeholder="#{site.pager.placeholder}"/>
+	<input type="submit" th:value="#{site.pager.ok}"/>
+</form>
 </body>
 </html>

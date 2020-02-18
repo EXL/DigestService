@@ -1,57 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
-	<table th:fragment="banner" class="banner">
-		<tr>
-			<td class="td-logo" id="td-logo-chunk-1" rowspan="3">
-				<a th:title="#{site.header.logo.tooltip}" th:href="${@environment.getProperty('site.address')}">
-					<img class="logo" id="img-logo-chunk-1" src="../static/image/header1.png" th:src="@{/image/header1.png}" alt="Logo chunk #1."/>
-				</a>
-			</td>
-			<td class="td-logo" id="td-logo-chunk-2" rowspan="3">
-				<a th:title="#{site.header.logo.tooltip}" th:href="${@environment.getProperty('site.address')}">
-					<img class="logo" id="img-logo-chunk-2" src="../static/image/header2.png" th:src="@{/image/header2.png}" alt="Logo chunk #2."/>
-				</a>
-			</td>
-			<td class="td-logo" id="td-logo-chunk-3">
-				<img class="logo" id="img-logo-chunk-3" src="../static/image/header3.png" th:src="@{/image/header3.png}" alt="Logo chunk #3."/>
-			</td>
-			<td class="td-logo" id="td-logo-chunk-4">
-				<img class="logo" id="img-logo-chunk-4" src="../static/image/header4.png" th:src="@{/image/header4.png}" alt="Logo chunk #4."/>
-			</td>
-			<td class="td-logo" id="td-logo-chunk-5">
-				<img class="logo" id="img-logo-chunk-5" src="../static/image/header5.png" th:src="@{/image/header5.png}" alt="Logo chunk #5."/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3" id="td-logo-chunk-6"></td>
-		</tr>
-		<tr>
-			<td colspan="3" id="td-logo-chunk-7">
-			<p><strong>
-				&bull;
-				<a href="//motofan.ru" target="_blank" th:text="#{site.header.menu.site}">Site</a>
-				&bull;
-				<a href="//wiki.motofan.ru" target="_blank" th:text="#{site.header.menu.wiki}">MotoWiki</a>
-				&bull;
-				<a href="//forum.motofan.ru/index.php?act=Search&amp;f=" target="_blank" th:text="#{site.header.menu.search}">Search</a>
-				&bull;
-				<a href="//forum.motofan.ru/index.php?act=Members" target="_blank" th:text="#{site.header.menu.members}">Members</a>
-				&bull;
-				<a href='//forum.motofan.ru/index.php?act=announce&amp;f=70&amp;id=17' target="_blank" th:text="#{site.header.menu.rules}">Forum Rules</a>
-				&bull;
-				<a href="//forum.motofan.ru/index.php?act=rating&amp;CODE=show" target="_blank" th:text="#{site.header.menu.rating}">Rating</a>
-				&bull;
-				<a href="//forum.motofan.ru/index.php?showforum=12" target="_blank" th:text="#{site.header.menu.store}">Store</a>
-				&bull;
-				<a href="//twitter.com/MotoFanRu" target="_blank" th:text="#{site.header.menu.twitter}">Twitter</a>
-				&bull;
-				<a class="telegram-link" href="//t.me/motofan_ru" target="_blank" th:text="#{site.header.menu.telegram}">Telegram</a>
-				&bull;
-				</strong>
-				</p>
-			</td>
-		</tr>
-	</table>
+<table th:fragment="banner" class="banner">
+	<tr>
+		<td class="td-logo" id="td-logo-chunk-1" rowspan="3">
+			<a th:title="#{site.header.logo.tooltip}" th:href="${@environment.getProperty('site.address')}">
+				<img class="logo" id="img-logo-chunk-1" src="../static/image/header1.png" th:src="@{/image/header1.png}" alt="Logo chunk #1."/>
+			</a>
+		</td>
+		<td class="td-logo" id="td-logo-chunk-2" rowspan="3">
+			<a th:title="#{site.header.logo.tooltip}" th:href="${@environment.getProperty('site.address')}">
+				<img class="logo" id="img-logo-chunk-2" src="../static/image/header2.png" th:src="@{/image/header2.png}" alt="Logo chunk #2."/>
+			</a>
+		</td>
+		<td class="td-logo" id="td-logo-chunk-3">
+			<img class="logo" id="img-logo-chunk-3" src="../static/image/header3.png" th:src="@{/image/header3.png}" alt="Logo chunk #3."/>
+		</td>
+		<td class="td-logo" id="td-logo-chunk-4">
+			<img class="logo" id="img-logo-chunk-4" src="../static/image/header4.png" th:src="@{/image/header4.png}" alt="Logo chunk #4."/>
+		</td>
+		<td class="td-logo" id="td-logo-chunk-5">
+			<img class="logo" id="img-logo-chunk-5" src="../static/image/header5.png" th:src="@{/image/header5.png}" alt="Logo chunk #5."/>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" id="td-logo-chunk-6"></td>
+	</tr>
+	<tr>
+		<td colspan="3" id="td-logo-chunk-7">
+		<p><strong>
+			&bull;
+			<a href="//motofan.ru" target="_blank" th:text="#{site.header.menu.site}">Site</a>
+			&bull;
+			<a href="//wiki.motofan.ru" target="_blank" th:text="#{site.header.menu.wiki}">MotoWiki</a>
+			&bull;
+			<a href="//forum.motofan.ru/index.php?act=Search&amp;f=" target="_blank" th:text="#{site.header.menu.search}">Search</a>
+			&bull;
+			<a href="//forum.motofan.ru/index.php?act=Members" target="_blank" th:text="#{site.header.menu.members}">Members</a>
+			&bull;
+			<a href='//forum.motofan.ru/index.php?act=announce&amp;f=70&amp;id=17' target="_blank" th:text="#{site.header.menu.rules}">Forum Rules</a>
+			&bull;
+			<a href="//forum.motofan.ru/index.php?act=rating&amp;CODE=show" target="_blank" th:text="#{site.header.menu.rating}">Rating</a>
+			&bull;
+			<a href="//forum.motofan.ru/index.php?showforum=12" target="_blank" th:text="#{site.header.menu.store}">Store</a>
+			&bull;
+			<a href="//twitter.com/MotoFanRu" target="_blank" th:text="#{site.header.menu.twitter}">Twitter</a>
+			&bull;
+			<a class="telegram-link" href="//t.me/motofan_ru" target="_blank" th:text="#{site.header.menu.telegram}">Telegram</a>
+			&bull;
+		</strong></p>
+		</td>
+	</tr>
+</table>
 </body>
 </html>

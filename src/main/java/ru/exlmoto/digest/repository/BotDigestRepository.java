@@ -17,6 +17,8 @@ public interface BotDigestRepository extends JpaRepository<BotDigestEntity, Long
 
 	Page<BotDigestEntity> findBotDigestEntitiesByChat(Pageable pageable, long chatId);
 
+	long countBotDigestEntitiesByChat(long chatId);
+
 	@Transactional
 	void deleteBotDigestEntitiesByDateIsLessThanAndChatIsNot(long date, long chatId);
 

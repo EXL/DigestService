@@ -105,12 +105,15 @@ input, textarea, select {
 }
 
 /* Pager */
+.paginator {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
 .page-link, .page-link-active {
 	color: #495143;
 	background: #FFF5E0;
 	border: 1px solid #FF6600;
 	padding: 1px 3px 1px 3px;
-	line-height: 25px;
 	font-size: 11px;
 	margin-right: 3px;
 }
@@ -124,6 +127,11 @@ input, textarea, select {
 .page-link-active a:visited,
 .page-link-active a:link {
 	text-decoration: none;
+}
+.page-label {
+	color: #495143;
+	font-size: 11px;
+	margin-right: 3px;
 }
 
 /* Content */

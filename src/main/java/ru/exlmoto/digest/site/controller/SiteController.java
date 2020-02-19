@@ -16,6 +16,7 @@ import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.GoToPageForm;
+import ru.exlmoto.digest.site.model.PagerModel;
 
 @Controller
 public class SiteController {
@@ -39,16 +40,13 @@ public class SiteController {
 		int pageCount = getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts);
 		int current = getCurrentPage(page, pageCount);
 
+		model.addAttribute("goto", new GoToPageForm(String.valueOf(current), "/"));
+		model.addAttribute("pager", new PagerModel(current, pageCount,
+			current - ((pageDeep / 2) + 1), current + (pageDeep / 2)));
+
 		Page<BotDigestEntity> digestEntities =
 			repository.findBotDigestEntitiesByChat(PageRequest.of(current - 1, pagePosts,
 				Sort.by(Sort.Order.asc("id"))), motofanChatId);
-		System.out.println("pc2: " + digestEntities.getTotalPages());
-
-		model.addAttribute("pager", new GoToPageForm(String.valueOf(current), "/"));
-		model.addAttribute("all", pageCount);
-		model.addAttribute("current", current);
-		model.addAttribute("startAux", current - ((pageDeep / 2) + 1));
-		model.addAttribute("endAux", current + (pageDeep / 2));
 
 		return "index";
 	}

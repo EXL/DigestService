@@ -48,6 +48,8 @@ public class SiteController {
 			repository.findBotDigestEntitiesByChat(PageRequest.of(current - 1, pagePosts,
 				Sort.by(Sort.Order.asc("id"))), motofanChatId);
 
+		model.addAttribute("entities", digestEntities);
+
 		return "index";
 	}
 

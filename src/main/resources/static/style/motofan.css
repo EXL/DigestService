@@ -134,6 +134,9 @@ input, textarea, select {
 .digest {
 	min-height: 700px;
 }
+.span-right {
+	float: right;
+}
 
 /* Footer */
 .copyright {

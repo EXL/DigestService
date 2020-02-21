@@ -12,6 +12,7 @@ import java.util.Locale;
 public class SiteConfiguration {
 	private int pagePosts;
 	private int pageDeep;
+	private String motofanChatSlug;
 
 	/*
 	@Bean
@@ -36,5 +37,13 @@ public class SiteConfiguration {
 
 	public void setPageDeep(int pageDeep) {
 		this.pageDeep = pageDeep;
+	}
+
+	public String getMotofanChatSlug() {
+		return motofanChatSlug;
+	}
+
+	public void setMotofanChatSlug(String motofanChatSlug) {
+		this.motofanChatSlug = motofanChatSlug;
 	}
 }

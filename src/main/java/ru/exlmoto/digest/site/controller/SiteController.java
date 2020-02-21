@@ -13,10 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ru.exlmoto.digest.entity.BotDigestEntity;
+import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.GoToPageForm;
+import ru.exlmoto.digest.site.model.DigestModel;
 import ru.exlmoto.digest.site.model.PagerModel;
+import ru.exlmoto.digest.site.model.post.Post;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class SiteController {
@@ -27,6 +33,9 @@ public class SiteController {
 
 	@Value("${bot.motofan-chat-id}")
 	private long motofanChatId;
+
+	@Value("${bot.motofan-chat-url}")
+	private String motofanChatLink;
 
 	public SiteController(SiteConfiguration config, BotDigestRepository repository) {
 		this.config = config;
@@ -43,6 +52,20 @@ public class SiteController {
 		model.addAttribute("goto", new GoToPageForm(String.valueOf(current), "/"));
 		model.addAttribute("pager", new PagerModel(current, pageCount,
 			current - ((pageDeep / 2) + 1), current + (pageDeep / 2)));
+		model.addAttribute(
+			"posts",
+			new DigestModel(
+				getDigestEntities(
+					repository.findBotDigestEntitiesByChat(
+						PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId
+					)
+				),
+				"Title",
+				motofanChatId,
+				config.getMotofanChatSlug(),
+				motofanChatLink
+			)
+		);
 
 		Page<BotDigestEntity> digestEntities =
 			repository.findBotDigestEntitiesByChat(PageRequest.of(current - 1, pagePosts,
@@ -51,6 +74,28 @@ public class SiteController {
 		model.addAttribute("entities", digestEntities);
 
 		return "index";
+	}
+
+	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities) {
+		if (digestEntities != null) {
+			List<Post> posts = new ArrayList<>();
+			for (BotDigestEntity digest : digestEntities) {
+				BotDigestUserEntity user = digest.getUser();
+				posts.add(
+					new Post(
+						digest.getId(),
+						user.getUsername(),
+						user.getAvatar(),
+						"Some Group",
+						String.valueOf(digest.getDate()),
+						String.valueOf(digest.getDate()),
+						digest.getDigest()
+					)
+				);
+			}
+			return posts;
+		}
+		return new ArrayList<>();
 	}
 
 	protected int getPageCount(long count, int pagePosts) {

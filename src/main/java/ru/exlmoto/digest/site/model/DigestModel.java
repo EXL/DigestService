@@ -6,21 +6,15 @@ import java.util.List;
 
 public class DigestModel {
 	private String title;
-
-	private long chatId;
-	private String chatSlug;
-	private String chatLink;
+	private String description;
 
 	private List<Post> digests;
 
-	public DigestModel(List<Post> digests, String title, long chatId, String chatSlug, String chatLink) {
+	public DigestModel(List<Post> digests, String title, String description) {
 		this.digests = digests;
 
 		this.title = title;
-
-		this.chatId = chatId;
-		this.chatSlug = chatSlug;
-		this.chatLink = chatLink;
+		this.description = description;
 	}
 
 	public String getTitle() {
@@ -31,28 +25,12 @@ public class DigestModel {
 		this.title = title;
 	}
 
-	public long getChatId() {
-		return chatId;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setChatId(long chatId) {
-		this.chatId = chatId;
-	}
-
-	public String getChatSlug() {
-		return chatSlug;
-	}
-
-	public void setChatSlug(String chatSlug) {
-		this.chatSlug = chatSlug;
-	}
-
-	public String getChatLink() {
-		return chatLink;
-	}
-
-	public void setChatLink(String chatLink) {
-		this.chatLink = chatLink;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public List<Post> getDigests() {

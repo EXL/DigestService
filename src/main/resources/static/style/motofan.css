@@ -134,8 +134,16 @@ input, textarea, select {
 .digest {
 	min-height: 700px;
 }
-.span-right {
+.table-header, .table-header-right {
+	font-weight: bold;
+	font-size: 12px;
+}
+.table-header-right {
 	float: right;
+	color: #495143;
+}
+.table-header-right a {
+	color: darkred;
 }
 
 /* Footer */

@@ -20,6 +20,7 @@ import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.model.DigestModel;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.post.Post;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class SiteController {
 
 	private final SiteConfiguration config;
 	private final BotDigestRepository repository;
+	private final LocaleHelper locale;
 
 	@Value("${bot.motofan-chat-id}")
 	private long motofanChatId;
@@ -37,9 +39,10 @@ public class SiteController {
 	@Value("${bot.motofan-chat-url}")
 	private String motofanChatLink;
 
-	public SiteController(SiteConfiguration config, BotDigestRepository repository) {
+	public SiteController(SiteConfiguration config, BotDigestRepository repository, LocaleHelper locale) {
 		this.config = config;
 		this.repository = repository;
+		this.locale = locale;
 	}
 
 	@RequestMapping(path = "/")
@@ -60,10 +63,8 @@ public class SiteController {
 						PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId
 					)
 				),
-				"Title",
-				motofanChatId,
-				config.getMotofanChatSlug(),
-				motofanChatLink
+				getMotofanTitle(),
+				getMotofanDescription()
 			)
 		);
 
@@ -74,6 +75,15 @@ public class SiteController {
 		model.addAttribute("entities", digestEntities);
 
 		return "index";
+	}
+
+	protected String getMotofanTitle() {
+		return locale.i18n("site.content.head.title");
+	}
+
+	protected String getMotofanDescription() {
+		return String.format(locale.i18n("site.content.head.description"),
+			motofanChatId, motofanChatLink, config.getMotofanChatSlug());
 	}
 
 	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities) {

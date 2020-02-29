@@ -5,9 +5,8 @@
 			<!--/*@thymesVar id="posts" type="ru.exlmoto.digest.site.model.DigestModel"*/-->
 			<div th:fragment="digest" class="digest">
 				<div class="title">
-					<span th:utext="${posts.title}"></span>
-					<span class="span-right" th:with="id=#{site.content.title.chat.id}" th:text="${#strings.replace(id, '%id%', posts.chatId)}"></span>,
-					<span class="span-right" th:utext="${posts.chatLink}" ></span>
+					<span class="table-header" th:utext="${posts.title}"></span>
+					<span class="table-header-right" th:utext="${posts.description}" ></span>
 				</div>
 			</div>
 		</div>

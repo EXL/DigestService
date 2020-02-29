@@ -4,9 +4,8 @@
 		<div class="page">
 			<!--/*@thymesVar id="posts" type="ru.exlmoto.digest.site.model.DigestModel"*/-->
 			<div th:fragment="digest" class="digest">
-				<div class="title">
-					<span class="table-header" th:utext="${posts.title}"></span>
-					<span class="table-header-right" th:utext="${posts.description}" ></span>
+				<div class="table-header">
+					<img class="table-header-image" src="../static/image/thread.png" th:src="@{/image/thread.png}" alt="Go!" th:alt="#{site.content.head.icon.title}" title="Go!" th:title="#{site.content.head.icon.title}" width="15" height="14"/><span class="table-header-title" th:utext="${posts.title}"></span><span class="table-header-description" th:utext="${posts.description}" ></span>
 				</div>
 			</div>
 		</div>

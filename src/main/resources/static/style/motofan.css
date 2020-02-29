@@ -134,16 +134,24 @@ input, textarea, select {
 .digest {
 	min-height: 700px;
 }
-.table-header, .table-header-right {
+.table-header {
+	display: flex;
+	background: #F9BC01;
+	padding: 15px;
+}
+.table-header-title, .table-header-description {
 	font-weight: bold;
 	font-size: 12px;
 }
-.table-header-right {
-	float: right;
+.table-header-description {
+	margin-left: auto;
 	color: #495143;
 }
-.table-header-right a {
+.table-header-description a {
 	color: darkred;
+}
+.table-header-image {
+	margin-right: 3px;
 }
 
 /* Footer */

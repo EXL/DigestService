@@ -27,6 +27,8 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class SiteController {
@@ -120,11 +122,11 @@ public class SiteController {
 					new Post(
 						String.valueOf(digest.getId()),
 						username,
-						filterUsername(username),
+						filterUsername(username, false),
 						filterAvatarLink(user.getAvatar()),
 						filterGroup(username),
 						filterDateAndTime(digest.getDate()),
-						digest.getDigest()
+						activateUsers(activateLinks(digest.getDigest()))
 					)
 				);
 			}
@@ -133,20 +135,45 @@ public class SiteController {
 		return new ArrayList<>();
 	}
 
-	protected String filterUsername(String username) {
+	protected String activateUsers(String digest) {
+		Matcher matcher = Pattern.compile("\\B@[a-z0-9_-]+",
+			Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL).matcher(digest);
+		StringBuffer stringBuffer = new StringBuffer();
+		while (matcher.find()) {
+			matcher.appendReplacement(stringBuffer, filterUsername(matcher.group(0).trim(), true));
+		}
+		matcher.appendTail(stringBuffer);
+		return stringBuffer.toString();
+	}
+
+	// https://stackoverflow.com/a/28269120
+	protected String activateLinks(String digest) {
+		Matcher matcher =
+			Pattern.compile("((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)",
+			Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL).matcher(digest);
+		StringBuffer stringBuffer = new StringBuffer();
+		while (matcher.find()) {
+			matcher.appendReplacement(stringBuffer,
+				String.format("<a href=\"%1$s\" title=\"%1$s\" target=\"_blank\">%1$s</a>", matcher.group(0).trim()));
+		}
+		matcher.appendTail(stringBuffer);
+		return stringBuffer.toString();
+	}
+
+	protected String filterUsername(String username, boolean at) {
 		switch (checkGroup(username)) {
 			default:
 			case Guest: {
 				return username;
 			}
 			case User: {
-				return getUsernameLink(username, "member-user");
+				return getUsernameLink(username, "member-user", at);
 			}
 			case Moderator: {
-				return getUsernameLink(username, "member-moderator");
+				return getUsernameLink(username, "member-moderator", at);
 			}
 			case Administrator: {
-				return getUsernameLink(username, "member-administrator");
+				return getUsernameLink(username, "member-administrator", at);
 			}
 		}
 	}
@@ -177,10 +204,11 @@ public class SiteController {
 		return locale.i18n("site.content.date.time.wrong");
 	}
 
-	protected String getUsernameLink(String username, String className) {
+	protected String getUsernameLink(String username, String className, boolean at) {
 		String usernameWithoutAt = dropAt(username);
 		return String.format("<a href=\"%s\" title=\"%s\" target=\"_blank\"><span class=\"%s\">%s</span></a>",
-			filter.checkLink(telegramShortUrl) + usernameWithoutAt, username, className, usernameWithoutAt);
+			filter.checkLink(telegramShortUrl) + usernameWithoutAt, username, className,
+			(at) ? username :usernameWithoutAt);
 	}
 
 	protected Group checkGroup(String username) {

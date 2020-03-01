@@ -95,7 +95,7 @@ public class SiteController {
 					new Post(
 						digest.getId(),
 						user.getUsername(),
-						user.getAvatar(),
+						filterAvatarLink(user.getAvatar()),
 						"Some Group",
 						String.valueOf(digest.getDate()),
 						String.valueOf(digest.getDate()),
@@ -106,6 +106,10 @@ public class SiteController {
 			return posts;
 		}
 		return new ArrayList<>();
+	}
+
+	protected String filterAvatarLink(String avatarLink) {
+		return (avatarLink != null) ? "https://lab.exlmoto.ru/proxy/" + avatarLink.substring(avatarLink.indexOf("://") + 3) : null;
 	}
 
 	protected int getPageCount(long count, int pagePosts) {

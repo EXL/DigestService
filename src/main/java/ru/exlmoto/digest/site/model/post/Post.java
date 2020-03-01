@@ -8,11 +8,10 @@ public class Post {
 	private String group;
 
 	private String date;
-	private String time;
 
 	private String post;
 
-	public Post(long id, String username, String avatar, String group, String date, String time, String post) {
+	public Post(long id, String username, String avatar, String group, String date, String post) {
 		this.id = id;
 
 		this.username = username;
@@ -20,7 +19,6 @@ public class Post {
 		this.group = group;
 
 		this.date = date;
-		this.time = time;
 		this.post = post;
 	}
 
@@ -62,14 +60,6 @@ public class Post {
 
 	public void setDate(String date) {
 		this.date = date;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
 	}
 
 	public String getPost() {

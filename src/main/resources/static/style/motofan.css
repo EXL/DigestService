@@ -185,6 +185,7 @@ input, textarea, select {
 .date-details, .number-details, .user-details {
 	font-size: 10px;
 	line-height: 140%;
+	color: #495143;
 }
 .date-details {
 	float: left;

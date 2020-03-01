@@ -46,16 +46,16 @@ public class SiteController {
 		Administrator
 	}
 
+	@Value("${general.date-format}")
+	private String dateFormat;
+
 	@Value("${bot.motofan-chat-id}")
 	private long motofanChatId;
 
 	@Value("${bot.motofan-chat-url}")
 	private String motofanChatUrl;
 
-	@Value("bot.admins")
-	private String[] administrators;
-
-	@Value("bot.telegram-short-url")
+	@Value("${bot.telegram-short-url}")
 	private String telegramShortUrl;
 
 	public SiteController(SiteConfiguration config,
@@ -115,14 +115,14 @@ public class SiteController {
 			List<Post> posts = new ArrayList<>();
 			for (BotDigestEntity digest : digestEntities) {
 				BotDigestUserEntity user = digest.getUser();
+				String username = user.getUsername();
 				posts.add(
 					new Post(
 						digest.getId(),
-						filterUsername(user.getUsername()),
+						filterUsername(username),
 						filterAvatarLink(user.getAvatar()),
-						"Some Group",
-						String.valueOf(digest.getDate()),
-						String.valueOf(digest.getDate()),
+						filterGroup(username),
+						filterDateAndTime(digest.getDate()),
 						digest.getDigest()
 					)
 				);
@@ -148,6 +148,32 @@ public class SiteController {
 				return getUsernameLink(username, "member-administrator");
 			}
 		}
+	}
+
+	protected String filterGroup(String username) {
+		switch (checkGroup(username)) {
+			default:
+			case Guest: {
+				return locale.i18n("site.content.group.guest");
+			}
+			case User: {
+				return locale.i18n("site.content.group.user");
+			}
+			case Moderator: {
+				return locale.i18n("site.content.group.moderator");
+			}
+			case Administrator: {
+				return locale.i18n("site.content.group.administrator");
+			}
+		}
+	}
+
+	protected String filterDateAndTime(long timestamp) {
+		String[] dateAndTime = filter.getDateFromTimeStamp(dateFormat, timestamp).split(" ");
+		if (dateAndTime.length == 2) {
+			return String.format(locale.i18n("site.content.date.time"), dateAndTime[0], dateAndTime[1]);
+		}
+		return locale.i18n("site.content.date.time.wrong");
 	}
 
 	protected String getUsernameLink(String username, String className) {

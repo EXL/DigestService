@@ -12,8 +12,12 @@ import java.util.Locale;
 public class SiteConfiguration {
 	private int pagePosts;
 	private int pageDeep;
+
 	private String motofanChatSlug;
 	private String[] moderators;
+
+	private String proxy;
+	private boolean proxyEnabled;
 
 	/*
 	@Bean
@@ -54,5 +58,21 @@ public class SiteConfiguration {
 
 	public void setModerators(String[] moderators) {
 		this.moderators = moderators;
+	}
+
+	public String getProxy() {
+		return proxy;
+	}
+
+	public void setProxy(String proxy) {
+		this.proxy = proxy;
+	}
+
+	public boolean isProxyEnabled() {
+		return proxyEnabled;
+	}
+
+	public void setProxyEnabled(boolean proxyEnabled) {
+		this.proxyEnabled = proxyEnabled;
 	}
 }

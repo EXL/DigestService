@@ -118,7 +118,8 @@ public class SiteController {
 				String username = user.getUsername();
 				posts.add(
 					new Post(
-						digest.getId(),
+						String.valueOf(digest.getId()),
+						username,
 						filterUsername(username),
 						filterAvatarLink(user.getAvatar()),
 						filterGroup(username),
@@ -201,7 +202,14 @@ public class SiteController {
 	}
 
 	protected String filterAvatarLink(String avatarLink) {
-		return (avatarLink != null) ? "https://lab.exlmoto.ru/proxy/" + avatarLink.substring(avatarLink.indexOf("://") + 3) : null;
+		if (avatarLink != null) {
+			if (config.isProxyEnabled()) {
+				return filter.checkLink(config.getProxy()) + avatarLink.substring(avatarLink.indexOf("://") + 3);
+			} else {
+				return avatarLink;
+			}
+		}
+		return null;
 	}
 
 	protected int getPageCount(long count, int pagePosts) {

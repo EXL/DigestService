@@ -1,33 +1,41 @@
 package ru.exlmoto.digest.site.model.post;
 
 public class Post {
-	private long id;
+	private String description_html;
 
 	private String username;
+	private String username_html;
 	private String avatar;
 	private String group;
 
 	private String date;
 
-	private String post;
+	private String post_html;
 
-	public Post(long id, String username, String avatar, String group, String date, String post) {
-		this.id = id;
+	public Post(String description_html,
+	            String username,
+	            String username_html,
+	            String avatar,
+	            String group,
+	            String date,
+	            String post_html) {
+		this.description_html = description_html;
 
 		this.username = username;
+		this.username_html = username_html;
 		this.avatar = avatar;
 		this.group = group;
 
 		this.date = date;
-		this.post = post;
+		this.post_html = post_html;
 	}
 
-	public long getId() {
-		return id;
+	public String getDescription_html() {
+		return description_html;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setDescription_html(String description_html) {
+		this.description_html = description_html;
 	}
 
 	public String getUsername() {
@@ -36,6 +44,14 @@ public class Post {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getUsername_html() {
+		return username_html;
+	}
+
+	public void setUsername_html(String username_html) {
+		this.username_html = username_html;
 	}
 
 	public String getAvatar() {
@@ -62,11 +78,11 @@ public class Post {
 		this.date = date;
 	}
 
-	public String getPost() {
-		return post;
+	public String getPost_html() {
+		return post_html;
 	}
 
-	public void setPost(String post) {
-		this.post = post;
+	public void setPost_html(String post_html) {
+		this.post_html = post_html;
 	}
 }

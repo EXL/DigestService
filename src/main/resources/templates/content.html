@@ -9,10 +9,10 @@
 					<table class="digest-post" th:each="digest : ${posts.digests}">
 						<tr>
 							<td class="cell-name">
-								<span class="username" th:utext="${digest.username}"></span>
+								<span class="username" th:utext="${digest.username_html}"></span>
 							</td>
 							<td class="cell-details">
-								<span class="date-details"><img class="digest-icon" src="../static/image/post.png" th:src="@{/image/post.png}" alt="Post"/><span th:text="${digest.date}">Date</span></span><span class="number-details" th:text="'Message ID: ' + ${digest.id}"></span>
+								<span class="date-details"><img class="digest-icon" src="../static/image/post.png" th:src="@{/image/post.png}" alt="Post"/><span th:text="${digest.date}">Date</span></span><span class="number-details" th:text="'Message ID: ' + ${digest.description_html}"></span>
 							</td>
 						</tr>
 						<tr>
@@ -20,7 +20,7 @@
 								<span class="user-details"><img th:if="${digest.avatar != null}" width="128" height="128" alt="Not Available" th:alt="#{site.content.avatar.general.alt}" src="../static/image/avatar.png" th:src="${digest.avatar}" th:title="${digest.username}"/><img th:unless="${digest.avatar != null}" width="128" height="128" alt="Default Avatar" th:alt="#{site.content.avatar.default.alt}" src="../static/image/avatar.png" th:src="@{/image/avatar.png}" th:title="${digest.username}"/><br/><br/><span th:text="${digest.group}"></span></span>
 							</td>
 							<td class="cell-digest">
-								<div class="digest-content" th:text="${digest.post}"></div>
+								<div class="digest-content" th:text="${digest.post_html}"></div>
 							</td>
 						</tr>
 						<tr></tr>

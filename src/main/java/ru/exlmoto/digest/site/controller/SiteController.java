@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.thymeleaf.util.ArrayUtils;
+
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
@@ -87,18 +88,13 @@ public class SiteController {
 				getDigestEntities(
 					repository.findBotDigestEntitiesByChat(
 						PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId
-					)
+					),
+					current
 				),
 				getMotofanTitle(),
 				getMotofanDescription()
 			)
 		);
-
-		Page<BotDigestEntity> digestEntities =
-			repository.findBotDigestEntitiesByChat(PageRequest.of(current - 1, pagePosts,
-				Sort.by(Sort.Order.asc("id"))), motofanChatId);
-
-		model.addAttribute("entities", digestEntities);
 
 		return "index";
 	}
@@ -112,15 +108,16 @@ public class SiteController {
 			motofanChatId, motofanChatUrl, config.getMotofanChatSlug());
 	}
 
-	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities) {
+	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities, int current) {
 		if (digestEntities != null) {
 			List<Post> posts = new ArrayList<>();
+			int count = (current - 1) * config.getPagePosts();
 			for (BotDigestEntity digest : digestEntities) {
 				BotDigestUserEntity user = digest.getUser();
 				String username = user.getUsername();
 				posts.add(
 					new Post(
-						String.valueOf(digest.getId()),
+						filterDescription(current, ++count, digest.getId()),
 						username,
 						filterUsername(username, false),
 						filterAvatarLink(user.getAvatar()),
@@ -133,6 +130,11 @@ public class SiteController {
 			return posts;
 		}
 		return new ArrayList<>();
+	}
+
+	protected String filterDescription(int page, int count, long id) {
+		return String.format(locale.i18n("site.content.description"),
+			filter.checkLink(config.getAddress()) + "?page=" + page + "#" + id, count, id);
 	}
 
 	protected String activateUsers(String digest) {

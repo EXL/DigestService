@@ -10,6 +10,8 @@ import java.util.Locale;
 
 @ConfigurationProperties(prefix = "site")
 public class SiteConfiguration {
+	private String address;
+
 	private int pagePosts;
 	private int pageDeep;
 
@@ -27,6 +29,14 @@ public class SiteConfiguration {
 		return sessionLocaleResolver;
 	}
 	 */
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public int getPagePosts() {
 		return pagePosts;

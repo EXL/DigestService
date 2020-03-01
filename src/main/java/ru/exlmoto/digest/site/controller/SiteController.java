@@ -72,6 +72,37 @@ public class SiteController {
 		this.filter = filter;
 	}
 
+	@RequestMapping(path = "/search")
+	public String search(@RequestParam(name = "page", required = false) String page,
+	                     @RequestParam(name = "text", required = false) String text,
+	                     Model model) {
+		int pagePosts = config.getPagePosts();
+		int pageDeep = config.getPageDeep();
+		int pageCount = getPageCount(repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(text,
+			motofanChatId), pagePosts);
+		int current = getCurrentPage(page, pageCount);
+
+		model.addAttribute("goto", new GoToPageForm(String.valueOf(current), "/search?text=" + text));
+		model.addAttribute("pager", new PagerModel(current, pageCount,
+			current - ((pageDeep / 2) + 1), current + (pageDeep / 2)));
+		model.addAttribute(
+			"posts",
+			new DigestModel(
+				getDigestEntities(
+					repository.findByDigestContainingIgnoreCaseAndChatEquals(
+						PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))),
+						text,
+						motofanChatId
+					),
+					current
+				),
+				getMotofanTitle(),
+				getMotofanDescription()
+			)
+		);
+		return "index";
+	}
+
 	@RequestMapping(path = "/")
 	public String index(@RequestParam(name = "page", required = false) String page, Model model) {
 		int pagePosts = config.getPagePosts();

@@ -218,6 +218,12 @@ input, textarea, select {
 	background: #E6AD00;
 	height: 5px;
 }
+.member-moderator {
+	color: blue;
+}
+.member-administrator {
+	color: red;
+}
 
 /* Footer */
 .copyright {

@@ -9,7 +9,7 @@
 					<table class="digest-post" th:each="digest : ${posts.digests}">
 						<tr>
 							<td class="cell-name">
-								<span class="username" th:text="${digest.username}"></span>
+								<span class="username" th:utext="${digest.username}"></span>
 							</td>
 							<td class="cell-details">
 								<span class="date-details"><img class="digest-icon" src="../static/image/post.png" th:src="@{/image/post.png}" alt="Post"/><span th:text="${digest.date}">Date</span></span><span class="number-details" th:text="'Message ID: ' + ${digest.id}"></span>

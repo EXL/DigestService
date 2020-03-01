@@ -13,6 +13,7 @@ public class SiteConfiguration {
 	private int pagePosts;
 	private int pageDeep;
 	private String motofanChatSlug;
+	private String[] moderators;
 
 	/*
 	@Bean
@@ -45,5 +46,13 @@ public class SiteConfiguration {
 
 	public void setMotofanChatSlug(String motofanChatSlug) {
 		this.motofanChatSlug = motofanChatSlug;
+	}
+
+	public String[] getModerators() {
+		return moderators;
+	}
+
+	public void setModerators(String[] moderators) {
+		this.moderators = moderators;
 	}
 }

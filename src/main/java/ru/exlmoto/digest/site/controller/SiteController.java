@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.thymeleaf.util.ArrayUtils;
+import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
@@ -20,6 +22,7 @@ import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.model.DigestModel;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.post.Post;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.ArrayList;
@@ -33,16 +36,37 @@ public class SiteController {
 	private final BotDigestRepository repository;
 	private final LocaleHelper locale;
 
+	private final BotHelper helper;
+	private final FilterHelper filter;
+
+	private enum Group {
+		Guest,
+		User,
+		Moderator,
+		Administrator
+	}
+
 	@Value("${bot.motofan-chat-id}")
 	private long motofanChatId;
 
 	@Value("${bot.motofan-chat-url}")
-	private String motofanChatLink;
+	private String motofanChatUrl;
 
-	public SiteController(SiteConfiguration config, BotDigestRepository repository, LocaleHelper locale) {
+	@Value("bot.admins")
+	private String[] administrators;
+
+	@Value("bot.telegram-short-url")
+	private String telegramShortUrl;
+
+	public SiteController(SiteConfiguration config,
+	                      BotDigestRepository repository,
+	                      LocaleHelper locale,
+	                      BotHelper helper, FilterHelper filter) {
 		this.config = config;
 		this.repository = repository;
 		this.locale = locale;
+		this.helper = helper;
+		this.filter = filter;
 	}
 
 	@RequestMapping(path = "/")
@@ -83,7 +107,7 @@ public class SiteController {
 
 	protected String getMotofanDescription() {
 		return String.format(locale.i18n("site.content.head.description"),
-			motofanChatId, motofanChatLink, config.getMotofanChatSlug());
+			motofanChatId, motofanChatUrl, config.getMotofanChatSlug());
 	}
 
 	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities) {
@@ -94,7 +118,7 @@ public class SiteController {
 				posts.add(
 					new Post(
 						digest.getId(),
-						user.getUsername(),
+						filterUsername(user.getUsername()),
 						filterAvatarLink(user.getAvatar()),
 						"Some Group",
 						String.valueOf(digest.getDate()),
@@ -106,6 +130,48 @@ public class SiteController {
 			return posts;
 		}
 		return new ArrayList<>();
+	}
+
+	protected String filterUsername(String username) {
+		switch (checkGroup(username)) {
+			default:
+			case Guest: {
+				return username;
+			}
+			case User: {
+				return getUsernameLink(username, "member-user");
+			}
+			case Moderator: {
+				return getUsernameLink(username, "member-moderator");
+			}
+			case Administrator: {
+				return getUsernameLink(username, "member-administrator");
+			}
+		}
+	}
+
+	protected String getUsernameLink(String username, String className) {
+		String usernameWithoutAt = dropAt(username);
+		return String.format("<a href=\"%s\" title=\"%s\" target=\"_blank\"><span class=\"%s\">%s</span></a>",
+			filter.checkLink(telegramShortUrl) + usernameWithoutAt, username, className, usernameWithoutAt);
+	}
+
+	protected Group checkGroup(String username) {
+		if (helper.isUserAdmin(dropAt(username))) {
+			return Group.Administrator;
+		} else if (ArrayUtils.contains(config.getModerators(), dropAt(username))) {
+			return Group.Moderator;
+		} else if (username.startsWith("@")) {
+			return Group.User;
+		}
+		return Group.Guest;
+	}
+
+	protected String dropAt(String username) {
+		if (username.startsWith("@")) {
+			return username.substring(1);
+		}
+		return username;
 	}
 
 	protected String filterAvatarLink(String avatarLink) {

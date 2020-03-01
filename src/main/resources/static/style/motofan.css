@@ -23,6 +23,9 @@ table, tr, td {
 	font-size: 11px;
 	color: #222;
 }
+td {
+	padding: 5px;
+}
 input, textarea, select {
 	background: #FFF;
 	border: 1px solid #FE9855;
@@ -152,6 +155,68 @@ input, textarea, select {
 }
 .table-header-image {
 	margin-right: 3px;
+}
+.digest-post {
+	border-spacing: 0;
+}
+.cell-name {
+	background: #FFEFD4;
+	border-right: 1px solid white;
+	border-top: 1px solid white;
+	width: 1%;
+	vertical-align: middle;
+}
+.username {
+	color: #003;
+	font-size: 12px;
+	font-weight: bold;
+}
+.username a:link,
+.username a:visited,
+.username a:active {
+	font-size: 12px;
+}
+.cell-details {
+	background: #FFEFD4;
+	border-top: 1px solid white;
+	width: 99%;
+	vertical-align: middle;
+}
+.date-details, .number-details, .user-details {
+	font-size: 10px;
+	line-height: 140%;
+}
+.date-details {
+	float: left;
+}
+.number-details {
+	float: right;
+}
+.digest-icon {
+	padding-right: 3px;
+}
+.cell-avatar {
+	border-right: 1px solid white;
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
+	vertical-align: top;
+	min-width: 128px;
+	background: #FFF9EC;
+}
+.cell-digest {
+	border-top: 1px solid white;
+	width: 100%;
+	vertical-align: top;
+	background: #FFF9EC;
+}
+.digest-content {
+	min-height: 200px;
+	font-size: 12px;
+	line-height: 160%;
+}
+.divider {
+	background: #E6AD00;
+	height: 5px;
 }
 
 /* Footer */

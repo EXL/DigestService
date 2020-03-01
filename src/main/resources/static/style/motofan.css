@@ -106,7 +106,6 @@ input, textarea, select {
 /* Pager */
 .paginator {
 	margin-top: 10px;
-	margin-bottom: 10px;
 }
 .page-link, .page-link-active {
 	color: #495143;
@@ -135,7 +134,8 @@ input, textarea, select {
 
 /* Content */
 .digest {
-	min-height: 400px;
+	min-height: 250px;
+	margin-top: 10px;
 }
 .table-header {
 	display: flex;
@@ -226,6 +226,7 @@ input, textarea, select {
 	padding: 8px;
 	text-align: center;
 	line-height: 135%;
+	margin-top: 10px;
 }
 .copyright a {
 	text-decoration: none;

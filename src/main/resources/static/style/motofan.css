@@ -141,6 +141,7 @@ input, textarea, select {
 	display: flex;
 	background: #F9BC01;
 	padding: 15px;
+	border-bottom: 1px solid #FF822F;
 }
 .table-header-title, .table-header-description {
 	font-weight: bold;

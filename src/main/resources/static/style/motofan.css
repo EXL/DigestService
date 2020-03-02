@@ -160,6 +160,9 @@ input, textarea, select {
 .digest-post {
 	border-spacing: 0;
 }
+.digest-post-highlight {
+	border: 2px dashed orangered;
+}
 .cell-name {
 	background: #FFEFD4;
 	border-right: 1px solid white;

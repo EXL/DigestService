@@ -94,6 +94,7 @@ public class SiteController {
 						text,
 						motofanChatId
 					),
+					null,
 					current
 				),
 				getMotofanTitle(),
@@ -111,7 +112,9 @@ public class SiteController {
 			int index = repository.findBotDigestEntitiesByChat(Sort.by(Sort.Order.asc("id")),
 				motofanChatId).indexOf(new BotDigestEntity(postId));
 			if (index != -1) {
-				return "redirect:/?page=" + (index / config.getPagePosts() + 1) + "#" + id;
+				return String.format(
+					"redirect:/?page=%1$d&post=%2$s#%2$s", (index / config.getPagePosts() + 1), id
+				);
 			}
 		}
 		return "redirect:/";
@@ -119,7 +122,7 @@ public class SiteController {
 
 	@RequestMapping(path = "/")
 	public String index(@RequestParam(name = "page", required = false) String page,
-	                    @RequestParam(name = "highlight", required = false) String highlight,
+	                    @RequestParam(name = "post", required = false) String post,
 	                    Model model) {
 		int pagePosts = config.getPagePosts();
 		int pageDeep = config.getPageDeep();
@@ -136,6 +139,7 @@ public class SiteController {
 					repository.findBotDigestEntitiesByChat(
 						PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId
 					),
+					post,
 					current
 				),
 				getMotofanTitle(),
@@ -155,16 +159,18 @@ public class SiteController {
 			motofanChatId, motofanChatUrl, config.getMotofanChatSlug());
 	}
 
-	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities, int current) {
+	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities, String postId, int current) {
 		if (digestEntities != null) {
 			List<Post> posts = new ArrayList<>();
 			int count = (current - 1) * config.getPagePosts();
 			for (BotDigestEntity digest : digestEntities) {
 				BotDigestUserEntity user = digest.getUser();
 				String username = user.getUsername();
+				long id = digest.getId();
 				posts.add(
 					new Post(
-						filterDescription(++count, digest.getId()),
+						highlightPost(postId, id),
+						filterDescription(++count, id),
 						username,
 						filterUsername(username, false),
 						filterAvatarLink(user.getAvatar()),
@@ -302,6 +308,11 @@ public class SiteController {
 			}
 		}
 		return null;
+	}
+
+	protected boolean highlightPost(String postId, long id) {
+		Long post = getCurrentPost(postId);
+		return (post != null && post.equals(id));
 	}
 
 	protected int getCurrentPage(String page, int pageCount) {

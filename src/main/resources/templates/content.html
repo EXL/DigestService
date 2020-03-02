@@ -6,7 +6,7 @@
 			<div th:fragment="digest" class="digest">
 				<div th:if="${!posts.digests.isEmpty()}">
 					<span class="table-header"><img class="table-header-image" src="../static/image/thread.png" th:src="@{/image/thread.png}" alt="Go!" th:alt="#{site.content.head.icon.title}" title="Go!" th:title="#{site.content.head.icon.title}" width="15" height="14"/><span class="table-header-title" th:utext="${posts.title}"></span><span class="table-header-description" th:utext="${posts.description}" ></span></span>
-					<table class="digest-post" th:each="digest : ${posts.digests}">
+					<table class="digest-post" th:each="digest : ${posts.digests}" th:class="${digest.highlight ? 'digest-post-highlight' : 'digest-post'}">
 						<tr>
 							<td class="cell-name">
 								<span class="username" th:utext="${digest.username_html}"></span>

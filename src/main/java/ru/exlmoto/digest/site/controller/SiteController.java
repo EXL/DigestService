@@ -18,8 +18,10 @@ import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.GoToPageForm;
+import ru.exlmoto.digest.site.form.SearchForm;
 import ru.exlmoto.digest.site.model.DigestModel;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.post.Post;
@@ -37,6 +39,7 @@ public class SiteController {
 
 	private final SiteConfiguration config;
 	private final BotDigestRepository repository;
+	private final BotDigestUserRepository userRepository;
 	private final LocaleHelper locale;
 
 	private final BotHelper helper;
@@ -63,10 +66,13 @@ public class SiteController {
 
 	public SiteController(SiteConfiguration config,
 	                      BotDigestRepository repository,
+	                      BotDigestUserRepository userRepository,
 	                      LocaleHelper locale,
-	                      BotHelper helper, FilterHelper filter) {
+	                      BotHelper helper,
+	                      FilterHelper filter) {
 		this.config = config;
 		this.repository = repository;
+		this.userRepository = userRepository;
 		this.locale = locale;
 		this.helper = helper;
 		this.filter = filter;
@@ -74,26 +80,57 @@ public class SiteController {
 
 	@RequestMapping(path = "/search")
 	public String search(@RequestParam(name = "page", required = false) String page,
-	                     @RequestParam(name = "text", required = false) String text,
-	                     Model model) {
+	                     @RequestParam(name = "text", required = false, defaultValue = "") String text,
+	                     @RequestParam(name = "user", required = false) String user,
+	                     Model model,
+	                     SearchForm searchForm,
+	                     GoToPageForm goToPageForm) {
 		int pagePosts = config.getPagePosts();
 		int pageDeep = config.getPageDeep();
-		int pageCount = getPageCount(repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(text,
-			motofanChatId), pagePosts);
+
+		long count;
+		BotDigestUserEntity digestUser = null;
+
+		Long userId = getLong(user);
+		if (userId != null) {
+			digestUser = userRepository.getOne(userId);
+			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(text,
+				digestUser, motofanChatId);
+		} else {
+			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(text, motofanChatId);
+		}
+		int pageCount = getPageCount(count, pagePosts);
 		int current = getCurrentPage(page, pageCount);
 
-		model.addAttribute("goto", new GoToPageForm(String.valueOf(current), "/search?text=" + text));
+		goToPageForm.setPage(String.valueOf(current));
+		goToPageForm.setText(text);
+		if (userId != null) {
+			goToPageForm.setUser(user);
+			goToPageForm.setPath("/search?text=" + text + "&user=" + userId);
+		} else {
+			goToPageForm.setPath("/search?text=" + text);
+		}
+
+		model.addAttribute("goto", goToPageForm);
+		model.addAttribute("find", searchForm);
 		model.addAttribute("pager", new PagerModel(current, pageCount,
 			current - ((pageDeep / 2) + 1), current + (pageDeep / 2)));
 		model.addAttribute(
 			"posts",
 			new DigestModel(
 				getDigestEntities(
-					repository.findByDigestContainingIgnoreCaseAndChatEquals(
-						PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))),
-						text,
-						motofanChatId
-					),
+					(userId != null) ?
+						repository.findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(
+							PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))),
+							text,
+							digestUser,
+							motofanChatId
+						) :
+						repository.findByDigestContainingIgnoreCaseAndChatEquals(
+							PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))),
+							text,
+							motofanChatId
+						),
 					null,
 					current
 				),
@@ -107,7 +144,7 @@ public class SiteController {
 
 	@RequestMapping(path = "/jump")
 	public String jump(@RequestParam(name = "id") String id) {
-		Long postId = getCurrentPost(id);
+		Long postId = getLong(id);
 		if (postId != null) {
 			int index = repository.findBotDigestEntitiesByChat(Sort.by(Sort.Order.asc("id")),
 				motofanChatId).indexOf(new BotDigestEntity(postId));
@@ -130,6 +167,7 @@ public class SiteController {
 		int current = getCurrentPage(page, pageCount);
 
 		model.addAttribute("goto", new GoToPageForm(String.valueOf(current), "/"));
+		model.addAttribute("find", new SearchForm());
 		model.addAttribute("pager", new PagerModel(current, pageCount,
 			current - ((pageDeep / 2) + 1), current + (pageDeep / 2)));
 		model.addAttribute(
@@ -299,19 +337,19 @@ public class SiteController {
 		return ((((int) Math.max(Math.min(Integer.MAX_VALUE, count), Integer.MIN_VALUE)) - 1) / pagePosts) + 1;
 	}
 
-	protected Long getCurrentPost(String id) {
-		if (id != null) {
+	protected Long getLong(String id) {
+		if (id != null && !id.isEmpty()) {
 			try {
 				return Long.parseLong(id);
 			} catch (NumberFormatException nfe) {
-				log.warn(String.format("Cannot convert '%s' post id to long.", id), nfe);
+				log.warn(String.format("Cannot convert '%s' id to long.", id), nfe);
 			}
 		}
 		return null;
 	}
 
 	protected boolean highlightPost(String postId, long id) {
-		Long post = getCurrentPost(postId);
+		Long post = getLong(postId);
 		return (post != null && post.equals(id));
 	}
 

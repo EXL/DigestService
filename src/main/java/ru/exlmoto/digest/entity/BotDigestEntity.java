@@ -36,6 +36,10 @@ public class BotDigestEntity {
 
 	}
 
+	public BotDigestEntity(long id) {
+		this.id = id;
+	}
+
 	public BotDigestEntity(long chat, long date, long messageId, String digest, BotDigestUserEntity user) {
 		this.chat = chat;
 		this.date = date;
@@ -102,5 +106,20 @@ public class BotDigestEntity {
 			", digest=" + digest +
 			", user=" + user +
 			"}";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		BotDigestEntity that = (BotDigestEntity) o;
+
+		return id == that.id;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) (id ^ (id >>> 32));
 	}
 }

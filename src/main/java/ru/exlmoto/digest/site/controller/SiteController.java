@@ -100,7 +100,20 @@ public class SiteController {
 				getMotofanDescription()
 			)
 		);
+
 		return "index";
+	}
+
+	@RequestMapping(path = "/jump")
+	public String jump(@RequestParam(name = "id") String id) {
+		Long postId = getCurrentPost(id);
+		if (postId != null) {
+			int index = repository.findAll(Sort.by(Sort.Order.asc("id"))).indexOf(new BotDigestEntity(postId));
+			if (index != -1) {
+				return "redirect:/?page=" + (index / config.getPagePosts() + 1) + "#" + id;
+			}
+		}
+		return "redirect:/";
 	}
 
 	@RequestMapping(path = "/")
@@ -148,7 +161,7 @@ public class SiteController {
 				String username = user.getUsername();
 				posts.add(
 					new Post(
-						filterDescription(current, ++count, digest.getId()),
+						filterDescription(++count, digest.getId()),
 						username,
 						filterUsername(username, false),
 						filterAvatarLink(user.getAvatar()),
@@ -163,9 +176,9 @@ public class SiteController {
 		return new ArrayList<>();
 	}
 
-	protected String filterDescription(int page, int count, long id) {
+	protected String filterDescription(int count, long id) {
 		return String.format(locale.i18n("site.content.description"),
-			filter.checkLink(config.getAddress()) + "?page=" + page + "#" + id, count, id);
+			filter.checkLink(config.getAddress()) + "jump?id=" + id, count, id);
 	}
 
 	protected String activateUsers(String digest) {
@@ -275,6 +288,17 @@ public class SiteController {
 
 	protected int getPageCount(long count, int pagePosts) {
 		return ((((int) Math.max(Math.min(Integer.MAX_VALUE, count), Integer.MIN_VALUE)) - 1) / pagePosts) + 1;
+	}
+
+	protected Long getCurrentPost(String id) {
+		if (id != null) {
+			try {
+				return Long.parseLong(id);
+			} catch (NumberFormatException nfe) {
+				log.warn(String.format("Cannot convert '%s' post id to long.", id), nfe);
+			}
+		}
+		return null;
 	}
 
 	protected int getCurrentPage(String page, int pageCount) {

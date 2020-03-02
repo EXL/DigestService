@@ -108,7 +108,8 @@ public class SiteController {
 	public String jump(@RequestParam(name = "id") String id) {
 		Long postId = getCurrentPost(id);
 		if (postId != null) {
-			int index = repository.findAll(Sort.by(Sort.Order.asc("id"))).indexOf(new BotDigestEntity(postId));
+			int index = repository.findBotDigestEntitiesByChat(Sort.by(Sort.Order.asc("id")),
+				motofanChatId).indexOf(new BotDigestEntity(postId));
 			if (index != -1) {
 				return "redirect:/?page=" + (index / config.getPagePosts() + 1) + "#" + id;
 			}
@@ -117,7 +118,9 @@ public class SiteController {
 	}
 
 	@RequestMapping(path = "/")
-	public String index(@RequestParam(name = "page", required = false) String page, Model model) {
+	public String index(@RequestParam(name = "page", required = false) String page,
+	                    @RequestParam(name = "highlight", required = false) String highlight,
+	                    Model model) {
 		int pagePosts = config.getPagePosts();
 		int pageDeep = config.getPageDeep();
 		int pageCount = getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts);

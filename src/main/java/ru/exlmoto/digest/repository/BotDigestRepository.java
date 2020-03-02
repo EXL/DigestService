@@ -2,6 +2,7 @@ package ru.exlmoto.digest.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ public interface BotDigestRepository extends JpaRepository<BotDigestEntity, Long
 	Page<BotDigestEntity> findByDigestContainingIgnoreCaseAndChatEquals(Pageable pageable, String query, long chatId);
 
 	long countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(String query, long chatId);
+
+	List<BotDigestEntity> findBotDigestEntitiesByChat(Sort sort, long chatId);
 
 	///Page<BotDigestEntity> findByUserEqualsAndChatEquals(Pageable pageable, BotD user_id, long chatId);
 

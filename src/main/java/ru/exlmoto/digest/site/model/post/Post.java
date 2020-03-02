@@ -14,6 +14,9 @@ public class Post {
 
 	private String post_html;
 
+	private long user_id;
+	private String digests_html;
+
 	public Post(boolean highlight,
 	            String description_html,
 	            String username,
@@ -21,7 +24,9 @@ public class Post {
 	            String avatar,
 	            String group,
 	            String date,
-	            String post_html) {
+	            String post_html,
+	            long user_id,
+	            String digests_html) {
 		this.highlight = highlight;
 
 		this.description_html = description_html;
@@ -33,6 +38,9 @@ public class Post {
 
 		this.date = date;
 		this.post_html = post_html;
+
+		this.user_id = user_id;
+		this.digests_html = digests_html;
 	}
 
 	public boolean isHighlight() {
@@ -97,5 +105,21 @@ public class Post {
 
 	public void setPost_html(String post_html) {
 		this.post_html = post_html;
+	}
+
+	public long getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(long user_id) {
+		this.user_id = user_id;
+	}
+
+	public String getDigests_html() {
+		return digests_html;
+	}
+
+	public void setDigests_html(String digests_html) {
+		this.digests_html = digests_html;
 	}
 }

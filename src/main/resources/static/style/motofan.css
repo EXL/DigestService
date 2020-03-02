@@ -104,8 +104,14 @@ input, textarea, select {
 }
 
 /* Pager */
-.paginator {
+.controls {
 	margin-top: 10px;
+}
+.paginator {
+	display: inline;
+}
+.search-form {
+	display: inline;
 }
 .page-link, .page-link-active {
 	color: #495143;

@@ -4,16 +4,15 @@ public class GoToPageForm {
 	private String page;
 	private String path;
 	private String text;
+	private String user;
+
+	public GoToPageForm() {
+
+	}
 
 	public GoToPageForm(String page, String path) {
 		this.page = page;
 		this.path = path;
-	}
-
-	public GoToPageForm(String page, String path, String text) {
-		this.page = page;
-		this.path = path;
-		this.text = text;
 	}
 
 	public String getPage() {
@@ -38,5 +37,13 @@ public class GoToPageForm {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 }

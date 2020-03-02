@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<body>
+		<div class="page">
+			<!--/*@thymesVar id="find" type="ru.exlmoto.digest.site.form.SearchForm"*/-->
+			<form th:fragment="search-form" class="search-form" action="#" th:action="@{/search}" th:object="${find}" method="get">
+				<label class="page-label" for="#search-field" th:text="#{site.search.label}">Search:</label>
+				<input id="#search-field" type="text" th:field="*{text}" size="25" placeholder="Search..." th:placeholder="#{site.search.placeholder}"/>
+				<label class="page-label" for="#search-user" th:text="#{site.search.user.label}">User:</label>
+				<input id="#search-user" type="text" th:field="*{user}" size="25" placeholder="User ID..." th:placeholder="#{site.search.user.placeholder}"/>
+				<input type="submit" value="Find!" th:value="#{site.search.find}"/>
+			</form>
+		</div>
+	</body>
+</html>

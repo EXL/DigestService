@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.exlmoto.digest.entity.BotDigestEntity;
+import ru.exlmoto.digest.entity.BotDigestUserEntity;
 
 import java.util.List;
 
@@ -24,9 +25,16 @@ public interface BotDigestRepository extends JpaRepository<BotDigestEntity, Long
 
 	long countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(String query, long chatId);
 
-	List<BotDigestEntity> findBotDigestEntitiesByChat(Sort sort, long chatId);
+	Page<BotDigestEntity> findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(Pageable pageable,
+	                                                                                 String query,
+	                                                                                 BotDigestUserEntity user,
+	                                                                                 long chatId);
 
-	///Page<BotDigestEntity> findByUserEqualsAndChatEquals(Pageable pageable, BotD user_id, long chatId);
+	long countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(String query,
+	                                                                                  BotDigestUserEntity user,
+	                                                                                  long chatId);
+
+	List<BotDigestEntity> findBotDigestEntitiesByChat(Sort sort, long chatId);
 
 	@Transactional
 	void deleteBotDigestEntitiesByDateIsLessThanAndChatIsNot(long date, long chatId);

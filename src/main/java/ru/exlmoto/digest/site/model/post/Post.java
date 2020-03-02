@@ -1,6 +1,8 @@
 package ru.exlmoto.digest.site.model.post;
 
 public class Post {
+	private boolean highlight;
+
 	private String description_html;
 
 	private String username;
@@ -12,13 +14,16 @@ public class Post {
 
 	private String post_html;
 
-	public Post(String description_html,
+	public Post(boolean highlight,
+	            String description_html,
 	            String username,
 	            String username_html,
 	            String avatar,
 	            String group,
 	            String date,
 	            String post_html) {
+		this.highlight = highlight;
+
 		this.description_html = description_html;
 
 		this.username = username;
@@ -28,6 +33,14 @@ public class Post {
 
 		this.date = date;
 		this.post_html = post_html;
+	}
+
+	public boolean isHighlight() {
+		return highlight;
+	}
+
+	public void setHighlight(boolean highlight) {
+		this.highlight = highlight;
 	}
 
 	public String getDescription_html() {

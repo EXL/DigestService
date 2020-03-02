@@ -214,13 +214,21 @@ public class SiteController {
 						filterAvatarLink(user.getAvatar()),
 						filterGroup(username),
 						filterDateAndTime(digest.getDate()),
-						activateUsers(activateLinks(digest.getDigest()))
+						activateUsers(activateLinks(digest.getDigest())),
+						user.getId(),
+						filterDigestCount(user)
 					)
 				);
 			}
 			return posts;
 		}
 		return new ArrayList<>();
+	}
+
+	private String filterDigestCount(BotDigestUserEntity user) {
+		return String.format(locale.i18n("site.content.user.digests"),
+			filter.checkLink(config.getAddress()) + "search?user=" + user.getId(),
+			repository.countBotDigestEntitiesByUserEqualsAndChatEquals(user, motofanChatId));
 	}
 
 	protected String filterDescription(int count, long id) {

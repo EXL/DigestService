@@ -32,6 +32,7 @@ import javax.annotation.PostConstruct;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -94,9 +95,12 @@ public class SiteController {
 	                     @RequestParam(name = "user", required = false) String user,
 	                     Model model,
 	                     SearchForm searchForm,
-	                     GoToPageForm goToPageForm) {
+	                     GoToPageForm goToPageForm,
+	                     Locale lang) {
 		int pagePosts = config.getPagePosts();
 		int pageDeep = config.getPageDeep();
+
+		System.out.println(lang);
 
 		long count;
 		BotDigestUserEntity digestUser = null;
@@ -143,10 +147,11 @@ public class SiteController {
 						),
 					null,
 					current,
-					text
+					text,
+					lang
 				),
-				getMotofanTitleSearch(digestUser, text),
-				getMotofanDescription()
+				getMotofanTitleSearch(digestUser, text, lang),
+				getMotofanDescription(lang)
 			)
 		);
 
@@ -171,7 +176,8 @@ public class SiteController {
 	@RequestMapping(path = "/")
 	public String index(@RequestParam(name = "page", required = false) String page,
 	                    @RequestParam(name = "post", required = false) String post,
-	                    Model model) {
+	                    Model model,
+	                    Locale lang) {
 		int pagePosts = config.getPagePosts();
 		int pageDeep = config.getPageDeep();
 		int pageCount = getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts);
@@ -190,21 +196,22 @@ public class SiteController {
 					),
 					post,
 					current,
-					null
+					null,
+					lang
 				),
-				getMotofanTitle(),
-				getMotofanDescription()
+				getMotofanTitle(lang),
+				getMotofanDescription(lang)
 			)
 		);
 
 		return "index";
 	}
 
-	protected String getMotofanTitle() {
-		return locale.i18n("site.content.head.title");
+	protected String getMotofanTitle(Locale lang) {
+		return locale.i18nW("site.content.head.title", lang);
 	}
 
-	protected String getMotofanTitleSearch(BotDigestUserEntity user, String text) {
+	protected String getMotofanTitleSearch(BotDigestUserEntity user, String text, Locale lang) {
 		final int length = 20;
 		String query = "";
 		if (text != null && !text.isEmpty()) {
@@ -213,12 +220,13 @@ public class SiteController {
 		if (user != null) {
 			String username = ellipsisString(user.getUsername(), length, ellipsis, 1, false);
 			if (!query.isEmpty()) {
-				return String.format(locale.i18n("site.content.head.title.search.user.text"), query, username);
+				return String.format(locale.i18nW("site.content.head.title.search.user.text", lang),
+					query, username);
 			} else {
-				return String.format(locale.i18n("site.content.head.title.search.user"), username);
+				return String.format(locale.i18nW("site.content.head.title.search.user", lang), username);
 			}
 		}
-		return String.format(locale.i18n("site.content.head.title.search"), query);
+		return String.format(locale.i18nW("site.content.head.title.search", lang), query);
 	}
 
 	/***************************************************************** TODO: ************************************/
@@ -249,15 +257,16 @@ public class SiteController {
 	}
 	/***************************************************************** TODO: ************************************/
 
-	protected String getMotofanDescription() {
-		return String.format(locale.i18n("site.content.head.description"),
+	protected String getMotofanDescription(Locale lang) {
+		return String.format(locale.i18nW("site.content.head.description", lang),
 			motofanChatId, motofanChatUrl, config.getMotofanChatSlug());
 	}
 
 	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities,
 	                                       String postId,
 	                                       int current,
-	                                       String text) {
+	                                       String text,
+	                                       Locale lang) {
 		if (digestEntities != null) {
 			List<Post> posts = new ArrayList<>();
 			int count = (current - 1) * config.getPagePosts();
@@ -268,15 +277,15 @@ public class SiteController {
 				posts.add(
 					new Post(
 						highlightPost(postId, id),
-						filterDescription(++count, id),
+						filterDescription(++count, id, lang),
 						username,
 						filterUsername(username, false),
 						filterAvatarLink(user.getAvatar()),
-						filterGroup(username),
-						filterDateAndTime(digest.getDate()),
+						filterGroup(username, lang),
+						filterDateAndTime(digest.getDate(), lang),
 						activateUsers(activateLinks(filterHighlight(digest.getDigest(), text))),
 						user.getId(),
-						filterDigestCount(user)
+						filterDigestCount(user, lang)
 					)
 				);
 			}
@@ -315,14 +324,14 @@ public class SiteController {
 		return word;
 	}
 
-	private String filterDigestCount(BotDigestUserEntity user) {
-		return String.format(locale.i18n("site.content.user.digests"),
+	private String filterDigestCount(BotDigestUserEntity user, Locale lang) {
+		return String.format(locale.i18nW("site.content.user.digests", lang),
 			filter.checkLink(config.getAddress()) + "search?user=" + user.getId(),
 			repository.countBotDigestEntitiesByUserEqualsAndChatEquals(user, motofanChatId));
 	}
 
-	protected String filterDescription(int count, long id) {
-		return String.format(locale.i18n("site.content.description"),
+	protected String filterDescription(int count, long id, Locale lang) {
+		return String.format(locale.i18nW("site.content.description", lang),
 			filter.checkLink(config.getAddress()) + "jump?id=" + id, count, id);
 	}
 
@@ -372,30 +381,30 @@ public class SiteController {
 		}
 	}
 
-	protected String filterGroup(String username) {
+	protected String filterGroup(String username, Locale lang) {
 		switch (checkGroup(username)) {
 			default:
 			case Guest: {
-				return locale.i18n("site.content.group.guest");
+				return locale.i18nW("site.content.group.guest", lang);
 			}
 			case User: {
-				return locale.i18n("site.content.group.user");
+				return locale.i18nW("site.content.group.user", lang);
 			}
 			case Moderator: {
-				return locale.i18n("site.content.group.moderator");
+				return locale.i18nW("site.content.group.moderator", lang);
 			}
 			case Administrator: {
-				return locale.i18n("site.content.group.administrator");
+				return locale.i18nW("site.content.group.administrator", lang);
 			}
 		}
 	}
 
-	protected String filterDateAndTime(long timestamp) {
+	protected String filterDateAndTime(long timestamp, Locale lang) {
 		String[] dateAndTime = filter.getDateFromTimeStamp(dateFormat, timestamp).split(" ");
 		if (dateAndTime.length == 2) {
-			return String.format(locale.i18n("site.content.date.time"), dateAndTime[0], dateAndTime[1]);
+			return String.format(locale.i18nW("site.content.date.time", lang), dateAndTime[0], dateAndTime[1]);
 		}
-		return locale.i18n("site.content.date.time.wrong");
+		return locale.i18nW("site.content.date.time.wrong", lang);
 	}
 
 	protected String getUsernameLink(String username, String className, boolean at) {

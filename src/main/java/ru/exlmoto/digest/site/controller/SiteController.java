@@ -28,6 +28,8 @@ import ru.exlmoto.digest.site.model.post.Post;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
+import javax.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -65,6 +67,8 @@ public class SiteController {
 	@Value("${bot.telegram-short-url}")
 	private String telegramShortUrl;
 
+	private String ellipsis;
+
 	public SiteController(SiteConfiguration config,
 	                      BotDigestRepository repository,
 	                      BotDigestUserRepository userRepository,
@@ -77,6 +81,11 @@ public class SiteController {
 		this.locale = locale;
 		this.helper = helper;
 		this.filter = filter;
+	}
+
+	@PostConstruct
+	private void setUp() {
+		ellipsis = locale.i18n("bot.command.show.ellipsis");
 	}
 
 	@RequestMapping(path = "/search")
@@ -197,7 +206,6 @@ public class SiteController {
 
 	protected String getMotofanTitleSearch(BotDigestUserEntity user, String text) {
 		final int length = 20;
-		String ellipsis = locale.i18n("bot.command.show.ellipsis");
 		String query = "";
 		if (text != null && !text.isEmpty()) {
 			query = ellipsisString(text, length, ellipsis, 1, false);
@@ -332,7 +340,6 @@ public class SiteController {
 	// https://stackoverflow.com/a/28269120
 	protected String activateLinks(String digest) {
 		final int length = 100;
-		String ellipsis = locale.i18n("bot.command.show.ellipsis");
 		Matcher matcher =
 			Pattern.compile("((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)",
 			Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL).matcher(digest);
@@ -351,7 +358,7 @@ public class SiteController {
 		switch (checkGroup(username)) {
 			default:
 			case Guest: {
-				return username;
+				return ellipsisString(username, 16, ellipsis, 1, false);
 			}
 			case User: {
 				return getUsernameLink(username, "member-user", at);
@@ -393,9 +400,10 @@ public class SiteController {
 
 	protected String getUsernameLink(String username, String className, boolean at) {
 		String usernameWithoutAt = dropAt(username);
+		String name = (at) ? username : usernameWithoutAt;
 		return String.format("<a href=\"%s\" title=\"%s\" target=\"_blank\"><span class=\"%s\">%s</span></a>",
 			filter.checkLink(telegramShortUrl) + usernameWithoutAt, username, className,
-			(at) ? username :usernameWithoutAt);
+			ellipsisString(name, 16, ellipsis, 1, false));
 	}
 
 	protected Group checkGroup(String username) {

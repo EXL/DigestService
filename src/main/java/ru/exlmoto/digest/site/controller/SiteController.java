@@ -298,13 +298,17 @@ public class SiteController {
 
 	// https://stackoverflow.com/a/28269120
 	protected String activateLinks(String digest) {
+		final int length = 100;
+		String ellipsis = locale.i18n("bot.command.show.ellipsis");
 		Matcher matcher =
 			Pattern.compile("((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)",
 			Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL).matcher(digest);
 		StringBuffer stringBuffer = new StringBuffer();
 		while (matcher.find()) {
+			String url = matcher.group(0).trim();
+			String shortUrl = ellipsisString(url, length, ellipsis, 0, false);
 			matcher.appendReplacement(stringBuffer,
-				String.format("<a href=\"%1$s\" title=\"%1$s\" target=\"_blank\">%1$s</a>", matcher.group(0).trim()));
+				String.format("<a href=\"%1$s\" title=\"%1$s\" target=\"_blank\">%2$s</a>", url, shortUrl));
 		}
 		matcher.appendTail(stringBuffer);
 		return stringBuffer.toString();

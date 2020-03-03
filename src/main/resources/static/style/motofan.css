@@ -221,7 +221,7 @@ input, textarea, select {
 	border-top: 1px solid white;
 	border-bottom: 1px solid white;
 	vertical-align: top;
-	min-width: 128px;
+	min-width: 160px;
 	background: #FFF9EC;
 }
 .cell-digest {

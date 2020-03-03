@@ -367,7 +367,7 @@ public class SiteController {
 		switch (checkGroup(username)) {
 			default:
 			case Guest: {
-				return ellipsisString(username, 16, ellipsis, 1, false);
+				return ellipsisString(username, 20, ellipsis, 1, false);
 			}
 			case User: {
 				return getUsernameLink(username, "member-user", at);
@@ -412,7 +412,7 @@ public class SiteController {
 		String name = (at) ? username : usernameWithoutAt;
 		return String.format("<a href=\"%s\" title=\"%s\" target=\"_blank\"><span class=\"%s\">%s</span></a>",
 			filter.checkLink(telegramShortUrl) + usernameWithoutAt, username, className,
-			ellipsisString(name, 16, ellipsis, 1, false));
+			ellipsisString(name, 20, ellipsis, 1, false));
 	}
 
 	protected Group checkGroup(String username) {

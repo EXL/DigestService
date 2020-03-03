@@ -27,13 +27,18 @@ public class LocaleHelper {
 		this.messageSource = messageSource;
 	}
 
-	public String i18n(String key) {
+	/* TODO -- TEST */
+	public String i18nW(String key, Locale locale) {
 		try {
-			return messageSource.getMessage(key, null, Locale.forLanguageTag(lang));
+			return messageSource.getMessage(key, null, locale);
 		} catch (NoSuchMessageException nsme) {
-			log.error(String.format("Message with key '%s' is missing.", key), nsme);
+			log.error(String.format("Message with key '%s' for locale '%s' is missing.", key, locale), nsme);
 			return "???";
 		}
+	}
+
+	public String i18n(String key) {
+		return i18nW(key, Locale.forLanguageTag(lang));
 	}
 
 	public String i18nU(String key, String username) {

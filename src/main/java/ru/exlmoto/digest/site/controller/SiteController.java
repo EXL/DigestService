@@ -30,6 +30,7 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -132,7 +133,8 @@ public class SiteController {
 							motofanChatId
 						),
 					null,
-					current
+					current,
+					text
 				),
 				getMotofanTitleSearch(digestUser, text),
 				getMotofanDescription()
@@ -178,7 +180,8 @@ public class SiteController {
 						PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId
 					),
 					post,
-					current
+					current,
+					null
 				),
 				getMotofanTitle(),
 				getMotofanDescription()
@@ -195,13 +198,13 @@ public class SiteController {
 	protected String getMotofanTitleSearch(BotDigestUserEntity user, String text) {
 		final int length = 20;
 		String ellipsis = locale.i18n("bot.command.show.ellipsis");
-		String query = null;
+		String query = "";
 		if (text != null && !text.isEmpty()) {
 			query = ellipsisString(text, length, ellipsis, 1, false);
 		}
 		if (user != null) {
 			String username = ellipsisString(user.getUsername(), length, ellipsis, 1, false);
-			if (query != null) {
+			if (!query.isEmpty()) {
 				return String.format(locale.i18n("site.content.head.title.search.user.text"), query, username);
 			} else {
 				return String.format(locale.i18n("site.content.head.title.search.user"), username);
@@ -243,7 +246,10 @@ public class SiteController {
 			motofanChatId, motofanChatUrl, config.getMotofanChatSlug());
 	}
 
-	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities, String postId, int current) {
+	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities,
+	                                       String postId,
+	                                       int current,
+	                                       String text) {
 		if (digestEntities != null) {
 			List<Post> posts = new ArrayList<>();
 			int count = (current - 1) * config.getPagePosts();
@@ -260,7 +266,7 @@ public class SiteController {
 						filterAvatarLink(user.getAvatar()),
 						filterGroup(username),
 						filterDateAndTime(digest.getDate()),
-						activateUsers(activateLinks(digest.getDigest())),
+						activateUsers(activateLinks(filterHighlight(digest.getDigest(), text))),
 						user.getId(),
 						filterDigestCount(user)
 					)
@@ -269,6 +275,36 @@ public class SiteController {
 			return posts;
 		}
 		return new ArrayList<>();
+	}
+
+	private String filterHighlight(String message, String highlight) {
+		if (highlight == null || highlight.isEmpty()) {
+			return message;
+		}
+		String[] words = message.split("\\s+");
+		StringJoiner joiner = new StringJoiner(" ");
+		for (String word : words) {
+			String trim = word.trim();
+			if (!trim.isEmpty()) {
+				joiner.add(checkLinkAndUsername(word, highlight));
+			}
+		}
+		return joiner.toString();
+	}
+
+	private String checkLinkAndUsername(String word, String highlight) {
+		String wordCase = word.toLowerCase();
+		String highlightCase = highlight.toLowerCase();
+
+		if (wordCase.contains(highlightCase) && !word.contains("@") && !word.contains("://")) {
+			StringBuilder stringBuffer = new StringBuilder(word);
+			int start = wordCase.indexOf(highlightCase);
+			int end = start + highlight.length();
+			String text = word.substring(start, end);
+			stringBuffer.replace(start, end, "<span class=\"text-highlight\">" + text + "</span>");
+			return stringBuffer.toString();
+		}
+		return word;
 	}
 
 	private String filterDigestCount(BotDigestUserEntity user) {

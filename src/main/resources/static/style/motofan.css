@@ -234,6 +234,7 @@ input, textarea, select {
 	min-height: 200px;
 	font-size: 12px;
 	line-height: 160%;
+	word-break: break-all;
 }
 .divider {
 	background: #E6AD00;

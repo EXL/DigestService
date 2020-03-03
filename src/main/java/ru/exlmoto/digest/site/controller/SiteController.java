@@ -28,12 +28,15 @@ import ru.exlmoto.digest.site.model.post.Post;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
+import javax.transaction.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
+@Transactional /* TODO */
 public class SiteController {
 	private final Logger log = LoggerFactory.getLogger(SiteController.class);
 
@@ -134,7 +137,7 @@ public class SiteController {
 					null,
 					current
 				),
-				getMotofanTitle(),
+				getMotofanTitleSearch(digestUser, text),
 				getMotofanDescription()
 			)
 		);
@@ -191,6 +194,52 @@ public class SiteController {
 	protected String getMotofanTitle() {
 		return locale.i18n("site.content.head.title");
 	}
+
+	protected String getMotofanTitleSearch(BotDigestUserEntity user, String text) {
+		final int length = 20;
+		String ellipsis = locale.i18n("bot.command.show.ellipsis");
+		String query = null;
+		if (text != null && !text.isEmpty()) {
+			query = ellipsisString(text, length, ellipsis, 1, false);
+		}
+		if (user != null) {
+			String username = ellipsisString(user.getUsername(), length, ellipsis, 1, false);
+			if (query != null) {
+				return String.format(locale.i18n("site.content.head.title.search.user.text"), query, username);
+			} else {
+				return String.format(locale.i18n("site.content.head.title.search.user"), username);
+			}
+		}
+		return String.format(locale.i18n("site.content.head.title.search"), query);
+	}
+
+	/***************************************************************** TODO: ************************************/
+	protected String arrangeString(String string, int length) {
+		int stringLength = string.length();
+		StringBuilder stringBuilder = new StringBuilder();
+		for (int i = 0; i < length - stringLength; ++i) {
+			stringBuilder.append(' ');
+		}
+		return string + stringBuilder.toString();
+	}
+
+	protected String ellipsisString(String text, int length, String ellipsis, int side, boolean arrange) {
+		if (length > 0) {
+			int textLength = text.length();
+			if (textLength < length) {
+				return (arrange) ? arrangeString(text, length) : text;
+			}
+			if (side < 0) {
+				return ellipsis + text.substring(textLength - length + 1);
+			} else if (side > 0){
+				return text.substring(0, length - 1) + ellipsis;
+			} else {
+				return text.substring(0, length / 2) + ellipsis + text.substring(textLength - (length / 2) + 1);
+			}
+		}
+		return text;
+	}
+	/***************************************************************** TODO: ************************************/
 
 	protected String getMotofanDescription() {
 		return String.format(locale.i18n("site.content.head.description"),

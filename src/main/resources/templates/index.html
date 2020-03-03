@@ -11,9 +11,9 @@
 	<body>
 		<div class="page">
 			<div th:replace="~{header :: banner}"></div>
-			<div class="controls"><div th:replace="~{pager :: paginator}"></div><div th:replace="~{search :: search-form}"></div></div>
+			<div class="controls"><div th:replace="~{pager :: paginator(false)}"></div><div th:replace="~{search :: search-form}"></div></div>
 			<div th:replace="~{content :: digest}"></div>
-			<div class="controls" th:if="${!posts.digests.isEmpty()}"><div th:replace="~{pager :: paginator}"></div><div th:replace="~{search :: search-form}"></div></div>
+			<div class="controls" th:if="${!posts.digests.isEmpty()}"><div th:replace="~{pager :: paginator(true)}"></div><div th:replace="~{search :: search-form}"></div></div>
 			<div th:replace="~{footer :: copyright}"></div>
 		</div>
 	</body>

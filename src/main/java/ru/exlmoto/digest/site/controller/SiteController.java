@@ -28,15 +28,12 @@ import ru.exlmoto.digest.site.model.post.Post;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import javax.transaction.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-@Transactional /* TODO */
 public class SiteController {
 	private final Logger log = LoggerFactory.getLogger(SiteController.class);
 
@@ -96,7 +93,7 @@ public class SiteController {
 
 		Long userId = getLong(user);
 		if (userId != null) {
-			digestUser = userRepository.getOne(userId);
+			digestUser = userRepository.getBotDigestUserEntityById(userId);
 			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(text,
 				digestUser, motofanChatId);
 		} else {

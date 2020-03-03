@@ -3,7 +3,7 @@
 	<body>
 		<div class="page">
 			<!--/*@thymesVar id="find" type="ru.exlmoto.digest.site.form.SearchForm"*/-->
-			<form th:fragment="search-form" class="search-form" action="#" th:action="@{/search}" th:object="${find}" method="get"><label class="page-label" for="#search-field" th:text="#{site.search.find.label}">Search:</label><input id="#search-field" type="text" th:field="*{text}" size="20" placeholder="Search..." th:placeholder="#{site.search.find.placeholder}"/><label class="page-label" for="#search-user" th:text="#{site.search.filter.label}">Filter:</label><input id="#search-user" type="text" th:field="*{user}" size="20" placeholder="User #..." th:placeholder="#{site.search.filter.placeholder}"/><input class="button" type="submit" value="Find!" th:value="#{site.search.button}"/></form>
+			<div th:fragment="search-form" class="search-form"><form action="#" th:action="@{/search}" th:object="${find}" method="get"><label class="page-label" for="#search-field" th:text="#{site.search.find.label}">Search:</label><input id="#search-field" type="text" th:field="*{text}" size="20" placeholder="Search..." th:placeholder="#{site.search.find.placeholder}"/><label class="page-label" for="#search-user" th:text="#{site.search.filter.label}">Filter:</label><input id="#search-user" type="text" th:field="*{user}" size="20" placeholder="User #..." th:placeholder="#{site.search.filter.placeholder}"/><input class="button" type="submit" value="Find!" th:value="#{site.search.button}"/></form><form th:action="@{/}"><input class="button" type="submit" value="Reset" th:value="#{site.search.reset}"/></form></div>
 		</div>
 	</body>
 </html>

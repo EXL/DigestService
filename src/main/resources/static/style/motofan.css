@@ -112,6 +112,7 @@ input, textarea, select {
 	background: #FFEFD4;
 }
 .search-form {
+	display: flex;
 	margin-left: auto;
 }
 .page-link, .page-link-active {

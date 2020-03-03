@@ -159,7 +159,6 @@ public class SiteController {
 		return "redirect:/";
 	}
 
-	/* TODO: Limits for ALL parameters! */
 	@RequestMapping(path = "/")
 	public String index(@RequestParam(name = "page", required = false) String page,
 	                    @RequestParam(name = "post", required = false) String post,

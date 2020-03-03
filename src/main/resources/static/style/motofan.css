@@ -171,6 +171,14 @@ input, textarea, select {
 .digest-post-highlight {
 	border: 2px dashed orangered;
 }
+.text-highlight {
+	font-weight: bold;
+	color: red;
+	background: yellow;
+	border: 1px dashed #222;
+	padding: 1px;
+	margin: 1px;
+}
 .cell-name {
 	background: #FFEFD4;
 	border-right: 1px solid white;

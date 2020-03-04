@@ -29,7 +29,7 @@ td {
 input, textarea, select {
 	background: #FFF;
 	border: 1px solid #FE9855;
-	color: #000;
+	color: #222;
 	font-size: 10px;
 	padding: 2px;
 	margin-right: 3px;
@@ -138,6 +138,9 @@ input, textarea, select {
 	color: #495143;
 	font-size: 11px;
 	margin-right: 3px;
+}
+#button-reset {
+	margin-right: 0;
 }
 
 /* Content */

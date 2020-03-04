@@ -11,9 +11,15 @@
 	<body>
 		<div class="page">
 			<div th:replace="~{header :: banner}"></div>
-			<div class="controls"><div th:replace="~{pager :: paginator(up)}"></div><div th:replace="~{search :: search-form(up)}"></div></div>
+			<div class="controls">
+				<div th:replace="~{pager :: paginator(up)}"></div>
+				<div th:replace="~{search :: search-form(up)}"></div>
+			</div>
 			<div th:replace="~{content :: digest}"></div>
-			<div class="controls" th:if="${!posts.digests.isEmpty()}"><div th:replace="~{pager :: paginator(down)}"></div><div th:replace="~{search :: search-form(down)}"></div></div>
+			<div class="controls" th:if="${!posts.digests.isEmpty()}">
+				<div th:replace="~{pager :: paginator(down)}"></div>
+				<div th:replace="~{search :: search-form(down)}"></div>
+			</div>
 			<div th:replace="~{footer :: copyright}"></div>
 		</div>
 	</body>

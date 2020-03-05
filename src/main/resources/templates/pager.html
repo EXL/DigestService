@@ -27,7 +27,7 @@
 						*/--><a th:href="@{__${goto.path}__(page=${pager.all})}" th:text="#{site.pager.right.last}" th:title="#{site.pager.page} + ' ' + ${pager.all}"></a><!--/*
 					*/--></span><!--/*
 					*/--><label class="page-label" for="#page-field" th:for="${'#page-field-' + side}" th:text="#{site.pager.goto}">Go to page:</label><!--/*
-					*/--><input id="#page-field" th:id="${'#page-field-' + side}" type="text" th:field="${goto.page}" size="3" th:placeholder="#{site.pager.placeholder}"/><!--/*
+					*/--><input id="#page-field" th:id="${'#page-field-' + side}" type="text" th:field="${goto.page}" size="3" maxlength="10" th:placeholder="#{site.pager.placeholder}"/><!--/*
 					*/--><input class="button" type="submit" value="Go!" th:value="#{site.pager.ok}"/><!--/*
 					*/--><input th:if="${goto.text != null && !goto.text.isEmpty()}" type="hidden" th:field="${goto.text}"/><!--/*
 					*/--><input th:if="${goto.user != null && !goto.user.isEmpty()}" type="hidden" th:field="${goto.user}"/><!--/*

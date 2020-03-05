@@ -81,10 +81,11 @@ public class FilterHelper {
 			}
 			if (side < 0) {
 				return ellipsis + text.substring(textLength - length + 1);
-			} else if (side > 0){
+			} else if (side > 0) {
 				return text.substring(0, length - 1) + ellipsis;
 			} else {
-				return text.substring(0, length / 2) + ellipsis + text.substring(textLength - (length / 2) + 1);
+				int end = textLength - (length / 2);
+				return text.substring(0, length / 2) + ellipsis + ((end >= textLength) ? "" : text.substring(end));
 			}
 		}
 		return text;

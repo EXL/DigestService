@@ -27,7 +27,6 @@ public class LocaleHelper {
 		this.messageSource = messageSource;
 	}
 
-	/* TODO -- TEST */
 	public String i18nW(String key, Locale locale) {
 		try {
 			return messageSource.getMessage(key, null, locale);

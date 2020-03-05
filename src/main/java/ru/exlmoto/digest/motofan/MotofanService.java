@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import org.thymeleaf.util.ArrayUtils;
+
 import ru.exlmoto.digest.motofan.generator.PostTgHtmlGenerator;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.util.rest.RestHelper;
@@ -36,12 +38,20 @@ public class MotofanService {
 	public MotofanPost[] getMotofanPostObjects() {
 		MotofanPost[] posts = rest.getRestResponse(lastPostUrl, MotofanPost[].class).answer();
 		if (posts != null && posts.length > 0) {
+			List<MotofanPost> validPosts = new ArrayList<>();
 			for (MotofanPost post : posts) {
 				if (!post.isValid()) {
-					return null;
+					log.warn(String.format("This post has not passed validation: '%s'.", post.toString()));
+					continue;
 				}
+				validPosts.add(post);
 			}
-			return posts;
+			try {
+				return (MotofanPost[]) ArrayUtils.toArray(validPosts);
+			} catch (ClassCastException cce) {
+				log.error(String.format("Cannot cast array of valid posts to the simple array, see data: '%s'.",
+					validPosts.toString()), cce);
+			}
 		}
 		return null;
 	}

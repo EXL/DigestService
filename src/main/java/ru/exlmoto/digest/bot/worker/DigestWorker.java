@@ -86,7 +86,7 @@ public class DigestWorker {
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Digest subscribe object from database.", dae);
 		} catch (RuntimeException re) {
-			log.error("Cannot delay Digest message sender thread.", re);
+			log.error("Runtime exception on Digest message sender thread.", re);
 		}
 	}
 }

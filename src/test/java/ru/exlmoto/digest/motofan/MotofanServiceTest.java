@@ -20,6 +20,8 @@ import ru.exlmoto.digest.util.file.ResourceHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.client.ExpectedCount.manyTimes;
@@ -61,7 +63,7 @@ class MotofanServiceTest {
 		assertThat(posts).isNotEmpty();
 		System.out.println(posts[0].getTitle());
 		assertThat(fakeRestTemplateResult("classpath:motofan/posts-null.json")).isNull();
-		assertThat(fakeRestTemplateResult("classpath:motofan/posts-incorrect.json")).isNull();
+		assertEquals(8, fakeRestTemplateResult("classpath:motofan/posts-incorrect.json").length);
 		assertThat(fakeRestTemplateResult("classpath:motofan/posts-empty.json")).isNull();
 		assertThat(fakeRestTemplateResult("classpath:motofan/posts-another.json")).isNull();
 		assertThat(fakeRestTemplateResult("classpath:motofan/posts-wrong.json")).isNull();

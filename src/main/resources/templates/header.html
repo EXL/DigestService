@@ -5,12 +5,12 @@
 			<table th:fragment="banner" class="banner">
 				<tr>
 					<td class="td-logo" id="td-logo-chunk-1" rowspan="3">
-						<a th:title="#{site.header.logo.tooltip}" th:href="${@environment.getProperty('site.address')}">
+						<a th:title="#{site.header.logo.tooltip}" th:href="@{/}">
 							<img class="logo" id="img-logo-chunk-1" src="../static/image/header1.png" th:src="@{/image/header1.png}" alt=""/>
 						</a>
 					</td>
 					<td class="td-logo" id="td-logo-chunk-2" rowspan="3">
-						<a th:title="#{site.header.logo.tooltip}" th:href="${@environment.getProperty('site.address')}">
+						<a th:title="#{site.header.logo.tooltip}" th:href="@{/}">
 							<img class="logo" id="img-logo-chunk-2" src="../static/image/header2.png" th:src="@{/image/header2.png}" alt=""/>
 						</a>
 					</td>

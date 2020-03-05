@@ -33,7 +33,7 @@
     <CharCode>USD</CharCode>
     <Scale>1</Scale>
     <Name>Доллар США</Name>
-    <Rate>StringValue</Rate>
+    <Rate>2.1098</Rate>
   </Currency>
   <Currency Id="292">
     <NumCode>978</NumCode>
@@ -117,7 +117,7 @@
     <CharCode>RUB</CharCode>
     <Scale>100</Scale>
     <Name>Российских рублей</Name>
-    <Rate>3.3995</Rate>
+    <Rate>StringValue</Rate>
   </Currency>
   <Currency Id="299">
     <NumCode>960</NumCode>

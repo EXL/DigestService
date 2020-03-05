@@ -44,7 +44,7 @@ public class MotofanWorker {
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Motofan subscribe object from database.", dae);
 		} catch (RuntimeException re) {
-			log.error("Cannot delay Motofan Posts sender thread.", re);
+			log.error("Runtime exception on Motofan Posts sender thread.", re);
 		}
 	}
 

@@ -60,6 +60,8 @@ class SubscribeKeyboardTest {
 		keyboard.processSubscribeStatusMessage(0L, 0, chat, true, sender);
 
 		setField(chat, "type", Type.Private);
+		setField(chat, "username", "username");
+		setField(chat, "title", null);
 		keyboard.processSubscribeStatusMessage(0L, 0, chat, false, sender);
 		keyboard.processSubscribeStatusMessage(0L, 0, chat, true, sender);
 	}

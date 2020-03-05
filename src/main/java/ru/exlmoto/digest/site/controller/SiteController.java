@@ -1,6 +1,5 @@
 package ru.exlmoto.digest.site.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

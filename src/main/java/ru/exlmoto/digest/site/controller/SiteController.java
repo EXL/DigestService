@@ -101,7 +101,7 @@ public class SiteController {
 		setTitleAndGeneralData(model, "site.title", lang, searchForm);
 
 		int pagePosts = config.getPagePosts();
-		int current = getCurrentPageAndSetPagerData(model, pager, page,
+		int current = getCurrentPageAndSetPagerData(model, pager, checkQueryLength(page),
 			getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts));
 
 		setGotoFormData(model, goToPageForm, current);
@@ -143,29 +143,36 @@ public class SiteController {
 	                     Locale lang) {
 		setTitleAndGeneralData(model, "site.title.search", lang, searchForm);
 
+		String find = checkQueryLength(text);
+		String member = checkQueryLength(user);
+
+		searchForm.setText(find);
+		searchForm.setUser(member);
+
 		int pagePosts = config.getPagePosts();
 
 		long count;
 		BotDigestUserEntity digestUser = null;
-		Long userId = getLong(user);
+		Long userId = getLong(member);
 		if (userId != null) {
 			digestUser = userRepository.getBotDigestUserEntityById(userId);
-			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(text,
+			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(find,
 				digestUser, motofanChatId);
 		} else {
-			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(text, motofanChatId);
+			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(find, motofanChatId);
 		}
-		int current = getCurrentPageAndSetPagerData(model, pager, page, getPageCount(count, pagePosts));
-		setGotoFormData(model, goToPageForm, current, text, userId);
+		int current = getCurrentPageAndSetPagerData(model, pager,
+			checkQueryLength(page), getPageCount(count, pagePosts));
+		setGotoFormData(model, goToPageForm, current, find, userId);
 
 		Page<BotDigestEntity> digestPage = (userId != null) ?
 			repository.findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(PageRequest.of(current - 1,
-				pagePosts, Sort.by(Sort.Order.asc("id"))), text, digestUser, motofanChatId) :
+				pagePosts, Sort.by(Sort.Order.asc("id"))), find, digestUser, motofanChatId) :
 			repository.findByDigestContainingIgnoreCaseAndChatEquals(PageRequest.of(current - 1, pagePosts,
-				Sort.by(Sort.Order.asc("id"))), text, motofanChatId);
-		digest.setTitle(getMotofanTitleSearch(digestUser, text, lang));
+				Sort.by(Sort.Order.asc("id"))), find, motofanChatId);
+		digest.setTitle(getMotofanTitleSearch(digestUser, find, lang));
 		digest.setDescription(getMotofanDescription(lang));
-		digest.setDigests(getDigestEntities(digestPage, null, current, text, lang));
+		digest.setDigests(getDigestEntities(digestPage, null, current, find, lang));
 		model.addAttribute("posts", digest);
 
 		return "index";
@@ -175,6 +182,17 @@ public class SiteController {
 		model.addAttribute("title", locale.i18nW(key, lang));
 		model.addAttribute("lang", lang.toLanguageTag());
 		model.addAttribute("find", searchForm);
+	}
+
+	private String checkQueryLength(String query) {
+		final int MAX_QUERY_LENGTH = 100;
+		if ((query != null) && (query.length() > MAX_QUERY_LENGTH)) {
+			String chopped = query.substring(0, MAX_QUERY_LENGTH);
+			log.warn(String.format("Too long some query: '%s', chopped to (0, %d) characters.",
+				chopped, MAX_QUERY_LENGTH));
+			return chopped;
+		}
+		return query;
 	}
 
 	private int getCurrentPageAndSetPagerData(Model model, PagerModel pager, String page, int pageCount) {

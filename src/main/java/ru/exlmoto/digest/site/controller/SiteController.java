@@ -89,69 +89,28 @@ public class SiteController {
 		ellipsis = locale.i18n("bot.command.show.ellipsis");
 	}
 
-	@RequestMapping(path = "/search")
-	public String search(@RequestParam(name = "page", required = false) String page,
-	                     @RequestParam(name = "text", required = false, defaultValue = "") String text,
-	                     @RequestParam(name = "user", required = false) String user,
-	                     Model model,
-	                     SearchForm searchForm,
-	                     GoToPageForm goToPageForm,
-	                     Locale lang) {
+	@RequestMapping(path = "/")
+	public String index(@RequestParam(name = "page", required = false) String page,
+	                    @RequestParam(name = "post", required = false) String post,
+	                    SearchForm searchForm,
+	                    GoToPageForm goToPageForm,
+	                    PagerModel pager,
+	                    DigestModel digest,
+	                    Model model,
+	                    Locale lang) {
 		int pagePosts = config.getPagePosts();
-		int pageDeep = config.getPageDeep();
+		int current = getCurrentPageAndSetPagerData(model, pager, page,
+			getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts));
 
-		long count;
-		BotDigestUserEntity digestUser = null;
+		setGotoFormData(model, goToPageForm, current);
 
-		Long userId = getLong(user);
-		if (userId != null) {
-			digestUser = userRepository.getBotDigestUserEntityById(userId);
-			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(text,
-				digestUser, motofanChatId);
-		} else {
-			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(text, motofanChatId);
-		}
-		int pageCount = getPageCount(count, pagePosts);
-		int current = getCurrentPage(page, pageCount);
-
-		goToPageForm.setPage(String.valueOf(current));
-		goToPageForm.setText(text);
-		if (userId != null) {
-			goToPageForm.setUser(user);
-			goToPageForm.setPath("/search?text=" + text + "&user=" + userId);
-		} else {
-			goToPageForm.setPath("/search?text=" + text);
-		}
-
-		model.addAttribute("goto", goToPageForm);
 		model.addAttribute("find", searchForm);
-		model.addAttribute("pager", new PagerModel(current, pageCount,
-			current - ((pageDeep / 2) + 1), current + (pageDeep / 2)));
-		model.addAttribute(
-			"posts",
-			new DigestModel(
-				getDigestEntities(
-					(userId != null) ?
-						repository.findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(
-							PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))),
-							text,
-							digestUser,
-							motofanChatId
-						) :
-						repository.findByDigestContainingIgnoreCaseAndChatEquals(
-							PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))),
-							text,
-							motofanChatId
-						),
-					null,
-					current,
-					text,
-					lang
-				),
-				getMotofanTitleSearch(digestUser, text, lang),
-				getMotofanDescription(lang)
-			)
-		);
+
+		digest.setTitle(getMotofanTitle(lang));
+		digest.setDescription(getMotofanDescription(lang));
+		digest.setDigests(getDigestEntities(repository.findBotDigestEntitiesByChat(PageRequest.of(current - 1,
+			pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId), post, current, null, lang));
+		model.addAttribute("posts", digest);
 
 		return "index";
 	}
@@ -171,38 +130,75 @@ public class SiteController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(path = "/")
-	public String index(@RequestParam(name = "page", required = false) String page,
-	                    @RequestParam(name = "post", required = false) String post,
-	                    Model model,
-	                    Locale lang) {
+	@RequestMapping(path = "/search")
+	public String search(@RequestParam(name = "page", required = false) String page,
+	                     @RequestParam(name = "text", required = false, defaultValue = "") String text,
+	                     @RequestParam(name = "user", required = false) String user,
+	                     SearchForm searchForm,
+	                     GoToPageForm goToPageForm,
+	                     PagerModel pager,
+	                     DigestModel digest,
+	                     Model model,
+	                     Locale lang) {
 		int pagePosts = config.getPagePosts();
-		int pageDeep = config.getPageDeep();
-		int pageCount = getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts);
-		int current = getCurrentPage(page, pageCount);
 
-		model.addAttribute("goto", new GoToPageForm(String.valueOf(current), "/"));
-		model.addAttribute("find", new SearchForm());
-		model.addAttribute("pager", new PagerModel(current, pageCount,
-			current - ((pageDeep / 2) + 1), current + (pageDeep / 2)));
-		model.addAttribute(
-			"posts",
-			new DigestModel(
-				getDigestEntities(
-					repository.findBotDigestEntitiesByChat(
-						PageRequest.of(current - 1, pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId
-					),
-					post,
-					current,
-					null,
-					lang
-				),
-				getMotofanTitle(lang),
-				getMotofanDescription(lang)
-			)
-		);
+		long count;
+		BotDigestUserEntity digestUser = null;
+		Long userId = getLong(user);
+		if (userId != null) {
+			digestUser = userRepository.getBotDigestUserEntityById(userId);
+			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(text,
+				digestUser, motofanChatId);
+		} else {
+			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(text, motofanChatId);
+		}
+		int current = getCurrentPageAndSetPagerData(model, pager, page, getPageCount(count, pagePosts));
+		setGotoFormData(model, goToPageForm, current, text, userId);
+
+		model.addAttribute("find", searchForm);
+
+		Page<BotDigestEntity> digestPage = (userId != null) ?
+			repository.findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(PageRequest.of(current - 1,
+				pagePosts, Sort.by(Sort.Order.asc("id"))), text, digestUser, motofanChatId) :
+			repository.findByDigestContainingIgnoreCaseAndChatEquals(PageRequest.of(current - 1, pagePosts,
+				Sort.by(Sort.Order.asc("id"))), text, motofanChatId);
+		digest.setTitle(getMotofanTitleSearch(digestUser, text, lang));
+		digest.setDescription(getMotofanDescription(lang));
+		digest.setDigests(getDigestEntities(digestPage, null, current, text, lang));
+		model.addAttribute("posts", digest);
 
 		return "index";
+	}
+
+	private int getCurrentPageAndSetPagerData(Model model, PagerModel pager, String page, int pageCount) {
+		int pageDeep = config.getPageDeep();
+		int current = getCurrentPage(page, pageCount);
+
+		pager.setCurrent(current);
+		pager.setAll(pageCount);
+		pager.setStartAux(current - ((pageDeep / 2) + 1));
+		pager.setEndAux(current + (pageDeep / 2));
+		model.addAttribute("pager", pager);
+
+		return current;
+	}
+
+	private void setGotoFormData(Model model, GoToPageForm form, int current) {
+		setGotoFormData(model, form, current, null, null);
+	}
+
+	private void setGotoFormData(Model model, GoToPageForm form, int current, String text, Long userId) {
+		form.setPage(String.valueOf(current));
+		form.setText(text);
+		if (userId != null) {
+			form.setUser(String.valueOf(userId));
+			form.setPath("/search?text=" + text + "&user=" + userId);
+		} else if (text != null) {
+			form.setPath("/search?text=" + text);
+		} else {
+			form.setPath("/");
+		}
+		model.addAttribute("goto", form);
 	}
 
 	protected String getMotofanTitle(Locale lang) {

@@ -129,7 +129,7 @@
   <currency>
     <r030>643</r030>
     <txt>Російський рубль</txt>
-    <rate>0.38206</rate>
+    <rate>StringValue</rate>
     <cc>RUB</cc>
     <exchangedate>08.01.2020</exchangedate>
 </currency>
@@ -185,7 +185,7 @@
   <currency>
     <r030>840</r030>
     <txt>Долар США</txt>
-    <rate>StringValue</rate>
+    <rate>23.6785</rate>
     <cc>USD</cc>
     <exchangedate>08.01.2020</exchangedate>
 </currency>

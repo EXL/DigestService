@@ -105,7 +105,7 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 			stringBuilder.append(filter.ellipsisLeftA(String.valueOf(entity.getId()), CHOP_NUMBER)).append(" ");
 			stringBuilder.append(filter.ellipsisRightA(entity.getUser().getUsername(), CHOP_USER)).append(" ");
 			stringBuilder.append(filter.ellipsisLeftA(String.valueOf(entity.getChat()), CHOP_NUMBER)).append(" ");
-			stringBuilder.append(filter.ellipsisRightA(entity.getDigest(), CHOP_DIGEST)).append("\n");
+			stringBuilder.append(filter.strip(filter.ellipsisRightA(entity.getDigest(), CHOP_DIGEST))).append("\n");
 		}
 		stringBuilder.append("\n```");
 

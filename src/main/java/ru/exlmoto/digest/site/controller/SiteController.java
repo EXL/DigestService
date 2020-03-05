@@ -100,8 +100,6 @@ public class SiteController {
 		int pagePosts = config.getPagePosts();
 		int pageDeep = config.getPageDeep();
 
-		System.out.println(lang);
-
 		long count;
 		BotDigestUserEntity digestUser = null;
 
@@ -277,7 +275,7 @@ public class SiteController {
 				posts.add(
 					new Post(
 						highlightPost(postId, id),
-						filterDescription(++count, id, lang),
+						filterDescription(++count, id, digest.getMessageId(), lang),
 						username,
 						filterUsername(username, false),
 						filterAvatarLink(user.getAvatar()),
@@ -330,9 +328,14 @@ public class SiteController {
 			repository.countBotDigestEntitiesByUserEqualsAndChatEquals(user, motofanChatId));
 	}
 
-	protected String filterDescription(int count, long id, Locale lang) {
-		return String.format(locale.i18nW("site.content.description", lang),
+	protected String filterDescription(int count, long id, Long messageId, Locale lang) {
+		String link = String.format(locale.i18nW("site.content.description", lang),
 			filter.checkLink(config.getAddress()) + "jump?id=" + id, count, id);
+		if (messageId != null) {
+			return String.format(locale.i18nW("site.content.chat.link", lang),
+				filter.checkLink(motofanChatUrl) + messageId) + link;
+		}
+		return link;
 	}
 
 	protected String activateUsers(String digest) {

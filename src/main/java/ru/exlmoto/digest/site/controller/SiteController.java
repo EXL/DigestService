@@ -28,8 +28,6 @@ import ru.exlmoto.digest.site.model.post.Post;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import javax.annotation.PostConstruct;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -68,8 +66,6 @@ public class SiteController {
 	@Value("${bot.telegram-short-url}")
 	private String telegramShortUrl;
 
-	private String ellipsis;
-
 	public SiteController(SiteConfiguration config,
 	                      BotDigestRepository repository,
 	                      BotDigestUserRepository userRepository,
@@ -82,11 +78,6 @@ public class SiteController {
 		this.locale = locale;
 		this.helper = helper;
 		this.filter = filter;
-	}
-
-	@PostConstruct
-	private void setUp() {
-		ellipsis = locale.i18n("bot.command.show.ellipsis");
 	}
 
 	@RequestMapping(path = "/")
@@ -234,10 +225,10 @@ public class SiteController {
 		final int length = 20;
 		String query = "";
 		if (text != null && !text.isEmpty()) {
-			query = ellipsisString(text, length, ellipsis, 1, false);
+			query = filter.ellipsisRight(text, length);
 		}
 		if (user != null) {
-			String username = ellipsisString(user.getUsername(), length, ellipsis, 1, false);
+			String username = filter.ellipsisRight(user.getUsername(), length);
 			if (!query.isEmpty()) {
 				return String.format(locale.i18nW("site.content.head.title.search.user.text", lang),
 					query, username);
@@ -247,34 +238,6 @@ public class SiteController {
 		}
 		return String.format(locale.i18nW("site.content.head.title.search", lang), query);
 	}
-
-	/***************************************************************** TODO: ************************************/
-	protected String arrangeString(String string, int length) {
-		int stringLength = string.length();
-		StringBuilder stringBuilder = new StringBuilder();
-		for (int i = 0; i < length - stringLength; ++i) {
-			stringBuilder.append(' ');
-		}
-		return string + stringBuilder.toString();
-	}
-
-	protected String ellipsisString(String text, int length, String ellipsis, int side, boolean arrange) {
-		if (length > 0) {
-			int textLength = text.length();
-			if (textLength < length) {
-				return (arrange) ? arrangeString(text, length) : text;
-			}
-			if (side < 0) {
-				return ellipsis + text.substring(textLength - length + 1);
-			} else if (side > 0){
-				return text.substring(0, length - 1) + ellipsis;
-			} else {
-				return text.substring(0, length / 2) + ellipsis + text.substring(textLength - (length / 2) + 1);
-			}
-		}
-		return text;
-	}
-	/***************************************************************** TODO: ************************************/
 
 	protected String getMotofanDescription(Locale lang) {
 		return String.format(locale.i18nW("site.content.head.description", lang),
@@ -379,7 +342,7 @@ public class SiteController {
 		StringBuffer stringBuffer = new StringBuffer();
 		while (matcher.find()) {
 			String url = matcher.group(0).trim();
-			String shortUrl = ellipsisString(url, length, ellipsis, 0, false);
+			String shortUrl = filter.ellipsisMiddle(url, length);
 			matcher.appendReplacement(stringBuffer,
 				String.format("<a href=\"%1$s\" title=\"%1$s\" target=\"_blank\">%2$s</a>", url, shortUrl));
 		}
@@ -391,7 +354,7 @@ public class SiteController {
 		switch (checkGroup(username)) {
 			default:
 			case Guest: {
-				return ellipsisString(username, 20, ellipsis, 1, false);
+				return filter.ellipsisRight(username, 20);
 			}
 			case User: {
 				return getUsernameLink(username, "member-user", at);
@@ -436,7 +399,7 @@ public class SiteController {
 		String name = (at) ? username : usernameWithoutAt;
 		return String.format("<a href=\"%s\" title=\"%s\" target=\"_blank\"><span class=\"%s\">%s</span></a>",
 			filter.checkLink(telegramShortUrl) + usernameWithoutAt, username, className,
-			ellipsisString(name, 20, ellipsis, 1, false));
+			filter.ellipsisRight(name, 20));
 	}
 
 	protected Group checkGroup(String username) {

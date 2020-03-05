@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.site.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,13 +99,13 @@ public class SiteController {
 	                    DigestModel digest,
 	                    Model model,
 	                    Locale lang) {
+		setTitleAndGeneralData(model, "site.title", lang, searchForm);
+
 		int pagePosts = config.getPagePosts();
 		int current = getCurrentPageAndSetPagerData(model, pager, page,
 			getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts));
 
 		setGotoFormData(model, goToPageForm, current);
-
-		model.addAttribute("find", searchForm);
 
 		digest.setTitle(getMotofanTitle(lang));
 		digest.setDescription(getMotofanDescription(lang));
@@ -127,6 +128,7 @@ public class SiteController {
 				);
 			}
 		}
+
 		return "redirect:/";
 	}
 
@@ -140,6 +142,8 @@ public class SiteController {
 	                     DigestModel digest,
 	                     Model model,
 	                     Locale lang) {
+		setTitleAndGeneralData(model, "site.title.search", lang, searchForm);
+
 		int pagePosts = config.getPagePosts();
 
 		long count;
@@ -155,8 +159,6 @@ public class SiteController {
 		int current = getCurrentPageAndSetPagerData(model, pager, page, getPageCount(count, pagePosts));
 		setGotoFormData(model, goToPageForm, current, text, userId);
 
-		model.addAttribute("find", searchForm);
-
 		Page<BotDigestEntity> digestPage = (userId != null) ?
 			repository.findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(PageRequest.of(current - 1,
 				pagePosts, Sort.by(Sort.Order.asc("id"))), text, digestUser, motofanChatId) :
@@ -168,6 +170,12 @@ public class SiteController {
 		model.addAttribute("posts", digest);
 
 		return "index";
+	}
+
+	private void setTitleAndGeneralData(Model model, String key, Locale lang, SearchForm searchForm) {
+		model.addAttribute("title", locale.i18nW(key, lang));
+		model.addAttribute("lang", lang.toLanguageTag());
+		model.addAttribute("find", searchForm);
 	}
 
 	private int getCurrentPageAndSetPagerData(Model model, PagerModel pager, String page, int pageCount) {

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.exlmoto.digest.entity.BotDigestUserEntity;
 
 import java.util.Locale;
 
@@ -17,6 +18,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SiteHelperTest {
 	@Autowired
 	private SiteHelper helper;
+
+	@Test
+	public void testGetPostsMethods() {
+		assertTrue(helper.getPosts(null, null, 0, null, null).isEmpty());
+		assertTrue(helper.getPostsSearch(null, 0, null, null, null).isEmpty());
+	}
+
+	@Test
+	public void testGetMotofanTitleSearch() {
+		System.out.println(helper.getMotofanTitleSearch(null, null, null));
+		System.out.println(helper.getMotofanTitleSearch(null, "", null));
+		System.out.println(helper.getMotofanTitleSearch(null, "No-No-No", null));
+		System.out.println("---");
+
+		BotDigestUserEntity botDigestUserEntity = new BotDigestUserEntity();
+		botDigestUserEntity.setUsername("@username");
+		System.out.println(helper.getMotofanTitleSearch(botDigestUserEntity, null, null));
+		System.out.println(helper.getMotofanTitleSearch(botDigestUserEntity, "", null));
+		System.out.println(helper.getMotofanTitleSearch(botDigestUserEntity, "No-No-No", null));
+	}
 
 	@Test
 	public void testHighlightPost() {
@@ -264,5 +285,15 @@ class SiteHelperTest {
 		assertEquals("a", helper.dropAt("@a"));
 		assertEquals("username", helper.dropAt("username"));
 		assertEquals("username", helper.dropAt("@username"));
+	}
+
+	@Test
+	public void testChopQuery() {
+		assertNull(helper.chopQuery(null));
+		assertEquals("", helper.chopQuery(""));
+		assertEquals("test", helper.chopQuery("test"));
+
+		System.out.println(helper.chopQuery("longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglong" +
+			"longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonga"));
 	}
 }

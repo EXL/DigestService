@@ -1,8 +1,5 @@
 package ru.exlmoto.digest.site.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
@@ -22,48 +18,32 @@ import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.form.SearchForm;
 import ru.exlmoto.digest.site.model.DigestModel;
 import ru.exlmoto.digest.site.model.PagerModel;
-import ru.exlmoto.digest.site.model.post.Post;
 import ru.exlmoto.digest.site.util.SiteHelper;
-import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 @Controller
 public class SiteController {
-	private final Logger log = LoggerFactory.getLogger(SiteController.class);
-
 	private final SiteConfiguration config;
 	private final BotDigestRepository repository;
 	private final BotDigestUserRepository userRepository;
 	private final LocaleHelper locale;
-
-	private final BotHelper botHelper;
-	private final SiteHelper siteHelper;
-	private final FilterHelper filter;
+	private final SiteHelper helper;
 
 	@Value("${bot.motofan-chat-id}")
 	private long motofanChatId;
-
-	@Value("${bot.motofan-chat-url}")
-	private String motofanChatUrl;
 
 	public SiteController(SiteConfiguration config,
 	                      BotDigestRepository repository,
 	                      BotDigestUserRepository userRepository,
 	                      LocaleHelper locale,
-	                      BotHelper botHelper,
-	                      SiteHelper siteHelper,
-	                      FilterHelper filter) {
+	                      SiteHelper helper) {
 		this.config = config;
 		this.repository = repository;
 		this.userRepository = userRepository;
 		this.locale = locale;
-		this.botHelper = botHelper;
-		this.siteHelper = siteHelper;
-		this.filter = filter;
+		this.helper = helper;
 	}
 
 	@RequestMapping(path = "/")
@@ -78,15 +58,15 @@ public class SiteController {
 		setTitleAndGeneralData(model, "site.title", lang, searchForm);
 
 		int pagePosts = config.getPagePosts();
-		int current = getCurrentPageAndSetPagerData(model, pager, checkQueryLength(page),
-			siteHelper.getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts));
+		int current = getCurrentPageAndSetPagerData(model, pager, helper.chopQuery(page),
+			helper.getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts));
 
 		setGotoFormData(model, goToPageForm, current);
 
-		digest.setTitle(getMotofanTitle(lang));
-		digest.setDescription(getMotofanDescription(lang));
-		digest.setDigests(getDigestEntities(repository.findBotDigestEntitiesByChat(PageRequest.of(current - 1,
-			pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId), post, current, null, lang));
+		digest.setTitle(helper.getMotofanTitle(lang));
+		digest.setDescription(helper.getMotofanDescription(lang));
+		digest.setDigests(helper.getPosts(repository.findBotDigestEntitiesByChat(PageRequest.of(current - 1,
+			pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId), post, current, repository, lang));
 		model.addAttribute("posts", digest);
 
 		return "index";
@@ -94,7 +74,7 @@ public class SiteController {
 
 	@RequestMapping(path = "/jump")
 	public String jump(@RequestParam(name = "id") String id) {
-		Long postId = siteHelper.getLong(id);
+		Long postId = helper.getLong(id);
 		if (postId != null) {
 			int index = repository.findBotDigestEntitiesByChat(Sort.by(Sort.Order.asc("id")),
 				motofanChatId).indexOf(new BotDigestEntity(postId));
@@ -120,8 +100,8 @@ public class SiteController {
 	                     Locale lang) {
 		setTitleAndGeneralData(model, "site.title.search", lang, searchForm);
 
-		String find = checkQueryLength(text);
-		String member = checkQueryLength(user);
+		String find = helper.chopQuery(text);
+		String member = helper.chopQuery(user);
 
 		searchForm.setText(find);
 		searchForm.setUser(member);
@@ -130,7 +110,7 @@ public class SiteController {
 
 		long count;
 		BotDigestUserEntity digestUser = null;
-		Long userId = siteHelper.getLong(member);
+		Long userId = helper.getLong(member);
 		if (userId != null) {
 			digestUser = userRepository.getBotDigestUserEntityById(userId);
 			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(find,
@@ -139,7 +119,7 @@ public class SiteController {
 			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(find, motofanChatId);
 		}
 		int current = getCurrentPageAndSetPagerData(model, pager,
-			checkQueryLength(page), siteHelper.getPageCount(count, pagePosts));
+			helper.chopQuery(page), helper.getPageCount(count, pagePosts));
 		setGotoFormData(model, goToPageForm, current, find, userId);
 
 		Page<BotDigestEntity> digestPage = (userId != null) ?
@@ -147,9 +127,9 @@ public class SiteController {
 				pagePosts, Sort.by(Sort.Order.asc("id"))), find, digestUser, motofanChatId) :
 			repository.findByDigestContainingIgnoreCaseAndChatEquals(PageRequest.of(current - 1, pagePosts,
 				Sort.by(Sort.Order.asc("id"))), find, motofanChatId);
-		digest.setTitle(getMotofanTitleSearch(digestUser, find, lang));
-		digest.setDescription(getMotofanDescription(lang));
-		digest.setDigests(getDigestEntities(digestPage, null, current, find, lang));
+		digest.setTitle(helper.getMotofanTitleSearch(digestUser, find, lang));
+		digest.setDescription(helper.getMotofanDescription(lang));
+		digest.setDigests(helper.getPostsSearch(digestPage, current, find, repository, lang));
 		model.addAttribute("posts", digest);
 
 		return "index";
@@ -161,20 +141,9 @@ public class SiteController {
 		model.addAttribute("find", searchForm);
 	}
 
-	private String checkQueryLength(String query) {
-		final int MAX_QUERY_LENGTH = 100;
-		if ((query != null) && (query.length() > MAX_QUERY_LENGTH)) {
-			String chopped = query.substring(0, MAX_QUERY_LENGTH);
-			log.warn(String.format("Too long some query: '%s', chopped to (0, %d) characters.",
-				chopped, MAX_QUERY_LENGTH));
-			return chopped;
-		}
-		return query;
-	}
-
 	private int getCurrentPageAndSetPagerData(Model model, PagerModel pager, String page, int pageCount) {
 		int pageDeep = config.getPageDeep();
-		int current = siteHelper.getCurrentPage(page, pageCount);
+		int current = helper.getCurrentPage(page, pageCount);
 
 		pager.setCurrent(current);
 		pager.setAll(pageCount);
@@ -201,65 +170,5 @@ public class SiteController {
 			form.setPath("/");
 		}
 		model.addAttribute("goto", form);
-	}
-
-	protected String getMotofanTitle(Locale lang) {
-		return locale.i18nW("site.content.head.title", lang);
-	}
-
-	protected String getMotofanTitleSearch(BotDigestUserEntity user, String text, Locale lang) {
-		final int length = 20;
-		String query = "";
-		if (text != null && !text.isEmpty()) {
-			query = filter.ellipsisRight(text, length);
-		}
-		if (user != null) {
-			String username = filter.ellipsisRight(user.getUsername(), length);
-			if (!query.isEmpty()) {
-				return String.format(locale.i18nW("site.content.head.title.search.user.text", lang),
-					query, username);
-			} else {
-				return String.format(locale.i18nW("site.content.head.title.search.user", lang), username);
-			}
-		}
-		return String.format(locale.i18nW("site.content.head.title.search", lang), query);
-	}
-
-	protected String getMotofanDescription(Locale lang) {
-		return String.format(locale.i18nW("site.content.head.description", lang),
-			motofanChatId, motofanChatUrl, config.getMotofanChatSlug());
-	}
-
-	protected List<Post> getDigestEntities(Page<BotDigestEntity> digestEntities,
-	                                       String postId,
-	                                       int current,
-	                                       String search,
-	                                       Locale lang) {
-		if (digestEntities != null) {
-			List<Post> posts = new ArrayList<>();
-			int count = (current - 1) * config.getPagePosts();
-			for (BotDigestEntity digest : digestEntities) {
-				BotDigestUserEntity user = digest.getUser();
-				String username = user.getUsername();
-				long userId = user.getId();
-				long id = digest.getId();
-				posts.add(
-					new Post(
-						siteHelper.highlightPost(postId, id),
-						siteHelper.filterDescription(++count, id, digest.getMessageId(), lang),
-						username,
-						siteHelper.filterUsername(username, false),
-						siteHelper.filterAvatarLink(user.getAvatar()),
-						siteHelper.filterGroup(username, lang),
-						siteHelper.filterDateAndTime(digest.getDate(), lang),
-						siteHelper.filterDigestOrder(digest.getDigest(), search),
-						userId,
-						siteHelper.filterDigestCount(userId, repository.countBotDigestEntitiesByUserEqualsAndChatEquals(user, motofanChatId), lang)
-					)
-				);
-			}
-			return posts;
-		}
-		return new ArrayList<>();
 	}
 }

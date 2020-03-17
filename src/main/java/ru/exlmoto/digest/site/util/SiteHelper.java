@@ -4,15 +4,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import org.thymeleaf.util.ArrayUtils;
 
 import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.entity.BotDigestEntity;
+import ru.exlmoto.digest.entity.BotDigestUserEntity;
+import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
+import ru.exlmoto.digest.site.model.post.Post;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
@@ -43,11 +50,92 @@ public class SiteHelper {
 	@Value("${bot.motofan-chat-url}")
 	private String motofanChatUrl;
 
+	@Value("${bot.motofan-chat-id}")
+	private long motofanChatId;
+
 	public SiteHelper(SiteConfiguration config, LocaleHelper locale, FilterHelper filter, BotHelper helper) {
 		this.config = config;
 		this.locale = locale;
 		this.filter = filter;
 		this.helper = helper;
+	}
+
+	public List<Post> getPosts(Page<BotDigestEntity> page,
+	                           String postId,
+	                           int current,
+	                           BotDigestRepository repository,
+	                           Locale lang) {
+		return getPostsAux(page, postId, current, null, repository, lang);
+	}
+
+	public List<Post> getPostsSearch(Page<BotDigestEntity> page,
+	                                 int current,
+	                                 String search,
+	                                 BotDigestRepository repository,
+	                                 Locale lang) {
+		return getPostsAux(page, null, current, search, repository, lang);
+	}
+
+	private List<Post> getPostsAux(Page<BotDigestEntity> page,
+	                               String postId,
+	                               int current,
+	                               String search,
+	                               BotDigestRepository repository,
+	                               Locale lang) {
+		if (page != null) {
+			List<Post> posts = new ArrayList<>();
+			int count = (current - 1) * config.getPagePosts();
+			for (BotDigestEntity digest : page) {
+				BotDigestUserEntity user = digest.getUser();
+				String username = user.getUsername();
+				long userId = user.getId();
+				long digestId = digest.getId();
+				posts.add(
+					new Post(
+						highlightPost(postId, digestId),
+						filterDescription(++count, digestId, digest.getMessageId(), lang),
+						username,
+						filterUsername(username, false),
+						filterAvatarLink(user.getAvatar()),
+						filterGroup(username, lang),
+						filterDateAndTime(digest.getDate(), lang),
+						filterDigestOrder(digest.getDigest(), search),
+						userId,
+						filterDigestCount(userId,
+							repository.countBotDigestEntitiesByUserEqualsAndChatEquals(user, motofanChatId), lang)
+					)
+				);
+			}
+			return posts;
+		}
+		return new ArrayList<>();
+	}
+
+	public String getMotofanTitle(Locale lang) {
+		return locale.i18nW("site.content.head.title", lang);
+	}
+
+	public String getMotofanTitleSearch(BotDigestUserEntity user, String text, Locale lang) {
+		final int length = 20;
+		String query = "";
+		if (text != null && !text.isEmpty()) {
+			query = filter.ellipsisRight(text, length);
+		}
+		if (user != null) {
+			String username = filter.ellipsisRight(user.getUsername(), length);
+			if (!query.isEmpty()) {
+				return String.format(locale.i18nW("site.content.head.title.search.user.text", lang),
+					query, username);
+			} else {
+				return String.format(locale.i18nW("site.content.head.title.search.user", lang), username);
+			}
+		}
+		return String.format(locale.i18nW("site.content.head.title.search", lang), query);
+	}
+
+	public String getMotofanDescription(Locale lang) {
+		return String.format(locale.i18nW("site.content.head.description", lang),
+			motofanChatId, motofanChatUrl, config.getMotofanChatSlug());
 	}
 
 	public boolean highlightPost(String postId, long id) {
@@ -241,5 +329,16 @@ public class SiteHelper {
 
 	private boolean isUsername(String username) {
 		return username != null && !username.isEmpty() && username.startsWith("@");
+	}
+
+	public String chopQuery(String query) {
+		final int MAX_QUERY_LENGTH = 100;
+		if ((query != null) && (query.length() > MAX_QUERY_LENGTH)) {
+			String chopped = query.substring(0, MAX_QUERY_LENGTH);
+			log.warn(String.format("Too long some query: '%s', chopped to (0, %d) characters.",
+				chopped, MAX_QUERY_LENGTH));
+			return chopped;
+		}
+		return query;
 	}
 }

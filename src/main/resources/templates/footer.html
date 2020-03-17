@@ -3,6 +3,7 @@
 	<body>
 		<div class="page">
 			<div th:fragment="copyright" class="copyright">
+				<div th:utext="#{site.footer.language}">Language: Russian | English.</div>
 				<div th:utext="#{site.footer.created}">Created by EXL.</div>
 				<div th:with="block=#{site.footer.copyright}" th:utext="${#strings.replace(block, '%date%', #dates.year(#dates.createNow()))}">(c) 2020</div>
 			</div>

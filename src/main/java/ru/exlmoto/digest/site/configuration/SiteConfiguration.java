@@ -21,6 +21,8 @@ public class SiteConfiguration {
 	private String proxy;
 	private boolean proxyEnabled;
 
+	private boolean autolinkerEnabled;
+
 	/*
 	TODO:
 	@Bean
@@ -85,5 +87,13 @@ public class SiteConfiguration {
 
 	public void setProxyEnabled(boolean proxyEnabled) {
 		this.proxyEnabled = proxyEnabled;
+	}
+
+	public boolean isAutolinkerEnabled() {
+		return autolinkerEnabled;
+	}
+
+	public void setAutolinkerEnabled(boolean autolinkerEnabled) {
+		this.autolinkerEnabled = autolinkerEnabled;
 	}
 }

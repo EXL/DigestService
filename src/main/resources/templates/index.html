@@ -10,17 +10,17 @@
 	</head>
 	<body>
 		<div class="page">
-			<div th:replace="~{header :: banner}"></div>
+			<div th:replace="~{header :: banner}">Header</div>
 			<div class="controls">
-				<div th:replace="~{pager :: paginator(up)}"></div>
-				<div th:replace="~{search :: search-form(up)}"></div>
+				<div th:replace="~{pager :: paginator(up)}">Pager</div>
+				<div th:replace="~{search :: search-form(up)}">Search</div>
 			</div>
-			<div th:replace="~{content :: digest}"></div>
+			<div th:replace="~{content :: digest}">Content</div>
 			<div class="controls" th:if="${!posts.digests.isEmpty()}">
-				<div th:replace="~{pager :: paginator(down)}"></div>
-				<div th:replace="~{search :: search-form(down)}"></div>
+				<div th:replace="~{pager :: paginator(down)}">Pager</div>
+				<div th:replace="~{search :: search-form(down)}">Search</div>
 			</div>
-			<div th:replace="~{footer :: copyright}"></div>
+			<div th:replace="~{footer :: copyright}">Footer</div>
 		</div>
 	</body>
 </html>

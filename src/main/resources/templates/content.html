@@ -7,20 +7,20 @@
 				<div th:if="${!posts.digests.isEmpty()}">
 					<span class="table-header">
 						<img class="table-header-image" src="../static/image/thread.png" th:src="@{/image/thread.png}" alt="Go!" th:alt="#{site.content.head.icon.title}" title="Go!" th:title="#{site.content.head.icon.title}" width="15" height="14"/>
-						<span class="table-header-title" th:utext="${posts.title}"></span>
-						<span class="table-header-description" th:utext="${posts.description}"></span>
+						<span class="table-header-title" th:utext="${posts.title}">Title</span>
+						<span class="table-header-description" th:utext="${posts.description}">Description</span>
 					</span>
 					<table class="digest-post" th:each="digest : ${posts.digests}" th:class="${digest.highlight ? 'digest-post-highlight' : 'digest-post'}">
 						<tr>
 							<td class="cell-name">
-								<span class="username" th:utext="${digest.username_html}"></span>
+								<span class="username" th:utext="${digest.username_html}">Username</span>
 							</td>
 							<td class="cell-details">
 								<span class="date-details"><!--/*
 								*/--><img class="digest-icon" src="../static/image/post.png" th:src="@{/image/post.png}" alt="Post" width="8" height="9"/><!--/*
 								*/--><span th:text="${digest.date}">Date</span><!--/*
 							*/--></span><!--/*
-							*/--><span class="number-details" th:utext="${digest.description_html}"></span>
+							*/--><span class="number-details" th:utext="${digest.description_html}">Description</span>
 							</td>
 						</tr>
 						<tr>
@@ -38,7 +38,7 @@
 								</p>
 							</td>
 							<td class="cell-digest">
-								<div class="digest-content" th:utext="${digest.post_html}"></div>
+								<div class="digest-content" th:utext="${digest.post_html}">Digest Content</div>
 							</td>
 						</tr>
 						<tr>

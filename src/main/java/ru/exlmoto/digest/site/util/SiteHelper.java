@@ -266,7 +266,8 @@ public class SiteHelper {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Span span : spans) {
 			String chunk = digest.substring(span.getBeginIndex(), span.getEndIndex());
-			String link = filter.ellipsisMiddle(Encode.forHtml(chunk), CHOP_LINK);
+			String chunkHtml = Encode.forHtml(chunk);
+			String link = filter.ellipsisMiddle(chunkHtml, CHOP_LINK);
 			String attr = Encode.forHtmlAttribute(chunk);
 			if (span instanceof LinkSpan) {
 				stringBuilder.append("<a href=\"");
@@ -277,7 +278,7 @@ public class SiteHelper {
 				stringBuilder.append(link);
 				stringBuilder.append("</a>");
 			} else {
-				stringBuilder.append(link);
+				stringBuilder.append(chunkHtml);
 			}
 		}
 		return stringBuilder.toString();

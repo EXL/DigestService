@@ -182,9 +182,22 @@ class SiteHelperTest {
 
 		System.out.println(helper.activateLinks("Test https://exlmotoexlmotoexlmotoexlmotoexlmotoe" +
 			"xlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmoto.ru"));
+	}
 
+	@Test
+	public void testActivateLinksSpecialCases() {
 		// Unicode link.
 		System.out.println(helper.activateLinks("Test https://президент.рф"));
+
+		// WWW link.
+		System.out.println(helper.activateLinks("Test www.exlmoto.ru"));
+		System.out.println(helper.activateLinks("Test www1.exlmoto.ru"));
+		System.out.println(helper.activateLinks("Test www2.exlmoto.ru"));
+
+		// E-Mail.
+		System.out.println(helper.activateLinks("Test @exlmoto"));
+		System.out.println(helper.activateLinks("Test test@exlmoto"));
+		System.out.println(helper.activateLinks("Test test@exlmoto.ru"));
 	}
 
 	@Test

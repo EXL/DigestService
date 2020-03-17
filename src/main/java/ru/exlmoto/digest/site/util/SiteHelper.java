@@ -1,5 +1,12 @@
 package ru.exlmoto.digest.site.util;
 
+import org.nibor.autolink.LinkExtractor;
+import org.nibor.autolink.LinkSpan;
+import org.nibor.autolink.Span;
+import org.nibor.autolink.LinkType;
+
+import org.owasp.encoder.Encode;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +28,7 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.EnumSet;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +36,8 @@ import java.util.regex.Pattern;
 @Component
 public class SiteHelper {
 	private final Logger log = LoggerFactory.getLogger(SiteHelper.class);
+
+	private final int CHOP_LINK = 100;
 
 	private final SiteConfiguration config;
 	private final LocaleHelper locale;
@@ -227,23 +237,50 @@ public class SiteHelper {
 		return digest;
 	}
 
-	// https://stackoverflow.com/a/28269120
 	protected String activateLinks(String digest) {
-		if (digest != null && !digest.isEmpty()) {
-			final int LENGTH = 100;
-			Matcher matcher =
-				Pattern.compile("((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?+-=\\\\.&]*)",
-					Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL).matcher(digest);
-			StringBuffer stringBuffer = new StringBuffer();
-			while (matcher.find()) {
-				String url = matcher.group(0).trim();
-				String shortUrl = filter.ellipsisMiddle(url, LENGTH);
-				matcher.appendReplacement(stringBuffer,
-					String.format("<a href=\"%1$s\" title=\"%1$s\" target=\"_blank\">%2$s</a>", url, shortUrl));
-			}
-			return matcher.appendTail(stringBuffer).toString();
+		return (digest != null && !digest.isEmpty()) ?
+			(config.isAutolinkerEnabled()) ? activateLinksViaAutolinker(digest) : activateLinksViaRegEx(digest) :
+			digest;
+	}
+
+	// Source: https://stackoverflow.com/a/28269120
+	private String activateLinksViaRegEx(String digest) {
+		Matcher matcher =
+			Pattern.compile("((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?+-=\\\\.&]*)",
+				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL).matcher(digest);
+		StringBuffer stringBuffer = new StringBuffer();
+		while (matcher.find()) {
+			String url = matcher.group(0).trim();
+			String shortUrl = filter.ellipsisMiddle(url, CHOP_LINK);
+			matcher.appendReplacement(stringBuffer,
+				String.format("<a href=\"%1$s\" title=\"%1$s\" target=\"_blank\">%2$s</a>", url, shortUrl));
 		}
-		return digest;
+		return matcher.appendTail(stringBuffer).toString();
+	}
+
+	private String activateLinksViaAutolinker(String digest) {
+		LinkExtractor linkExtractor = LinkExtractor.builder()
+			.linkTypes(EnumSet.of(LinkType.URL, LinkType.WWW, LinkType.EMAIL))
+			.build();
+		Iterable<Span> spans = linkExtractor.extractSpans(digest);
+		StringBuilder stringBuilder = new StringBuilder();
+		for (Span span : spans) {
+			String chunk = digest.substring(span.getBeginIndex(), span.getEndIndex());
+			String link = filter.ellipsisMiddle(Encode.forHtml(chunk), CHOP_LINK);
+			String attr = Encode.forHtmlAttribute(chunk);
+			if (span instanceof LinkSpan) {
+				stringBuilder.append("<a href=\"");
+				stringBuilder.append(((LinkSpan) span).getType().equals(LinkType.EMAIL) ? "mailto:" + attr : attr);
+				stringBuilder.append("\" title=\"");
+				stringBuilder.append(attr);
+				stringBuilder.append("\" target=\"_blank\">");
+				stringBuilder.append(link);
+				stringBuilder.append("</a>");
+			} else {
+				stringBuilder.append(link);
+			}
+		}
+		return stringBuilder.toString();
 	}
 
 	protected String activateHighlight(String message, String highlight) {

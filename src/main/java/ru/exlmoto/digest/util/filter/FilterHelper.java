@@ -74,7 +74,7 @@ public class FilterHelper {
 	}
 
 	protected String ellipsisString(String text, int length, String ellipsis, int side, boolean arrange) {
-		if (length > 0) {
+		if (text != null && length > 0) {
 			int textLength = text.length();
 			if (textLength < length) {
 				return (arrange) ? arrangeString(text, length) : text;

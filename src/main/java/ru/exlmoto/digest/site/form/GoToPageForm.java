@@ -6,15 +6,6 @@ public class GoToPageForm {
 	private String text;
 	private String user;
 
-	public GoToPageForm() {
-
-	}
-
-	public GoToPageForm(String page, String path) {
-		this.page = page;
-		this.path = path;
-	}
-
 	public String getPage() {
 		return page;
 	}

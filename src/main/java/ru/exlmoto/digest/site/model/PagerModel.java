@@ -6,17 +6,6 @@ public class PagerModel {
 	private int startAux;
 	private int endAux;
 
-	public PagerModel(int current, int all, int startAux, int endAux) {
-		this.current = current;
-		this.all = all;
-		this.startAux = startAux;
-		this.endAux = endAux;
-	}
-
-	public PagerModel() {
-
-	}
-
 	public int getCurrent() {
 		return current;
 	}

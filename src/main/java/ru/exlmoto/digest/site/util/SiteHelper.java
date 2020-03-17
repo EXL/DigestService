@@ -226,7 +226,7 @@ public class SiteHelper {
 
 	protected String activateUsers(String digest) {
 		if (digest != null && !digest.isEmpty()) {
-			Matcher matcher = Pattern.compile("\\B@[a-z0-9_-]+",
+			Matcher matcher = Pattern.compile("\\B@[\\w_-]+",
 				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL).matcher(digest);
 			StringBuffer stringBuffer = new StringBuffer();
 			while (matcher.find()) {
@@ -239,12 +239,12 @@ public class SiteHelper {
 
 	protected String activateLinks(String digest) {
 		return (digest != null && !digest.isEmpty()) ?
-			(config.isAutolinkerEnabled()) ? activateLinksViaAutolinker(digest) : activateLinksViaRegEx(digest) :
+			(config.isAutolinkerEnabled()) ? activateLinksViaAutolinker(digest) : activateLinksViaRegExp(digest) :
 			digest;
 	}
 
 	// Source: https://stackoverflow.com/a/28269120
-	private String activateLinksViaRegEx(String digest) {
+	private String activateLinksViaRegExp(String digest) {
 		Matcher matcher =
 			Pattern.compile("((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?+-=\\\\.&]*)",
 				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL).matcher(digest);

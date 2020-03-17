@@ -22,6 +22,7 @@ public class SiteConfiguration {
 	private boolean proxyEnabled;
 
 	/*
+	TODO:
 	@Bean
 	public LocaleResolver localeResolver(@Value("general.lang") String defaultLanguage) {
 		SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();

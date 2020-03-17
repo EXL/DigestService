@@ -25,6 +25,7 @@ import ru.exlmoto.digest.site.form.SearchForm;
 import ru.exlmoto.digest.site.model.DigestModel;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.post.Post;
+import ru.exlmoto.digest.site.util.SiteHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -44,7 +45,8 @@ public class SiteController {
 	private final BotDigestUserRepository userRepository;
 	private final LocaleHelper locale;
 
-	private final BotHelper helper;
+	private final BotHelper botHelper;
+	private final SiteHelper siteHelper;
 	private final FilterHelper filter;
 
 	private enum Group {
@@ -70,13 +72,15 @@ public class SiteController {
 	                      BotDigestRepository repository,
 	                      BotDigestUserRepository userRepository,
 	                      LocaleHelper locale,
-	                      BotHelper helper,
+	                      BotHelper botHelper,
+	                      SiteHelper siteHelper,
 	                      FilterHelper filter) {
 		this.config = config;
 		this.repository = repository;
 		this.userRepository = userRepository;
 		this.locale = locale;
-		this.helper = helper;
+		this.botHelper = botHelper;
+		this.siteHelper = siteHelper;
 		this.filter = filter;
 	}
 
@@ -93,7 +97,7 @@ public class SiteController {
 
 		int pagePosts = config.getPagePosts();
 		int current = getCurrentPageAndSetPagerData(model, pager, checkQueryLength(page),
-			getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts));
+			siteHelper.getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts));
 
 		setGotoFormData(model, goToPageForm, current);
 
@@ -108,7 +112,7 @@ public class SiteController {
 
 	@RequestMapping(path = "/jump")
 	public String jump(@RequestParam(name = "id") String id) {
-		Long postId = getLong(id);
+		Long postId = siteHelper.getLong(id);
 		if (postId != null) {
 			int index = repository.findBotDigestEntitiesByChat(Sort.by(Sort.Order.asc("id")),
 				motofanChatId).indexOf(new BotDigestEntity(postId));
@@ -144,7 +148,7 @@ public class SiteController {
 
 		long count;
 		BotDigestUserEntity digestUser = null;
-		Long userId = getLong(member);
+		Long userId = siteHelper.getLong(member);
 		if (userId != null) {
 			digestUser = userRepository.getBotDigestUserEntityById(userId);
 			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(find,
@@ -153,7 +157,7 @@ public class SiteController {
 			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(find, motofanChatId);
 		}
 		int current = getCurrentPageAndSetPagerData(model, pager,
-			checkQueryLength(page), getPageCount(count, pagePosts));
+			checkQueryLength(page), siteHelper.getPageCount(count, pagePosts));
 		setGotoFormData(model, goToPageForm, current, find, userId);
 
 		Page<BotDigestEntity> digestPage = (userId != null) ?
@@ -188,7 +192,7 @@ public class SiteController {
 
 	private int getCurrentPageAndSetPagerData(Model model, PagerModel pager, String page, int pageCount) {
 		int pageDeep = config.getPageDeep();
-		int current = getCurrentPage(page, pageCount);
+		int current = siteHelper.getCurrentPage(page, pageCount);
 
 		pager.setCurrent(current);
 		pager.setAll(pageCount);
@@ -403,7 +407,7 @@ public class SiteController {
 	}
 
 	protected Group checkGroup(String username) {
-		if (helper.isUserAdmin(dropAt(username))) {
+		if (botHelper.isUserAdmin(dropAt(username))) {
 			return Group.Administrator;
 		} else if (ArrayUtils.contains(config.getModerators(), dropAt(username))) {
 			return Group.Moderator;
@@ -431,36 +435,8 @@ public class SiteController {
 		return null;
 	}
 
-	protected int getPageCount(long count, int pagePosts) {
-		return ((((int) Math.max(Math.min(Integer.MAX_VALUE, count), Integer.MIN_VALUE)) - 1) / pagePosts) + 1;
-	}
-
-	protected Long getLong(String id) {
-		if (id != null && !id.isEmpty()) {
-			try {
-				return Long.parseLong(id);
-			} catch (NumberFormatException nfe) {
-				log.warn(String.format("Cannot convert '%s' id to long.", id), nfe);
-			}
-		}
-		return null;
-	}
-
 	protected boolean highlightPost(String postId, long id) {
-		Long post = getLong(postId);
+		Long post = siteHelper.getLong(postId);
 		return (post != null && post.equals(id));
-	}
-
-	protected int getCurrentPage(String page, int pageCount) {
-		try {
-			int parsed = -1;
-			if (page != null) {
-				parsed = Integer.parseInt(page);
-			}
-			return (parsed > 0 && parsed < pageCount) ? parsed : pageCount;
-		} catch (NumberFormatException nfe) {
-			log.warn(String.format("Cannot convert '%s' page to int.", page), nfe);
-			return pageCount;
-		}
 	}
 }

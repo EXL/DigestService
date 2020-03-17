@@ -1,10 +1,9 @@
 package ru.exlmoto.digest.site.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import java.util.Locale;
 
@@ -23,15 +22,13 @@ public class SiteConfiguration {
 
 	private boolean autolinkerEnabled;
 
-	/*
-	TODO:
 	@Bean
-	public LocaleResolver localeResolver(@Value("general.lang") String defaultLanguage) {
-		SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-		sessionLocaleResolver.setDefaultLocale(Locale.forLanguageTag(defaultLanguage));
-		return sessionLocaleResolver;
+	public LocaleResolver localeResolver() {
+		final CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
+		cookieLocaleResolver.setDefaultLocale(Locale.forLanguageTag("ru"));
+		cookieLocaleResolver.setCookieName("lang");
+		return cookieLocaleResolver;
 	}
-	 */
 
 	public String getAddress() {
 		return address;

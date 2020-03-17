@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,6 +21,9 @@ import ru.exlmoto.digest.site.model.DigestModel;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.util.SiteHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 import java.util.Locale;
 
@@ -49,12 +53,14 @@ public class SiteController {
 	@RequestMapping(path = "/")
 	public String index(@RequestParam(name = "page", required = false) String page,
 	                    @RequestParam(name = "post", required = false) String post,
+	                    @CookieValue(value = "lang", defaultValue = "ru") String tag,
 	                    SearchForm searchForm,
 	                    GoToPageForm goToPageForm,
 	                    PagerModel pager,
 	                    DigestModel digest,
-	                    Model model,
-	                    Locale lang) {
+	                    Model model) {
+		Locale lang = Locale.forLanguageTag(tag);
+
 		setTitleAndGeneralData(model, "site.title", lang, searchForm);
 
 		int pagePosts = config.getPagePosts();
@@ -92,12 +98,14 @@ public class SiteController {
 	public String search(@RequestParam(name = "page", required = false) String page,
 	                     @RequestParam(name = "text", required = false, defaultValue = "") String text,
 	                     @RequestParam(name = "user", required = false) String user,
+	                     @CookieValue(value = "lang", defaultValue = "ru") String tag,
 	                     SearchForm searchForm,
 	                     GoToPageForm goToPageForm,
 	                     PagerModel pager,
 	                     DigestModel digest,
-	                     Model model,
-	                     Locale lang) {
+	                     Model model) {
+		Locale lang = Locale.forLanguageTag(tag);
+
 		setTitleAndGeneralData(model, "site.title.search", lang, searchForm);
 
 		String find = helper.chopQuery(text);
@@ -133,6 +141,13 @@ public class SiteController {
 		model.addAttribute("posts", digest);
 
 		return "index";
+	}
+
+	@RequestMapping(path = "/language")
+	public String lang(@RequestParam(name = "tag", defaultValue = "ru") String tag, HttpServletResponse response) {
+		response.addCookie(new Cookie("lang", tag));
+
+		return "redirect:/";
 	}
 
 	private void setTitleAndGeneralData(Model model, String key, Locale lang, SearchForm searchForm) {

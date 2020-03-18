@@ -155,7 +155,7 @@ public class BotHandler {
 		}
 	}
 
-	private boolean checkGreetingStatus(long chatId) {
+	protected boolean checkGreetingStatus(long chatId) {
 		return repository.findBotSubGreetingEntityByIgnored(chatId) == null;
 	}
 }

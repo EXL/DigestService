@@ -1,6 +1,5 @@
 package ru.exlmoto.digest.bot.ability.message.impl;
 
-import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 
 import org.springframework.stereotype.Component;
@@ -21,7 +20,6 @@ public class SubscribeCommand extends MessageAbility {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
-		Chat chat = message.chat();
-		keyboard.processSubscribeStatusMessage(chat.id(), message.messageId(), chat, false, sender);
+		keyboard.processSubscribeStatusMessage(message.messageId(), message.chat(), false, sender);
 	}
 }

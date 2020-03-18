@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.bot.ability.message.impl;
 
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.User;
 
 import org.springframework.stereotype.Component;
 
@@ -13,10 +14,17 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 public class HelpCommand extends MessageAbility {
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
+		long chatId = message.chat().id();
+		User user = message.from();
+
 		String answer = locale.i18n("bot.command.help");
-		if (helper.isUserAdmin(message.from().username())) {
+		if (sender.isUserChatAdministrator(chatId, user.id())) {
+			answer += "\n" + locale.i18n("bot.command.help.moder");
+		}
+		if (helper.isUserAdmin(user.username())) {
 			answer += "\n" + locale.i18n("bot.command.help.admin");
 		}
-		sender.replyMarkdown(message.chat().id(), message.messageId(), answer);
+
+		sender.replyMarkdown(chatId, message.messageId(), answer);
 	}
 }

@@ -15,6 +15,8 @@ import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.KeyboardAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.entity.BotSubGreetingEntity;
+import ru.exlmoto.digest.repository.BotSubGreetingRepository;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
@@ -22,16 +24,16 @@ public class GreetingKeyboard extends KeyboardAbility {
 	private final Logger log = LoggerFactory.getLogger(GreetingKeyboard.class);
 
 	private final LocaleHelper locale;
-
-	private boolean TODO = true;
+	private final BotSubGreetingRepository repository;
 
 	private enum Greeting {
 		off,
 		on
 	}
 
-	public GreetingKeyboard(LocaleHelper locale) {
+	public GreetingKeyboard(LocaleHelper locale, BotSubGreetingRepository repository) {
 		this.locale = locale;
+		this.repository = repository;
 	}
 
 	public InlineKeyboardMarkup getMarkup(boolean status) {
@@ -93,23 +95,20 @@ public class GreetingKeyboard extends KeyboardAbility {
 	}
 
 	private void disableGreetings(long chatId, int messageId, String callbackId, BotSender sender) {
-		TODO = false;
-		// repository save
+		repository.save(new BotSubGreetingEntity(chatId));
 		sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.greeting.off"));
 		processGreetingStatusMessage(chatId, messageId, true, sender);
 	}
 
 	private void enableGreetings(long chatId, int messageId, String callbackId, BotSender sender) {
-		TODO = true;
-		// repository delete
+		repository.deleteBotSubGreetingEntityByIgnored(chatId);
 		sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.greeting.on"));
 		processGreetingStatusMessage(chatId, messageId, true, sender);
 	}
 
 	public void processGreetingStatusMessage(long chatId, int messageId, boolean edit, BotSender sender) {
 		try {
-			// repository check
-			boolean status = TODO;
+			boolean status = repository.findBotSubGreetingEntityByIgnored(chatId) == null;
 			processMessageAux(chatId, messageId,
 				String.format(locale.i18n("bot.command.greeting"), getGreetingStatus(status)),
 				getMarkup(!status), edit, sender);

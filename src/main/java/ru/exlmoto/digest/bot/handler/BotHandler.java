@@ -17,6 +17,7 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
+import ru.exlmoto.digest.repository.BotSubGreetingRepository;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class BotHandler {
 	private final BotSender sender;
 	private final BotAbilityFactory abilityFactory;
 	private final CallbackQueriesWorker callbackQueriesWorker;
+	private final BotSubGreetingRepository repository;
 
 	public BotHandler(BotConfiguration config,
 	                  BotTelegram telegram,
@@ -45,7 +47,8 @@ public class BotHandler {
 	                  LocaleHelper locale,
 	                  BotSender sender,
 	                  BotAbilityFactory abilityFactory,
-	                  CallbackQueriesWorker callbackQueriesWorker) {
+	                  CallbackQueriesWorker callbackQueriesWorker,
+	                  BotSubGreetingRepository repository) {
 		this.config = config;
 		this.sender = sender;
 		this.helper = helper;
@@ -53,6 +56,7 @@ public class BotHandler {
 		this.abilityFactory = abilityFactory;
 		this.callbackQueriesWorker = callbackQueriesWorker;
 		this.locale = locale;
+		this.repository = repository;
 	}
 
 	public void onCommand(Message message) {
@@ -114,7 +118,8 @@ public class BotHandler {
 	}
 
 	public void onNewUsers(Message message) {
-		if (config.isShowGreetings()) {
+		long chatId = message.chat().id();
+		if (config.isShowGreetings() && checkGreetingStatus(chatId)) {
 			List<User> users = Arrays.asList(message.newChatMembers());
 			String usernames;
 			if (users.size() == 1) {
@@ -128,21 +133,29 @@ public class BotHandler {
 			String botAnswer = (isBotHere) ?
 				locale.i18n("bot.event.added") :
 				locale.i18nRU("bot.event.user.new", usernames);
-			sender.replySimple(message.chat().id(), message.messageId(), botAnswer);
+			sender.replySimple(chatId, message.messageId(), botAnswer);
 		}
 	}
 
 	public void onLeftUser(Message message) {
-		if (config.isShowGreetings()) {
+		long chatId = message.chat().id();
+		if (config.isShowGreetings() && checkGreetingStatus(chatId)) {
 			String username = helper.getValidUsername(message.leftChatMember());
 			if (!username.equals(telegram.getUsername())) {
-				sender.replySimple(message.chat().id(), message.messageId(),
+				sender.replySimple(chatId, message.messageId(),
 					locale.i18nRU("bot.event.user.left", username));
 			}
 		}
 	}
 
 	public void onNewPhotos(Message message) {
-		sender.replySimple(message.chat().id(), message.messageId(), locale.i18n("bot.event.photo.change"));
+		long chatId = message.chat().id();
+		if (config.isShowGreetings() && checkGreetingStatus(chatId)) {
+			sender.replySimple(chatId, message.messageId(), locale.i18n("bot.event.photo.change"));
+		}
+	}
+
+	private boolean checkGreetingStatus(long chatId) {
+		return repository.findBotSubGreetingEntityByIgnored(chatId) == null;
 	}
 }

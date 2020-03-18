@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 
-public interface BotSubDigestRepository extends JpaRepository<BotSubDigestEntity, Integer> {
+public interface BotSubDigestRepository extends JpaRepository<BotSubDigestEntity, Long> {
 	BotSubDigestEntity findBotSubDigestEntityBySubscription(long subscription);
 
 	@Transactional

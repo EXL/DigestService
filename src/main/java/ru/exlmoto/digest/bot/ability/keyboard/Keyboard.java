@@ -5,7 +5,8 @@ public enum Keyboard {
 	chart,
 	subscribe,
 	digest,
-	show;
+	show,
+	greeting;
 
 	private static final String DELIMITER = "_";
 	public static final String PAGE = "page" + DELIMITER;

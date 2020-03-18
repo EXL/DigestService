@@ -13,6 +13,7 @@ import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.KeyboardAbility;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.ChartKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.DigestKeyboard;
+import ru.exlmoto.digest.bot.ability.keyboard.impl.GreetingKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.RateKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.ShowKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.SubscribeKeyboard;
@@ -24,6 +25,7 @@ import ru.exlmoto.digest.bot.ability.message.impl.DeleteCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.DigestCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.DigestHashTag;
 import ru.exlmoto.digest.bot.ability.message.impl.GameCommand;
+import ru.exlmoto.digest.bot.ability.message.impl.GreetingCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HelloCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HelpCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HostIpCommand;
@@ -74,6 +76,7 @@ public class BotAbilityFactory {
 		addCommand("/delete", DeleteCommand.class);
 		addCommand("/digest", DigestCommand.class);
 		addCommand("/debug", DebugCommand.class);
+		addCommand("/greeting", GreetingCommand.class);
 
 		addHashTag("#digest", DigestHashTag.class);
 		addHashTag("#news", DigestHashTag.class);
@@ -83,6 +86,7 @@ public class BotAbilityFactory {
 		addKeyboard(Keyboard.subscribe, SubscribeKeyboard.class);
 		addKeyboard(Keyboard.digest, DigestKeyboard.class);
 		addKeyboard(Keyboard.show, ShowKeyboard.class);
+		addKeyboard(Keyboard.greeting, GreetingKeyboard.class);
 	}
 
 	/*

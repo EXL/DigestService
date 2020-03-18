@@ -85,30 +85,29 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		Message message = callback.message();
 		int messageId = message.messageId();
 		Chat chat = message.chat();
-		long chatId = chat.id();
 
 		String callbackId = callback.id();
 		String key = Keyboard.chopKeyboardNameLeft(callback.data());
 
 		if (!chat.type().equals(Type.Private)) {
 			if (helper.isUserAdmin(callback.from().username())) {
-				handleSubscription(chatId, messageId, chat, callbackId, sender, checkSubscription(key));
+				handleSubscription(messageId, chat, callbackId, sender, checkSubscription(key));
 			} else {
 				sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.admin"));
 			}
 		} else {
-			handleSubscription(chatId, messageId, chat, callbackId, sender, checkSubscription(key));
+			handleSubscription(messageId, chat, callbackId, sender, checkSubscription(key));
 		}
 	}
 
-	public void processSubscribeStatusMessage(long chatId, int messageId, Chat chat, boolean edit, BotSender sender) {
+	public void processSubscribeStatusMessage(int messageId, Chat chat, boolean edit, BotSender sender) {
 		Answer<String> res = generateSubscribeStatusMessage(chat);
 		String answer = res.ok() ? res.answer() : res.error();
 		InlineKeyboardMarkup inlineKeyboardMarkup = res.ok() ? markup : null;
 		if (edit) {
-			sender.editMarkdown(chatId, messageId, answer, inlineKeyboardMarkup);
+			sender.editMarkdown(chat.id(), messageId, answer, inlineKeyboardMarkup);
 		} else {
-			sender.replyMarkdown(chatId, messageId, answer, inlineKeyboardMarkup);
+			sender.replyMarkdown(chat.id(), messageId, answer, inlineKeyboardMarkup);
 		}
 	}
 
@@ -141,24 +140,23 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		return Subscription.motofan_subscribe;
 	}
 
-	private void handleSubscription(long chatId, int messageId, Chat chat, String callbackId, BotSender sender,
-	                                Subscription subscription) {
+	private void handleSubscription(int messageId, Chat chat, String callbackId, BotSender sender, Subscription sub) {
 		try {
-			switch (subscription) {
+			switch (sub) {
 				case motofan_subscribe: {
-					motofanSubscribe(chatId, messageId, chat, callbackId, sender);
+					motofanSubscribe(messageId, chat, callbackId, sender);
 					break;
 				}
 				case motofan_unsubscribe: {
-					motofanUnsubscribe(chatId, messageId, chat, callbackId, sender);
+					motofanUnsubscribe(messageId, chat, callbackId, sender);
 					break;
 				}
 				case digest_subscribe: {
-					digestSubscribe(chatId, messageId, chat, callbackId, sender);
+					digestSubscribe(messageId, chat, callbackId, sender);
 					break;
 				}
 				case digest_unsubscribe: {
-					digestUnsubscribe(chatId, messageId, chat, callbackId, sender);
+					digestUnsubscribe(messageId, chat, callbackId, sender);
 					break;
 				}
 			}
@@ -168,43 +166,47 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		}
 	}
 
-	private void motofanSubscribe(long chatId, int messageId, Chat chat, String callbackId, BotSender sender) {
+	private void motofanSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
 		if (motofanRepository.findBotSubMotofanEntityBySubscription(chatId) != null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
 		} else {
 			motofanRepository.save(new BotSubMotofanEntity(chatId, helper.getValidChatName(chat)));
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
-			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
+			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}
 	}
 
-	private void motofanUnsubscribe(long chatId, int messageId, Chat chat, String callbackId, BotSender sender) {
+	private void motofanUnsubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
 		if (motofanRepository.findBotSubMotofanEntityBySubscription(chatId) == null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
 		} else {
 			motofanRepository.deleteBotSubMotofanEntityBySubscription(chatId);
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
-			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
+			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}
 	}
 
-	private void digestSubscribe(long chatId, int messageId, Chat chat, String callbackId, BotSender sender) {
+	private void digestSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
 		if (digestRepository.findBotSubDigestEntityBySubscription(chatId) != null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
 		} else {
 			digestRepository.save(new BotSubDigestEntity(chatId, helper.getValidChatName(chat)));
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
-			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
+			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}
 	}
 
-	private void digestUnsubscribe(long chatId, int messageId, Chat chat, String callbackId, BotSender sender) {
+	private void digestUnsubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
 		if (digestRepository.findBotSubDigestEntityBySubscription(chatId) == null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
 		} else {
 			digestRepository.deleteBotSubDigestEntityBySubscription(chatId);
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
-			processSubscribeStatusMessage(chatId, messageId, chat, true, sender);
+			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}
 	}
 }

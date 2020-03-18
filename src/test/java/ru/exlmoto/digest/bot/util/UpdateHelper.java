@@ -67,6 +67,12 @@ public class UpdateHelper {
 		return message;
 	}
 
+	public Message getSimpleMessageAdmin(String text, String username) {
+		Message message = getSimpleMessage(text, username);
+		setField(message, "from", getAdmin(username));
+		return message;
+	}
+
 	public Message getNewUsersWithUsername(String username) {
 		Message message = getSimpleMessage("Text", "Username");
 		User[] users = new User[3];
@@ -106,6 +112,13 @@ public class UpdateHelper {
 	public User getUser(String username) {
 		User user = new User();
 		setField(user, "id", 100);
+		setField(user, "username", username);
+		return user;
+	}
+
+	public User getAdmin(String username) {
+		User user = new User();
+		setField(user, "id", 87336977);
 		setField(user, "username", username);
 		return user;
 	}

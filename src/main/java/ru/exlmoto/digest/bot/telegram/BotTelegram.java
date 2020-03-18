@@ -4,6 +4,8 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.GetMe;
 import com.pengrad.telegrambot.response.GetMeResponse;
+import com.pengrad.telegrambot.request.GetChatAdministrators;
+import com.pengrad.telegrambot.response.GetChatAdministratorsResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,6 +141,15 @@ public class BotTelegram {
 		log.info(String.format("====> Start save settings: '%s'.", setup.toString()));
 		repository.save(setup);
 		log.info("====> End save settings.");
+	}
+
+	public GetChatAdministratorsResponse chatAdministrators(long chatId) {
+		try {
+			return bot.execute(new GetChatAdministrators(chatId));
+		} catch (RuntimeException re) {
+			log.error(String.format("Cannot get administrator list for '%d' chat.", chatId));
+			return null;
+		}
 	}
 
 	public TelegramBot getBot() {

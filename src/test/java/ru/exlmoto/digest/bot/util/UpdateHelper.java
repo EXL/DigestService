@@ -67,9 +67,12 @@ public class UpdateHelper {
 		return message;
 	}
 
-	public Message getSimpleMessageAdmin(String text, String username) {
+	public Message getSimpleMessageAdmin(String text, String username, long chatId) {
 		Message message = getSimpleMessage(text, username);
+
 		setField(message, "from", getAdmin(username));
+		setField(message, "chat", getChat(chatId));
+
 		return message;
 	}
 
@@ -124,8 +127,12 @@ public class UpdateHelper {
 	}
 
 	public Chat getChat() {
+		return getChat(4242L);
+	}
+
+	public Chat getChat(long chatId) {
 		Chat chat = new Chat();
-		setField(chat, "id", 4242L);
+		setField(chat, "id", chatId);
 		setField(chat, "type", Chat.Type.supergroup);
 		setField(chat, "title", "Chat Title");
 		return chat;
@@ -139,12 +146,25 @@ public class UpdateHelper {
 	}
 
 	public CallbackQuery getCallbackQueryUsername(String data, String username) {
+		return getCallbackQueryUsername(data, username, null, null);
+	}
+
+	public CallbackQuery getCallbackQueryUsername(String data, String username, Integer userId, Long chatId) {
 		CallbackQuery callbackQuery = new CallbackQuery();
-		setField(callbackQuery, "message", new UpdateHelper().getSimpleMessage("test", "anyone"));
+		if (chatId != null) {
+			setField(callbackQuery, "message", getSimpleMessageAdmin("test", "anyone", chatId));
+		} else {
+			setField(callbackQuery, "message", getSimpleMessage("test", "anyone"));
+		}
 		setField(callbackQuery, "data", data);
 
 		User user = new User();
 		setField(user, "username", username);
+		if (userId != null) {
+			setField(user, "id", userId);
+		} else {
+			setField(user, "id", 42);
+		}
 		setField(callbackQuery, "from", user);
 
 		return callbackQuery;

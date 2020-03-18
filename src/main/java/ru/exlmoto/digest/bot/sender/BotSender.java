@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.bot.sender;
 
+import com.pengrad.telegrambot.model.ChatMember;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.BaseRequest;
@@ -9,6 +10,7 @@ import com.pengrad.telegrambot.request.SendPhoto;
 import com.pengrad.telegrambot.request.SendSticker;
 import com.pengrad.telegrambot.request.AnswerCallbackQuery;
 import com.pengrad.telegrambot.response.BaseResponse;
+import com.pengrad.telegrambot.response.GetChatAdministratorsResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,7 @@ import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.io.File;
+import java.util.List;
 
 import static com.pengrad.telegrambot.model.request.ParseMode.HTML;
 import static com.pengrad.telegrambot.model.request.ParseMode.Markdown;
@@ -153,6 +156,19 @@ public class BotSender {
 
 	public void sendCallbackQueryAnswer(String callbackId, String text) {
 		executeRequestLog(new AnswerCallbackQuery(callbackId).text(text).showAlert(false));
+	}
+
+	public boolean isUserChatAdministrator(long chatId, long userId) {
+		GetChatAdministratorsResponse response = telegram.chatAdministrators(chatId);
+		if (response != null && response.isOk()) {
+			List<ChatMember> administrators = response.administrators();
+			for (ChatMember admin : administrators) {
+				if (admin.user().id() == userId) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private Answer<String> executeRequestLog(BaseRequest<?, ?> request) {

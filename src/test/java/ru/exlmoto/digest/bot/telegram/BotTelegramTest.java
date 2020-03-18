@@ -59,8 +59,7 @@ class BotTelegramTest {
 
 	@Test
 	public void testChatAdministrators() {
-		// assertFalse(adminListHelper(telegram.chatAdministrators(-1001148683293L)).isEmpty());
-		// assertTrue(adminListHelper(telegram.chatAdministrators(-1001045117849L)).isEmpty());
+		assertFalse(adminListHelper(telegram.chatAdministrators(config.getMotofanChatId())).isEmpty());
 		assertTrue(adminListHelper(telegram.chatAdministrators(-100104511784134569L)).isEmpty());
 		assertTrue(adminListHelper(telegram.chatAdministrators(87336977L)).isEmpty());
 	}

@@ -8,12 +8,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest(properties = "bot.silent=true")
 class BotSenderTest {
 	@Autowired
 	private BotSender sender;
+
+	@Autowired
+	private BotConfiguration config;
 
 	@Test
 	public void testBotSenderMethods() {
@@ -59,5 +65,11 @@ class BotSenderTest {
 		int length = result.length();
 		assertTrue(length < 3500);
 		System.out.println(result.substring(length - 30));
+	}
+
+	@Test
+	public void testIsUserChatAdministrator() {
+		assertFalse(sender.isUserChatAdministrator(config.getMotofanChatId(), 100L));
+		assertTrue(sender.isUserChatAdministrator(config.getMotofanChatId(), 87336977L));
 	}
 }

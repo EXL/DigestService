@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 	<body>
+		<!--/*@thymesVar id="time" type="java.lang.Long"*/-->
 		<div class="page">
 			<div th:fragment="copyright" class="copyright">
-				<div th:utext="#{site.footer.language}">Language: Russian | English.</div>
-				<div th:utext="#{site.footer.created}">Created by EXL.</div>
+				<div>
+					<span th:utext="#{site.footer.language}">Language: Russian | English.</span>
+					<span th:if="${time != null}" th:with="ms=${T(java.lang.System).currentTimeMillis() - time},render=#{site.footer.render}" th:text="${#strings.replace(render, '%time%', ms)}">Generation time: 100ms.</span>
+				</div>
+				<div>
+					<span th:utext="#{site.footer.created}">Created by EXL.</span>
+					<span th:utext="#{site.footer.source}">Source code: Digest Service</span>
+				</div>
 				<div th:with="block=#{site.footer.copyright}" th:utext="${#strings.replace(block, '%date%', #dates.year(#dates.createNow()))}">(c) 2015-2020</div>
 			</div>
 		</div>

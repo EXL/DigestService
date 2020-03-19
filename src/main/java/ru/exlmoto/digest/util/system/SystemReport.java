@@ -61,7 +61,7 @@ public class SystemReport {
 	}
 
 	private String getJavaVersion() {
-		return String.format("Java Version: %s %sbit",
+		return String.format("Java Version: %s %s-bit",
 			System.getProperty("java.version"), System.getProperty("sun.arch.data.model"));
 	}
 

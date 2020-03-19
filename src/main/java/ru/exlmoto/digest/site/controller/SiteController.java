@@ -150,6 +150,12 @@ public class SiteController {
 		return "redirect:/";
 	}
 
+	@RequestMapping(path = "/help")
+	public String help(Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+		return "help";
+	}
+
 	private void setTitleAndGeneralData(Model model, String key, Locale lang, SearchForm searchForm) {
 		model.addAttribute("time", System.currentTimeMillis());
 		model.addAttribute("title", locale.i18nW(key, lang));

@@ -12,6 +12,16 @@ repositories {
 	mavenCentral()
 }
 
+springBoot {
+	buildInfo {
+		properties {
+			additional = [
+				'revision': 'git rev-parse --short HEAD'.execute().text.trim()
+			]
+		}
+	}
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

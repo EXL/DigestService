@@ -3,6 +3,9 @@ package ru.exlmoto.digest.util.system;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.util.filter.FilterHelper;
@@ -26,9 +29,14 @@ public class SystemReport {
 	private final OperatingSystemMXBean os = ManagementFactory.getOperatingSystemMXBean();
 	private final Runtime runtime = Runtime.getRuntime();
 
+	private final ApplicationContext context;
 	private final FilterHelper filter;
 
-	public SystemReport(FilterHelper filter) {
+	@Value("${general.date-format}")
+	private String dateFormat;
+
+	public SystemReport(ApplicationContext context, FilterHelper filter) {
+		this.context = context;
 		this.filter = filter;
 	}
 
@@ -44,6 +52,10 @@ public class SystemReport {
 		StringJoiner joiner = new StringJoiner(delimiter);
 		joiner.add(getJavaVersion());
 		joiner.add(getJavaVendor());
+		joiner.add("");
+		joiner.add(getDigestServiceVersion());
+		joiner.add(getDigestServiceRevision());
+		joiner.add(getDigestServiceBuildDate());
 		joiner.add("");
 		joiner.add(getOsName());
 		joiner.add(getOsVersion());
@@ -67,6 +79,19 @@ public class SystemReport {
 
 	private String getJavaVendor() {
 		return String.format("Java Vendor: %s", System.getProperty("java.vendor"));
+	}
+
+	private String getDigestServiceVersion() {
+		return String.format("Digest Service Version: %s", context.getBean(BuildProperties.class).getVersion());
+	}
+
+	private String getDigestServiceRevision() {
+		return String.format("Revision: %s", context.getBean(BuildProperties.class).get("revision"));
+	}
+
+	private String getDigestServiceBuildDate() {
+		return String.format("Build Date Time: %s",
+			filter.getDateFromTimeStamp(dateFormat, context.getBean(BuildProperties.class).getTime().getEpochSecond()));
 	}
 
 	// Source: https://stackoverflow.com/a/57084402

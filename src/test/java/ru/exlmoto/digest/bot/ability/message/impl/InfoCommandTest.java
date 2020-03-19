@@ -11,9 +11,9 @@ import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @SpringBootTest(properties = "bot.silent=true")
-class HostIpCommandTest {
+class InfoCommandTest {
 	@Autowired
-	private HostIpCommand command;
+	private InfoCommand command;
 
 	@Autowired
 	private BotHelper helper;
@@ -27,7 +27,7 @@ class HostIpCommandTest {
 	private final UpdateHelper update = new UpdateHelper();
 
 	@Test
-	public void testHostIpCommand() {
-		command.execute(helper, sender, locale, update.getSimpleMessage("/hostip", "exlmoto"));
+	public void testInfoCommand() {
+		command.execute(helper, sender, locale, update.getSimpleMessage("/info", "exlmoto"));
 	}
 }

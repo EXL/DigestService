@@ -28,7 +28,7 @@ import ru.exlmoto.digest.bot.ability.message.impl.GameCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.GreetingCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HelloCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.HelpCommand;
-import ru.exlmoto.digest.bot.ability.message.impl.HostIpCommand;
+import ru.exlmoto.digest.bot.ability.message.impl.InfoCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.RateCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.SendCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.ShowCommand;
@@ -64,7 +64,7 @@ public class BotAbilityFactory {
 		addCommand("/start", StartCommand.class);
 		addCommand("/help", HelpCommand.class);
 		addCommand("/coffee", CoffeeCommand.class);
-		addCommand("/hostip", HostIpCommand.class);
+		addCommand("/info", InfoCommand.class);
 		addCommand("/game", GameCommand.class);
 		addCommand("/send", SendCommand.class);
 		addCommand("/sticker", SendCommand.class);

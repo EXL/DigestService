@@ -152,7 +152,6 @@ public class SiteController {
 
 	private void setTitleAndGeneralData(Model model, String key, Locale lang, SearchForm searchForm) {
 		model.addAttribute("title", locale.i18nW(key, lang));
-		model.addAttribute("lang", lang.toLanguageTag());
 		model.addAttribute("find", searchForm);
 	}
 

@@ -126,7 +126,7 @@ public class SystemReport {
 
 		long percent = totalFree * 100 / max;
 
-		return String.format("Memory Free: %d%% %d/%d MiB", percent, used / 1024 / 1024, max / 1024 / 1024);
+		return String.format("Memory Free: %d%% %s/%s MiB", percent, bytesToMegabytes(used), bytesToMegabytes(max));
 	}
 
 	private String getMemoryAllocated() {
@@ -134,7 +134,7 @@ public class SystemReport {
 		long max = runtime.maxMemory();
 		long percent = total * 100 / max;
 
-		return String.format("Memory Allocated: %d%% %d MiB", percent, total / 1024 / 1024);
+		return String.format("Memory Allocated: %d%% %s MiB", percent, bytesToMegabytes(total));
 	}
 
 	// Source: https://stackoverflow.com/a/57084402
@@ -191,5 +191,9 @@ public class SystemReport {
 		Answer<String> res = rest.getRestResponse(urlHostIp);
 		return String.format("IP: %s", (res.ok()) ? res.answer() :
 			String.format(locale.i18n("bot.error.hostip"), res.error()));
+	}
+
+	private String bytesToMegabytes(long bytes) {
+		return String.format("%.2f", bytes / 1024.0D / 1024.0D);
 	}
 }

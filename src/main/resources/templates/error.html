@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:lang="${#locale}">
+	<head>
+		<title th:text="#{site.title.error}">Error | Digest Service</title>
+		<meta charset="UTF-8"/>
+		<link rel="apple-touch-icon" sizes="180x180" href="../static/icon/apple-touch-icon.png" th:href="@{/icon/apple-touch-icon.png}">
+		<link rel="icon" type="image/png" sizes="32x32" href="../static/icon/favicon-32x32.png" th:href="@{/icon/favicon-32x32.png}">
+		<link rel="icon" type="image/png" sizes="16x16" href="../static/icon/favicon-16x16.png" th:href="@{/icon/favicon-16x16.png}">
+		<link rel="stylesheet" type="text/css" href="../static/style/motofan.css" th:href="@{/style/motofan.css}"/>
+	</head>
+	<body>
+		<!--/*@thymesVar id="timestamp" type="java.lang.String"*/-->
+		<!--/*@thymesVar id="status" type="java.lang.Integer"*/-->
+		<!--/*@thymesVar id="error" type="java.lang.String"*/-->
+		<!--/*@thymesVar id="message" type="java.lang.String"*/-->
+		<div class="page">
+			<div th:replace="~{header :: banner}">Header</div>
+			<div id="error" class="digest">
+				<h1 th:text="#{site.error.title}">Error!</h1>
+				<p>
+					<span th:text="#{site.error.timestamp}">Timestamp:</span>
+					<span th:text="${timestamp}"></span>
+				</p>
+				<p>
+					<span th:text="#{site.error.status}">Status:</span>
+					<span th:text="${status}"></span>
+					<span th:text="${error}"></span>
+				</p>
+				<p>
+					<span th:text="#{site.error.message}">Message:</span>
+					<span th:text="${message}"></span>
+				</p>
+			</div>
+			<div th:replace="~{footer :: copyright}">Footer</div>
+		</div>
+	</body>
+</html>

@@ -13,8 +13,8 @@ public class ApiController {
 		this.report = report;
 	}
 
-	@GetMapping("/api/health")
-	public String health() {
+	@GetMapping("/api/info")
+	public String info() {
 		return report.getSystemReportHtml();
 	}
 }

@@ -265,4 +265,8 @@ input, textarea, select {
 }
 .copyright a {
 	text-decoration: none;
+	color: maroon;
+}
+.copyright a:hover {
+	color: #FF6600;
 }

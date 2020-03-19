@@ -7,6 +7,7 @@
 				<div>
 					<span th:utext="#{site.footer.language}">Language: Russian | English.</span>
 					<span th:if="${time != null}" th:with="ms=${T(java.lang.System).currentTimeMillis() - time},render=#{site.footer.render}" th:text="${#strings.replace(render, '%time%', ms)}">Generation time: 100ms.</span>
+					<span th:utext="#{site.footer.report}">Health Report.</span>
 				</div>
 				<div>
 					<span th:utext="#{site.footer.created}">Created by EXL.</span>

@@ -266,10 +266,10 @@ public class SiteHelper {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Span span : spans) {
 			String chunk = digest.substring(span.getBeginIndex(), span.getEndIndex());
-			String chunkHtml = Encode.forHtml(chunk);
-			String link = filter.ellipsisMiddle(chunkHtml, CHOP_LINK);
-			String attr = Encode.forHtmlAttribute(chunk);
 			if (span instanceof LinkSpan) {
+				String link = filter.ellipsisMiddle(Encode.forHtml(chunk), CHOP_LINK);
+				String attr = Encode.forHtmlAttribute(chunk);
+
 				stringBuilder.append("<a href=\"");
 				stringBuilder.append(((LinkSpan) span).getType().equals(LinkType.EMAIL) ? "mailto:" + attr : attr);
 				stringBuilder.append("\" title=\"");
@@ -278,7 +278,7 @@ public class SiteHelper {
 				stringBuilder.append(link);
 				stringBuilder.append("</a>");
 			} else {
-				stringBuilder.append(chunkHtml);
+				stringBuilder.append(chunk);
 			}
 		}
 		return stringBuilder.toString();

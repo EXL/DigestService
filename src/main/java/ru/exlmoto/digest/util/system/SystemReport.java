@@ -8,7 +8,10 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.filter.FilterHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
+import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.io.IOException;
 
@@ -31,17 +34,24 @@ public class SystemReport {
 
 	private final ApplicationContext context;
 	private final FilterHelper filter;
+	private final LocaleHelper locale;
+	private final RestHelper rest;
 
 	@Value("${general.date-format}")
 	private String dateFormat;
 
-	public SystemReport(ApplicationContext context, FilterHelper filter) {
+	@Value("${general.url-host-ip}")
+	private String urlHostIp;
+
+	public SystemReport(ApplicationContext context, FilterHelper filter, LocaleHelper locale, RestHelper rest) {
 		this.context = context;
 		this.filter = filter;
+		this.locale = locale;
+		this.rest = rest;
 	}
 
 	public String getSystemReportHtml() {
-		return getSystemReportAux("<br/>");
+		return getSystemReportAux("<br/>").replaceAll("\n", "<br/>");
 	}
 
 	public String getSystemReportMarkdown() {
@@ -55,7 +65,7 @@ public class SystemReport {
 		joiner.add("");
 		joiner.add(getDigestServiceVersion());
 		joiner.add(getDigestServiceRevision());
-		joiner.add(getDigestServiceBuildDate());
+		joiner.add(getDigestServiceBuildDateTime());
 		joiner.add("");
 		joiner.add(getOsName());
 		joiner.add(getOsVersion());
@@ -69,6 +79,7 @@ public class SystemReport {
 		joiner.add(getCpuLoadAverage());
 		joiner.add("");
 		joiner.add(getHostName());
+		joiner.add(getHostIp());
 		return joiner.toString();
 	}
 
@@ -78,7 +89,7 @@ public class SystemReport {
 	}
 
 	private String getJavaVendor() {
-		return String.format("Java Vendor: %s", System.getProperty("java.vendor"));
+		return String.format("Vendor: %s", System.getProperty("java.vendor"));
 	}
 
 	private String getDigestServiceVersion() {
@@ -89,32 +100,9 @@ public class SystemReport {
 		return String.format("Revision: %s", context.getBean(BuildProperties.class).get("revision"));
 	}
 
-	private String getDigestServiceBuildDate() {
+	private String getDigestServiceBuildDateTime() {
 		return String.format("Build Date Time: %s",
 			filter.getDateFromTimeStamp(dateFormat, context.getBean(BuildProperties.class).getTime().getEpochSecond()));
-	}
-
-	// Source: https://stackoverflow.com/a/57084402
-	private String getCpuName() {
-		String name = "CPU: ";
-		try {
-			name += filter.strip(Files.lines(Paths.get("/proc/cpuinfo"))
-				.filter(line -> line.startsWith("model name"))
-				.map(line -> line.replaceAll(".*: ", ""))
-				.findFirst().orElse("Unknown"));
-		} catch (IOException ioe) {
-			log.error("Cannot open /proc/cpuinfo on this OS.", ioe);
-			name += "Unknown";
-		}
-		return name;
-	}
-
-	private String getCpuCount() {
-		return String.format("Cores: %d", os.getAvailableProcessors());
-	}
-
-	private String getCpuLoadAverage() {
-		return String.format("Load Average: %f", os.getSystemLoadAverage());
 	}
 
 	private String getOsName() {
@@ -149,6 +137,29 @@ public class SystemReport {
 		return String.format("Memory Allocated: %d%% %d MiB", percent, total / 1024 / 1024);
 	}
 
+	// Source: https://stackoverflow.com/a/57084402
+	private String getCpuName() {
+		String name = "CPU: ";
+		try {
+			name += filter.strip(Files.lines(Paths.get("/proc/cpuinfo"))
+				.filter(line -> line.startsWith("model name"))
+				.map(line -> line.replaceAll(".*: ", ""))
+				.findFirst().orElse("Unknown"));
+		} catch (IOException ioe) {
+			log.error("Cannot open /proc/cpuinfo on this OS.", ioe);
+			name += "Unknown";
+		}
+		return name;
+	}
+
+	private String getCpuCount() {
+		return String.format("Cores: %d", os.getAvailableProcessors());
+	}
+
+	private String getCpuLoadAverage() {
+		return String.format("Load Average: %f", os.getSystemLoadAverage());
+	}
+
 	private String getHostName() {
 		String host = "Host: ";
 		String hostname = System.getenv("HOSTNAME");
@@ -174,5 +185,11 @@ public class SystemReport {
 			}
 		}
 		return host;
+	}
+
+	private String getHostIp() {
+		Answer<String> res = rest.getRestResponse(urlHostIp);
+		return String.format("IP: %s", (res.ok()) ? res.answer() :
+			String.format(locale.i18n("bot.error.hostip"), res.error()));
 	}
 }

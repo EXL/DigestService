@@ -14,12 +14,12 @@ import ru.exlmoto.digest.util.rest.RestHelper;
 import ru.exlmoto.digest.util.system.SystemReport;
 
 @Component
-public class HostIpCommand extends MessageAdminAbility {
+public class InfoCommand extends MessageAdminAbility {
 	private final BotConfiguration config;
 	private final RestHelper rest;
 	private final SystemReport report;
 
-	public HostIpCommand(BotConfiguration config, RestHelper rest, SystemReport report) {
+	public InfoCommand(BotConfiguration config, RestHelper rest, SystemReport report) {
 		this.config = config;
 		this.rest = rest;
 		this.report = report;

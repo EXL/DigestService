@@ -13,7 +13,7 @@ import ru.exlmoto.digest.exchange.parser.impl.BankByParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
-import ru.exlmoto.digest.service.RateService;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 @Component
@@ -21,10 +21,10 @@ public class ExchangeManager {
 	private final Logger log = LoggerFactory.getLogger(ExchangeManager.class);
 
 	private final ExchangeConfiguration config;
-	private final RateService service;
+	private final DatabaseService service;
 	private final RestHelper rest;
 
-	public ExchangeManager(ExchangeConfiguration config, RateService service, RestHelper rest) {
+	public ExchangeManager(ExchangeConfiguration config, DatabaseService service, RestHelper rest) {
 		this.config = config;
 		this.service = service;
 		this.rest = rest;

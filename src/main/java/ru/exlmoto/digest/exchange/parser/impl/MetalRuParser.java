@@ -5,13 +5,13 @@ import org.jsoup.nodes.Element;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.parser.MetalParser;
-import ru.exlmoto.digest.service.RateService;
+import ru.exlmoto.digest.service.DatabaseService;
 
 import java.math.BigDecimal;
 
 public class MetalRuParser extends MetalParser {
 	@Override
-	protected ExchangeRateEntity getEntity(RateService service) {
+	protected ExchangeRateEntity getEntity(DatabaseService service) {
 		return service.getMetalRu().orElse(null);
 	}
 

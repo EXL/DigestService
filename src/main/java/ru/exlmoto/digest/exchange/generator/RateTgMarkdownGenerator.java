@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
-import ru.exlmoto.digest.service.RateService;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.math.BigDecimal;
@@ -19,10 +19,10 @@ public class RateTgMarkdownGenerator {
 	private final Logger log = LoggerFactory.getLogger(RateTgMarkdownGenerator.class);
 
 	private final GeneratorHelper helper;
-	private final RateService service;
+	private final DatabaseService service;
 	private final LocaleHelper locale;
 
-	public RateTgMarkdownGenerator(GeneratorHelper helper, RateService service, LocaleHelper locale) {
+	public RateTgMarkdownGenerator(GeneratorHelper helper, DatabaseService service, LocaleHelper locale) {
 		this.helper = helper;
 		this.service = service;
 		this.locale = locale;

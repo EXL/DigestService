@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
@@ -18,7 +16,7 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
-import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -29,16 +27,16 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 	private final BotConfiguration config;
 	private final LocaleHelper locale;
 	private final FilterHelper filter;
-	private final BotDigestRepository digestRepository;
+	private final DatabaseService service;
 
 	public ShowKeyboard(BotConfiguration config,
 	                    LocaleHelper locale,
 	                    FilterHelper filter,
-	                    BotDigestRepository digestRepository) {
+	                    DatabaseService service) {
 		this.config = config;
 		this.locale = locale;
 		this.filter = filter;
-		this.digestRepository = digestRepository;
+		this.service = service;
 	}
 
 	@Override
@@ -63,8 +61,7 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 
 		Page<BotDigestEntity> digestEntities = null;
 		try {
-			digestEntities = digestRepository.findAll(PageRequest.of(page - 1,
-				config.getShowPagePosts(), Sort.by(Sort.Order.desc("id"))));
+			digestEntities = service.getAllDigests(page - 1, config.getShowPagePosts());
 		} catch (DataAccessException dae) {
 			log.error("Cannot get BotDigestEntity objects from database.", dae);
 			text = String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage());

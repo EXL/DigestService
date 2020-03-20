@@ -14,9 +14,7 @@ import ru.exlmoto.digest.bot.generator.DigestTgHtmlGenerator;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
-import ru.exlmoto.digest.repository.BotDigestRepository;
-import ru.exlmoto.digest.repository.BotDigestUserRepository;
-import ru.exlmoto.digest.repository.BotSubDigestRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 
 import java.util.List;
 
@@ -26,22 +24,16 @@ public class DigestWorker {
 
 	private final BotConfiguration config;
 	private final BotHelper helper;
-	private final BotDigestRepository digestRepository;
-	private final BotDigestUserRepository digestUserRepository;
-	private final BotSubDigestRepository digestSubRepository;
+	private final DatabaseService service;
 	private final DigestTgHtmlGenerator htmlGenerator;
 
 	public DigestWorker(BotConfiguration config,
 	                    BotHelper helper,
-	                    BotDigestRepository digestRepository,
-	                    BotDigestUserRepository digestUserRepository,
-	                    BotSubDigestRepository digestSubRepository,
+	                    DatabaseService service,
 	                    DigestTgHtmlGenerator htmlGenerator) {
 		this.config = config;
 		this.helper = helper;
-		this.digestRepository = digestRepository;
-		this.digestUserRepository = digestUserRepository;
-		this.digestSubRepository = digestSubRepository;
+		this.service = service;
 		this.htmlGenerator = htmlGenerator;
 	}
 
@@ -50,16 +42,16 @@ public class DigestWorker {
 		log.info("=> Start drop obsolete data from database.");
 
 		try {
-			digestRepository.dropObsoleteDigests(helper.getCurrentUnixTime() - config.getObsoleteDataDelay(),
+			service.dropObsoleteDigests(helper.getCurrentUnixTime() - config.getObsoleteDataDelay(),
 				config.getMotofanChatId());
 
-			List<Long> usersId = digestRepository.allUsersId();
-			digestUserRepository.findAll().forEach(digestUserEntity -> {
+			List<Long> usersId = service.getAllUserIds();
+			service.getAllDigestUsers().forEach(digestUserEntity -> {
 				long userId = digestUserEntity.getId();
 				if (!usersId.contains(userId)) {
 					log.info(String.format("==> Delete obsolete user '%s' with id '%d'.",
 						digestUserEntity.getUsername(), userId));
-					digestUserRepository.deleteById(userId);
+					service.deleteDigestUser(userId);
 				}
 			});
 		} catch (DataAccessException dae) {
@@ -71,7 +63,7 @@ public class DigestWorker {
 
 	public void sendDigestToSubscribers(BotSender sender, Message message, String digest) {
 		try {
-			List<BotSubDigestEntity> subscribers = digestSubRepository.findAll();
+			List<BotSubDigestEntity> subscribers = service.getAllDigestSubs();
 			new Thread(() -> subscribers.forEach(subscriber -> {
 				try {
 					Thread.sleep(config.getMessageDelay() * 1000);

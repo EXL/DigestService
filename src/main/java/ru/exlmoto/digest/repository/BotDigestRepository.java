@@ -42,5 +42,5 @@ public interface BotDigestRepository extends JpaRepository<BotDigestEntity, Long
 	void deleteBotDigestEntitiesByDateIsLessThanAndChatIsNot(long date, long chatId);
 
 	@Query("SELECT DISTINCT bot_digest_entity.user.id FROM BotDigestEntity bot_digest_entity")
-	List<Long> allUsersId();
+	List<Long> allUserIds();
 }

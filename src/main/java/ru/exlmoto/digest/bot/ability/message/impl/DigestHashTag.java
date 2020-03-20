@@ -17,8 +17,7 @@ import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
-import ru.exlmoto.digest.repository.BotDigestRepository;
-import ru.exlmoto.digest.repository.BotDigestUserRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
@@ -28,21 +27,18 @@ public class DigestHashTag extends MessageAbility {
 
 	private final BotConfiguration config;
 	private final FilterHelper filter;
-	private final BotDigestRepository digestRepository;
-	private final BotDigestUserRepository digestUserRepository;
+	private final DatabaseService service;
 	private final AvatarWorker avatarWorker;
 	private final DigestWorker digestWorker;
 
 	public DigestHashTag(BotConfiguration config,
 	                     FilterHelper filter,
-	                     BotDigestRepository digestRepository,
-	                     BotDigestUserRepository digestUserRepository,
+	                     DatabaseService service,
 	                     AvatarWorker avatarWorker,
 	                     DigestWorker digestWorker) {
 		this.config = config;
 		this.filter = filter;
-		this.digestRepository = digestRepository;
-		this.digestUserRepository = digestUserRepository;
+		this.service = service;
 		this.avatarWorker = avatarWorker;
 		this.digestWorker = digestWorker;
 	}
@@ -62,12 +58,12 @@ public class DigestHashTag extends MessageAbility {
 
 				try {
 					BotDigestUserEntity digestUserEntity =
-						digestUserRepository.findById(userId).orElseGet(() -> new BotDigestUserEntity(userId));
+						service.getDigestUser(userId).orElseGet(() -> new BotDigestUserEntity(userId));
 					digestUserEntity.setAvatar(avatarWorker.getAvatarLink(user));
 					digestUserEntity.setUsername(helper.getValidUsername(user));
-					digestUserRepository.save(digestUserEntity);
+					service.saveDigestUser(digestUserEntity);
 
-					digestRepository.save(new BotDigestEntity(chatId,
+					service.saveDigest(new BotDigestEntity(chatId,
 						message.date(), messageId, messageText, digestUserEntity));
 				} catch (DataAccessException dae) {
 					log.error("Cannot save digest entity to database.", dae);

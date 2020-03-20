@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
@@ -18,7 +16,7 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
-import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -32,18 +30,18 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 	private final FilterHelper filter;
 	private final LocaleHelper locale;
 	private final BotHelper helper;
-	private final BotDigestRepository digestRepository;
+	private final DatabaseService service;
 
 	public DigestKeyboard(BotConfiguration config,
 	                      FilterHelper filter,
 	                      LocaleHelper locale,
 	                      BotHelper helper,
-	                      BotDigestRepository digestRepository) {
+	                      DatabaseService service) {
 		this.config = config;
 		this.filter = filter;
 		this.locale = locale;
 		this.helper = helper;
-		this.digestRepository = digestRepository;
+		this.service = service;
 	}
 
 	@Override
@@ -67,8 +65,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 		int totalPages = 0;
 		long totalEntries;
 		try {
-			digestEntities = digestRepository.findBotDigestEntitiesByChat(PageRequest.of(page - 1,
-				config.getDigestPagePosts(), Sort.by(Sort.Order.desc("id"))), chatId);
+			digestEntities = service.getChatDigests(page - 1, config.getDigestPagePosts(), chatId);
 		} catch (DataAccessException dae) {
 			log.error("Cannot get BotDigestEntity objects from database.", dae);
 			text = String.format(locale.i18n("bot.error.database.html"), dae.getLocalizedMessage());

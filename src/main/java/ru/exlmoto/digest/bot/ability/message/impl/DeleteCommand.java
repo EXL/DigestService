@@ -12,17 +12,17 @@ import org.springframework.util.NumberUtils;
 import ru.exlmoto.digest.bot.ability.message.MessageAdminAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
 public class DeleteCommand extends MessageAdminAbility {
 	private final Logger log = LoggerFactory.getLogger(DeleteCommand.class);
 
-	private final BotDigestRepository digestRepository;
+	private final DatabaseService service;
 
-	public DeleteCommand(BotDigestRepository digestRepository) {
-		this.digestRepository = digestRepository;
+	public DeleteCommand(DatabaseService service) {
+		this.service = service;
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class DeleteCommand extends MessageAdminAbility {
 			long digestId = 0;
 			try {
 				digestId = NumberUtils.parseNumber(args[1], Long.class);
-				digestRepository.deleteById(digestId);
+				service.deleteDigest(digestId);
 				text = String.format(locale.i18n("bot.command.delete.ok"), digestId);
 			} catch (NumberFormatException nfe) {
 				log.warn(String.format("Cannot parse delete command argument: '%s' as Long.", args[1]), nfe);

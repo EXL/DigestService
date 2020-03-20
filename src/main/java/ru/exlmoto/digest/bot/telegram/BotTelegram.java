@@ -17,7 +17,7 @@ import org.springframework.util.Assert;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSetupEntity;
-import ru.exlmoto.digest.repository.BotSetupRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.Answer;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +32,7 @@ public class BotTelegram {
 	private final Logger log = LoggerFactory.getLogger(BotTelegram.class);
 
 	private final BotConfiguration config;
-	private final BotSetupRepository repository;
+	private final DatabaseService service;
 	private final BotHelper helper;
 
 	private TelegramBot bot;
@@ -40,9 +40,9 @@ public class BotTelegram {
 	private String firstName;
 	private int id;
 
-	public BotTelegram(BotConfiguration config, BotSetupRepository repository, BotHelper helper) {
+	public BotTelegram(BotConfiguration config, DatabaseService service, BotHelper helper) {
 		this.config = config;
-		this.repository = repository;
+		this.service = service;
 		this.helper = helper;
 	}
 
@@ -109,7 +109,7 @@ public class BotTelegram {
 
 	private Answer<BotSetupEntity> getBotSetup() {
 		try {
-			Optional<BotSetupEntity> botSetupEntityOptional = repository.getSetupBot();
+			Optional<BotSetupEntity> botSetupEntityOptional = service.getSettings();
 			if (botSetupEntityOptional.isPresent()) {
 				return Ok(botSetupEntityOptional.get());
 			} else {
@@ -130,7 +130,7 @@ public class BotTelegram {
 	}
 
 	public void updateTelegramBotSettings() {
-		repository.getSetupBot().ifPresent(this::updateTelegramBotSettingsAux);
+		service.getSettings().ifPresent(this::updateTelegramBotSettingsAux);
 	}
 
 	private void updateTelegramBotSettingsAux(BotSetupEntity setup) {
@@ -139,7 +139,7 @@ public class BotTelegram {
 		setup.setSilentMode(config.isSilent());
 
 		log.info(String.format("====> Start save settings: '%s'.", setup.toString()));
-		repository.save(setup);
+		service.saveSettings(setup);
 		log.info("====> End save settings.");
 	}
 

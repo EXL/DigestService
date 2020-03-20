@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.nio.file.Files;
 
 import static ru.exlmoto.digest.util.Answer.Error;

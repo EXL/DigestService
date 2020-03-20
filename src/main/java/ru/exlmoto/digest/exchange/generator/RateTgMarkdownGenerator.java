@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
-import ru.exlmoto.digest.repository.ExchangeRateRepository;
+import ru.exlmoto.digest.service.RateService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.math.BigDecimal;
@@ -19,12 +19,12 @@ public class RateTgMarkdownGenerator {
 	private final Logger log = LoggerFactory.getLogger(RateTgMarkdownGenerator.class);
 
 	private final GeneratorHelper helper;
+	private final RateService service;
 	private final LocaleHelper locale;
-	private final ExchangeRateRepository repository;
 
-	public RateTgMarkdownGenerator(GeneratorHelper helper, ExchangeRateRepository repository, LocaleHelper locale) {
+	public RateTgMarkdownGenerator(GeneratorHelper helper, RateService service, LocaleHelper locale) {
 		this.helper = helper;
-		this.repository = repository;
+		this.service = service;
 		this.locale = locale;
 	}
 
@@ -33,15 +33,15 @@ public class RateTgMarkdownGenerator {
 		try {
 			switch (exchangeKey) {
 				case bank_ru:
-					return repository.getBankRu().map(this::bankRuReport).orElse(errorReport());
+					return service.getBankRu().map(this::bankRuReport).orElse(errorReport());
 				case bank_ua:
-					return repository.getBankUa().map(this::bankUaReport).orElse(errorReport());
+					return service.getBankUa().map(this::bankUaReport).orElse(errorReport());
 				case bank_by:
-					return repository.getBankBy().map(this::bankByReport).orElse(errorReport());
+					return service.getBankBy().map(this::bankByReport).orElse(errorReport());
 				case bank_kz:
-					return repository.getBankKz().map(this::bankKzReport).orElse(errorReport());
+					return service.getBankKz().map(this::bankKzReport).orElse(errorReport());
 				case metal_ru:
-					return repository.getMetalRu().map(this::metalRuReport).orElse(errorReport());
+					return service.getMetalRu().map(this::metalRuReport).orElse(errorReport());
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get object from database.", dae);

@@ -5,20 +5,20 @@ import org.jsoup.nodes.Element;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.parser.BankParser;
-import ru.exlmoto.digest.repository.ExchangeRateRepository;
+import ru.exlmoto.digest.service.RateService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
 
 public class BankRuParser extends BankParser {
 	@Override
-	protected ExchangeRateEntity getEntity(ExchangeRateRepository repository) {
-		return repository.getBankRu().orElse(null);
+	protected ExchangeRateEntity getEntity(RateService service) {
+		return service.getBankRu().orElse(null);
 	}
 
-	public boolean commitRatesMirror(String url, ExchangeRateRepository repository, RestHelper rest) {
+	public boolean commitRatesMirror(String url, RateService service, RestHelper rest) {
 		mirror = true;
-		return commitRates(url, repository, rest);
+		return commitRates(url, service, rest);
 	}
 
 	@Override

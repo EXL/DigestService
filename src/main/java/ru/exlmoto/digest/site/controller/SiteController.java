@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
-import ru.exlmoto.digest.repository.BotDigestRepository;
-import ru.exlmoto.digest.repository.BotDigestUserRepository;
+//import ru.exlmoto.digest.repository.BotDigestRepository;
+//import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.form.SearchForm;
@@ -65,14 +65,14 @@ public class SiteController {
 
 		int pagePosts = config.getPagePosts();
 		int current = getCurrentPageAndSetPagerData(model, pager, helper.chopQuery(page),
-			helper.getPageCount(repository.countBotDigestEntitiesByChat(motofanChatId), pagePosts));
+			helper.getPageCount(repository.getDigestCount(motofanChatId), pagePosts));
 
 		setGotoFormData(model, goToPageForm, current);
 
 		digest.setTitle(helper.getMotofanTitle(lang));
 		digest.setDescription(helper.getMotofanDescription(lang));
-		digest.setDigests(helper.getPosts(repository.findBotDigestEntitiesByChat(PageRequest.of(current - 1,
-			pagePosts, Sort.by(Sort.Order.asc("id"))), motofanChatId), post, current, repository, lang));
+		digest.setDigests(helper.getPosts(repository.getChatDigests(current - 1, pagePosts, motofanChatId),
+			post, current, repository, lang));
 		model.addAttribute("posts", digest);
 
 		return "index";
@@ -82,8 +82,7 @@ public class SiteController {
 	public String jump(@RequestParam(name = "id") String id) {
 		Long postId = helper.getLong(id);
 		if (postId != null) {
-			int index = repository.findBotDigestEntitiesByChat(Sort.by(Sort.Order.asc("id")),
-				motofanChatId).indexOf(new BotDigestEntity(postId));
+			int index = repository.getDigestIndex(motofanChatId, postId);
 			if (index != -1) {
 				return String.format(
 					"redirect:/?page=%1$d&post=%2$s#%2$s", (index / config.getPagePosts() + 1), id
@@ -120,7 +119,7 @@ public class SiteController {
 		BotDigestUserEntity digestUser = null;
 		Long userId = helper.getLong(member);
 		if (userId != null) {
-			digestUser = userRepository.getBotDigestUserEntityById(userId);
+			digestUser = userRepository.getDigestUserNullable(userId);
 			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(find,
 				digestUser, motofanChatId);
 		} else {

@@ -19,7 +19,7 @@ import org.thymeleaf.util.ArrayUtils;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
-import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.model.post.Post;
 import ru.exlmoto.digest.util.filter.FilterHelper;
@@ -73,24 +73,24 @@ public class SiteHelper {
 	public List<Post> getPosts(Page<BotDigestEntity> page,
 	                           String postId,
 	                           int current,
-	                           BotDigestRepository repository,
+	                           DatabaseService service,
 	                           Locale lang) {
-		return getPostsAux(page, postId, current, null, repository, lang);
+		return getPostsAux(page, postId, current, null, service, lang);
 	}
 
 	public List<Post> getPostsSearch(Page<BotDigestEntity> page,
 	                                 int current,
 	                                 String search,
-	                                 BotDigestRepository repository,
+	                                 DatabaseService service,
 	                                 Locale lang) {
-		return getPostsAux(page, null, current, search, repository, lang);
+		return getPostsAux(page, null, current, search, service, lang);
 	}
 
 	private List<Post> getPostsAux(Page<BotDigestEntity> page,
 	                               String postId,
 	                               int current,
 	                               String search,
-	                               BotDigestRepository repository,
+	                               DatabaseService service,
 	                               Locale lang) {
 		if (page != null) {
 			List<Post> posts = new ArrayList<>();
@@ -111,8 +111,7 @@ public class SiteHelper {
 						filterDateAndTime(digest.getDate(), lang),
 						filterDigestOrder(digest.getDigest(), search),
 						userId,
-						filterDigestCount(userId,
-							repository.countBotDigestEntitiesByUserEqualsAndChatEquals(user, motofanChatId), lang)
+						filterDigestCount(userId, service.getDigestCount(user, motofanChatId), lang)
 					)
 				);
 			}

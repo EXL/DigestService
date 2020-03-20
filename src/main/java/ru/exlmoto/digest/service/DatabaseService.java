@@ -114,7 +114,7 @@ public class DatabaseService {
 	}
 
 	public void dropObsoleteDigests(long date, long chatId) {
-		digestRepository.deleteBotDigestEntitiesByDateIsLessThanAndChatIsNot(date, chatId);
+		digestRepository.dropObsoleteDigests(date, chatId);
 	}
 
 	public List<Long> getAllUserIds() {
@@ -127,6 +127,24 @@ public class DatabaseService {
 
 	public void saveDigest(BotDigestEntity digest) {
 		digestRepository.save(digest);
+	}
+
+	public long getDigestCount(BotDigestUserEntity user, long chatId) {
+		return digestRepository.countBotDigestEntitiesByUserEqualsAndChatEquals(user, chatId);
+	}
+
+	public long getDigestCount(long chatId) {
+		return digestRepository.countBotDigestEntitiesByChat(chatId);
+	}
+
+	public long getDigestCount(String find, BotDigestUserEntity user, long chatId) {
+		return digestRepository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(find,
+			user, chatId);
+	}
+
+	public int getDigestIndex(long chatId, long postId) {
+		return digestRepository.findBotDigestEntitiesByChat(Sort.by(Sort.Order.asc("id")),
+			chatId).indexOf(new BotDigestEntity(postId));
 	}
 
 
@@ -173,5 +191,9 @@ public class DatabaseService {
 
 	public Optional<BotDigestUserEntity> getDigestUser(long userId) {
 		return digestUserRepository.findById(userId);
+	}
+
+	public BotDigestUserEntity getDigestUserNullable(long userId) {
+		return digestUserRepository.getBotDigestUserEntityById(userId);
 	}
 }

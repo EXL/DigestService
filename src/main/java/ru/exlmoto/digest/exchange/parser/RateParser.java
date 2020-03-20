@@ -78,7 +78,11 @@ public abstract class RateParser {
 		logRates();
 		BigDecimal prevValue = null;
 		if (entity != null) {
-			prevValue = entity.getPrev();
+			if (entity.getId() == ExchangeRateEntity.METAL_RU_ROW) {
+				prevValue = entity.getGold();
+			} else {
+				prevValue = entity.getUsd();
+			}
 		} else {
 			entity = new ExchangeRateEntity();
 			entity.setId(entityId());

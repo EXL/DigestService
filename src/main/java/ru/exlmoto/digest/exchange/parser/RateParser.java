@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
-import ru.exlmoto.digest.repository.ExchangeRateRepository;
+import ru.exlmoto.digest.service.RateService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
@@ -62,10 +62,10 @@ public abstract class RateParser {
 		return checkParsedValues();
 	}
 
-	public boolean commitRates(String url, ExchangeRateRepository repository, RestHelper rest) {
+	public boolean commitRates(String url, RateService service, RestHelper rest) {
 		try {
 			if (parse(rest.getRestResponse(url).answer())) {
-				commit(getEntity(repository), repository);
+				commit(getEntity(service), service);
 				return true;
 			}
 		} catch (DataAccessException dae) {
@@ -74,7 +74,7 @@ public abstract class RateParser {
 		return false;
 	}
 
-	public void commit(ExchangeRateEntity entity, ExchangeRateRepository repository) {
+	public void commit(ExchangeRateEntity entity, RateService service) {
 		logRates();
 		BigDecimal prevValue = null;
 		if (entity != null) {
@@ -93,7 +93,7 @@ public abstract class RateParser {
 
 		commitGeneralValues(entity);
 
-		repository.save(entity);
+		service.save(entity);
 	}
 
 	private void logRates() {
@@ -106,7 +106,7 @@ public abstract class RateParser {
 		logParsedValues();
 	}
 
-	protected abstract ExchangeRateEntity getEntity(ExchangeRateRepository repository);
+	protected abstract ExchangeRateEntity getEntity(RateService service);
 
 	protected abstract BigDecimal parsedPrevValue();
 

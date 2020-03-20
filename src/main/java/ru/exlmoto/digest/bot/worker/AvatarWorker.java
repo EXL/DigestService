@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
-import ru.exlmoto.digest.repository.BotDigestUserRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.rest.RestHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
@@ -44,16 +44,16 @@ public class AvatarWorker {
 	private final BotConfiguration config;
 	private final RestHelper rest;
 	private final FilterHelper filter;
-	private final BotDigestUserRepository digestUserRepository;
+	private final DatabaseService service;
 
 	public AvatarWorker(BotConfiguration config,
 	                    RestHelper rest,
 	                    FilterHelper filter,
-	                    BotDigestUserRepository digestUserRepository) {
+	                    DatabaseService service) {
 		this.config = config;
 		this.rest = rest;
 		this.filter = filter;
-		this.digestUserRepository = digestUserRepository;
+		this.service = service;
 	}
 
 	@Scheduled(cron = "${cron.bot.avatars.update}")
@@ -61,11 +61,11 @@ public class AvatarWorker {
 		log.info("=> Start update user avatars.");
 
 		try {
-			digestUserRepository.findUsersWithUsername().forEach(digestUserEntity -> {
+			service.getDigestUsersWithUsername().forEach(digestUserEntity -> {
 				String username = digestUserEntity.getUsername();
 				log.info(String.format("==> Update avatar for: '%s'.", username));
 				digestUserEntity.setAvatar(getAvatarLink(username.substring(1)));
-				digestUserRepository.save(digestUserEntity);
+				service.saveDigestUser(digestUserEntity);
 			});
 		} catch (DataAccessException dae) {
 			log.error("Database error while updating user avatars.", dae);

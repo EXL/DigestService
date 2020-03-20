@@ -11,7 +11,7 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.motofan.MotofanService;
-import ru.exlmoto.digest.repository.BotSubMotofanRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 
 import java.util.List;
 
@@ -19,17 +19,17 @@ import java.util.List;
 public class MotofanWorker {
 	private final Logger log = LoggerFactory.getLogger(MotofanWorker.class);
 
-	private final MotofanService service;
-	private final BotSubMotofanRepository repository;
+	private final MotofanService motofanService;
+	private final DatabaseService databaseService;
 	private final BotSender sender;
 	private final BotConfiguration config;
 
-	public MotofanWorker(MotofanService service,
-	                     BotSubMotofanRepository repository,
+	public MotofanWorker(MotofanService motofanService,
+	                     DatabaseService databaseService,
 	                     BotSender sender,
 	                     BotConfiguration config) {
-		this.service = service;
-		this.repository = repository;
+		this.motofanService = motofanService;
+		this.databaseService = databaseService;
 		this.sender = sender;
 		this.config = config;
 	}
@@ -37,9 +37,9 @@ public class MotofanWorker {
 	@Scheduled(cron = "${cron.bot.motofan.receiver}")
 	public void workOnMotofanPosts() {
 		try {
-			List<String> motofanPosts = service.getLastMotofanPostsInHtml();
+			List<String> motofanPosts = motofanService.getLastMotofanPostsInHtml();
 			if (!motofanPosts.isEmpty()) {
-				sendNewMotofanPosts(motofanPosts, repository.findAll());
+				sendNewMotofanPosts(motofanPosts, databaseService.getAllMotofanSubs());
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Motofan subscribe object from database.", dae);

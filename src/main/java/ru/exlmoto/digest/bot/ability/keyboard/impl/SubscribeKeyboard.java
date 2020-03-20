@@ -19,8 +19,7 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
-import ru.exlmoto.digest.repository.BotSubDigestRepository;
-import ru.exlmoto.digest.repository.BotSubMotofanRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -42,19 +41,16 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 
 	private final BotHelper helper;
 	private final LocaleHelper locale;
-	private final BotSubDigestRepository digestRepository;
-	private final BotSubMotofanRepository motofanRepository;
+	private final DatabaseService service;
 
 	private InlineKeyboardMarkup markup = null;
 
 	public SubscribeKeyboard(BotHelper helper,
 	                         LocaleHelper locale,
-	                         BotSubDigestRepository digestRepository,
-	                         BotSubMotofanRepository motofanRepository) {
+	                         DatabaseService service) {
 		this.helper = helper;
 		this.locale = locale;
-		this.digestRepository = digestRepository;
-		this.motofanRepository = motofanRepository;
+		this.service = service;
 	}
 
 	@PostConstruct
@@ -116,8 +112,8 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		String chatTitle = helper.getValidChatName(chat);
 		try {
 			return Ok(String.format(locale.i18n("bot.command.subscribe"), chatTitle, chatId,
-				getSubscribeStatus(motofanRepository.findBotSubMotofanEntityBySubscription(chatId) != null),
-				getSubscribeStatus(digestRepository.findBotSubDigestEntityBySubscription(chatId) != null)));
+				getSubscribeStatus(service.getMotofanSub(chatId) != null),
+				getSubscribeStatus(service.getDigestSub(chatId) != null)));
 		} catch (DataAccessException dae) {
 			log.error("Cannot get subscribe object from database.", dae);
 			return Error(String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage()));
@@ -168,10 +164,10 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 
 	private void motofanSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
 		long chatId = chat.id();
-		if (motofanRepository.findBotSubMotofanEntityBySubscription(chatId) != null) {
+		if (service.getMotofanSub(chatId) != null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
 		} else {
-			motofanRepository.save(new BotSubMotofanEntity(chatId, helper.getValidChatName(chat)));
+			service.saveMotofanSub(new BotSubMotofanEntity(chatId, helper.getValidChatName(chat)));
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
 			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}
@@ -179,10 +175,10 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 
 	private void motofanUnsubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
 		long chatId = chat.id();
-		if (motofanRepository.findBotSubMotofanEntityBySubscription(chatId) == null) {
+		if (service.getMotofanSub(chatId) == null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
 		} else {
-			motofanRepository.deleteBotSubMotofanEntityBySubscription(chatId);
+			service.deleteMotofanSub(chatId);
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
 			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}
@@ -190,10 +186,10 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 
 	private void digestSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
 		long chatId = chat.id();
-		if (digestRepository.findBotSubDigestEntityBySubscription(chatId) != null) {
+		if (service.getDigestSub(chatId) != null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
 		} else {
-			digestRepository.save(new BotSubDigestEntity(chatId, helper.getValidChatName(chat)));
+			service.saveDigestSub(new BotSubDigestEntity(chatId, helper.getValidChatName(chat)));
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
 			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}
@@ -201,10 +197,10 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 
 	private void digestUnsubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
 		long chatId = chat.id();
-		if (digestRepository.findBotSubDigestEntityBySubscription(chatId) == null) {
+		if (service.getDigestSub(chatId) == null) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
 		} else {
-			digestRepository.deleteBotSubDigestEntityBySubscription(chatId);
+			service.deleteDigestSub(chatId);
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
 			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}

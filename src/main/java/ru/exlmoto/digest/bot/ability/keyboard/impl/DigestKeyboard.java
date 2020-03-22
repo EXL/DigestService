@@ -65,7 +65,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 		int totalPages = 0;
 		long totalEntries;
 		try {
-			digestEntities = service.getChatDigests(page - 1, config.getDigestPagePosts(), chatId);
+			digestEntities = service.getChatDigestsCommand(page - 1, config.getDigestPagePosts(), chatId);
 		} catch (DataAccessException dae) {
 			log.error("Cannot get BotDigestEntity objects from database.", dae);
 			text = String.format(locale.i18n("bot.error.database.html"), dae.getLocalizedMessage());

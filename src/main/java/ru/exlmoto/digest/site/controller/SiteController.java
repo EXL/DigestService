@@ -2,8 +2,6 @@ package ru.exlmoto.digest.site.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -12,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
-//import ru.exlmoto.digest.repository.BotDigestRepository;
-//import ru.exlmoto.digest.repository.BotDigestUserRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.form.SearchForm;
@@ -30,8 +27,7 @@ import java.util.Locale;
 @Controller
 public class SiteController {
 	private final SiteConfiguration config;
-	private final BotDigestRepository repository;
-	private final BotDigestUserRepository userRepository;
+	private final DatabaseService service;
 	private final LocaleHelper locale;
 	private final SiteHelper helper;
 
@@ -39,13 +35,11 @@ public class SiteController {
 	private long motofanChatId;
 
 	public SiteController(SiteConfiguration config,
-	                      BotDigestRepository repository,
-	                      BotDigestUserRepository userRepository,
+	                      DatabaseService service,
 	                      LocaleHelper locale,
 	                      SiteHelper helper) {
 		this.config = config;
-		this.repository = repository;
-		this.userRepository = userRepository;
+		this.service = service;
 		this.locale = locale;
 		this.helper = helper;
 	}
@@ -65,14 +59,14 @@ public class SiteController {
 
 		int pagePosts = config.getPagePosts();
 		int current = getCurrentPageAndSetPagerData(model, pager, helper.chopQuery(page),
-			helper.getPageCount(repository.getDigestCount(motofanChatId), pagePosts));
+			helper.getPageCount(service.getDigestCount(motofanChatId), pagePosts));
 
 		setGotoFormData(model, goToPageForm, current);
 
 		digest.setTitle(helper.getMotofanTitle(lang));
 		digest.setDescription(helper.getMotofanDescription(lang));
-		digest.setDigests(helper.getPosts(repository.getChatDigests(current - 1, pagePosts, motofanChatId),
-			post, current, repository, lang));
+		digest.setDigests(helper.getPosts(service.getChatDigestsSite(current - 1, pagePosts, motofanChatId),
+			post, current, service, lang));
 		model.addAttribute("posts", digest);
 
 		return "index";
@@ -82,7 +76,7 @@ public class SiteController {
 	public String jump(@RequestParam(name = "id") String id) {
 		Long postId = helper.getLong(id);
 		if (postId != null) {
-			int index = repository.getDigestIndex(motofanChatId, postId);
+			int index = service.getDigestIndex(motofanChatId, postId);
 			if (index != -1) {
 				return String.format(
 					"redirect:/?page=%1$d&post=%2$s#%2$s", (index / config.getPagePosts() + 1), id
@@ -119,24 +113,22 @@ public class SiteController {
 		BotDigestUserEntity digestUser = null;
 		Long userId = helper.getLong(member);
 		if (userId != null) {
-			digestUser = userRepository.getDigestUserNullable(userId);
-			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(find,
+			digestUser = service.getDigestUserNullable(userId);
+			count = service.getDigestCount(find,
 				digestUser, motofanChatId);
 		} else {
-			count = repository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(find, motofanChatId);
+			count = service.getDigestCount(find, motofanChatId);
 		}
 		int current = getCurrentPageAndSetPagerData(model, pager,
 			helper.chopQuery(page), helper.getPageCount(count, pagePosts));
 		setGotoFormData(model, goToPageForm, current, find, userId);
 
 		Page<BotDigestEntity> digestPage = (userId != null) ?
-			repository.findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(PageRequest.of(current - 1,
-				pagePosts, Sort.by(Sort.Order.asc("id"))), find, digestUser, motofanChatId) :
-			repository.findByDigestContainingIgnoreCaseAndChatEquals(PageRequest.of(current - 1, pagePosts,
-				Sort.by(Sort.Order.asc("id"))), find, motofanChatId);
+			service.getChatDigests(current - 1, pagePosts, find, digestUser, motofanChatId) :
+			service.getChatDigests(current - 1, pagePosts, find, motofanChatId);
 		digest.setTitle(helper.getMotofanTitleSearch(digestUser, find, lang));
 		digest.setDescription(helper.getMotofanDescription(lang));
-		digest.setDigests(helper.getPostsSearch(digestPage, current, find, repository, lang));
+		digest.setDigests(helper.getPostsSearch(digestPage, current, find, service, lang));
 		model.addAttribute("posts", digest);
 
 		return "index";

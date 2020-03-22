@@ -3,6 +3,7 @@ package ru.exlmoto.digest.exchange;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import ru.exlmoto.digest.exchange.generator.RateJsonGenerator;
 import ru.exlmoto.digest.exchange.generator.RateTgMarkdownGenerator;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.exchange.manager.ExchangeManager;
@@ -12,11 +13,16 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 public class ExchangeService {
 	private final ExchangeManager manager;
 	private final RateTgMarkdownGenerator markdownGenerator;
+	private final RateJsonGenerator jsonGenerator;
 	private final LocaleHelper locale;
 
-	public ExchangeService(ExchangeManager manager, RateTgMarkdownGenerator markdownGenerator, LocaleHelper locale) {
+	public ExchangeService(ExchangeManager manager,
+	                       RateTgMarkdownGenerator markdownGenerator,
+	                       RateJsonGenerator jsonGenerator,
+	                       LocaleHelper locale) {
 		this.manager = manager;
 		this.markdownGenerator = markdownGenerator;
+		this.jsonGenerator = jsonGenerator;
 		this.locale = locale;
 	}
 
@@ -27,6 +33,10 @@ public class ExchangeService {
 
 	public String markdownReport(String key) {
 		return markdownGenerator.rateReportByKey(key);
+	}
+
+	public String jsonReport() {
+		return jsonGenerator.getJsonReport();
 	}
 
 	public String buttonLabel(String key) {

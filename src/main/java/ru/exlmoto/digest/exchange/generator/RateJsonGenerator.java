@@ -91,10 +91,15 @@ public class RateJsonGenerator {
 		});
 	}
 
+	private void addDiffProperty(BigDecimal prev, BigDecimal value, JsonObject field) {
+		String diff = helper.getDifference(prev, value);
+		field.addProperty("diff", (diff != null) ? diff : "0.0");
+	}
+
 	private JsonObject addBankProperties(ExchangeRateEntity rate) {
 		JsonObject field = new JsonObject();
 		BigDecimal usd = rate.getUsd();
-		field.addProperty("diff", helper.getDifference(rate.getPrev(), usd));
+		addDiffProperty(rate.getPrev(), usd, field);
 		field.addProperty("usd", usd);
 		field.addProperty("eur", rate.getEur());
 		field.addProperty("cny", rate.getCny());
@@ -105,7 +110,7 @@ public class RateJsonGenerator {
 	private JsonObject addMetalProperties(ExchangeRateEntity rate) {
 		JsonObject field = new JsonObject();
 		BigDecimal gold = rate.getGold();
-		field.addProperty("diff", helper.getDifference(rate.getPrev(), gold));
+		addDiffProperty(rate.getPrev(), gold, field);
 		field.addProperty("gold", gold);
 		field.addProperty("silver", rate.getSilver());
 		field.addProperty("platinum", rate.getPlatinum());

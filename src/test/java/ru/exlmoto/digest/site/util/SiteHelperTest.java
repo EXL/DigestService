@@ -292,7 +292,7 @@ class SiteHelperTest {
 
 	@Test
 	public void testDropAt() {
-		assertThrows(NullPointerException.class, () -> helper.dropAt(null));
+		assertNull(helper.dropAt(null));
 		assertEquals("", helper.dropAt(""));
 		assertEquals("", helper.dropAt("@"));
 		assertEquals("a", helper.dropAt("@a"));

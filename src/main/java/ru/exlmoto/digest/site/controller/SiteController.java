@@ -65,7 +65,7 @@ public class SiteController {
 
 		digest.setTitle(helper.getMotofanTitle(lang));
 		digest.setDescription(helper.getMotofanDescription(lang));
-		digest.setDigests(helper.getPosts(service.getChatDigestsSite(current - 1, pagePosts, motofanChatId),
+		digest.setDigests(helper.getPosts(service.getChatDigestsSite(current, pagePosts, motofanChatId),
 			post, current, service, lang));
 		model.addAttribute("posts", digest);
 
@@ -124,8 +124,8 @@ public class SiteController {
 		setGotoFormData(model, goToPageForm, current, find, userId);
 
 		Page<BotDigestEntity> digestPage = (userId != null) ?
-			service.getChatDigests(current - 1, pagePosts, find, digestUser, motofanChatId) :
-			service.getChatDigests(current - 1, pagePosts, find, motofanChatId);
+			service.getChatDigests(current, pagePosts, find, digestUser, motofanChatId) :
+			service.getChatDigests(current, pagePosts, find, motofanChatId);
 		digest.setTitle(helper.getMotofanTitleSearch(digestUser, find, lang));
 		digest.setDescription(helper.getMotofanDescription(lang));
 		digest.setDigests(helper.getPostsSearch(digestPage, current, find, service, lang));

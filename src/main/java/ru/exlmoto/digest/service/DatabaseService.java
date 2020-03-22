@@ -5,7 +5,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import ru.exlmoto.digest.entity.*;
+import ru.exlmoto.digest.entity.BotDigestEntity;
+import ru.exlmoto.digest.entity.BotDigestUserEntity;
+import ru.exlmoto.digest.entity.BotSubMotofanEntity;
+import ru.exlmoto.digest.entity.BotSubDigestEntity;
+import ru.exlmoto.digest.entity.BotSubGreetingEntity;
+import ru.exlmoto.digest.entity.BotSetupEntity;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.repository.BotSubDigestRepository;
@@ -43,77 +49,16 @@ public class DatabaseService {
 		this.exchangeRateRepository = exchangeRateRepository;
 	}
 
-	public Optional<ExchangeRateEntity> getBankRu() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_RU_ROW);
-	}
-
-	public Optional<ExchangeRateEntity> getBankUa() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_UA_ROW);
-	}
-
-	public Optional<ExchangeRateEntity> getBankBy() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_BY_ROW);
-	}
-
-	public Optional<ExchangeRateEntity> getBankKz() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_KZ_ROW);
-	}
-
-	public Optional<ExchangeRateEntity> getMetalRu() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.METAL_RU_ROW);
-	}
-
-	public void saveExchange(ExchangeRateEntity rate) {
-		exchangeRateRepository.save(rate);
-	}
-
-
-
-	public List<BotSubMotofanEntity> getAllMotofanSubs() {
-		return subMotofanRepository.findAll();
-	}
-
-	public BotSubMotofanEntity getMotofanSub(long subscription) {
-		return subMotofanRepository.findBotSubMotofanEntityBySubscription(subscription);
-	}
-
-	public void deleteMotofanSub(long subscription) {
-		subMotofanRepository.deleteBotSubMotofanEntityBySubscription(subscription);
-	}
-
-	public void saveMotofanSub(BotSubMotofanEntity motofanSub) {
-		subMotofanRepository.save(motofanSub);
-	}
-
-
-
-	public List<BotSubDigestEntity> getAllDigestSubs() {
-		return subDigestRepository.findAll();
-	}
-
-	public BotSubDigestEntity getDigestSub(long subscription) {
-		return subDigestRepository.findBotSubDigestEntityBySubscription(subscription);
-	}
-
-	public void deleteDigestSub(long subscription) {
-		subDigestRepository.deleteBotSubDigestEntityBySubscription(subscription);
-	}
-
-	public void saveDigestSub(BotSubDigestEntity digestSub) {
-		subDigestRepository.save(digestSub);
-	}
-
-
 	public Page<BotDigestEntity> getAllDigests(int page, int size) {
-		return digestRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Order.desc("id"))));
+		return digestRepository.findAll(PageRequest.of(page - 1, size, Sort.by(Sort.Order.desc("id"))));
 	}
 
 	public Page<BotDigestEntity> getChatDigestsCommand(int page, int size, long chatId) {
-		return getChatDigests(page, size, Sort.by(Sort.Order.desc("id")), chatId);
+		return getChatDigests(page - 1, size, Sort.by(Sort.Order.desc("id")), chatId);
 	}
 
 	public Page<BotDigestEntity> getChatDigestsSite(int page, int size, long chatId) {
-		return getChatDigests(page, size, Sort.by(Sort.Order.asc("id")), chatId);
+		return getChatDigests(page - 1, size, Sort.by(Sort.Order.asc("id")), chatId);
 	}
 
 	private Page<BotDigestEntity> getChatDigests(int page, int size, Sort sort, long chatId) {
@@ -121,15 +66,19 @@ public class DatabaseService {
 	}
 
 	public Page<BotDigestEntity> getChatDigests(int page, int size, String find, long chatId) {
-		return digestRepository.findByDigestContainingIgnoreCaseAndChatEquals(PageRequest.of(page, size,
-			Sort.by(Sort.Order.asc("id"))), find, chatId);
+		return digestRepository.findBotDigestEntitiesByChat(
+			PageRequest.of(page - 1, size, Sort.by(Sort.Order.asc("id"))), find, chatId
+		);
 	}
 
-	public Page<BotDigestEntity> getChatDigests(int page, int size,
-	                                            String find, BotDigestUserEntity user,
+	public Page<BotDigestEntity> getChatDigests(int page,
+	                                            int size,
+	                                            String find,
+	                                            BotDigestUserEntity user,
 	                                            long chatId) {
-		return digestRepository.findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(PageRequest.of(page,
-			size, Sort.by(Sort.Order.asc("id"))), find, user, chatId);
+		return digestRepository.findBotDigestEntitiesByChat(
+			PageRequest.of(page - 1, size, Sort.by(Sort.Order.asc("id"))), find, user, chatId
+		);
 	}
 
 	public void dropObsoleteDigests(long date, long chatId) {
@@ -149,7 +98,7 @@ public class DatabaseService {
 	}
 
 	public long getDigestCount(BotDigestUserEntity user, long chatId) {
-		return digestRepository.countBotDigestEntitiesByUserEqualsAndChatEquals(user, chatId);
+		return digestRepository.countBotDigestEntitiesByChat(user, chatId);
 	}
 
 	public long getDigestCount(long chatId) {
@@ -157,44 +106,18 @@ public class DatabaseService {
 	}
 
 	public long getDigestCount(String find, long chatId) {
-		return digestRepository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(find, chatId);
+		return digestRepository.countBotDigestEntitiesByChat(find, chatId);
 	}
 
 	public long getDigestCount(String find, BotDigestUserEntity user, long chatId) {
-		return digestRepository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(find,
-			user, chatId);
+		return digestRepository.countBotDigestEntitiesByChat(find, user, chatId);
 	}
 
 	public int getDigestIndex(long chatId, long postId) {
-		return digestRepository.findBotDigestEntitiesByChat(Sort.by(Sort.Order.asc("id")),
-			chatId).indexOf(new BotDigestEntity(postId));
+		return digestRepository.findBotDigestEntitiesByChat(
+			Sort.by(Sort.Order.asc("id")), chatId).indexOf(new BotDigestEntity(postId)
+		);
 	}
-
-
-
-	public Optional<BotSetupEntity> getSettings() {
-		return setupRepository.getSetupBot();
-	}
-
-	public void saveSettings(BotSetupEntity settings) {
-		setupRepository.save(settings);
-	}
-
-
-
-	public boolean checkGreeting(long chatId) {
-		return subGreetingRepository.findBotSubGreetingEntityByIgnored(chatId) == null;
-	}
-
-	public void deleteChatFromGreetingIgnores(long chatId) {
-		subGreetingRepository.deleteBotSubGreetingEntityByIgnored(chatId);
-	}
-
-	public void addChatToGreetingIgnores(long chatId) {
-		subGreetingRepository.save(new BotSubGreetingEntity(chatId));
-	}
-
-
 
 	public List<BotDigestUserEntity> getAllDigestUsers() {
 		return digestUserRepository.findAll();
@@ -218,5 +141,81 @@ public class DatabaseService {
 
 	public BotDigestUserEntity getDigestUserNullable(long userId) {
 		return digestUserRepository.getBotDigestUserEntityById(userId);
+	}
+
+	public List<BotSubMotofanEntity> getAllMotofanSubs() {
+		return subMotofanRepository.findAll();
+	}
+
+	public BotSubMotofanEntity getMotofanSub(long subscription) {
+		return subMotofanRepository.findBotSubMotofanEntityBySubscription(subscription);
+	}
+
+	public void deleteMotofanSub(long subscription) {
+		subMotofanRepository.deleteBotSubMotofanEntityBySubscription(subscription);
+	}
+
+	public void saveMotofanSub(BotSubMotofanEntity motofanSub) {
+		subMotofanRepository.save(motofanSub);
+	}
+
+	public List<BotSubDigestEntity> getAllDigestSubs() {
+		return subDigestRepository.findAll();
+	}
+
+	public BotSubDigestEntity getDigestSub(long subscription) {
+		return subDigestRepository.findBotSubDigestEntityBySubscription(subscription);
+	}
+
+	public void deleteDigestSub(long subscription) {
+		subDigestRepository.deleteBotSubDigestEntityBySubscription(subscription);
+	}
+
+	public void saveDigestSub(BotSubDigestEntity digestSub) {
+		subDigestRepository.save(digestSub);
+	}
+
+	public boolean checkGreeting(long chatId) {
+		return subGreetingRepository.findBotSubGreetingEntityByIgnored(chatId) == null;
+	}
+
+	public void deleteChatFromGreetingIgnores(long chatId) {
+		subGreetingRepository.deleteBotSubGreetingEntityByIgnored(chatId);
+	}
+
+	public void addChatToGreetingIgnores(long chatId) {
+		subGreetingRepository.save(new BotSubGreetingEntity(chatId));
+	}
+
+	public Optional<BotSetupEntity> getSettings() {
+		return setupRepository.getSetupBot();
+	}
+
+	public void saveSettings(BotSetupEntity settings) {
+		setupRepository.save(settings);
+	}
+
+	public Optional<ExchangeRateEntity> getBankRu() {
+		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_RU_ROW);
+	}
+
+	public Optional<ExchangeRateEntity> getBankUa() {
+		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_UA_ROW);
+	}
+
+	public Optional<ExchangeRateEntity> getBankBy() {
+		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_BY_ROW);
+	}
+
+	public Optional<ExchangeRateEntity> getBankKz() {
+		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_KZ_ROW);
+	}
+
+	public Optional<ExchangeRateEntity> getMetalRu() {
+		return exchangeRateRepository.findById(ExchangeRateEntity.METAL_RU_ROW);
+	}
+
+	public void saveExchange(ExchangeRateEntity rate) {
+		exchangeRateRepository.save(rate);
 	}
 }

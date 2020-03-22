@@ -61,7 +61,7 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 
 		Page<BotDigestEntity> digestEntities = null;
 		try {
-			digestEntities = service.getAllDigests(page - 1, config.getShowPagePosts());
+			digestEntities = service.getAllDigests(page, config.getShowPagePosts());
 		} catch (DataAccessException dae) {
 			log.error("Cannot get BotDigestEntity objects from database.", dae);
 			text = String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage());

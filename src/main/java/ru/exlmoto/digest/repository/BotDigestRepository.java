@@ -23,20 +23,43 @@ public interface BotDigestRepository extends JpaRepository<BotDigestEntity, Long
 
 	Page<BotDigestEntity> findByDigestContainingIgnoreCaseAndChatEquals(Pageable pageable, String query, long chatId);
 
+	default Page<BotDigestEntity> findBotDigestEntitiesByChat(Pageable pageable, String query, long chatId) {
+		return findByDigestContainingIgnoreCaseAndChatEquals(pageable, query, chatId);
+	}
+
 	long countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(String query, long chatId);
+
+	default long countBotDigestEntitiesByChat(String query, long chatId) {
+		return countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(query, chatId);
+	}
 
 	Page<BotDigestEntity> findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(Pageable pageable,
 	                                                                                 String query,
 	                                                                                 BotDigestUserEntity user,
 	                                                                                 long chatId);
 
+	default Page<BotDigestEntity> findBotDigestEntitiesByChat(Pageable pageable,
+	                                                          String query,
+	                                                          BotDigestUserEntity user,
+	                                                          long chatId) {
+		return findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(pageable, query, user, chatId);
+	}
+
 	long countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(String query,
 	                                                                                  BotDigestUserEntity user,
 	                                                                                  long chatId);
 
+	default long countBotDigestEntitiesByChat(String query, BotDigestUserEntity user, long chatId) {
+		return countBotDigestEntitiesByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(query, user, chatId);
+	}
+
 	List<BotDigestEntity> findBotDigestEntitiesByChat(Sort sort, long chatId);
 
 	long countBotDigestEntitiesByUserEqualsAndChatEquals(BotDigestUserEntity user, long chatId);
+
+	default long countBotDigestEntitiesByChat(BotDigestUserEntity user, long chatId) {
+		return countBotDigestEntitiesByUserEqualsAndChatEquals(user, chatId);
+	}
 
 	@Transactional
 	void deleteBotDigestEntitiesByDateIsLessThanAndChatIsNot(long date, long chatId);

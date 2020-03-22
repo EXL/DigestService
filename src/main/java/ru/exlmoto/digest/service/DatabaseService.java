@@ -108,9 +108,28 @@ public class DatabaseService {
 		return digestRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Order.desc("id"))));
 	}
 
-	public Page<BotDigestEntity> getChatDigests(int page, int size, long chatId) {
-		return digestRepository.findBotDigestEntitiesByChat(PageRequest.of(page, size,
-			Sort.by(Sort.Order.desc("id"))), chatId);
+	public Page<BotDigestEntity> getChatDigestsCommand(int page, int size, long chatId) {
+		return getChatDigests(page, size, Sort.by(Sort.Order.desc("id")), chatId);
+	}
+
+	public Page<BotDigestEntity> getChatDigestsSite(int page, int size, long chatId) {
+		return getChatDigests(page, size, Sort.by(Sort.Order.asc("id")), chatId);
+	}
+
+	private Page<BotDigestEntity> getChatDigests(int page, int size, Sort sort, long chatId) {
+		return digestRepository.findBotDigestEntitiesByChat(PageRequest.of(page, size, sort), chatId);
+	}
+
+	public Page<BotDigestEntity> getChatDigests(int page, int size, String find, long chatId) {
+		return digestRepository.findByDigestContainingIgnoreCaseAndChatEquals(PageRequest.of(page, size,
+			Sort.by(Sort.Order.asc("id"))), find, chatId);
+	}
+
+	public Page<BotDigestEntity> getChatDigests(int page, int size,
+	                                            String find, BotDigestUserEntity user,
+	                                            long chatId) {
+		return digestRepository.findByDigestContainingIgnoreCaseAndUserEqualsAndChatEquals(PageRequest.of(page,
+			size, Sort.by(Sort.Order.asc("id"))), find, user, chatId);
 	}
 
 	public void dropObsoleteDigests(long date, long chatId) {
@@ -135,6 +154,10 @@ public class DatabaseService {
 
 	public long getDigestCount(long chatId) {
 		return digestRepository.countBotDigestEntitiesByChat(chatId);
+	}
+
+	public long getDigestCount(String find, long chatId) {
+		return digestRepository.countBotDigestEntitiesByDigestContainingIgnoreCaseAndChatEquals(find, chatId);
 	}
 
 	public long getDigestCount(String find, BotDigestUserEntity user, long chatId) {

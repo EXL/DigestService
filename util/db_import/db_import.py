@@ -97,25 +97,42 @@ class Importer:
 		self.curr_db_1 = self.conn_db_1.cursor()
 		self.curr_db_2 = self.conn_db_2.cursor()
 
+	def filter_username(self, username):
+		patch = {
+			'a1batross_2': 'a1batross',
+			'mrPazzi': 'drPazzi',
+			'ilikeeatingkids': 'Ilovetoeatchildren',
+			'Igorek_Dim': 'iProcyon',
+			'ConsleslingDown': 'Conslesling'
+		}
+		return patch.get(username, username)
+
 	def import_users(self):
 		self.log.debug('=> Start commit digest users.')
 		self.curr_db_2.execute('TRUNCATE TABLE bot_digest_user CASCADE')
 
+		ids = []
 		user_without_id = 0
 		self.curr_db_1.execute('SELECT * FROM digests_users')
 		for (username, avatar) in self.curr_db_1:
+			filtered = self.filter_username(username)
 			try:
-				user_id = self.tg.get_entity(username).id
+				user_id = self.tg.get_entity(filtered).id
 			except ValueError:
-				user_id = user_without_id + 2
+				user_id = user_without_id + 1
 				user_without_id += 1
 			time.sleep(5)  # Without delay, you can run into a ban.
-			self.log.debug(str.format('Commit user {}: {}', username, user_id))
-			self.curr_db_2.execute(
-				'INSERT INTO bot_digest_user (id, avatar, username) VALUES (%s, %s, %s)',
-				(user_id, avatar, '@' + username)
-			)
-			self.conn_db_2.commit()
+
+			if user_id not in ids:
+				self.log.debug(str.format('Commit user {}: {}.', filtered, user_id))
+				self.curr_db_2.execute(
+					'INSERT INTO bot_digest_user (id, avatar, username) VALUES (%s, %s, %s)',
+					(user_id, avatar, '@' + filtered)
+				)
+				self.conn_db_2.commit()
+				ids.append(user_id)
+			else:
+				self.log.debug(str.format('Ignoring user {}: {} (already in database).', filtered, user_id))
 		self.log.debug('=> End commit digest users.')
 
 	def import_digest(self):
@@ -126,9 +143,10 @@ class Importer:
 		self.curr_db_1.execute('SELECT * FROM digests')
 		digest_id = 1
 		for (date, username, msg) in self.curr_db_1:
-			self.curr_db_2.execute('SELECT id FROM bot_digest_user WHERE username LIKE %s', ('@' + username,))
+			filtered = self.filter_username(username)
+			self.curr_db_2.execute('SELECT id FROM bot_digest_user WHERE username LIKE %s', ('@' + filtered,))
 			user_id = self.curr_db_2.fetchone()[0]
-			self.log.debug(str.format('Commit digest {} from {} at timestamp {}.', digest_id, username, date))
+			self.log.debug(str.format('Commit digest {} from {} at timestamp {}.', digest_id, filtered, date))
 			self.curr_db_2.execute(
 				'INSERT INTO bot_digest (id, chat, date, message_id, digest, user_id) VALUES (%s, %s, %s, %s, %s, %s)',
 				(digest_id, self.cfg['MF_CHAT_ID'], date, None, msg, user_id)

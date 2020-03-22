@@ -22,7 +22,8 @@ class RateTgMarkdownGeneratorTest {
 	@Autowired
 	private RateTgMarkdownGenerator generator;
 
-	@MockBean private ExchangeRateRepository repository;
+	@MockBean
+	private ExchangeRateRepository repository;
 
 	@Test
 	public void testBankRuMarkdownReport() {

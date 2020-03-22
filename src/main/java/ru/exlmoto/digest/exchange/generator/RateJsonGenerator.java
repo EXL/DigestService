@@ -42,7 +42,9 @@ public class RateJsonGenerator {
 		} catch (DataAccessException dae) {
 			log.error("Cannot get object from database.", dae);
 		}
-		return locale.i18n("exchange.error.report");
+		JsonObject error = new JsonObject();
+		error.addProperty("error", locale.i18n("exchange.error.report"));
+		return error.toString();
 	}
 
 	private void addBankRuToReport(JsonObject report) {

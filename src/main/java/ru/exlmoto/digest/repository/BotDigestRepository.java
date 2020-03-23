@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.exlmoto.digest.entity.BotDigestEntity;
@@ -66,4 +67,8 @@ public interface BotDigestRepository extends JpaRepository<BotDigestEntity, Long
 
 	@Query("SELECT DISTINCT bot_digest_entity.user.id FROM BotDigestEntity bot_digest_entity")
 	List<Long> allUserIds();
+
+	@Query("SELECT DISTINCT bot_digest_entity.user FROM BotDigestEntity bot_digest_entity " +
+		"WHERE bot_digest_entity.chat = :chatId")
+	List<BotDigestUserEntity> allUsersByChat(@Param("chatId") Long chatId);
 }

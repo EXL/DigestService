@@ -89,6 +89,10 @@ public class DatabaseService {
 		return digestRepository.allUserIds();
 	}
 
+	public List<BotDigestUserEntity> getAllUsersByChat(Long chatId) {
+		return digestRepository.allUsersByChat(chatId);
+	}
+
 	public void deleteDigest(long digestId) {
 		digestRepository.deleteById(digestId);
 	}

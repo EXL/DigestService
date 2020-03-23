@@ -142,15 +142,14 @@ public class SiteController {
 	}
 
 	@RequestMapping(path = "/users")
-	public String users(@CookieValue(value = "lang", defaultValue = "ru") String tag, Model model) {
+	public String users(@RequestParam(name = "sort", defaultValue = "name") String sort,
+	                    @RequestParam(name = "desc", defaultValue = "false") boolean desc,
+	                    @CookieValue(value = "lang", defaultValue = "ru") String tag,
+	                    Model model) {
 		Locale lang = Locale.forLanguageTag(tag);
 		setTitleAndTime(model, "site.title.user", Locale.forLanguageTag(tag));
-		model.addAttribute("users", helper.getUsers(service, lang));
-
-		/*
-		service.getAllUsersByChat(motofanChatId).forEach(user ->
-			System.out.println(String.format("User: %s, id: %d.", user.getUsername(), user.getId())));
-		 */
+		model.addAttribute("users", helper.getUsers(service, sort, desc, lang));
+		model.addAttribute("order", desc);
 
 		return "index";
 	}

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
+import ru.exlmoto.digest.service.DatabaseService;
 
 import java.util.Locale;
 
@@ -18,6 +19,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SiteHelperTest {
 	@Autowired
 	private SiteHelper helper;
+
+	@Autowired
+	private DatabaseService service;
+
+	@Test
+	public void testGetUsers() {
+		assertFalse(helper.getUsers(service, null, true, null).isEmpty());
+		assertFalse(helper.getUsers(service, null, false, null).isEmpty());
+		assertFalse(helper.getUsers(service, "", true, null).isEmpty());
+		assertFalse(helper.getUsers(service, "", false, null).isEmpty());
+
+		assertFalse(helper.getUsers(service, "name", true, null).isEmpty());
+		assertFalse(helper.getUsers(service, "id", false, null).isEmpty());
+		assertFalse(helper.getUsers(service, "group", true, null).isEmpty());
+		assertFalse(helper.getUsers(service, "post", false, null).isEmpty());
+	}
 
 	@Test
 	public void testGetPostsMethods() {

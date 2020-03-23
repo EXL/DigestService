@@ -26,11 +26,13 @@ import ru.exlmoto.digest.site.model.user.User;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.StringJoiner;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,9 +89,12 @@ public class SiteHelper {
 		return getPostsAux(page, null, current, search, service, lang);
 	}
 
-	public List<User> getUsers(DatabaseService service, Locale lang) {
+	public List<User> getUsers(DatabaseService service, String sort, boolean desc, Locale lang) {
 		List<User> userList = new ArrayList<>();
+
 		List<BotDigestUserEntity> users = service.getAllUsersByChat(motofanChatId);
+		sortUserList(sort, desc, service, users);
+
 		users.forEach(user -> {
 			String username = user.getUsername();
 			long userId = user.getId();
@@ -103,6 +108,31 @@ public class SiteHelper {
 			));
 		});
 		return userList;
+	}
+
+	private void sortUserList(String sort, boolean desc, DatabaseService service, List<BotDigestUserEntity> users) {
+		String sorted = (sort != null) ? sort : "";
+		switch (sorted) {
+			case "id":
+				users.sort(Comparator.comparing(BotDigestUserEntity::getId));
+				break;
+			case "group":
+				users.sort(Comparator.comparing(digestUserEntity -> checkGroup(digestUserEntity.getUsername())));
+				Collections.reverse(users);
+				break;
+			case "post":
+				users.sort(Comparator.comparingLong(digestUserEntity ->
+					service.getDigestCount(digestUserEntity, motofanChatId)));
+				Collections.reverse(users);
+				break;
+			default:
+				users.sort((first, second) ->
+					String.CASE_INSENSITIVE_ORDER.compare(dropAt(first.getUsername()), dropAt(second.getUsername())));
+				break;
+		}
+		if (desc) {
+			Collections.reverse(users);
+		}
 	}
 
 	private List<Post> getPostsAux(Page<BotDigestEntity> page,

@@ -233,7 +233,7 @@ input, textarea, select {
 	vertical-align: top;
 	background: #FFF9EC;
 }
-.digest-content {
+.digest-content, .help-content {
 	min-height: 200px;
 	font-size: 12px;
 	line-height: 160%;
@@ -289,6 +289,10 @@ input, textarea, select {
 }
 .user-link a {
 	color: #495143;
+}
+.help-content {
+	background: #FFF9EC;
+	padding: 5px;
 }
 
 /* Footer */

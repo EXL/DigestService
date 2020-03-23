@@ -157,6 +157,8 @@ public class SiteController {
 	@RequestMapping(path = "/help")
 	public String help(@CookieValue(value = "lang", defaultValue = "ru") String tag, Model model) {
 		setTitleAndTime(model, "site.title.help", Locale.forLanguageTag(tag));
+		model.addAttribute("help", new Object());
+
 		return "index";
 	}
 

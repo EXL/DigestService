@@ -142,21 +142,23 @@ public class SiteController {
 	}
 
 	@RequestMapping(path = "/users")
-	public String users(@CookieValue(value = "lang", defaultValue = "ru") String tag,
-	                    Model model) {
+	public String users(@CookieValue(value = "lang", defaultValue = "ru") String tag, Model model) {
 		Locale lang = Locale.forLanguageTag(tag);
-		setTime(model);
+		setTitleAndTime(model, "site.title.user", Locale.forLanguageTag(tag));
+		model.addAttribute("users", helper.getUsers(service, lang));
 
+		/*
 		service.getAllUsersByChat(motofanChatId).forEach(user ->
 			System.out.println(String.format("User: %s, id: %d.", user.getUsername(), user.getId())));
+		 */
 
 		return "index";
 	}
 
 	@RequestMapping(path = "/help")
-	public String help(Model model) {
-		setTime(model);
-		return "help";
+	public String help(@CookieValue(value = "lang", defaultValue = "ru") String tag, Model model) {
+		setTitleAndTime(model, "site.title.help", Locale.forLanguageTag(tag));
+		return "index";
 	}
 
 	private void setTime(Model model) {

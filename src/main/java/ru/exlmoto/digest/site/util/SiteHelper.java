@@ -22,6 +22,7 @@ import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.model.post.Post;
+import ru.exlmoto.digest.site.model.post.User;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -84,6 +85,23 @@ public class SiteHelper {
 	                                 DatabaseService service,
 	                                 Locale lang) {
 		return getPostsAux(page, null, current, search, service, lang);
+	}
+
+	public List<User> getUsers(DatabaseService service, Locale lang) {
+		List<User> userList = new ArrayList<>();
+		List<BotDigestUserEntity> users = service.getAllUsersByChat(motofanChatId);
+		users.forEach(user -> {
+			String username = user.getUsername();
+			long userId = user.getId();
+			userList.add(new User(
+				filterAvatarLink(user.getAvatar()),
+				filterUsername(username, false),
+				userId,
+				filterGroup(username, lang),
+				filterDigestCount(userId, service.getDigestCount(user, motofanChatId), lang)
+			));
+		});
+		return userList;
 	}
 
 	private List<Post> getPostsAux(Page<BotDigestEntity> page,

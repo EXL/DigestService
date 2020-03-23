@@ -2,48 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 	<body>
 		<div class="page">
-			<!--/*@thymesVar id="posts" type="ru.exlmoto.digest.site.model.DigestModel"*/-->
-			<div th:fragment="users" class="user">
-
-				<div th:if="${!posts.digests.isEmpty()}">
+			<div th:fragment="members" class="user">
+				<div th:if="${!users.isEmpty()}">
 					<span class="table-header">
-						<img class="table-header-image" src="../static/image/thread.png" th:src="@{/image/thread.png}" alt="Go!" th:alt="#{site.content.head.icon.title}" title="Go!" th:title="#{site.content.head.icon.title}" width="15" height="14"/>
-						<span class="table-header-title" th:utext="${posts.title}">Title</span>
-						<span class="table-header-description" th:utext="${posts.description}">Description</span>
+						<span class="table-header-title" th:utext="#{site.user.title}">Title</span>
 					</span>
-					<table class="digest-post" th:each="digest : ${posts.digests}" th:class="${digest.highlight ? 'digest-post-highlight' : 'digest-post'}">
+					<table class="users">
 						<tr>
-							<td class="cell-name">
-								<span class="username" th:utext="${digest.username_html}">Username</span>
-							</td>
-							<td class="cell-details">
-								<span class="date-details"><!--/*
-								*/--><img class="digest-icon" src="../static/image/post.png" th:src="@{/image/post.png}" alt="Post" width="8" height="9"/><!--/*
-								*/--><span th:text="${digest.date}">Date</span><!--/*
-							*/--></span><!--/*
-							*/--><span class="number-details" th:utext="${digest.description_html}">Description</span>
-							</td>
+							<th th:text="#{site.user.avatar}" nowrap>Avatar</th>
+							<th th:text="#{site.user.name}" nowrap>Name</th>
+							<th th:text="#{site.user.id}" nowrap>Number</th>
+							<th th:text="#{site.user.group}" nowrap>Group</th>
+							<th th:text="#{site.user.message}" nowrap>Message</th>
 						</tr>
-						<tr>
-							<td class="cell-avatar">
-								<p class="user-details">
-									<img th:if="${digest.avatar != null}" width="160" height="160" alt="Not Available" th:alt="#{site.content.avatar.general.alt}" src="../static/image/avatar.png" th:src="${digest.avatar}" th:title="${digest.username}"/>
-									<img th:unless="${digest.avatar != null}" width="160" height="160" alt="Default Avatar" th:alt="#{site.content.avatar.default.alt}" src="../static/image/avatar.png" th:src="@{/image/avatar.png}" th:title="${digest.username}"/>
-									<br/>
-									<br/>
-									<span th:text="${digest.group}">Some group</span>
-									<br/>
-									<span th:with="data=#{site.content.user.id}" th:text="${#strings.replace(data, '%id%', digest.user_id)}">User #</span>
-									<br/>
-									<span th:utext="${digest.digests_html}">Digests</span>
-								</p>
+						<tr th:each="user : ${user.lists}">
+							<td>
+
 							</td>
-							<td class="cell-digest">
-								<div class="digest-content" th:utext="${digest.post_html}">Digest Content</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="divider" colspan="2"></td>
 						</tr>
 					</table>
 				</div>

@@ -1,14 +1,21 @@
-package ru.exlmoto.digest.site.model.post;
+package ru.exlmoto.digest.site.model.user;
 
 public class User {
 	private String avatar;
+	private String username;
 	private String username_html;
 	private long user_id;
 	private String group;
 	private String messages_html;
 
-	public User(String avatar, String username_html, long user_id, String group, String messages_html) {
+	public User(String avatar,
+	            String username,
+	            String username_html,
+	            long user_id,
+	            String group,
+	            String messages_html) {
 		this.avatar = avatar;
+		this.username = username;
 		this.username_html = username_html;
 		this.user_id = user_id;
 		this.group = group;
@@ -21,6 +28,14 @@ public class User {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getUsername_html() {

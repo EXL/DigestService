@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 	<body>
 		<div class="page">
+			<!--/*@thymesVar id="users" type="java.util.List<ru.exlmoto.digest.site.model.user.User>"*/-->
 			<div th:fragment="members" class="user">
 				<div th:if="${!users.isEmpty()}">
 					<span class="table-header">
@@ -9,20 +10,33 @@
 					</span>
 					<table class="users">
 						<tr>
-							<th th:text="#{site.user.avatar}" nowrap>Avatar</th>
-							<th th:text="#{site.user.name}" nowrap>Name</th>
-							<th th:text="#{site.user.id}" nowrap>Number</th>
-							<th th:text="#{site.user.group}" nowrap>Group</th>
-							<th th:text="#{site.user.message}" nowrap>Message</th>
+							<th class="user-header-15" th:text="#{site.user.name}" nowrap>Name</th>
+							<th class="user-header-15" th:text="#{site.user.group}" nowrap>Group</th>
+							<th class="user-header-15" th:text="#{site.user.id}" nowrap>Number</th>
+							<th class="user-header-15" th:text="#{site.user.message}" nowrap>Message</th>
+							<th class="user-header-40" th:text="#{site.user.avatar}" nowrap>Avatar</th>
 						</tr>
-						<tr th:each="user : ${user.lists}">
-							<td>
-
+						<tr th:each="user : ${users}">
+							<td class="user-cell">
+								<span th:utext="${user.username_html}">Username</span>
+							</td>
+							<td class="user-cell">
+								<span th:text="${user.group}">Group</span>
+							</td>
+							<td class="user-cell">
+								<span th:text="${user.user_id}">Number</span>
+							</td>
+							<td class="user-cell">
+								<span th:utext="${user.messages_html}">Messages</span>
+							</td>
+							<td class="user-avatar">
+								<img th:if="${user.avatar != null}" width="160" height="160" alt="Not Available" th:alt="#{site.content.avatar.general.alt}" src="../static/image/avatar.png" th:src="${user.avatar}" th:title="${user.username}"/>
+								<img th:unless="${user.avatar != null}" width="160" height="160" alt="Default Avatar" th:alt="#{site.content.avatar.default.alt}" src="../static/image/avatar.png" th:src="@{/image/avatar.png}" th:title="${user.username}"/>
 							</td>
 						</tr>
 					</table>
 				</div>
-				<h3 th:unless="${!posts.digests.isEmpty()}" th:text="#{site.content.empty}">No matching records found in the database.</h3>
+				<h3 th:unless="${!users.isEmpty()}" th:text="#{site.content.empty}">No matching records found in the database.</h3>
 			</div>
 		</div>
 	</body>

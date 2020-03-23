@@ -15,8 +15,8 @@ a:active {
 	text-decoration: underline;
 }
 a:hover {
-	background: transparent;
 	color: #FF6600;
+	background: transparent;
 	text-decoration: underline;
 }
 table, tr, td {
@@ -275,6 +275,18 @@ input, textarea, select {
 	background: #FFEFD4;
 	padding: 5px;
 	text-align: center;
+}
+.user-header-15 a:link,
+.user-header-15 a:active,
+.user-header-15 a:visited {
+	color: #C00101;
+	background: transparent;
+	text-decoration: underline;
+}
+.user-header-15 a:hover {
+	color: #FF6600;
+	background: transparent;
+	text-decoration: underline;
 }
 
 /* Footer */

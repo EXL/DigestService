@@ -3,17 +3,26 @@
 	<body>
 		<div class="page">
 			<!--/*@thymesVar id="users" type="java.util.List<ru.exlmoto.digest.site.model.user.User>"*/-->
+			<!--/*@thymesVar id="order" type="java.lang.Boolean"*/-->
 			<div th:fragment="members" class="user">
-				<div th:if="${!users.isEmpty()}">
+				<div th:if="${!users.isEmpty()}" th:with="path='/users'">
 					<span class="table-header">
 						<span class="table-header-title" th:utext="#{site.user.title}">Title</span>
 					</span>
 					<table class="users">
 						<tr>
-							<th class="user-header-15" th:text="#{site.user.name}" nowrap>Name</th>
-							<th class="user-header-15" th:text="#{site.user.group}" nowrap>Group</th>
-							<th class="user-header-15" th:text="#{site.user.id}" nowrap>Number</th>
-							<th class="user-header-15" th:text="#{site.user.message}" nowrap>Message</th>
+							<th class="user-header-15" nowrap>
+								<a th:href="@{__${path}__(desc=${!order})}" th:text="#{site.user.name}" th:title="#{site.user.name.sort}">Name</a>
+							</th>
+							<th class="user-header-15" nowrap>
+								<a th:href="@{__${path}__(sort='group',desc=${!order})}" th:text="#{site.user.group}" th:title="#{site.user.group.sort}">Group</a>
+							</th>
+							<th class="user-header-15" nowrap>
+								<a th:href="@{__${path}__(sort='id',desc=${!order})}" th:text="#{site.user.id}" th:title="#{site.user.id.sort}">Number</a>
+							</th>
+							<th class="user-header-15" nowrap>
+								<a th:href="@{__${path}__(sort='post',desc=${!order})}" th:text="#{site.user.message}" th:title="#{site.user.message.sort}">Message</a>
+							</th>
 							<th class="user-header-40" th:text="#{site.user.avatar}" nowrap>Avatar</th>
 						</tr>
 						<tr th:each="user : ${users}">

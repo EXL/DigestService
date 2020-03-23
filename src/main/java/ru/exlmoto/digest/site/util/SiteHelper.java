@@ -22,7 +22,7 @@ import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.model.post.Post;
-import ru.exlmoto.digest.site.model.post.User;
+import ru.exlmoto.digest.site.model.user.User;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -95,6 +95,7 @@ public class SiteHelper {
 			long userId = user.getId();
 			userList.add(new User(
 				filterAvatarLink(user.getAvatar()),
+				username,
 				filterUsername(username, false),
 				userId,
 				filterGroup(username, lang),

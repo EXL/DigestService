@@ -4,12 +4,14 @@
 	<body>
 		<div class="page">
 			<div th:replace="~{header :: banner}">Header</div>
-			<div class="controls">
+			<div th:if="${posts != null}" class="controls">
 				<div th:replace="~{pager :: paginator(up)}">Pager</div>
 				<div th:replace="~{search :: search-form(up)}">Search</div>
 			</div>
-			<div th:replace="~{content :: digest}">Content</div>
-			<div class="controls" th:if="${!posts.digests.isEmpty()}">
+			<div th:if="${posts != null}">
+				<div th:replace="~{content :: digest}">Content</div>
+			</div>
+			<div th:if="${posts != null && !posts.digests.isEmpty()}" class="controls">
 				<div th:replace="~{pager :: paginator(down)}">Pager</div>
 				<div th:replace="~{search :: search-form(down)}">Search</div>
 			</div>

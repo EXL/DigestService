@@ -141,15 +141,35 @@ public class SiteController {
 		return "redirect:/";
 	}
 
+	@RequestMapping(path = "/users")
+	public String users(@CookieValue(value = "lang", defaultValue = "ru") String tag,
+	                    Model model) {
+		Locale lang = Locale.forLanguageTag(tag);
+		setTime(model);
+
+		service.getAllUsersByChat(motofanChatId).forEach(user ->
+			System.out.println(String.format("User: %s, id: %d.", user.getUsername(), user.getId())));
+
+		return "index";
+	}
+
 	@RequestMapping(path = "/help")
 	public String help(Model model) {
-		model.addAttribute("time", System.currentTimeMillis());
+		setTime(model);
 		return "help";
 	}
 
-	private void setTitleAndGeneralData(Model model, String key, Locale lang, SearchForm searchForm) {
+	private void setTime(Model model) {
 		model.addAttribute("time", System.currentTimeMillis());
+	}
+
+	private void setTitleAndTime(Model model, String key, Locale lang) {
+		setTime(model);
 		model.addAttribute("title", locale.i18nW(key, lang));
+	}
+
+	private void setTitleAndGeneralData(Model model, String key, Locale lang, SearchForm searchForm) {
+		setTitleAndTime(model, key, lang);
 		model.addAttribute("find", searchForm);
 	}
 

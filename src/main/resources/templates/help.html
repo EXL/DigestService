@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<body>
+		<div class="page">
+			<div th:fragment="assist" class="user">
+				<span class="table-header">
+					<span class="table-header-title" th:utext="#{site.help.title}">Title</span>
+					<span class="table-header-description" th:utext="#{site.goto.home}">Description</span>
+				</span>
+				<div class="help-content" th:utext="#{site.help.content}">Help</div>
+			</div>
+		</div>
+	</body>
+</html>

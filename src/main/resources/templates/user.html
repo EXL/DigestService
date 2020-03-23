@@ -8,6 +8,7 @@
 				<div th:if="${!users.isEmpty()}" th:with="path='/users'">
 					<span class="table-header">
 						<span class="table-header-title" th:utext="#{site.user.title}">Title</span>
+						<span class="table-header-description" th:utext="#{site.user.description}">Description</span>
 					</span>
 					<table class="users">
 						<tr>

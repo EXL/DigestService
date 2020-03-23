@@ -115,15 +115,14 @@ public class SiteHelper {
 		switch (sorted) {
 			case "id":
 				users.sort(Comparator.comparing(BotDigestUserEntity::getId));
+				Collections.reverse(users);
 				break;
 			case "group":
 				users.sort(Comparator.comparing(digestUserEntity -> checkGroup(digestUserEntity.getUsername())));
-				Collections.reverse(users);
 				break;
 			case "post":
 				users.sort(Comparator.comparingLong(digestUserEntity ->
 					service.getDigestCount(digestUserEntity, motofanChatId)));
-				Collections.reverse(users);
 				break;
 			default:
 				users.sort((first, second) ->

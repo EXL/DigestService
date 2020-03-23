@@ -134,7 +134,7 @@ input, textarea, select {
 .page-link-active a:link {
 	text-decoration: none;
 }
-.page-label {
+.page-label, .user-link {
 	color: #495143;
 	font-size: 11px;
 	margin-right: 3px;
@@ -276,17 +276,19 @@ input, textarea, select {
 	padding: 5px;
 	text-align: center;
 }
-.user-header-15 a:link,
-.user-header-15 a:active,
-.user-header-15 a:visited {
+.user-header-15 a {
 	color: #C00101;
 	background: transparent;
-	text-decoration: underline;
+	text-decoration: none;
 }
-.user-header-15 a:hover {
+.user-header-15 a:hover,
+.user-link a:hover {
 	color: #FF6600;
 	background: transparent;
 	text-decoration: underline;
+}
+.user-link a {
+	color: #495143;
 }
 
 /* Footer */

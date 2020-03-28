@@ -85,27 +85,27 @@ public class ShowKeyboard extends KeyboardPagerAbility {
 		final int CHOP_USER = 7;
 		final int CHOP_DIGEST = 25;
 
-		StringBuilder stringBuilder = new StringBuilder(header);
-		stringBuilder.append("\n\n");
-		stringBuilder.append("```\n");
-		stringBuilder.append(filter.arrangeString("id", CHOP_NUMBER)).append(" ");
-		stringBuilder.append(filter.arrangeString("user", CHOP_USER)).append(" ");
-		stringBuilder.append(filter.arrangeString("chat", CHOP_NUMBER)).append(" ");
-		stringBuilder.append("post").append("\n");
+		StringBuilder builder = new StringBuilder(header);
+		builder.append("\n\n");
+		builder.append("```\n");
+		builder.append(filter.arrangeString("id", CHOP_NUMBER)).append(" ");
+		builder.append(filter.arrangeString("user", CHOP_USER)).append(" ");
+		builder.append(filter.arrangeString("chat", CHOP_NUMBER)).append(" ");
+		builder.append("post").append("\n");
 
 		for (int i = 0; i < CHOP_NUMBER * 2 + CHOP_USER + CHOP_DIGEST + 3; ++i) {
-			stringBuilder.append("-");
+			builder.append("-");
 		}
-		stringBuilder.append("\n");
+		builder.append("\n");
 
 		for (BotDigestEntity entity : entities) {
-			stringBuilder.append(filter.ellipsisLeftA(String.valueOf(entity.getId()), CHOP_NUMBER)).append(" ");
-			stringBuilder.append(filter.ellipsisRightA(entity.getUser().getUsername(), CHOP_USER)).append(" ");
-			stringBuilder.append(filter.ellipsisLeftA(String.valueOf(entity.getChat()), CHOP_NUMBER)).append(" ");
-			stringBuilder.append(filter.strip(filter.ellipsisRightA(entity.getDigest(), CHOP_DIGEST))).append("\n");
+			builder.append(filter.ellipsisLeftA(String.valueOf(entity.getId()), CHOP_NUMBER)).append(" ");
+			builder.append(filter.ellipsisRightA(entity.getUser().getUsername(), CHOP_USER)).append(" ");
+			builder.append(filter.ellipsisLeftA(String.valueOf(entity.getChat()), CHOP_NUMBER)).append(" ");
+			builder.append(filter.strip(filter.ellipsisRightA(entity.getDigest(), CHOP_DIGEST))).append("\n");
 		}
-		stringBuilder.append("\n```");
+		builder.append("\n```");
 
-		return stringBuilder.toString();
+		return builder.toString();
 	}
 }

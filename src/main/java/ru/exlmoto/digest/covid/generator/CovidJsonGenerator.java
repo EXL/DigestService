@@ -33,8 +33,8 @@ public class CovidJsonGenerator {
 		gson = new GsonBuilder().setPrettyPrinting().create();
 	}
 
-	public String getJsonReport() {
-		Answer<Pair<List<Region>, Map<String, String>>> res = parser.parse2GisData();
+	public String getJsonReport(String covidUrl) {
+		Answer<Pair<List<Region>, Map<String, String>>> res = parser.parse2GisData(covidUrl);
 		if (res.ok()) {
 			Pair<List<Region>, Map<String, String>> answer = res.answer();
 			return generateJsonReport(answer.getFirst(), answer.getSecond());

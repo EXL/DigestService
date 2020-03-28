@@ -37,9 +37,6 @@ public class Covid2GisParser {
 	private final FilterHelper filter;
 	private final LocaleHelper locale;
 
-	@Value("${covid.url}")
-	private String covidUrl;
-
 	private final String NAMES_URL = "/public/13.js";
 	private final String CASES_URL = "/public/14.js";
 	private final String HISTS_URL = "/public/22.js";
@@ -55,7 +52,7 @@ public class Covid2GisParser {
 		this.locale = locale;
 	}
 
-	public Answer<Pair<List<Region>, Map<String, String>>> parse2GisData() {
+	public Answer<Pair<List<Region>, Map<String, String>>> parse2GisData(String covidUrl) {
 		String url = filter.checkLink(covidUrl);
 		Map<String, String> names;
 		Map<String, String> hists;

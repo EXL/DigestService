@@ -42,9 +42,9 @@ public class CovidWorker {
 				sendCovidReport(report, databaseService.getAllCovidSubs());
 			}
 		} catch (DataAccessException dae) {
-			log.error("Cannot get Motofan subscribe object from database.", dae);
+			log.error("Cannot get Covid subscribe object from database.", dae);
 		} catch (RuntimeException re) {
-			log.error("Runtime exception on Motofan Posts sender thread.", re);
+			log.error("Runtime exception on Covid report sender thread.", re);
 		}
 	}
 

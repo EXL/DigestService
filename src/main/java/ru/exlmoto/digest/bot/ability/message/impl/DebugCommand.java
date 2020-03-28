@@ -13,11 +13,12 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.bot.worker.AvatarWorker;
-import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
-import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
+import ru.exlmoto.digest.bot.worker.AvatarWorker;
+import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
+import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
+import ru.exlmoto.digest.bot.worker.MorningWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -33,6 +34,7 @@ public class DebugCommand extends MessageAdminAbility {
 	private final DigestWorker digestWorker;
 	private final CovidWorker covidWorker;
 	private final CallbackQueriesWorker callbackQueriesWorker;
+	private final MorningWorker morningWorker;
 
 	public DebugCommand(BotTelegram telegram,
 	                    BotConfiguration config,
@@ -41,7 +43,8 @@ public class DebugCommand extends MessageAdminAbility {
 	                    AvatarWorker avatarWorker,
 	                    DigestWorker digestWorker,
 	                    CovidWorker covidWorker,
-	                    CallbackQueriesWorker callbackQueriesWorker) {
+	                    CallbackQueriesWorker callbackQueriesWorker,
+	                    MorningWorker morningWorker) {
 		this.telegram = telegram;
 		this.config = config;
 		this.exchangeService = exchangeService;
@@ -50,6 +53,7 @@ public class DebugCommand extends MessageAdminAbility {
 		this.digestWorker = digestWorker;
 		this.covidWorker = covidWorker;
 		this.callbackQueriesWorker = callbackQueriesWorker;
+		this.morningWorker = morningWorker;
 	}
 
 	private enum Option {
@@ -59,6 +63,7 @@ public class DebugCommand extends MessageAdminAbility {
 		VAvatars,
 		VQueries,
 		VCovid,
+		VMorning,
 		BLogUpdates,
 		BGreetings,
 		BSilent,
@@ -77,6 +82,7 @@ public class DebugCommand extends MessageAdminAbility {
 				case VAvatars: { text = processAvatars(locale); break; }
 				case VQueries: { text = processQueries(locale); break; }
 				case VCovid: { text = processCovid(locale); break; }
+				case VMorning: { text = processMorning(locale); break; }
 				case BLogUpdates: { text = toggleUpdates(locale); break; }
 				case BGreetings: { text = toggleGreetings(locale); break; }
 				case BSilent: { text = toggleSilent(locale); break; }
@@ -120,6 +126,11 @@ public class DebugCommand extends MessageAdminAbility {
 
 	private String processCovid(LocaleHelper locale) {
 		covidWorker.workOnCovidReport();
+		return locale.i18n("bot.command.debug.data");
+	}
+
+	private String processMorning(LocaleHelper locale) {
+		morningWorker.sendGoodMorning();
 		return locale.i18n("bot.command.debug.data");
 	}
 

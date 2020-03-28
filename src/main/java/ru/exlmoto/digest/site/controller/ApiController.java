@@ -3,6 +3,7 @@ package ru.exlmoto.digest.site.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ru.exlmoto.digest.covid.CovidService;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.util.system.SystemReport;
 
@@ -10,10 +11,12 @@ import ru.exlmoto.digest.util.system.SystemReport;
 public class ApiController {
 	private final SystemReport report;
 	private final ExchangeService service;
+	private final CovidService covid;
 
-	public ApiController(SystemReport report, ExchangeService service) {
+	public ApiController(SystemReport report, ExchangeService service, CovidService covid) {
 		this.report = report;
 		this.service = service;
+		this.covid = covid;
 	}
 
 	@GetMapping("/api/info")
@@ -24,5 +27,10 @@ public class ApiController {
 	@GetMapping("/api/rate")
 	public String rate() {
 		return service.jsonReport();
+	}
+
+	@GetMapping("/api/covid")
+	public String covid() {
+		return covid.jsonReport();
 	}
 }

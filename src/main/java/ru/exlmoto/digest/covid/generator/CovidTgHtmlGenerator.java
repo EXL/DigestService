@@ -35,9 +35,9 @@ public class CovidTgHtmlGenerator {
 		this.filter = filter;
 	}
 
-	public String getTgHtmlReport() {
+	public String getTgHtmlReport(String covidUrl) {
 		log.info("=> Start receive last COVID-2019 report.");
-		Answer<Pair<List<Region>, Map<String, String>>> res = parser.parse2GisData();
+		Answer<Pair<List<Region>, Map<String, String>>> res = parser.parse2GisData(covidUrl);
 		log.info("=> End receive last COVID-2019 report.");
 		if (res.ok()) {
 			Pair<List<Region>, Map<String, String>> answer = res.answer();

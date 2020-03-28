@@ -17,6 +17,7 @@ import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
+import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -30,6 +31,7 @@ public class DebugCommand extends MessageAdminAbility {
 	private final MotofanWorker motofanWorker;
 	private final AvatarWorker avatarWorker;
 	private final DigestWorker digestWorker;
+	private final CovidWorker covidWorker;
 	private final CallbackQueriesWorker callbackQueriesWorker;
 
 	public DebugCommand(BotTelegram telegram,
@@ -38,6 +40,7 @@ public class DebugCommand extends MessageAdminAbility {
 	                    MotofanWorker motofanWorker,
 	                    AvatarWorker avatarWorker,
 	                    DigestWorker digestWorker,
+	                    CovidWorker covidWorker,
 	                    CallbackQueriesWorker callbackQueriesWorker) {
 		this.telegram = telegram;
 		this.config = config;
@@ -45,6 +48,7 @@ public class DebugCommand extends MessageAdminAbility {
 		this.motofanWorker = motofanWorker;
 		this.avatarWorker = avatarWorker;
 		this.digestWorker = digestWorker;
+		this.covidWorker = covidWorker;
 		this.callbackQueriesWorker = callbackQueriesWorker;
 	}
 
@@ -54,6 +58,7 @@ public class DebugCommand extends MessageAdminAbility {
 		VShredder,
 		VAvatars,
 		VQueries,
+		VCovid,
 		BLogUpdates,
 		BGreetings,
 		BSilent,
@@ -71,6 +76,7 @@ public class DebugCommand extends MessageAdminAbility {
 				case VShredder: { text = processShredder(locale); break; }
 				case VAvatars: { text = processAvatars(locale); break; }
 				case VQueries: { text = processQueries(locale); break; }
+				case VCovid: { text = processCovid(locale); break; }
 				case BLogUpdates: { text = toggleUpdates(locale); break; }
 				case BGreetings: { text = toggleGreetings(locale); break; }
 				case BSilent: { text = toggleSilent(locale); break; }
@@ -109,6 +115,11 @@ public class DebugCommand extends MessageAdminAbility {
 
 	private String processQueries(LocaleHelper locale) {
 		callbackQueriesWorker.clearCallbackQueriesMap();
+		return locale.i18n("bot.command.debug.data");
+	}
+
+	private String processCovid(LocaleHelper locale) {
+		covidWorker.workOnCovidReport();
 		return locale.i18n("bot.command.debug.data");
 	}
 

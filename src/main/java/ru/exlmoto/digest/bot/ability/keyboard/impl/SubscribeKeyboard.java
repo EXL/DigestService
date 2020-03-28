@@ -19,6 +19,7 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
+import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
@@ -36,7 +37,9 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		digest_subscribe,
 		digest_unsubscribe,
 		motofan_subscribe,
-		motofan_unsubscribe
+		motofan_unsubscribe,
+		covid_subscribe,
+		covid_unsubscribe
 	}
 
 	private final BotHelper helper;
@@ -67,6 +70,12 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					.callbackData(Keyboard.subscribe.withName() + Subscription.digest_subscribe),
 				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.unsubscribe.digest"))
 					.callbackData(Keyboard.subscribe.withName() + Subscription.digest_unsubscribe)
+			},
+			new InlineKeyboardButton[] {
+				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.subscribe.covid"))
+					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_subscribe),
+				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.unsubscribe.covid"))
+					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_unsubscribe)
 			}
 		);
 	}
@@ -111,9 +120,14 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		long chatId = chat.id();
 		String chatTitle = helper.getValidChatName(chat);
 		try {
-			return Ok(String.format(locale.i18n("bot.command.subscribe"), chatTitle, chatId,
-				getSubscribeStatus(service.getMotofanSub(chatId) != null),
-				getSubscribeStatus(service.getDigestSub(chatId) != null)));
+			return Ok(
+				String.format(
+					locale.i18n("bot.command.subscribe"), chatTitle, chatId,
+					getSubscribeStatus(service.getMotofanSub(chatId) != null),
+					getSubscribeStatus(service.getDigestSub(chatId) != null),
+					getSubscribeStatus(service.getCovidSub(chatId) != null)
+				)
+			);
 		} catch (DataAccessException dae) {
 			log.error("Cannot get subscribe object from database.", dae);
 			return Error(String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage()));
@@ -153,6 +167,14 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 				}
 				case digest_unsubscribe: {
 					digestUnsubscribe(messageId, chat, callbackId, sender);
+					break;
+				}
+				case covid_subscribe: {
+					covidSubscribe(messageId, chat, callbackId, sender);
+					break;
+				}
+				case covid_unsubscribe: {
+					covidUnsubscribe(messageId, chat, callbackId, sender);
 					break;
 				}
 			}
@@ -201,6 +223,28 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
 		} else {
 			service.deleteDigestSub(chatId);
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
+			processSubscribeStatusMessage(messageId, chat, true, sender);
+		}
+	}
+
+	private void covidSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
+		if (service.getCovidSub(chatId) != null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
+		} else {
+			service.saveCovidSub(new BotSubCovidEntity(chatId, helper.getValidChatName(chat)));
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
+			processSubscribeStatusMessage(messageId, chat, true, sender);
+		}
+	}
+
+	private void covidUnsubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
+		if (service.getCovidSub(chatId) == null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
+		} else {
+			service.deleteCovidSub(chatId);
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
 			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}

@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
-import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
+import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.entity.BotSubGreetingEntity;
+import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.entity.BotSetupEntity;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
@@ -17,6 +18,7 @@ import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.repository.BotSubDigestRepository;
 import ru.exlmoto.digest.repository.BotSubMotofanRepository;
 import ru.exlmoto.digest.repository.BotSubGreetingRepository;
+import ru.exlmoto.digest.repository.BotSubCovidRepository;
 import ru.exlmoto.digest.repository.BotSetupRepository;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
 
@@ -30,6 +32,7 @@ public class DatabaseService {
 	private final BotSubMotofanRepository subMotofanRepository;
 	private final BotSubDigestRepository subDigestRepository;
 	private final BotSubGreetingRepository subGreetingRepository;
+	private final BotSubCovidRepository subCovidRepository;
 	private final BotSetupRepository setupRepository;
 	private final ExchangeRateRepository exchangeRateRepository;
 
@@ -38,13 +41,14 @@ public class DatabaseService {
 	                       BotSubMotofanRepository subMotofanRepository,
 	                       BotSubDigestRepository subDigestRepository,
 	                       BotSubGreetingRepository subGreetingRepository,
-	                       BotSetupRepository setupRepository,
+	                       BotSubCovidRepository subCovidRepository, BotSetupRepository setupRepository,
 	                       ExchangeRateRepository exchangeRateRepository) {
 		this.digestRepository = digestRepository;
 		this.digestUserRepository = digestUserRepository;
 		this.subMotofanRepository = subMotofanRepository;
 		this.subDigestRepository = subDigestRepository;
 		this.subGreetingRepository = subGreetingRepository;
+		this.subCovidRepository = subCovidRepository;
 		this.setupRepository = setupRepository;
 		this.exchangeRateRepository = exchangeRateRepository;
 	}
@@ -189,6 +193,22 @@ public class DatabaseService {
 
 	public void addChatToGreetingIgnores(long chatId) {
 		subGreetingRepository.save(new BotSubGreetingEntity(chatId));
+	}
+
+	public List<BotSubCovidEntity> getAllCovidSubs() {
+		return subCovidRepository.findAll();
+	}
+
+	public BotSubCovidEntity getCovidSub(long subscription) {
+		return subCovidRepository.findBotSubCovidEntityBySubscription(subscription);
+	}
+
+	public void deleteCovidSub(long subscription) {
+		subCovidRepository.deleteBotSubCovidEntityBySubscription(subscription);
+	}
+
+	public void saveCovidSub(BotSubCovidEntity covidSub) {
+		subCovidRepository.save(covidSub);
 	}
 
 	public Optional<BotSetupEntity> getSettings() {

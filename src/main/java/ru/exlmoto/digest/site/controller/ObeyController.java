@@ -74,7 +74,7 @@ public class ObeyController {
 			}
 		} else {
 			digestForm.setUpdate(false);
-			digestForm.setDate(filter.getDateFromTimeStamp());
+			digestForm.setDate(filter.getCurrentUnixTime());
 		}
 
 		model.addAttribute("digestForm", digestForm);

@@ -18,10 +18,6 @@ public class BotHelper {
 		this.config = config;
 	}
 
-	public long getCurrentUnixTime() {
-		return System.currentTimeMillis() / 1000L;
-	}
-
 	public String getValidUsername(User user) {
 		return getValidUsernameAux(user.username(), user.lastName(), user.firstName());
 	}

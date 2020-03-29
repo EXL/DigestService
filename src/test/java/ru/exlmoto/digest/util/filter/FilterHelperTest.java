@@ -47,6 +47,13 @@ class FilterHelperTest {
 	}
 
 	@Test
+	public void testGetCurrentUnixTime() {
+		String value = String.valueOf(filter.getCurrentUnixTime());
+		assertEquals(10, value.length());
+		System.out.println("Unix Time: " + value);
+	}
+
+	@Test
 	public void testEscapeTags() {
 		assertEquals("&#60;@exlmoto", filter.escapeTags("<@exlmoto"));
 		assertEquals("&#62;@exlmoto", filter.escapeTags(">@exlmoto"));

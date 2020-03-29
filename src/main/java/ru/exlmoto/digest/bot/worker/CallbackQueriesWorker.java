@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
-import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +20,11 @@ public class CallbackQueriesWorker {
 	private int delay = 0;
 
 	private final BotConfiguration config;
-	private final BotHelper helper;
+	private final FilterHelper filter;
 
-	public CallbackQueriesWorker(BotConfiguration config, BotHelper helper) {
+	public CallbackQueriesWorker(BotConfiguration config, FilterHelper filter) {
 		this.config = config;
-		this.helper = helper;
+		this.filter = filter;
 	}
 
 	@Scheduled(cron = "${cron.bot.callbacks.clear}")
@@ -36,7 +36,7 @@ public class CallbackQueriesWorker {
 
 	public long getDelayForChat(long chatId) {
 		int cooldown = config.getCooldown();
-		long currentTime = helper.getCurrentUnixTime();
+		long currentTime = filter.getCurrentUnixTime();
 		if (!callbackQueriesMap.containsKey(chatId) || callbackQueriesMap.get(chatId) <= currentTime - cooldown) {
 			callbackQueriesMap.put(chatId, currentTime);
 			return 0L;

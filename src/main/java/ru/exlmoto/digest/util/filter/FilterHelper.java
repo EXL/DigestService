@@ -52,6 +52,10 @@ public class FilterHelper {
 			.withZone(ZoneId.systemDefault()).format(Instant.ofEpochSecond(timestamp));
 	}
 
+	public long getCurrentUnixTime() {
+		return System.currentTimeMillis() / 1000L;
+	}
+
 	public String strip(String str) {
 		return str.replaceAll("\\s+", " ").trim();
 	}

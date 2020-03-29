@@ -1,0 +1,22 @@
+a:link,
+a:visited,
+a:active {
+	color: #222;
+}
+a:hover {
+	color: #FF6600;
+}
+
+.page {
+	display: flex;
+	min-height: 400px;
+	min-width: 1024px;
+	max-width: 1366px;
+}
+.frame {
+	width: 15%;
+	padding-right: 5px;
+}
+.content {
+	width: 85%;
+}

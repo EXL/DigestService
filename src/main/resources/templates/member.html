@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<body>
+		<div class="page">
+			<div class="main">
+				<div class="content">
+					<div>
+						<!--/*@thymesVar id="userForm" type="ru.exlmoto.digest.site.form.UserForm"*/-->
+						<div th:fragment="user-form" class="post-form" th:with="update=${userForm.update},add=#{site.obey.content.action.add},edit=#{site.obey.content.action.edit},addTitle=#{site.obey.user.add},editTitle=#{site.obey.user.edit}">
+							<h3 th:text="${update ? editTitle : addTitle}">Add Digest User</h3>
+							<form action="#" th:action="@{/obey/user/edit}" th:object="${userForm}" th:method="post">
+								<label for="id-field" th:text="#{site.obey.content.id}">ID</label>
+								<input id="id-field" type="text" th:field="*{id}" size="20" th:placeholder="#{site.obey.content.user.id}"/>
+								<label for="username-field" th:text="#{site.obey.content.username}">Username</label>
+								<input id="username-field" type="text" th:field="*{username}" size="20" th:placeholder="#{site.obey.content.nickname}"/>
+								<label for="avatar-field" th:text="#{site.obey.content.avatar}">Avatar</label>
+								<input id="avatar-field" type="text" th:field="*{avatar}" size="100" th:placeholder="#{site.obey.content.avatar.link}"/>
+								<input class="button" type="submit" value="Add" th:value="${update ? edit : add}"/>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -40,7 +40,7 @@ public class BotDigestEntity {
 		this.id = id;
 	}
 
-	public BotDigestEntity(long chat, long date, long messageId, String digest, BotDigestUserEntity user) {
+	public BotDigestEntity(long chat, long date, Long messageId, String digest, BotDigestUserEntity user) {
 		this.chat = chat;
 		this.date = date;
 		this.messageId = messageId;

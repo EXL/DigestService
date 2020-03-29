@@ -57,7 +57,7 @@ public class ObeyController {
 
 		Long digestId = helper.getLong(edit);
 		if (digestId != null) {
-			Optional<BotDigestEntity> digestOptional = service.getOneDigest(digestId);
+			Optional<BotDigestEntity> digestOptional = service.getDigest(digestId);
 			if (digestOptional.isPresent()) {
 				BotDigestEntity digest = digestOptional.get();
 				BotDigestUserEntity user = digest.getUser();
@@ -70,15 +70,16 @@ public class ObeyController {
 				digestForm.setDigest(digest.getDigest());
 				digestForm.setUserId(user.getId());
 			} else {
-				log.error(String.format("BotDigestEntity is null. Please check id variable: '%s'", edit));
+				log.error(String.format("BotDigestEntity is null. Please check id: '%s'", edit));
 			}
 		} else {
 			digestForm.setUpdate(false);
+			digestForm.setDate(filter.getDateFromTimeStamp());
 		}
 
 		model.addAttribute("digestForm", digestForm);
 
-		final int DIGEST_LENGTH = 120;
+		final int DIGEST_LENGTH = 100;
 
 		int pagePosts = config.getPagePostsAdmin();
 		int pageDeep = config.getPageDeepAdmin();
@@ -90,13 +91,17 @@ public class ObeyController {
 
 		Page<BotDigestEntity> digests = service.getAllDigests(current, pagePosts);
 		List<Digest> digestList = new ArrayList<>();
-		digests.forEach(digest -> digestList.add(new Digest(
-			digest.getId(),
-			digest.getUser().getUsername(),
-			digest.getChat(),
-			filter.getDateFromTimeStamp(dateFormat, digest.getDate()),
-			filter.ellipsisMiddle(digest.getDigest(), DIGEST_LENGTH)
-		)));
+		digests.forEach(digest -> {
+			BotDigestUserEntity user = digest.getUser();
+			digestList.add(new Digest(
+				digest.getId(),
+				user.getUsername(),
+				user.getId(),
+				digest.getChat(),
+				filter.getDateFromTimeStamp(dateFormat, digest.getDate()),
+				filter.ellipsisMiddle(digest.getDigest(), DIGEST_LENGTH)
+			));
+		});
 
 		model.addAttribute("digest", digestList);
 
@@ -118,7 +123,7 @@ public class ObeyController {
 		if (digestId != null) {
 			service.deleteDigest(digestId);
 		} else {
-			log.error(String.format("Cannot delete post where id is null. Please check id variable: '%s'", id));
+			log.error(String.format("Cannot delete post where id is null. Please check id: '%s'", id));
 		}
 
 		return "redirect:/obey";
@@ -126,8 +131,46 @@ public class ObeyController {
 
 	@PostMapping(path = "/obey/edit")
 	public String obeyEdit(DigestForm digestForm) {
-		System.out.println(digestForm.getDigestId());
-		System.out.println(digestForm.getDigest());
+		Long digestId = digestForm.getDigestId();
+		Long userId = digestForm.getUserId();
+
+		boolean valid = digestForm.checkForm();
+		if (!valid) {
+			log.error(String.format("Digest Form isn't valid! Parameters: '%s'.", digestForm.toString()));
+			return "redirect:/obey";
+		}
+
+		Optional<BotDigestUserEntity> userOptional = service.getDigestUser(userId);
+		if (!userOptional.isPresent()) {
+			log.error(String.format("Cannot get BotDigestUserEntity. Please check id: '%d'", userId));
+			return "redirect:/obey";
+		}
+		BotDigestUserEntity user = userOptional.get();
+
+		if (digestId != null) {
+			Optional<BotDigestEntity> digestOptional = service.getDigest(digestId);
+			if (digestOptional.isPresent()) {
+				BotDigestEntity digest = digestOptional.get();
+
+				digest.setUser(user);
+				digest.setDigest(digestForm.getDigest());
+				digest.setChat(digestForm.getChatId());
+				digest.setMessageId(digestForm.getMessageId());
+				digest.setDate(digestForm.getDate());
+
+				service.saveDigest(digest);
+			} else {
+				log.error(String.format("Cannot edit BotDigestEntity. Please check id: '%d'", digestId));
+			}
+		} else {
+			service.saveDigest(new BotDigestEntity(
+				digestForm.getChatId(),
+				digestForm.getDate(),
+				digestForm.getMessageId(),
+				digestForm.getDigest(),
+				user
+			));
+		}
 
 		return "redirect:/obey";
 	}

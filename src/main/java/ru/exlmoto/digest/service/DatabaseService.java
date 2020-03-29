@@ -53,7 +53,7 @@ public class DatabaseService {
 		this.exchangeRateRepository = exchangeRateRepository;
 	}
 
-	public Optional<BotDigestEntity> getOneDigest(long id) {
+	public Optional<BotDigestEntity> getDigest(long id) {
 		return digestRepository.findById(id);
 	}
 

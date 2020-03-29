@@ -267,6 +267,21 @@ class SiteHelperTest {
 	}
 
 	@Test
+	public void testGetCurrentPageDesc() {
+		assertEquals(1, helper.getCurrentPage(null));
+		assertEquals(1, helper.getCurrentPage(""));
+		assertEquals(1, helper.getCurrentPage("0"));
+		assertEquals(1, helper.getCurrentPage("-1"));
+		assertEquals(1, helper.getCurrentPage("1"));
+		assertEquals(2, helper.getCurrentPage("2"));
+		assertEquals(4, helper.getCurrentPage("4"));
+		assertEquals(6, helper.getCurrentPage("6"));
+		assertEquals(1, helper.getCurrentPage("1231231231214221124"));
+		assertEquals(1, helper.getCurrentPage("NaN"));
+		assertEquals(1, helper.getCurrentPage("<a href"));
+	}
+
+	@Test
 	public void testGetLong() {
 		assertNull(helper.getLong(null));
 		assertNull(helper.getLong(""));

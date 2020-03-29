@@ -372,17 +372,27 @@ public class SiteHelper {
 			filter.ellipsisRight(name, 20));
 	}
 
-	public int getCurrentPage(String page, int pageCount) {
+	private int getCurrentPage(String page, int pageCount, boolean asc) {
 		try {
 			int parsed = -1;
 			if (page != null) {
 				parsed = Integer.parseInt(page);
 			}
-			return (parsed > 0 && parsed < pageCount) ? parsed : pageCount;
+			return (asc) ?
+				(parsed > 0 && parsed < pageCount) ? parsed : pageCount :
+				(parsed > 0) ? parsed : 1;
 		} catch (NumberFormatException nfe) {
 			log.warn(String.format("Cannot convert '%s' page to int.", page), nfe);
-			return pageCount;
+			return (asc) ? pageCount : 1;
 		}
+	}
+
+	public int getCurrentPage(String page) {
+		return getCurrentPage(page, 1, false);
+	}
+
+	public int getCurrentPage(String page, int pageCount) {
+		return getCurrentPage(page, pageCount, true);
 	}
 
 	public Long getLong(String id) {

@@ -1,10 +1,13 @@
 package ru.exlmoto.digest.site.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,6 +25,8 @@ import java.util.List;
 
 @Controller
 public class ObeyController {
+	private final Logger log = LoggerFactory.getLogger(ObeyController.class);
+
 	private final SiteHelper helper;
 	private final DatabaseService service;
 	private final FilterHelper filter;
@@ -45,7 +50,7 @@ public class ObeyController {
 	                   Model model) {
 		model.addAttribute("time", System.currentTimeMillis());
 
-		final int DIGEST_LENGTH = 100;
+		final int DIGEST_LENGTH = 120;
 
 		int pagePosts = config.getPagePostsAdmin();
 		int pageDeep = config.getPageDeepAdmin();
@@ -78,5 +83,16 @@ public class ObeyController {
 		model.addAttribute("pager", pager);
 
 		return "obey";
+	}
+
+	@RequestMapping(path = "/obey/delete/{id}")
+	public String obeyDelete(@PathVariable(name = "id") String id) {
+		Long digestId = helper.getLong(id);
+		if (digestId != null) {
+			service.deleteDigest(digestId);
+		} else {
+			log.error(String.format("Cannot delete post where id is null. Please check id variable: '%s'", id));
+		}
+		return "redirect:/obey";
 	}
 }

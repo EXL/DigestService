@@ -48,28 +48,32 @@ public class BotTelegram {
 
 	@PostConstruct
 	private void setUp() {
-		log.info("=> Start initialize Telegram Bot...");
+		if (config.isInitialize()) {
+			log.info("=> Start initialize Telegram Bot...");
 
-		bot = new TelegramBot(config.getToken());
-		GetMeResponse response = checkTelegramBotApiConnection();
-		if (response.isOk()) {
-			User botUser = response.user();
-			Assert.notNull(botUser, "Cannot initialize Telegram Bot, bot user is null.");
+			bot = new TelegramBot(config.getToken());
+			GetMeResponse response = checkTelegramBotApiConnection();
+			if (response.isOk()) {
+				User botUser = response.user();
+				Assert.notNull(botUser, "Cannot initialize Telegram Bot, bot user is null.");
 
-			username = helper.getValidUsername(botUser);
-			firstName = botUser.firstName();
-			id = botUser.id();
+				username = helper.getValidUsername(botUser);
+				firstName = botUser.firstName();
+				id = botUser.id();
 
-			log.info(String.format("==> Hello! My name is '%s'.", firstName));
-			log.info(String.format("==> My id is '%d'.", id));
-			log.info(String.format("==> And my username is '%s'.", username));
+				log.info(String.format("==> Hello! My name is '%s'.", firstName));
+				log.info(String.format("==> My id is '%d'.", id));
+				log.info(String.format("==> And my username is '%s'.", username));
 
-			overrideBotSettingsFromDataBase();
+				overrideBotSettingsFromDataBase();
 
-			log.info("=> End initialize Telegram Bot.");
+				log.info("=> End initialize Telegram Bot.");
+			} else {
+				throw new IllegalStateException(String.format("Cannot initialize Telegram Bot, error: '%d, %s'.",
+					response.errorCode(), response.description()));
+			}
 		} else {
-			throw new IllegalStateException(String.format("Cannot initialize Telegram Bot, error: '%d, %s'.",
-				response.errorCode(), response.description()));
+			log.info("=> Telegram Bot initialize disable.");
 		}
 	}
 

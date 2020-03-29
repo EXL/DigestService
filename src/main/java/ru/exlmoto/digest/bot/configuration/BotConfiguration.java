@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "bot")
 public class BotConfiguration {
+	private boolean initialize;
 	private String token;
 	private String stickerCoffee;
 	private String urlGame;
@@ -25,6 +26,14 @@ public class BotConfiguration {
 	private int digestPagePosts;
 	private int digestPageDeep;
 	private long obsoleteDataDelay;
+
+	public boolean isInitialize() {
+		return initialize;
+	}
+
+	public void setInitialize(boolean initialize) {
+		this.initialize = initialize;
+	}
 
 	public String getToken() {
 		return token;

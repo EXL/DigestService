@@ -3,13 +3,15 @@ package ru.exlmoto.digest.site.model.digest;
 public class Digest {
 	private long id;
 	private String username;
+	private long userId;
 	private long chat;
 	private String date;
 	private String text;
 
-	public Digest(long id, String username, long chat, String date, String text) {
+	public Digest(long id, String username, long userId, long chat, String date, String text) {
 		this.id = id;
 		this.username = username;
+		this.userId = userId;
 		this.chat = chat;
 		this.date = date;
 		this.text = text;
@@ -29,6 +31,14 @@ public class Digest {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public long getChat() {

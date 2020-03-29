@@ -64,7 +64,7 @@ public class DigestHashTag extends MessageAbility {
 					service.saveDigestUser(digestUserEntity);
 
 					service.saveDigest(new BotDigestEntity(chatId,
-						message.date(), messageId, messageText, digestUserEntity));
+						message.date(), (long) messageId, messageText, digestUserEntity));
 				} catch (DataAccessException dae) {
 					log.error("Cannot save digest entity to database.", dae);
 				}

@@ -11,7 +11,7 @@ public class DigestForm {
 	private String digest;
 
 	public boolean checkForm() {
-		return digestId != null && chatId != null && date != null && digest != null && userId != null;
+		return chatId != null && date != null && digest != null && userId != null;
 	}
 
 	public boolean isUpdate() {
@@ -68,5 +68,18 @@ public class DigestForm {
 
 	public void setDigest(String digest) {
 		this.digest = digest;
+	}
+
+	@Override
+	public String toString() {
+		return
+			"DigestForm{update=" + update +
+			", digestId=" + digestId +
+			", chatId=" + chatId +
+			", date=" + date +
+			", messageId=" + messageId +
+			", userId=" + userId +
+			", digest=" + digest +
+			"}";
 	}
 }

@@ -57,13 +57,6 @@ class BotHelperTest {
 	}
 
 	@Test
-	public void testGetCurrentUnixTime() {
-		String value = String.valueOf(helper.getCurrentUnixTime());
-		assertEquals(10, value.length());
-		System.out.println("Unix Time: " + value);
-	}
-
-	@Test
 	public void testValidChatName() {
 		Chat chat = new Chat();
 		setField(chat, "type", Chat.Type.Private);

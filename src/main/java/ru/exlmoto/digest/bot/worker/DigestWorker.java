@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.generator.DigestTgHtmlGenerator;
 import ru.exlmoto.digest.bot.sender.BotSender;
-import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.service.DatabaseService;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.util.List;
 
@@ -23,16 +23,16 @@ public class DigestWorker {
 	private final Logger log = LoggerFactory.getLogger(DigestWorker.class);
 
 	private final BotConfiguration config;
-	private final BotHelper helper;
+	private final FilterHelper filter;
 	private final DatabaseService service;
 	private final DigestTgHtmlGenerator htmlGenerator;
 
 	public DigestWorker(BotConfiguration config,
-	                    BotHelper helper,
+	                    FilterHelper filter,
 	                    DatabaseService service,
 	                    DigestTgHtmlGenerator htmlGenerator) {
 		this.config = config;
-		this.helper = helper;
+		this.filter = filter;
 		this.service = service;
 		this.htmlGenerator = htmlGenerator;
 	}
@@ -42,7 +42,7 @@ public class DigestWorker {
 		log.info("=> Start drop obsolete data from database.");
 
 		try {
-			service.dropObsoleteDigests(helper.getCurrentUnixTime() - config.getObsoleteDataDelay(),
+			service.dropObsoleteDigests(filter.getCurrentUnixTime() - config.getObsoleteDataDelay(),
 				config.getMotofanChatId());
 
 			List<Long> usersId = service.getAllUserIds();

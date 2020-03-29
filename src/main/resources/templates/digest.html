@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<body>
+		<div class="page">
+			<div class="main">
+				<div class="content">
+					<div>
+						<!--/*@thymesVar id="digestForm" type="ru.exlmoto.digest.site.form.DigestForm"*/-->
+						<div th:fragment="digest-form" class="digest-form" th:with="digestId=${digestForm.digestId},update=${digestForm.update},add=#{site.obey.content.action.add},edit=#{site.obey.content.action.edit},addTitle=#{site.obey.digest.add},editTitle=#{site.obey.digest.edit}">
+							<h3 th:text="${update ? editTitle : addTitle}">Add Digest</h3>
+							<form action="#" th:action="@{/obey/edit}" th:object="${digestForm}" th:method="post">
+								<div class="form-block">
+									<label for="digest-field" th:text="#{site.obey.content.digest}">Digest</label>
+									<input id="digest-field" type="text" th:field="*{digest}" size="105" th:placeholder="#{site.obey.content.text}"/>
+									<input class="button" type="submit" value="Add" th:value="${update ? edit : add}"/>
+								</div>
+								<div class="form-block">
+									<label for="user-field" th:text="#{site.obey.content.user}">User</label>
+									<input id="user-field" type="text" th:field="*{userId}" size="20" th:placeholder="#{site.obey.content.user.id}"/>
+									<label for="chat-field" th:text="#{site.obey.content.chat}">Chat</label>
+									<input id="chat-field" type="text" th:field="*{chatId}" size="20" th:placeholder="#{site.obey.content.chat.id}"/>
+									<label for="message-field" th:text="#{site.obey.content.message}">Message</label>
+									<input id="message-field" type="text" th:field="*{messageId}" size="20" th:placeholder="#{site.obey.content.message.id}"/>
+									<label for="date-field" th:text="#{site.obey.content.date}">Date</label>
+									<input id="date-field" type="text" th:field="*{date}" size="20" th:placeholder="#{site.obey.content.timestamp}"/>
+									<input type="hidden" th:field="*{digestId}"/>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -10,20 +10,49 @@
 	</head>
 	<body>
 		<div class="page">
-			<div class="frame">
-				<h3 th:text="#{site.obey.frame.title}">Tables</h3>
-				<p><a href="/obey">Digest</a></p>
-				<p><a href="/obey/user">Digest User</a></p>
-				<p><a href="/obey/setup">Digest Setup</a></p>
-				<p><a href="/obey/sub-digest">Digest Sub Digest</a></p>
-				<p><a href="/obey/sub-motofan">Digest Sub MotoFan</a></p>
-				<p><a href="/obey/sub-greeting">Digest Sub Greeting</a></p>
-				<p><a href="/obey/sub-covid">Digest Sub Covid</a></p>
-				<p><a href="/obey/exchange">Exchange Rate</a></p>
+			<div class="main">
+				<div class="frame">
+					<h3 th:text="#{site.obey.frame.title}">Tables</h3>
+					<p><a href="/obey">Digest</a></p>
+					<p><a href="/obey/user">Digest User</a></p>
+					<p><a href="/obey/setup">Digest Setup</a></p>
+					<p><a href="/obey/sub-digest">Digest Sub Digest</a></p>
+					<p><a href="/obey/sub-motofan">Digest Sub MotoFan</a></p>
+					<p><a href="/obey/sub-greeting">Digest Sub Greeting</a></p>
+					<p><a href="/obey/sub-covid">Digest Sub Covid</a></p>
+					<p><a href="/obey/exchange">Exchange Rate</a></p>
+				</div>
+				<div class="content">
+					<h3 th:text="#{site.obey.content.data}">Data</h3>
+					<div th:if="${digest != null}">
+						<div th:replace="~{pager :: paginator(up)}">Pager</div>
+						<div class="data-table">
+							<table>
+								<tr>
+									<th th:text="#{site.obey.content.id}" nowrap>ID</th>
+									<th th:text="#{site.obey.content.user}" nowrap>User</th>
+									<th th:text="#{site.obey.content.chat}" nowrap>Chat</th>
+									<th th:text="#{site.obey.content.date}" nowrap>Date</th>
+									<th th:text="#{site.obey.content.text}" nowrap>Text</th>
+									<th th:text="#{site.obey.content.action}" nowrap>Action</th>
+								</tr>
+								<tr th:each="post : ${digest}">
+									<td th:text="${post.id}">Id</td>
+									<td class="td-left" th:text="${post.username}">User</td>
+									<td th:text="${post.chat}">Chat</td>
+									<td th:text="${post.date}">Date</td>
+									<td class="td-left" th:text="${post.text}">Text</td>
+									<td>
+										<a th:href="@{/obey/edit/{id}(id=${post.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/delete/{id}(id=${post.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div th:replace="~{pager :: paginator(down)}">Pager</div>
+					</div>
+				</div>
 			</div>
-			<div class="content">
-
-			</div>
+			<div th:replace="~{footer :: copyright}">Footer</div>
 		</div>
 	</body>
 </html>

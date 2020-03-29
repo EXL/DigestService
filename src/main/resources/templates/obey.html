@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:lang="${#locale}">
+	<head>
+		<title th:text="#{site.obey.title}">Control Panel</title>
+		<meta charset="UTF-8"/>
+		<link rel="apple-touch-icon" sizes="180x180" href="../static/icon/apple-touch-icon.png" th:href="@{/icon/apple-touch-icon.png}">
+		<link rel="icon" type="image/png" sizes="32x32" href="../static/icon/favicon-32x32.png" th:href="@{/icon/favicon-32x32.png}">
+		<link rel="icon" type="image/png" sizes="16x16" href="../static/icon/favicon-16x16.png" th:href="@{/icon/favicon-16x16.png}">
+		<link rel="stylesheet" type="text/css" href="../static/style/admin.css" th:href="@{/style/admin.css}"/>
+	</head>
+	<body>
+		<div class="page">
+			<div class="frame">
+				<h3 th:text="#{site.obey.frame.title}">Tables</h3>
+				<p><a href="/obey">Digest</a></p>
+				<p><a href="/obey/user">Digest User</a></p>
+				<p><a href="/obey/setup">Digest Setup</a></p>
+				<p><a href="/obey/sub-digest">Digest Sub Digest</a></p>
+				<p><a href="/obey/sub-motofan">Digest Sub MotoFan</a></p>
+				<p><a href="/obey/sub-greeting">Digest Sub Greeting</a></p>
+				<p><a href="/obey/sub-covid">Digest Sub Covid</a></p>
+				<p><a href="/obey/exchange">Exchange Rate</a></p>
+			</div>
+			<div class="content">
+
+			</div>
+		</div>
+	</body>
+</html>

@@ -13,6 +13,8 @@ public class SiteConfiguration {
 
 	private int pagePosts;
 	private int pageDeep;
+	private int pagePostsAdmin;
+	private int pageDeepAdmin;
 
 	private String motofanChatSlug;
 	private String[] moderators;
@@ -52,6 +54,22 @@ public class SiteConfiguration {
 
 	public void setPageDeep(int pageDeep) {
 		this.pageDeep = pageDeep;
+	}
+
+	public int getPagePostsAdmin() {
+		return pagePostsAdmin;
+	}
+
+	public void setPagePostsAdmin(int pagePostsAdmin) {
+		this.pagePostsAdmin = pagePostsAdmin;
+	}
+
+	public int getPageDeepAdmin() {
+		return pageDeepAdmin;
+	}
+
+	public void setPageDeepAdmin(int pageDeepAdmin) {
+		this.pageDeepAdmin = pageDeepAdmin;
 	}
 
 	public String getMotofanChatSlug() {

@@ -39,7 +39,9 @@ public class BotService implements UpdatesListener {
 
 	@PostConstruct
 	private void setUp() {
-		telegram.getBot().setUpdatesListener(this);
+		if (config.isInitialize()) {
+			telegram.getBot().setUpdatesListener(this);
+		}
 	}
 
 	@Override

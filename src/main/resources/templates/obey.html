@@ -17,7 +17,7 @@
 				</div>
 				<div class="content">
 					<h3 th:text="#{site.obey.content.data}">Data</h3>
-					<div th:if="${digest != null}">
+					<div th:if="${digestList != null && !digestList.isEmpty()}">
 						<div th:replace="~{digest :: digest-form}"></div>
 						<div th:replace="~{pager :: paginator(up)}">Pager</div>
 						<div class="data-table">
@@ -31,7 +31,7 @@
 									<th th:text="#{site.obey.content.text}" nowrap>Text</th>
 									<th th:text="#{site.obey.content.action}" nowrap>Action</th>
 								</tr>
-								<tr th:each="post : ${digest}">
+								<tr th:each="post : ${digestList}">
 									<td th:text="${post.id}">Id</td>
 									<td class="td-left" th:text="${post.username}">User</td>
 									<td th:text="${post.userId}">User ID</td>
@@ -45,6 +45,26 @@
 							</table>
 						</div>
 						<div th:replace="~{pager :: paginator(down)}">Pager</div>
+					</div>
+					<div th:if="${userList != null && !userList.isEmpty()}">
+						<div class="data-table">
+							<table>
+								<tr>
+									<th th:text="#{site.obey.content.id}" nowrap>ID</th>
+									<th th:text="#{site.obey.content.username}" nowrap>Username</th>
+									<th th:text="#{site.obey.content.avatar}" nowrap>Avatar</th>
+									<th th:text="#{site.obey.content.action}" nowrap>Action</th>
+								</tr>
+								<tr th:each="user : ${userList}">
+									<td th:text="${user.id}">Id</td>
+									<td class="td-left" th:text="${user.username}">Username</td>
+									<td class="td-left" th:text="${user.avatar}">Avatar</td>
+									<td>
+										<a th:href="@{/obey/user/(edit=${user.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/user/delete/{id}(id=${user.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
+									</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

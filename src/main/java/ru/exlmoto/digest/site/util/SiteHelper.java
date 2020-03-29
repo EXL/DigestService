@@ -113,7 +113,7 @@ public class SiteHelper {
 		return userList;
 	}
 
-	private void sortUserList(String sort, boolean desc, DatabaseService service, List<BotDigestUserEntity> users) {
+	public void sortUserList(String sort, boolean desc, DatabaseService service, List<BotDigestUserEntity> users) {
 		String sorted = (sort != null) ? sort : "";
 		switch (sorted) {
 			case "id":

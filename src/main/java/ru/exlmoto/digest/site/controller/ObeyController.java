@@ -20,6 +20,7 @@ import ru.exlmoto.digest.site.form.DigestForm;
 import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.digest.Digest;
+import ru.exlmoto.digest.site.model.member.Member;
 import ru.exlmoto.digest.site.util.SiteHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
@@ -35,6 +36,8 @@ public class ObeyController {
 	private final DatabaseService service;
 	private final FilterHelper filter;
 	private final SiteConfiguration config;
+
+	final int LONG_TEXT = 100;
 
 	@Value("${general.date-format}")
 	private String dateFormat;
@@ -79,8 +82,6 @@ public class ObeyController {
 
 		model.addAttribute("digestForm", digestForm);
 
-		final int DIGEST_LENGTH = 100;
-
 		int pagePosts = config.getPagePostsAdmin();
 		int pageDeep = config.getPageDeepAdmin();
 		int current = helper.getCurrentPage(page);
@@ -99,11 +100,11 @@ public class ObeyController {
 				user.getId(),
 				digest.getChat(),
 				filter.getDateFromTimeStamp(dateFormat, digest.getDate()),
-				filter.ellipsisMiddle(digest.getDigest(), DIGEST_LENGTH)
+				filter.ellipsisMiddle(digest.getDigest(), LONG_TEXT)
 			));
 		});
 
-		model.addAttribute("digest", digestList);
+		model.addAttribute("digestList", digestList);
 
 		goToPageForm.setPage(String.valueOf(current));
 		model.addAttribute("goto", goToPageForm);
@@ -173,5 +174,37 @@ public class ObeyController {
 		}
 
 		return "redirect:/obey";
+	}
+
+	@RequestMapping(path = "/obey/user")
+	public String obeyUser(@RequestParam(name = "edit", required = false) String edit,
+	                       Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		List<BotDigestUserEntity> users = service.getAllDigestUsers();
+		helper.sortUserList(null, false, service, users);
+
+		List<Member> userList = new ArrayList<>();
+		users.forEach(user -> userList.add(new Member(
+			user.getId(),
+			filter.ellipsisMiddle(user.getAvatar(), LONG_TEXT),
+			user.getUsername()
+		)));
+
+		model.addAttribute("userList", userList);
+
+		return "obey";
+	}
+
+	@RequestMapping(path = "/obey/user/delete/{id}")
+	public String obeyUserDelete(@PathVariable(name = "id") String id) {
+		Long userId = helper.getLong(id);
+		if (userId != null) {
+			service.deleteDigestUser(userId);
+		} else {
+			log.error(String.format("Cannot delete user where id is null. Please check id: '%s'", id));
+		}
+
+		return "redirect:/obey/user";
 	}
 }

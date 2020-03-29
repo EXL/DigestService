@@ -1,22 +1,115 @@
+/* General */
+body {
+	background: #FFF;
+	font-family: Verdana, Tahoma, Arial, sans-serif;
+	font-size: 11px;
+	margin: auto;
+}
+h3 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
 a:link,
 a:visited,
 a:active {
-	color: #222;
+	color: maroon;
+	text-decoration: none;
 }
 a:hover {
 	color: #FF6600;
 }
-
+input, textarea, select {
+	background: #FFF;
+	border: 1px solid #222;
+	color: #222;
+	font-size: 10px;
+	padding: 2px;
+	margin-right: 3px;
+}
+table {
+	border-collapse: collapse;
+	border: 1px solid black;
+	width: 100%;
+}
+table td, table th {
+	border: 1px solid black;
+	text-align: center;
+	padding: 2px;
+}
 .page {
-	display: flex;
-	min-height: 400px;
 	min-width: 1024px;
 	max-width: 1366px;
 }
+
+/* Content */
+.main {
+	display: flex;
+}
 .frame {
-	width: 15%;
-	padding-right: 5px;
+	width: 10%;
+	margin-right: 5px;
+	border-right: 2px solid black;
+	padding-left: 5px;
 }
 .content {
-	width: 85%;
+	width: 90%;
+	padding-bottom: 5px;
+}
+.data-table {
+	min-height: 700px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 5px;
+}
+.td-left {
+	text-align: left;
+}
+
+/* Pager */
+.controls {
+	display: flex;
+	margin-top: 10px;
+}
+.button {
+	background: #FFF;
+}
+.search-form {
+	display: flex;
+	margin-left: auto;
+}
+.page-link, .page-link-active {
+	color: #495143;
+	background: #FFF;
+	border: 1px solid #222;
+	padding: 1px 3px 1px 3px;
+	font-size: 11px;
+	margin-right: 3px;
+}
+.page-link-active {
+	background: yellow;
+}
+.page-link a:active,
+.page-link a:visited,
+.page-link a:link,
+.page-link-active a:active,
+.page-link-active a:visited,
+.page-link-active a:link {
+	text-decoration: none;
+}
+.page-label, .user-link {
+	color: #495143;
+	font-size: 11px;
+	margin-right: 3px;
+}
+#button-reset {
+	margin-right: 0;
+}
+
+/* Footer */
+.copyright {
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	text-align: center;
+	padding-bottom: 5px;
+	padding-top: 5px;
 }

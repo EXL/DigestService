@@ -6,7 +6,7 @@
 				<div class="content">
 					<div>
 						<!--/*@thymesVar id="digestForm" type="ru.exlmoto.digest.site.form.DigestForm"*/-->
-						<div th:fragment="digest-form" class="digest-form" th:with="digestId=${digestForm.digestId},update=${digestForm.update},add=#{site.obey.content.action.add},edit=#{site.obey.content.action.edit},addTitle=#{site.obey.digest.add},editTitle=#{site.obey.digest.edit}">
+						<div th:fragment="digest-form" class="post-form" th:with="update=${digestForm.update},add=#{site.obey.content.action.add},edit=#{site.obey.content.action.edit},addTitle=#{site.obey.digest.add},editTitle=#{site.obey.digest.edit}">
 							<h3 th:text="${update ? editTitle : addTitle}">Add Digest</h3>
 							<form action="#" th:action="@{/obey/edit}" th:object="${digestForm}" th:method="post">
 								<div class="form-block">

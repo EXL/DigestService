@@ -18,6 +18,7 @@ import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.DigestForm;
 import ru.exlmoto.digest.site.form.GoToPageForm;
+import ru.exlmoto.digest.site.form.UserForm;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.digest.Digest;
 import ru.exlmoto.digest.site.model.member.Member;
@@ -79,7 +80,6 @@ public class ObeyController {
 			digestForm.setUpdate(false);
 			digestForm.setDate(filter.getCurrentUnixTime());
 		}
-
 		model.addAttribute("digestForm", digestForm);
 
 		int pagePosts = config.getPagePostsAdmin();
@@ -135,18 +135,16 @@ public class ObeyController {
 		Long digestId = digestForm.getDigestId();
 		Long userId = digestForm.getUserId();
 
-		boolean valid = digestForm.checkForm();
-		if (!valid) {
+		if (!digestForm.checkForm()) {
 			log.error(String.format("Digest Form isn't valid! Parameters: '%s'.", digestForm.toString()));
 			return "redirect:/obey";
 		}
 
-		Optional<BotDigestUserEntity> userOptional = service.getDigestUser(userId);
-		if (!userOptional.isPresent()) {
-			log.error(String.format("Cannot get BotDigestUserEntity. Please check id: '%d'", userId));
+		BotDigestUserEntity user = service.getDigestUserNullable(userId);
+		if (user == null) {
+			log.error(String.format("BotDigestUserEntity is null. Please check id: '%d'", userId));
 			return "redirect:/obey";
 		}
-		BotDigestUserEntity user = userOptional.get();
 
 		if (digestId != null) {
 			Optional<BotDigestEntity> digestOptional = service.getDigest(digestId);
@@ -178,8 +176,26 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey/user")
 	public String obeyUser(@RequestParam(name = "edit", required = false) String edit,
+	                       UserForm userForm,
 	                       Model model) {
 		model.addAttribute("time", System.currentTimeMillis());
+
+		Long userId = helper.getLong(edit);
+		if (userId != null) {
+			BotDigestUserEntity user = service.getDigestUserNullable(userId);
+			if (user != null) {
+				userForm.setUpdate(true);
+
+				userForm.setId(user.getId());
+				userForm.setAvatar(user.getAvatar());
+				userForm.setUsername(user.getUsername());
+			} else {
+				log.error(String.format("BotDigestUserEntity is null. Please check id: '%s'", edit));
+			}
+		} else {
+			userForm.setUpdate(false);
+		}
+		model.addAttribute("userForm", userForm);
 
 		List<BotDigestUserEntity> users = service.getAllDigestUsers();
 		helper.sortUserList(null, false, service, users);
@@ -206,5 +222,35 @@ public class ObeyController {
 		}
 
 		return "redirect:/obey/user";
+	}
+
+	@PostMapping(path = "/obey/user/edit")
+	public String obeyEdit(UserForm userForm) {
+		if (!userForm.checkForm()) {
+			log.error(String.format("Digest Form isn't valid! Parameters: '%s'.", userForm.toString()));
+			return "redirect:/obey/user";
+		}
+
+		Long userId = userForm.getId();
+		if (userId == null) {
+			log.error("User ID is null!");
+			return "redirect:/obey/user";
+		}
+
+		BotDigestUserEntity user = service.getDigestUserNullable(userId);
+		if (user != null) {
+			saveDigestUser(user, userForm);
+		} else {
+			saveDigestUser(new BotDigestUserEntity(userId), userForm);
+		}
+
+		return "redirect:/obey/user";
+	}
+
+	private void saveDigestUser(BotDigestUserEntity user, UserForm userForm) {
+		user.setUsername(userForm.getUsername());
+		user.setAvatar(userForm.getAvatar());
+
+		service.saveDigestUser(user);
 	}
 }

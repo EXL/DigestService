@@ -43,8 +43,9 @@ public class CovidTgHtmlGenerator {
 			Pair<List<Region>, Map<String, String>> answer = res.answer();
 			return generateTgHtmlReport(answer.getFirst(), answer.getSecond());
 		} else {
-			return String.format(locale.i18n("covid.error"), res.error());
+			log.error(String.format(locale.i18n("covid.error"), res.error()));
 		}
+		return null;
 	}
 
 	private String generateTgHtmlReport(List<Region> cases, Map<String, String> history) {

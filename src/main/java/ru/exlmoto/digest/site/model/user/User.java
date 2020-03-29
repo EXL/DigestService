@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.site.model.user;
 
 public class User {
+	private int index;
 	private String avatar;
 	private String username;
 	private String username_html;
@@ -8,18 +9,28 @@ public class User {
 	private String group;
 	private String messages_html;
 
-	public User(String avatar,
+	public User(int index,
+	            String avatar,
 	            String username,
 	            String username_html,
 	            long user_id,
 	            String group,
 	            String messages_html) {
+		this.index = index;
 		this.avatar = avatar;
 		this.username = username;
 		this.username_html = username_html;
 		this.user_id = user_id;
 		this.group = group;
 		this.messages_html = messages_html;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 
 	public String getAvatar() {

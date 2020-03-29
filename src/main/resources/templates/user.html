@@ -12,6 +12,7 @@
 					</span>
 					<table class="users">
 						<tr>
+							<th class="user-header-5" th:text="#{site.user.number}" nowrap>Index</th>
 							<th class="user-header-15" nowrap>
 								<a th:href="@{__${path}__(desc=${!order})}" th:text="#{site.user.name}" th:title="#{site.user.name.sort}">Name</a>
 							</th>
@@ -24,9 +25,12 @@
 							<th class="user-header-15" nowrap>
 								<a th:href="@{__${path}__(sort='post',desc=${!order})}" th:text="#{site.user.message}" th:title="#{site.user.message.sort}">Message</a>
 							</th>
-							<th class="user-header-40" th:text="#{site.user.avatar}" nowrap>Avatar</th>
+							<th class="user-header-35" th:text="#{site.user.avatar}" nowrap>Avatar</th>
 						</tr>
 						<tr th:each="user : ${users}">
+							<td class="user-cell">
+								<span th:text="${user.index}">Index</span>
+							</td>
 							<td class="user-cell">
 								<span th:utext="${user.username_html}">Username</span>
 							</td>

@@ -257,7 +257,7 @@ input, textarea, select {
 	width: 100%;
 	border-spacing: 1px;
 }
-.user-header-40, .user-header-15 {
+.user-header-35, .user-header-15, .user-header-5 {
 	background: white;
 	border-bottom: 1px solid #FF822F;
 	color: #C00101;
@@ -265,11 +265,14 @@ input, textarea, select {
 	letter-spacing: 1px;
 	padding: 5px;
 }
-.user-header-40 {
+.user-header-35 {
 	width: 40%;
 }
 .user-header-15 {
 	width: 15%;
+}
+.user-header-5 {
+	width: 5%;
 }
 .user-cell, .user-avatar {
 	background: #FFEFD4;

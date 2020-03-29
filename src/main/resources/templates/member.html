@@ -8,7 +8,7 @@
 						<!--/*@thymesVar id="userForm" type="ru.exlmoto.digest.site.form.UserForm"*/-->
 						<div th:fragment="user-form" class="post-form" th:with="update=${userForm.update},add=#{site.obey.content.action.add},edit=#{site.obey.content.action.edit},addTitle=#{site.obey.user.add},editTitle=#{site.obey.user.edit}">
 							<h3 th:text="${update ? editTitle : addTitle}">Add Digest User</h3>
-							<form action="#" th:action="@{/obey/user/edit}" th:object="${userForm}" th:method="post">
+							<form th:action="@{/obey/user/edit}" th:object="${userForm}" th:method="post">
 								<label for="id-field" th:text="#{site.obey.content.id}">ID</label>
 								<input id="id-field" type="text" th:field="*{id}" size="20" th:placeholder="#{site.obey.content.user.id}"/>
 								<label for="username-field" th:text="#{site.obey.content.username}">Username</label>

@@ -2,11 +2,11 @@ package ru.exlmoto.digest.site.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
+import ru.exlmoto.digest.site.form.DigestForm;
 import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.digest.Digest;
@@ -44,8 +45,8 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey")
 	public String obey(@RequestParam(name = "page", required = false) String page,
-	                   @CookieValue(value = "lang", defaultValue = "ru") String tag,
 	                   GoToPageForm goToPageForm,
+	                   DigestForm form,
 	                   PagerModel pager,
 	                   Model model) {
 		model.addAttribute("time", System.currentTimeMillis());
@@ -80,7 +81,9 @@ public class ObeyController {
 		pager.setStartAux(current - ((pageDeep / 2) + 1));
 		pager.setEndAux(current + (pageDeep / 2));
 		model.addAttribute("pager", pager);
-		model.addAttribute("pager", pager);
+
+		model.addAttribute("form", form);
+		model.addAttribute("method", "post");
 
 		return "obey";
 	}

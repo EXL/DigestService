@@ -1,37 +1,48 @@
 package ru.exlmoto.digest.site.form;
 
 public class DigestForm {
-	private long digestId;
-	private long chatId;
-	private long date;
+	private boolean update;
+
+	private Long digestId;
+	private Long chatId;
+	private Long date;
 	private Long messageId;
+	private Long userId;
 	private String digest;
 
-	private long userId;
-	private String avatar;
-	private String username;
+	public boolean checkForm() {
+		return digestId != null && chatId != null && date != null && digest != null && userId != null;
+	}
 
-	public long getDigestId() {
+	public boolean isUpdate() {
+		return update;
+	}
+
+	public void setUpdate(boolean update) {
+		this.update = update;
+	}
+
+	public Long getDigestId() {
 		return digestId;
 	}
 
-	public void setDigestId(long digestId) {
+	public void setDigestId(Long digestId) {
 		this.digestId = digestId;
 	}
 
-	public long getChatId() {
+	public Long getChatId() {
 		return chatId;
 	}
 
-	public void setChatId(long chatId) {
+	public void setChatId(Long chatId) {
 		this.chatId = chatId;
 	}
 
-	public long getDate() {
+	public Long getDate() {
 		return date;
 	}
 
-	public void setDate(long date) {
+	public void setDate(Long date) {
 		this.date = date;
 	}
 
@@ -43,35 +54,19 @@ public class DigestForm {
 		this.messageId = messageId;
 	}
 
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public String getDigest() {
 		return digest;
 	}
 
 	public void setDigest(String digest) {
 		this.digest = digest;
-	}
-
-	public long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 }

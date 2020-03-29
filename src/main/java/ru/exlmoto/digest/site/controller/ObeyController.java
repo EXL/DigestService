@@ -8,10 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ru.exlmoto.digest.entity.BotDigestEntity;
+import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.DigestForm;
@@ -23,6 +25,7 @@ import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ObeyController {
@@ -45,11 +48,35 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey")
 	public String obey(@RequestParam(name = "page", required = false) String page,
+	                   @RequestParam(name = "edit", required = false) String edit,
 	                   GoToPageForm goToPageForm,
-	                   DigestForm form,
+	                   DigestForm digestForm,
 	                   PagerModel pager,
 	                   Model model) {
 		model.addAttribute("time", System.currentTimeMillis());
+
+		Long digestId = helper.getLong(edit);
+		if (digestId != null) {
+			Optional<BotDigestEntity> digestOptional = service.getOneDigest(digestId);
+			if (digestOptional.isPresent()) {
+				BotDigestEntity digest = digestOptional.get();
+				BotDigestUserEntity user = digest.getUser();
+
+				digestForm.setUpdate(true);
+				digestForm.setDigestId(digest.getId());
+				digestForm.setChatId(digest.getChat());
+				digestForm.setDate(digest.getDate());
+				digestForm.setMessageId(digest.getMessageId());
+				digestForm.setDigest(digest.getDigest());
+				digestForm.setUserId(user.getId());
+			} else {
+				log.error(String.format("BotDigestEntity is null. Please check id variable: '%s'", edit));
+			}
+		} else {
+			digestForm.setUpdate(false);
+		}
+
+		model.addAttribute("digestForm", digestForm);
 
 		final int DIGEST_LENGTH = 120;
 
@@ -82,9 +109,6 @@ public class ObeyController {
 		pager.setEndAux(current + (pageDeep / 2));
 		model.addAttribute("pager", pager);
 
-		model.addAttribute("form", form);
-		model.addAttribute("method", "post");
-
 		return "obey";
 	}
 
@@ -96,6 +120,15 @@ public class ObeyController {
 		} else {
 			log.error(String.format("Cannot delete post where id is null. Please check id variable: '%s'", id));
 		}
+
+		return "redirect:/obey";
+	}
+
+	@PostMapping(path = "/obey/edit")
+	public String obeyEdit(DigestForm digestForm) {
+		System.out.println(digestForm.getDigestId());
+		System.out.println(digestForm.getDigest());
+
 		return "redirect:/obey";
 	}
 }

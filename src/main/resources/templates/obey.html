@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:lang="${#locale}">
-	<head th:replace="~{head ::data(#{site.obey.title},true)}"><title>Control Panel</title></head>
+	<head th:replace="~{head :: data(#{site.obey.title},true)}"><title>Control Panel</title></head>
 	<body>
 		<div class="page">
 			<div class="main">
@@ -18,21 +18,7 @@
 				<div class="content">
 					<h3 th:text="#{site.obey.content.data}">Data</h3>
 					<div th:if="${digest != null}">
-						<div class="digest-form">
-							<form action="#" th:action="@{/obey/edit}" th:object="${form}" th:method="${method}">
-								<label for="id-field" th:text="#{site.obey.content.digest}">Digest</label>
-								<input id="id-field" type="text" th:field="*{digestId}" size="5" th:placeholder="#{site.obey.content.id}"/>
-								<input id="chat-field" type="text" th:field="*{chatId}" size="10" th:placeholder="#{site.obey.content.chat}"/>
-								<input id="date-field" type="text" th:field="*{date}" size="10" th:placeholder="#{site.obey.content.date}"/>
-								<input id="message-field" type="text" th:field="*{messageId}" size="10" th:placeholder="#{site.obey.content.message}"/>
-								<input id="digest-field" type="text" th:field="*{digest}" size="10" th:placeholder="#{site.obey.content.digest}"/>
-								<label for="user-id-field" th:text="#{site.obey.content.user}">User</label>
-								<input id="user-id-field" type="text" th:field="*{userId}" size="10" th:placeholder="#{site.obey.content.id}"/>
-								<input id="avatar-field" type="text" th:field="*{avatar}" size="10" th:placeholder="#{site.obey.content.avatar}"/>
-								<input id="username-field" type="text" th:field="*{username}" size="10" th:placeholder="#{site.obey.content.username}"/>
-								<input class="button" type="submit" value="Add/Edit" th:value="#{site.obey.content.action.add}"/>
-							</form>
-						</div>
+						<div th:replace="~{digest :: digest-form}"></div>
 						<div th:replace="~{pager :: paginator(up)}">Pager</div>
 						<div class="data-table">
 							<table>
@@ -51,7 +37,7 @@
 									<td th:text="${post.date}">Date</td>
 									<td class="td-left" th:text="${post.text}">Text</td>
 									<td>
-										<a th:href="@{/obey/{id}(id=${post.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/delete/{id}(id=${post.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
+										<a th:href="@{/obey/(edit=${post.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/delete/{id}(id=${post.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
 									</td>
 								</tr>
 							</table>

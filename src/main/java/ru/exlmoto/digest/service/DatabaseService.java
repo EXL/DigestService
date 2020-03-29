@@ -53,6 +53,10 @@ public class DatabaseService {
 		this.exchangeRateRepository = exchangeRateRepository;
 	}
 
+	public Optional<BotDigestEntity> getOneDigest(long id) {
+		return digestRepository.findById(id);
+	}
+
 	public Page<BotDigestEntity> getAllDigests(int page, int size) {
 		return digestRepository.findAll(PageRequest.of(page - 1, size, Sort.by(Sort.Order.desc("id"))));
 	}

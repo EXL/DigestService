@@ -64,6 +64,16 @@ table td, table th {
 .td-left {
 	text-align: left;
 }
+.digest-form {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-right: 5px;
+	border: 1px solid black;
+	padding: 5px;
+}
+.form-block {
+	padding-bottom: 5px;
+}
 
 /* Pager */
 .controls {

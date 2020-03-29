@@ -59,7 +59,7 @@
 								<tr th:each="user : ${userList}">
 									<td th:text="${user.id}">Id</td>
 									<td class="td-left" th:text="${user.username}">Username</td>
-									<td class="td-left" th:text="${user.avatar}">Avatar</td>
+									<td class="td-left" th:utext="${user.avatar}">Avatar</td>
 									<td>
 										<a th:href="@{/obey/user/(edit=${user.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/user/delete/{id}(id=${user.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
 									</td>

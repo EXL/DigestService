@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.thymeleaf.util.StringUtils;
+
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.service.DatabaseService;
@@ -201,11 +203,14 @@ public class ObeyController {
 		helper.sortUserList(null, false, service, users);
 
 		List<Member> userList = new ArrayList<>();
-		users.forEach(user -> userList.add(new Member(
-			user.getId(),
-			filter.ellipsisMiddle(user.getAvatar(), LONG_TEXT),
-			user.getUsername()
-		)));
+		users.forEach(user -> {
+			String avatarLink = user.getAvatar();
+			userList.add(new Member(
+				user.getId(),
+				activateAvatarLink(avatarLink, filter.ellipsisMiddle(avatarLink, LONG_TEXT)),
+				user.getUsername()
+			));
+		});
 
 		model.addAttribute("userList", userList);
 
@@ -252,5 +257,10 @@ public class ObeyController {
 		user.setAvatar(userForm.getAvatar());
 
 		service.saveDigestUser(user);
+	}
+
+	private String activateAvatarLink(String link, String text) {
+		return StringUtils.isEmptyOrWhitespace(link) ? link :
+			"<a href=\"" + link + "\" target=\"_blank\">" + text + "</a>";
 	}
 }

@@ -13,7 +13,9 @@ import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
@@ -80,6 +82,7 @@ public class SystemReport {
 		joiner.add("");
 		joiner.add(getHostName());
 		joiner.add(getHostIp());
+		joiner.add(getHostUptime());
 		return joiner.toString();
 	}
 
@@ -191,6 +194,24 @@ public class SystemReport {
 		Answer<String> res = rest.getRestResponse(urlHostIp);
 		return String.format("IP: %s", (res.ok()) ? res.answer() :
 			String.format(locale.i18n("bot.error.hostip"), res.error()));
+	}
+
+	private String getHostUptime() {
+		String uptime = "Uptime: ";
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(Runtime.getRuntime()
+				.exec("uptime").getInputStream()));
+			StringBuilder builder = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				builder.append(line);
+				builder.append(System.getProperty("line.separator"));
+			}
+			return uptime + builder.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return uptime + "Unknown";
 	}
 
 	private String bytesToMebibytes(long bytes) {

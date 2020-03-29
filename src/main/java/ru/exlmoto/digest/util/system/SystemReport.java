@@ -198,18 +198,23 @@ public class SystemReport {
 
 	private String getHostUptime() {
 		String uptime = "Uptime: ";
+		String command = "uptime";
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(Runtime.getRuntime()
-				.exec("uptime").getInputStream()));
+			BufferedReader reader =
+				new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(command).getInputStream()));
 			StringBuilder builder = new StringBuilder();
 			String line;
 			while ((line = reader.readLine()) != null) {
 				builder.append(line);
 				builder.append(System.getProperty("line.separator"));
 			}
-			return uptime + builder.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
+			String res = filter.strip(builder.toString());
+			if (res.contains(", load")) {
+				res = res.replace(", load", "\nHost load");
+			}
+			return uptime + res;
+		} catch (IOException ioe) {
+			log.error(String.format("Cannot exec '%s' command.", command), ioe);
 		}
 		return uptime + "Unknown";
 	}

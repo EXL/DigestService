@@ -95,10 +95,12 @@ public class SiteHelper {
 		List<BotDigestUserEntity> users = service.getAllUsersByChat(motofanChatId);
 		sortUserList(sort, desc, service, users);
 
-		users.forEach(user -> {
+		int index = 0;
+		for (BotDigestUserEntity user : users) {
 			String username = user.getUsername();
 			long userId = user.getId();
 			userList.add(new User(
+				++index,
 				filterAvatarLink(user.getAvatar()),
 				username,
 				filterUsername(username, false),
@@ -106,7 +108,8 @@ public class SiteHelper {
 				filterGroup(username, lang),
 				filterDigestCount(userId, service.getDigestCount(user, motofanChatId), lang)
 			));
-		});
+		}
+
 		return userList;
 	}
 

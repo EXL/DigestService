@@ -16,10 +16,7 @@ import org.thymeleaf.util.StringUtils;
 
 import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
-import ru.exlmoto.digest.entity.BotDigestEntity;
-import ru.exlmoto.digest.entity.BotDigestUserEntity;
-import ru.exlmoto.digest.entity.BotSetupEntity;
-import ru.exlmoto.digest.entity.BotSubDigestEntity;
+import ru.exlmoto.digest.entity.*;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.*;
@@ -312,6 +309,7 @@ public class ObeyController {
 	@RequestMapping(path = "/obey/sub-digest")
 	public String obeySubDigest(SubscriberForm subscriberForm, Model model) {
 		model.addAttribute("time", System.currentTimeMillis());
+		model.addAttribute("sub_digest", "true");
 
 		List<Chat> chatList = new ArrayList<>();
 		service.getAllDigestSubs().forEach(sub -> chatList.add(new Chat(sub.getSubscription(), sub.getName())));
@@ -328,7 +326,7 @@ public class ObeyController {
 		if (chatId != null) {
 			service.saveDigestSub(new BotSubDigestEntity(chatId, subscriberForm.getChatName()));
 		} else {
-			log.error("Cannot add digest subscriber, chatId is null.");
+			log.error("Cannot add Digest subscriber, chatId is null.");
 		}
 
 		return "redirect:/obey/sub-digest";
@@ -344,6 +342,45 @@ public class ObeyController {
 		}
 
 		return "redirect:/obey/sub-digest";
+	}
+
+
+	@RequestMapping(path = "/obey/sub-motofan")
+	public String obeySubMotofan(SubscriberForm subscriberForm, Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+		model.addAttribute("sub_motofan", "true");
+
+		List<Chat> chatList = new ArrayList<>();
+		service.getAllMotofanSubs().forEach(sub -> chatList.add(new Chat(sub.getSubscription(), sub.getName())));
+		model.addAttribute("chatList", chatList);
+		subscriberForm.setShowName(true);
+		model.addAttribute("subscriberForm", subscriberForm);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/sub-motofan/edit")
+	public String obeySubMotofanEdit(SubscriberForm subscriberForm) {
+		Long chatId = subscriberForm.getChatId();
+		if (chatId != null) {
+			service.saveMotofanSub(new BotSubMotofanEntity(chatId, subscriberForm.getChatName()));
+		} else {
+			log.error("Cannot add MotoFan subscriber, chatId is null.");
+		}
+
+		return "redirect:/obey/sub-motofan";
+	}
+
+	@RequestMapping(path = "/obey/sub-motofan/delete/{id}")
+	public String obeySubMotofanDelete(@PathVariable(name = "id") String id) {
+		Long chatId = helper.getLong(id);
+		if (chatId != null) {
+			service.deleteMotofanSub(chatId);
+		} else {
+			log.error(String.format("Cannot delete chat where id is null. Please check id: '%s'", id));
+		}
+
+		return "redirect:/obey/sub-motofan";
 	}
 
 	private void saveDigestUser(BotDigestUserEntity user, UserForm userForm) {

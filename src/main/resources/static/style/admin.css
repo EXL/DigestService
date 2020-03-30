@@ -75,6 +75,9 @@ table td, table th {
 .subscriber-table {
 	width: unset;
 }
+.spring {
+	min-height: 700px;
+}
 
 /* Pager */
 .controls {

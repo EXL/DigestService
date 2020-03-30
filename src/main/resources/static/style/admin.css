@@ -53,11 +53,9 @@ table td, table th {
 }
 .content {
 	width: 90%;
-	padding-bottom: 5px;
 }
 .data-table {
 	min-height: 700px;
-	padding-top: 5px;
 	padding-bottom: 5px;
 	padding-right: 5px;
 }
@@ -113,6 +111,9 @@ table td, table th {
 }
 #button-reset {
 	margin-right: 0;
+}
+.paginator {
+	padding-bottom: 5px;
 }
 
 /* Footer */

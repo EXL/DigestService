@@ -19,13 +19,12 @@ import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSetupEntity;
+import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
-import ru.exlmoto.digest.site.form.DigestForm;
-import ru.exlmoto.digest.site.form.GoToPageForm;
-import ru.exlmoto.digest.site.form.SetupForm;
-import ru.exlmoto.digest.site.form.UserForm;
+import ru.exlmoto.digest.site.form.*;
 import ru.exlmoto.digest.site.model.PagerModel;
+import ru.exlmoto.digest.site.model.chat.Chat;
 import ru.exlmoto.digest.site.model.digest.Digest;
 import ru.exlmoto.digest.site.model.member.Member;
 import ru.exlmoto.digest.site.util.SiteHelper;
@@ -252,7 +251,7 @@ public class ObeyController {
 	@PostMapping(path = "/obey/user/edit")
 	public String obeyUserEdit(UserForm userForm) {
 		if (!userForm.checkForm()) {
-			log.error(String.format("Digest Form isn't valid! Parameters: '%s'.", userForm.toString()));
+			log.error(String.format("Digest User Form isn't valid! Parameters: '%s'.", userForm.toString()));
 			return "redirect:/obey/user";
 		}
 
@@ -308,6 +307,43 @@ public class ObeyController {
 		});
 
 		return "redirect:/obey/setup";
+	}
+
+	@RequestMapping(path = "/obey/sub-digest")
+	public String obeySubDigest(SubscriberForm subscriberForm, Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		List<Chat> chatList = new ArrayList<>();
+		service.getAllDigestSubs().forEach(sub -> chatList.add(new Chat(sub.getSubscription(), sub.getName())));
+		model.addAttribute("chatList", chatList);
+		subscriberForm.setShowName(true);
+		model.addAttribute("subscriberForm", subscriberForm);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/sub-digest/edit")
+	public String obeySubDigestEdit(SubscriberForm subscriberForm) {
+		Long chatId = subscriberForm.getChatId();
+		if (chatId != null) {
+			service.saveDigestSub(new BotSubDigestEntity(chatId, subscriberForm.getChatName()));
+		} else {
+			log.error("Cannot add digest subscriber, chatId is null.");
+		}
+
+		return "redirect:/obey/sub-digest";
+	}
+
+	@RequestMapping(path = "/obey/sub-digest/delete/{id}")
+	public String obeySubDigestDelete(@PathVariable(name = "id") String id) {
+		Long chatId = helper.getLong(id);
+		if (chatId != null) {
+			service.deleteDigestSub(chatId);
+		} else {
+			log.error(String.format("Cannot delete chat where id is null. Please check id: '%s'", id));
+		}
+
+		return "redirect:/obey/sub-digest";
 	}
 
 	private void saveDigestUser(BotDigestUserEntity user, UserForm userForm) {

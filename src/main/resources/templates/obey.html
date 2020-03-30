@@ -51,14 +51,14 @@
 						<div class="data-table">
 							<table>
 								<tr>
-									<th th:text="#{site.obey.content.id}" nowrap>ID</th>
 									<th th:text="#{site.obey.content.username}" nowrap>Username</th>
+									<th th:text="#{site.obey.content.user.id}" nowrap>User ID</th>
 									<th th:text="#{site.obey.content.avatar}" nowrap>Avatar</th>
 									<th th:text="#{site.obey.content.action}" nowrap>Action</th>
 								</tr>
 								<tr th:each="user : ${userList}">
-									<td th:text="${user.id}">Id</td>
 									<td class="td-left" th:text="${user.username}">Username</td>
+									<td th:text="${user.id}">Id</td>
 									<td class="td-left" th:utext="${user.avatar}">Avatar</td>
 									<td>
 										<a th:href="@{/obey/user/(edit=${user.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/user/delete/{id}(id=${user.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>

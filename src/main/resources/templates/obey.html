@@ -19,6 +19,9 @@
 					<h3 th:text="#{site.obey.content.data}">Data</h3>
 					<div th:if="${digestList != null && !digestList.isEmpty()}">
 						<div th:replace="~{digest :: digest-form}"></div>
+						<p>
+							<a href="/obey/shredder" th:text="#{site.obey.digest.shredder}">Drop Obsolete Digests</a>
+						</p>
 						<div th:replace="~{pager :: paginator(up)}">Pager</div>
 						<div class="data-table">
 							<table>
@@ -48,6 +51,9 @@
 					</div>
 					<div th:if="${userList != null && !userList.isEmpty()}">
 						<div th:replace="~{member :: user-form}"></div>
+						<p>
+							<a href="/obey/user/avatar" th:text="#{site.obey.user.avatar}">Update User Avatars</a>
+						</p>
 						<div class="data-table">
 							<table>
 								<tr>

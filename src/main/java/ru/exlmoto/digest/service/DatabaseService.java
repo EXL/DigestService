@@ -191,6 +191,10 @@ public class DatabaseService {
 		subDigestRepository.save(digestSub);
 	}
 
+	public List<BotSubGreetingEntity> getAllGreetingSubs() {
+		return subGreetingRepository.findAll();
+	}
+
 	public boolean checkGreeting(long chatId) {
 		return subGreetingRepository.findBotSubGreetingEntityByIgnored(chatId) == null;
 	}

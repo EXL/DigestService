@@ -344,7 +344,6 @@ public class ObeyController {
 		return "redirect:/obey/sub-digest";
 	}
 
-
 	@RequestMapping(path = "/obey/sub-motofan")
 	public String obeySubMotofan(SubscriberForm subscriberForm, Model model) {
 		model.addAttribute("time", System.currentTimeMillis());
@@ -381,6 +380,44 @@ public class ObeyController {
 		}
 
 		return "redirect:/obey/sub-motofan";
+	}
+
+	@RequestMapping(path = "/obey/sub-greeting")
+	public String obeySubGreeting(SubscriberForm subscriberForm, Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+		model.addAttribute("sub_greeting", "true");
+
+		List<Chat> chatList = new ArrayList<>();
+		service.getAllGreetingSubs().forEach(sub -> chatList.add(new Chat(sub.getIgnored(), null)));
+		model.addAttribute("chatList", chatList);
+		subscriberForm.setShowName(false);
+		model.addAttribute("subscriberForm", subscriberForm);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/sub-greeting/edit")
+	public String obeySubGreetingEdit(SubscriberForm subscriberForm) {
+		Long chatId = subscriberForm.getChatId();
+		if (chatId != null) {
+			service.addChatToGreetingIgnores(chatId);
+		} else {
+			log.error("Cannot add chat to greeting ignore, chatId is null.");
+		}
+
+		return "redirect:/obey/sub-greeting";
+	}
+
+	@RequestMapping(path = "/obey/sub-greeting/delete/{id}")
+	public String obeySubGreetingDelete(@PathVariable(name = "id") String id) {
+		Long chatId = helper.getLong(id);
+		if (chatId != null) {
+			service.deleteChatFromGreetingIgnores(chatId);
+		} else {
+			log.error(String.format("Cannot delete chat where id is null. Please check id: '%s'", id));
+		}
+
+		return "redirect:/obey/sub-greeting";
 	}
 
 	private void saveDigestUser(BotDigestUserEntity user, UserForm userForm) {

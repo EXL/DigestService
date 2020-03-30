@@ -6,9 +6,9 @@ Utility script for import old digest database from [DigestBot](https://github.co
 ## Dependencies
 
 ```sh
+$ pip3 install mysql-connector-python
 $ pip3 install psycopg2
 $ pip3 install telethon
-$ pip3 install mysql-connector-python
 ```
 
 ## Usage

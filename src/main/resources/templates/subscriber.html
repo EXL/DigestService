@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<body>
+		<div class="page">
+			<div class="main">
+				<div class="content">
+					<div>
+						<!--/*@thymesVar id="subscriberForm" type="ru.exlmoto.digest.site.form.SubscriberForm"*/-->
+						<!--/*@thymesVar id="chatList" type="java.util.List<ru.exlmoto.digest.site.model.chat.Chat>"*/-->
+						<div th:fragment="subscriber-form(title,chunk)">
+							<div class="post-form">
+								<h3 th:text="${title}">Subscriber Form</h3>
+								<form th:action="@{/obey/{table}/edit(table=${chunk})}" th:object="${subscriberForm}" th:method="post">
+									<label for="chat-field" th:text="#{site.obey.content.chat}">Chat</label>
+									<input id="chat-field" type="text" th:field="*{chatId}" size="20" th:placeholder="#{site.obey.content.chat.id}"/>
+									<label th:if="${subscriberForm.showName}" for="chatname-field" th:text="#{site.obey.content.chat.name}">Chat Name</label>
+									<input th:if="${subscriberForm.showName}" id="chatname-field" type="text" th:field="*{chatName}" size="20" th:placeholder="#{site.obey.content.chat.name}"/>
+									<input class="button" type="submit" value="Add" th:value="#{site.obey.content.action.add}"/>
+								</form>
+							</div>
+							<div class="data-table">
+								<table class="subscriber-table">
+									<tr>
+										<th th:text="#{site.obey.content.chat.id}" nowrap>Chat ID</th>
+										<th th:if="${subscriberForm.showName}" th:text="#{site.obey.content.chat.name}" nowrap>Chat Name</th>
+										<th th:text="#{site.obey.content.action}" nowrap>Action</th>
+									</tr>
+									<tr th:each="chat : ${chatList}">
+										<td th:text="${chat.id}">Chat ID</td>
+										<td th:if="${subscriberForm.showName}" class="td-left" th:text="${chat.name}">Chat Name</td>
+										<td>
+											<a th:href="@{/obey/{table}/delete/{id}(table=${chunk},id=${chat.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

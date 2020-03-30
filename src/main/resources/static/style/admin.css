@@ -72,6 +72,9 @@ table td, table th {
 .form-block {
 	padding-bottom: 5px;
 }
+.subscriber-table {
+	width: unset;
+}
 
 /* Pager */
 .controls {

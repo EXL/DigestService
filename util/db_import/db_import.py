@@ -97,7 +97,8 @@ class Importer:
 		self.curr_db_1 = self.conn_db_1.cursor()
 		self.curr_db_2 = self.conn_db_2.cursor()
 
-	def filter_username(self, username):
+	@staticmethod
+	def filter_username(username):
 		patch = {
 			'a1batross_2': 'a1batross',
 			'mrPazzi': 'drPazzi',

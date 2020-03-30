@@ -73,6 +73,28 @@
 							</table>
 						</div>
 					</div>
+					<div th:if="${setup != null}">
+						<div class="post-form">
+							<h3 th:text="#{site.obey.setup}">Telegram Bot Settings</h3>
+							<form th:action="@{/obey/setup/edit}" th:object="${setup}" th:method="post">
+								<div>
+									<input id="log-checkbox" type="checkbox" th:field="*{log}"/>
+									<label for="log-checkbox">BLogUpdates</label>
+								</div>
+								<div>
+									<input id="greeting-checkbox" type="checkbox" th:field="*{greeting}"/>
+									<label for="greeting-checkbox">BGreetings</label>
+								</div>
+								<div>
+									<input id="silent-checkbox" type="checkbox" th:field="*{silent}"/>
+									<label for="silent-checkbox">BSilent</label>
+								</div>
+								<p>
+									<input class="button" type="submit" value="Save" th:value="#{site.obey.content.action.save}"/>
+								</p>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div th:replace="~{footer :: copyright}">Footer</div>

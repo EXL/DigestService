@@ -18,10 +18,12 @@ import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
+import ru.exlmoto.digest.entity.BotSetupEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.DigestForm;
 import ru.exlmoto.digest.site.form.GoToPageForm;
+import ru.exlmoto.digest.site.form.SetupForm;
 import ru.exlmoto.digest.site.form.UserForm;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.digest.Digest;
@@ -275,6 +277,37 @@ public class ObeyController {
 		avatarWorker.updateUserAvatars();
 
 		return "redirect:/obey/user";
+	}
+
+	@RequestMapping(path = "/obey/setup")
+	public String obeySetup(Model model, SetupForm setup) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		Optional<BotSetupEntity> settingsOptional = service.getSettings();
+		if (settingsOptional.isPresent()) {
+			BotSetupEntity settings = settingsOptional.get();
+			setup.setLog(settings.isLogUpdates());
+			setup.setGreeting(settings.isShowGreetings());
+			setup.setSilent(settings.isSilentMode());
+		} else {
+			log.error("BotSetupEntity is null.");
+		}
+		model.addAttribute("setup", setup);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/setup/edit")
+	public String obeySetupEdit(SetupForm setup) {
+		service.getSettings().ifPresent(settings -> {
+			settings.setLogUpdates(setup.isLog());
+			settings.setShowGreetings(setup.isGreeting());
+			settings.setSilentMode(setup.isSilent());
+
+			service.saveSettings(settings);
+		});
+
+		return "redirect:/obey/setup";
 	}
 
 	private void saveDigestUser(BotDigestUserEntity user, UserForm userForm) {

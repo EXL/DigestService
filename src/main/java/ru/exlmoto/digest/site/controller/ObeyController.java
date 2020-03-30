@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.thymeleaf.util.StringUtils;
 
+import ru.exlmoto.digest.bot.worker.AvatarWorker;
+import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.service.DatabaseService;
@@ -38,6 +40,8 @@ public class ObeyController {
 	private final SiteHelper helper;
 	private final DatabaseService service;
 	private final FilterHelper filter;
+	private final DigestWorker digestWorker;
+	private final AvatarWorker avatarWorker;
 	private final SiteConfiguration config;
 
 	final int LONG_TEXT = 100;
@@ -45,10 +49,17 @@ public class ObeyController {
 	@Value("${general.date-format}")
 	private String dateFormat;
 
-	public ObeyController(SiteHelper helper, DatabaseService service, FilterHelper filter, SiteConfiguration config) {
+	public ObeyController(SiteHelper helper,
+	                      DatabaseService service,
+	                      FilterHelper filter,
+	                      DigestWorker digestWorker,
+	                      AvatarWorker avatarWorker,
+	                      SiteConfiguration config) {
 		this.helper = helper;
 		this.service = service;
 		this.filter = filter;
+		this.digestWorker = digestWorker;
+		this.avatarWorker = avatarWorker;
 		this.config = config;
 	}
 
@@ -176,6 +187,13 @@ public class ObeyController {
 		return "redirect:/obey";
 	}
 
+	@RequestMapping(path = "/obey/shredder")
+	public String obeyShredder() {
+		digestWorker.obsoleteDataShredder();
+
+		return "redirect:/obey";
+	}
+
 	@RequestMapping(path = "/obey/user")
 	public String obeyUser(@RequestParam(name = "edit", required = false) String edit,
 	                       UserForm userForm,
@@ -230,7 +248,7 @@ public class ObeyController {
 	}
 
 	@PostMapping(path = "/obey/user/edit")
-	public String obeyEdit(UserForm userForm) {
+	public String obeyUserEdit(UserForm userForm) {
 		if (!userForm.checkForm()) {
 			log.error(String.format("Digest Form isn't valid! Parameters: '%s'.", userForm.toString()));
 			return "redirect:/obey/user";
@@ -248,6 +266,13 @@ public class ObeyController {
 		} else {
 			saveDigestUser(new BotDigestUserEntity(userId), userForm);
 		}
+
+		return "redirect:/obey/user";
+	}
+
+	@RequestMapping(path = "/obey/user/avatar")
+	public String obeyUserAvatar() {
+		avatarWorker.updateUserAvatars();
 
 		return "redirect:/obey/user";
 	}

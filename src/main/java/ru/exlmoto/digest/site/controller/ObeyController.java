@@ -420,6 +420,44 @@ public class ObeyController {
 		return "redirect:/obey/sub-greeting";
 	}
 
+	@RequestMapping(path = "/obey/sub-covid")
+	public String obeySubCovid(SubscriberForm subscriberForm, Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+		model.addAttribute("sub_covid", "true");
+
+		List<Chat> chatList = new ArrayList<>();
+		service.getAllCovidSubs().forEach(sub -> chatList.add(new Chat(sub.getSubscription(), sub.getName())));
+		model.addAttribute("chatList", chatList);
+		subscriberForm.setShowName(true);
+		model.addAttribute("subscriberForm", subscriberForm);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/sub-covid/edit")
+	public String obeySubCovidEdit(SubscriberForm subscriberForm) {
+		Long chatId = subscriberForm.getChatId();
+		if (chatId != null) {
+			service.saveCovidSub(new BotSubCovidEntity(chatId, subscriberForm.getChatName()));
+		} else {
+			log.error("Cannot add COVID-2019 subscriber, chatId is null.");
+		}
+
+		return "redirect:/obey/sub-covid";
+	}
+
+	@RequestMapping(path = "/obey/sub-covid/delete/{id}")
+	public String obeySubCovidDelete(@PathVariable(name = "id") String id) {
+		Long chatId = helper.getLong(id);
+		if (chatId != null) {
+			service.deleteCovidSub(chatId);
+		} else {
+			log.error(String.format("Cannot delete chat where id is null. Please check id: '%s'", id));
+		}
+
+		return "redirect:/obey/sub-covid";
+	}
+
 	private void saveDigestUser(BotDigestUserEntity user, UserForm userForm) {
 		user.setUsername(userForm.getUsername());
 		user.setAvatar(userForm.getAvatar());

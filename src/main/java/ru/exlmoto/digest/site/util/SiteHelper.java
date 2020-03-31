@@ -19,6 +19,7 @@ import org.thymeleaf.util.ArrayUtils;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.model.post.Post;
@@ -438,5 +439,23 @@ public class SiteHelper {
 			return chopped;
 		}
 		return query;
+	}
+
+	public ExchangeRateEntity copyRateValues(ExchangeRateEntity fromRate, ExchangeRateEntity toRate) {
+		toRate.setDate(fromRate.getDate());
+		toRate.setUsd(fromRate.getUsd());
+		toRate.setEur(fromRate.getEur());
+		toRate.setGbp(fromRate.getGbp());
+		toRate.setCny(fromRate.getCny());
+		toRate.setRub(fromRate.getRub());
+		toRate.setUah(fromRate.getUah());
+		toRate.setByn(fromRate.getByn());
+		toRate.setKzt(fromRate.getKzt());
+		toRate.setGold(fromRate.getGold());
+		toRate.setSilver(fromRate.getSilver());
+		toRate.setPlatinum(fromRate.getPlatinum());
+		toRate.setPalladium(fromRate.getPalladium());
+		toRate.setPrev(fromRate.getPrev());
+		return toRate;
 	}
 }

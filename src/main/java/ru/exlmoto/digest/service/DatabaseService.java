@@ -1,5 +1,8 @@
 package ru.exlmoto.digest.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,6 +30,8 @@ import java.util.Optional;
 
 @Service
 public class DatabaseService {
+	private final Logger log = LoggerFactory.getLogger(DatabaseService.class);
+
 	private final BotDigestRepository digestRepository;
 	private final BotDigestUserRepository digestUserRepository;
 	private final BotSubMotofanRepository subMotofanRepository;
@@ -252,6 +257,10 @@ public class DatabaseService {
 	}
 
 	public void saveExchange(ExchangeRateEntity rate) {
-		exchangeRateRepository.save(rate);
+		if (rate != null) {
+			exchangeRateRepository.save(rate);
+		} else {
+			log.error("Cannot save ExchangeRateEntity, because rate is null.");
+		}
 	}
 }

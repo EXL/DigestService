@@ -14,7 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.thymeleaf.util.StringUtils;
 
-import ru.exlmoto.digest.bot.worker.*;
+import ru.exlmoto.digest.bot.sender.BotSender;
+import ru.exlmoto.digest.bot.worker.AvatarWorker;
+import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
+import ru.exlmoto.digest.bot.worker.MorningWorker;
+import ru.exlmoto.digest.bot.worker.DigestWorker;
+import ru.exlmoto.digest.bot.worker.MotofanWorker;
+import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSetupEntity;
@@ -31,6 +37,7 @@ import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.form.SubscriberForm;
 import ru.exlmoto.digest.site.form.SetupForm;
 import ru.exlmoto.digest.site.form.UserForm;
+import ru.exlmoto.digest.site.form.SendForm;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.chat.Chat;
 import ru.exlmoto.digest.site.model.digest.Digest;
@@ -56,12 +63,16 @@ public class ObeyController {
 	private final MorningWorker morningWorker;
 	private final CovidWorker covidWorker;
 	private final ExchangeService exchange;
+	private final BotSender sender;
 	private final SiteConfiguration config;
 
 	final int LONG_TEXT = 100;
 
 	@Value("${general.date-format}")
 	private String dateFormat;
+
+	@Value("${bot.motofan-chat-id}")
+	private Long motofanChatId;
 
 	public ObeyController(SiteHelper helper,
 	                      DatabaseService service,
@@ -73,7 +84,7 @@ public class ObeyController {
 	                      MorningWorker morningWorker,
 	                      CovidWorker covidWorker,
 	                      ExchangeService exchange,
-	                      SiteConfiguration config) {
+	                      BotSender sender, SiteConfiguration config) {
 		this.helper = helper;
 		this.service = service;
 		this.filter = filter;
@@ -84,6 +95,7 @@ public class ObeyController {
 		this.morningWorker = morningWorker;
 		this.covidWorker = covidWorker;
 		this.exchange = exchange;
+		this.sender = sender;
 		this.config = config;
 	}
 
@@ -544,6 +556,33 @@ public class ObeyController {
 		morningWorker.sendGoodMorning();
 
 		return "redirect:/obey";
+	}
+
+	@RequestMapping(path = "/obey/send")
+	public String obeySend(Model model, SendForm send) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		send.setSendChatId(motofanChatId);
+		send.setStickerChatId(motofanChatId);
+		send.setImageChatId(motofanChatId);
+		model.addAttribute("send", send);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/send/chat")
+	public String obeySendChat(SendForm send) {
+		if (send.checkSend()) {
+			sender.sendSimpleToChat(send.getSendChatId(), send.getSendChatArg());
+		}
+		if (send.checkSticker()) {
+			sender.sendStickerToChat(send.getStickerChatId(), send.getStickerChatArg());
+		}
+		if (send.checkImage()) {
+			sender.sendPhotoToChat(send.getImageChatId(), send.getImageChatArg());
+		}
+
+		return "redirect:/obey/send";
 	}
 
 	private ExchangeRateEntity copyRateValues(ExchangeRateEntity from, ExchangeRateEntity to) {

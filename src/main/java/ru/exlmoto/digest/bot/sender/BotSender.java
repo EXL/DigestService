@@ -70,9 +70,13 @@ public class BotSender {
 		sendMessage(chatId, null, text, HTML, null);
 	}
 
-	public void sendSimpleToChat(long chatId, String text, long origChatId, int origReplyId) {
+	public void sendSimpleToChat(long chatId, String text) {
+		sendSimpleToChat(chatId, text, null, null);
+	}
+
+	public void sendSimpleToChat(long chatId, String text, Long origChatId, Integer origReplyId) {
 		Answer<String> res = executeRequestLog(new SendMessage(chatId, shrinkText(text)));
-		if (!res.ok()) {
+		if (!res.ok() && origChatId != null && origReplyId != null) {
 			sendError(origChatId, origReplyId,
 				shrinkText(String.format(locale.i18n("bot.error.send.message"), text, chatId, res.error())));
 		}
@@ -114,9 +118,13 @@ public class BotSender {
 		executeRequestLog(new SendSticker(chatId, stickerId).replyToMessageId(replyId));
 	}
 
-	public void sendStickerToChat(long chatId, String stickerId, long origChatId, int origReplyId) {
+	public void sendStickerToChat(long chatId, String stickerId) {
+		sendStickerToChat(chatId, stickerId, null, null);
+	}
+
+	public void sendStickerToChat(long chatId, String stickerId, Long origChatId, Integer origReplyId) {
 		Answer<String> res = executeRequestLog(new SendSticker(chatId, stickerId));
-		if (!res.ok()) {
+		if (!res.ok() && origChatId != null && origReplyId != null) {
 			sendError(origChatId, origReplyId,
 				shrinkText(String.format(locale.i18n("bot.error.send.sticker"), stickerId, chatId, res.error())));
 		}
@@ -126,11 +134,16 @@ public class BotSender {
 		sendPhoto(chatId, replyId, uri, title, chatId, replyId);
 	}
 
+	public void sendPhotoToChat(long chatId, String uri) {
+		sendPhoto(chatId, null, uri, null, null, null);
+	}
+
 	public void sendPhotoToChat(long chatId, String uri, long origChatId, int origReplyId) {
 		sendPhoto(chatId, null, uri, null, origChatId, origReplyId);
 	}
 
-	private void sendPhoto(long chatId, Integer replyId, String uri, String title, long origChatId, int origReplyId) {
+	private void sendPhoto(long chatId, Integer replyId, String uri, String title,
+	                       Long origChatId, Integer origReplyId) {
 		SendPhoto sendPhoto;
 		File photo = null;
 		if (downloadFile) {
@@ -146,7 +159,7 @@ public class BotSender {
 			sendPhoto.caption(title);
 		}
 		Answer<String> res = executeRequestLog(sendPhoto);
-		if (!res.ok()) {
+		if (!res.ok() && origChatId != null && origReplyId != null) {
 			sendError(origChatId, origReplyId,
 				shrinkText(String.format(locale.i18n("bot.error.send.image"), uri, chatId, res.error())));
 		}

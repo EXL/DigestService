@@ -15,6 +15,7 @@
 					<p><a href="/obey/sub-covid">Digest Sub Covid</a></p>
 					<p><a href="/obey/exchange">Exchange Rate</a></p>
 					<h3 th:text="#{site.obey.frame.links}">Links</h3>
+					<p><a href="/obey/send" th:text="#{site.obey.send.title}">Send to chat</a></p>
 				</div>
 				<div class="content">
 					<h3 th:text="#{site.obey.content.data}">Data</h3>
@@ -112,6 +113,9 @@
 					</div>
 					<div th:if="${exchange != null}">
 						<div th:replace="~{exchange :: exchange-form}"></div>
+					</div>
+					<div th:if="${send != null}">
+						<div th:replace="~{send :: send-form}"></div>
 					</div>
 				</div>
 			</div>

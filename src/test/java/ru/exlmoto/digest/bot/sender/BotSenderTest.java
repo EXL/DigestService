@@ -53,6 +53,11 @@ class BotSenderTest {
 		sender.editHtml(0L, 0, "<b>Fake text</b>", inlineKeyboardMarkup);
 		sender.editHtml(0L, 0, "<b>Fake text</b>", null);
 		System.out.println("===");
+
+		sender.sendSimpleToChat(0L, "Fake text");
+		sender.sendStickerToChat(0L, "Fake stickerId");
+		sender.sendPhotoToChat(0L, "Fake uri");
+		System.out.println("===");
 	}
 
 	@Test

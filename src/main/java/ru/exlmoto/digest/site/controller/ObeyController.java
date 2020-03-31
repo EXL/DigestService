@@ -16,6 +16,7 @@ import org.thymeleaf.util.StringUtils;
 
 import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
+import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSetupEntity;
@@ -52,6 +53,7 @@ public class ObeyController {
 	private final FilterHelper filter;
 	private final DigestWorker digestWorker;
 	private final AvatarWorker avatarWorker;
+	private final MotofanWorker motofanWorker;
 	private final ExchangeService exchange;
 	private final SiteConfiguration config;
 
@@ -65,6 +67,7 @@ public class ObeyController {
 	                      FilterHelper filter,
 	                      DigestWorker digestWorker,
 	                      AvatarWorker avatarWorker,
+	                      MotofanWorker motofanWorker,
 	                      ExchangeService exchange,
 	                      SiteConfiguration config) {
 		this.helper = helper;
@@ -72,6 +75,7 @@ public class ObeyController {
 		this.filter = filter;
 		this.digestWorker = digestWorker;
 		this.avatarWorker = avatarWorker;
+		this.motofanWorker = motofanWorker;
 		this.exchange = exchange;
 		this.config = config;
 	}
@@ -505,6 +509,12 @@ public class ObeyController {
 		return "redirect:/obey/exchange";
 	}
 
+	@RequestMapping(path = "/obey/motofan/update")
+	public String obeyMotofanUpdate() {
+		motofanWorker.workOnMotofanPosts();
+
+		return "redirect:/obey";
+	}
 	private ExchangeRateEntity copyRateValues(ExchangeRateEntity from, ExchangeRateEntity to) {
 		to.setDate(from.getDate());
 		to.setUsd(from.getUsd());

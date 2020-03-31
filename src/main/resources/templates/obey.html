@@ -15,7 +15,6 @@
 					<p><a href="/obey/sub-covid">Digest Sub Covid</a></p>
 					<p><a href="/obey/exchange">Exchange Rate</a></p>
 					<h3 th:text="#{site.obey.frame.links}">Links</h3>
-					<p><a href="/obey/motofan/update" th:text="#{site.obey.frame.link.motofan}">MotoFan.Ru Posts</a></p>
 				</div>
 				<div class="content">
 					<h3 th:text="#{site.obey.content.data}">Data</h3>
@@ -96,6 +95,7 @@
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.digest},'sub-digest')}"></div>
 					</div>
 					<div th:if="${sub_motofan != null}">
+						<p><a href="/obey/motofan/update" th:text="#{site.obey.motofan.send}">Send New MotoFan.Ru Posts</a></p>
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.motofan},'sub-motofan')}"></div>
 					</div>
 					<div th:if="${sub_greeting != null}">

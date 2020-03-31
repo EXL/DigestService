@@ -19,7 +19,12 @@
 				<div class="content">
 					<h3 th:text="#{site.obey.content.data}">Data</h3>
 					<div th:if="${digestList != null && !digestList.isEmpty()}">
-						<p><a href="/obey/shredder" th:text="#{site.obey.digest.shredder}">Drop Obsolete Digests</a></p>
+						<p>
+							<a href="/obey/callback" th:text="#{site.obey.digest.callback}">Clear Callback Queries Map</a>
+							(<span th:text="#{site.obey.digest.callback.size}">Size:</span> <span th:text="${callbackQueriesMapSize}">0</span>) |
+							<a href="/obey/morning" th:text="#{site.obey.digest.morning}">Send Good Morning phrase</a> |
+							<a href="/obey/shredder" th:text="#{site.obey.digest.shredder}">Drop Obsolete Digests</a>
+						</p>
 						<div th:replace="~{digest :: digest-form}"></div>
 						<div th:replace="~{pager :: paginator(up)}">Pager</div>
 						<div class="data-table">

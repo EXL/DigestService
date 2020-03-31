@@ -66,4 +66,8 @@ public class CallbackQueriesWorker {
 	public int getDelay() {
 		return delay;
 	}
+
+	public int getCallbackQueriesMapSize() {
+		return callbackQueriesMap.size();
+	}
 }

@@ -4,6 +4,8 @@ import org.jsoup.Jsoup;
 
 import org.springframework.stereotype.Component;
 
+import org.thymeleaf.util.StringUtils;
+
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import javax.annotation.PostConstruct;
@@ -113,5 +115,17 @@ public class FilterHelper {
 
 	public String ellipsisMiddle(String text, int length) {
 		return ellipsisString(text, length, ellipsis, 0, false);
+	}
+
+	public String activateLink(String link, String text) {
+		return activateLink(link, text, null);
+	}
+
+	public String activateLink(String link, String text, String title) {
+		return StringUtils.isEmptyOrWhitespace(link) ?
+			link :
+			(title != null) ?
+				"<a href=\"" + link + "\" target=\"_blank\" title=\"" + title + "\">" + text + "</a>" :
+				"<a href=\"" + link + "\" target=\"_blank\">" + text + "</a>";
 	}
 }

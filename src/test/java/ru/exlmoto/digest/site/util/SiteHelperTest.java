@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -340,5 +342,58 @@ class SiteHelperTest {
 
 		System.out.println(helper.chopQuery("longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglong" +
 			"longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonga"));
+	}
+
+	@Test
+	public void testCopyRateValues() {
+		ExchangeRateEntity first = new ExchangeRateEntity();
+		ExchangeRateEntity second = new ExchangeRateEntity();
+
+		String date = "08/01/2020";
+		String usd = "78";
+		String eur = "79.5600";
+		String gbp = "13456.45566";
+		String cny = "423.0";
+		String rub = "333.0";
+		String uah = "1866.45565";
+		String byn = "184.0";
+		String kzt = "1.1334231";
+		String gold = "14124.9";
+		String silver = "13213.1";
+		String platinum = "1234.1";
+		String palladium = "55534.1";
+		String prev = "88.100000000000000001";
+
+		first.setDate(date);
+		first.setUsd(new BigDecimal(usd));
+		first.setEur(new BigDecimal(eur));
+		first.setGbp(new BigDecimal(gbp));
+		first.setCny(new BigDecimal(cny));
+		first.setRub(new BigDecimal(rub));
+		first.setUah(new BigDecimal(uah));
+		first.setByn(new BigDecimal(byn));
+		first.setKzt(new BigDecimal(kzt));
+		first.setGold(new BigDecimal(gold));
+		first.setSilver(new BigDecimal(silver));
+		first.setPlatinum(new BigDecimal(platinum));
+		first.setPalladium(new BigDecimal(palladium));
+		first.setPrev(new BigDecimal(prev));
+
+		helper.copyRateValues(first, second);
+
+		assertEquals(date, second.getDate());
+		assertEquals(usd, second.getUsd().toPlainString());
+		assertEquals(eur, second.getEur().toPlainString());
+		assertEquals(gbp, second.getGbp().toPlainString());
+		assertEquals(cny, second.getCny().toPlainString());
+		assertEquals(rub, second.getRub().toPlainString());
+		assertEquals(uah, second.getUah().toPlainString());
+		assertEquals(byn, second.getByn().toPlainString());
+		assertEquals(kzt, second.getKzt().toPlainString());
+		assertEquals(gold, second.getGold().toPlainString());
+		assertEquals(silver, second.getSilver().toPlainString());
+		assertEquals(platinum, second.getPlatinum().toPlainString());
+		assertEquals(palladium, second.getPalladium().toPlainString());
+		assertEquals(prev, second.getPrev().toPlainString());
 	}
 }

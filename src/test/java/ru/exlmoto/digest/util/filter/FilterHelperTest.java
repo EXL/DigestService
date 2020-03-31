@@ -5,8 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 class FilterHelperTest {
@@ -179,5 +182,23 @@ class FilterHelperTest {
 			filter.ellipsisString("Laser Attack", -1, "...", 1, true));
 		assertEquals("Laser Attack",
 			filter.ellipsisString("Laser Attack", -1, "...", -1, true));
+	}
+
+	@Test
+	public void testActivateLink() {
+		assertNull(filter.activateLink(null, null));
+		assertNull(filter.activateLink(null, ""));
+		assertNull(filter.activateLink(null, " "));
+
+		assertThat(filter.activateLink("", null)).isBlank();
+		assertThat(filter.activateLink(" ", null)).isBlank();
+		assertThat(filter.activateLink("", "")).isBlank();
+		assertThat(filter.activateLink("", " ")).isBlank();
+
+		String linkWoTitle = "<a href=\"https://exlmoto.ru\" target=\"_blank\">www.exlmoto.ru</a>";
+		String linkWTitle = "<a href=\"https://exlmoto.ru\" target=\"_blank\" title=\"exlmoto\">www.exlmoto.ru</a>";
+
+		assertEquals(linkWoTitle, filter.activateLink("https://exlmoto.ru", "www.exlmoto.ru"));
+		assertEquals(linkWTitle, filter.activateLink("https://exlmoto.ru", "www.exlmoto.ru", "exlmoto"));
 	}
 }

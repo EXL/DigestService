@@ -16,10 +16,22 @@ import org.thymeleaf.util.StringUtils;
 
 import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
-import ru.exlmoto.digest.entity.*;
+import ru.exlmoto.digest.entity.BotDigestEntity;
+import ru.exlmoto.digest.entity.BotDigestUserEntity;
+import ru.exlmoto.digest.entity.BotSetupEntity;
+import ru.exlmoto.digest.entity.BotSubDigestEntity;
+import ru.exlmoto.digest.entity.BotSubMotofanEntity;
+import ru.exlmoto.digest.entity.BotSubCovidEntity;
+import ru.exlmoto.digest.entity.ExchangeRateEntity;
+import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
-import ru.exlmoto.digest.site.form.*;
+import ru.exlmoto.digest.site.form.ExchangeForm;
+import ru.exlmoto.digest.site.form.DigestForm;
+import ru.exlmoto.digest.site.form.GoToPageForm;
+import ru.exlmoto.digest.site.form.SubscriberForm;
+import ru.exlmoto.digest.site.form.SetupForm;
+import ru.exlmoto.digest.site.form.UserForm;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.chat.Chat;
 import ru.exlmoto.digest.site.model.digest.Digest;
@@ -40,6 +52,7 @@ public class ObeyController {
 	private final FilterHelper filter;
 	private final DigestWorker digestWorker;
 	private final AvatarWorker avatarWorker;
+	private final ExchangeService exchange;
 	private final SiteConfiguration config;
 
 	final int LONG_TEXT = 100;
@@ -52,12 +65,14 @@ public class ObeyController {
 	                      FilterHelper filter,
 	                      DigestWorker digestWorker,
 	                      AvatarWorker avatarWorker,
+	                      ExchangeService exchange,
 	                      SiteConfiguration config) {
 		this.helper = helper;
 		this.service = service;
 		this.filter = filter;
 		this.digestWorker = digestWorker;
 		this.avatarWorker = avatarWorker;
+		this.exchange = exchange;
 		this.config = config;
 	}
 
@@ -473,12 +488,19 @@ public class ObeyController {
 	}
 
 	@PostMapping(path = "/obey/exchange/edit")
-	public String obeyExchange(ExchangeForm exchange) {
+	public String obeyExchangeEdit(ExchangeForm exchange) {
 		service.getBankRu().ifPresent(bankRu -> service.saveExchange(copyRateValues(exchange.getRub(), bankRu)));
 		service.getBankUa().ifPresent(bankUa -> service.saveExchange(copyRateValues(exchange.getUah(), bankUa)));
 		service.getBankBy().ifPresent(bankBy -> service.saveExchange(copyRateValues(exchange.getByn(), bankBy)));
 		service.getBankKz().ifPresent(bankKz -> service.saveExchange(copyRateValues(exchange.getKzt(), bankKz)));
 		service.getMetalRu().ifPresent(metalRu -> service.saveExchange(copyRateValues(exchange.getMetal(), metalRu)));
+
+		return "redirect:/obey/exchange";
+	}
+
+	@RequestMapping(path = "/obey/exchange/update")
+	public String obeyExchangeUpdate() {
+		exchange.updateAllRates();
 
 		return "redirect:/obey/exchange";
 	}

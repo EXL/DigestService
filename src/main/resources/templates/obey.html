@@ -20,10 +20,8 @@
 				<div class="content">
 					<h3 th:text="#{site.obey.content.data}">Data</h3>
 					<div th:if="${digestList != null && !digestList.isEmpty()}">
+						<p><a href="/obey/shredder" th:text="#{site.obey.digest.shredder}">Drop Obsolete Digests</a></p>
 						<div th:replace="~{digest :: digest-form}"></div>
-						<p>
-							<a href="/obey/shredder" th:text="#{site.obey.digest.shredder}">Drop Obsolete Digests</a>
-						</p>
 						<div th:replace="~{pager :: paginator(up)}">Pager</div>
 						<div class="data-table">
 							<table>
@@ -52,10 +50,8 @@
 						<div th:replace="~{pager :: paginator(down)}">Pager</div>
 					</div>
 					<div th:if="${userList != null && !userList.isEmpty()}">
+						<p><a href="/obey/user/avatar" th:text="#{site.obey.user.avatar}">Update User Avatars</a></p>
 						<div th:replace="~{member :: user-form}"></div>
-						<p>
-							<a href="/obey/user/avatar" th:text="#{site.obey.user.avatar}">Update User Avatars</a>
-						</p>
 						<div class="data-table">
 							<table>
 								<tr>
@@ -91,9 +87,7 @@
 									<input id="silent-checkbox" type="checkbox" th:field="*{silent}"/>
 									<label for="silent-checkbox">BSilent</label>
 								</div>
-								<p>
-									<input class="button" type="submit" value="Save" th:value="#{site.obey.content.action.save}"/>
-								</p>
+								<p><input class="button" type="submit" value="Save" th:value="#{site.obey.content.action.save}"/></p>
 							</form>
 						</div>
 						<div class="spring"></div>
@@ -108,6 +102,7 @@
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.greeting},'sub-greeting')}"></div>
 					</div>
 					<div th:if="${sub_covid != null}">
+						<p><a href="/obey/covid/send" th:text="#{site.obey.covid.send}">Send COVID-2019 Report</a></p>
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.covid},'sub-covid')}"></div>
 					</div>
 					<div th:if="${exchange != null}">

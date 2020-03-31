@@ -5,10 +5,11 @@
 			<div class="main">
 				<div class="content">
 					<div>
+						<!--/*@thymesVar id="exchange" type="ru.exlmoto.digest.site.form.ExchangeForm"*/-->
 						<div th:fragment="exchange-form">
+							<p><a href="/obey/exchange/update" th:text="#{site.obey.exchange.update}">Update Exchange Rates</a></p>
 							<div class="post-form">
 								<h3 th:text="#{site.obey.exchange}">Exchange Rates</h3>
-								<!--/*@thymesVar id="exchange" type="ru.exlmoto.digest.site.form.ExchangeForm"*/-->
 								<form th:action="@{/obey/exchange/edit}" th:object="${exchange}" th:method="post">
 									<table class="small-table">
 										<tr>
@@ -114,14 +115,9 @@
 											<td><input type="text" th:field="*{metal.prev}" size="5"/></td>
 										</tr>
 									</table>
-									<p>
-										<input class="button" type="submit" value="Save" th:value="#{site.obey.content.action.save}"/>
-									</p>
+									<p><input class="button" type="submit" value="Save" th:value="#{site.obey.content.action.save}"/></p>
 								</form>
 							</div>
-							<p>
-								<a href="/obey/exchange/update" th:text="#{site.obey.exchange.update}">Update Exchange Rates</a>
-							</p>
 							<div class="spring"></div>
 						</div>
 					</div>

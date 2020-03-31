@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
 import ru.exlmoto.digest.bot.worker.AvatarWorker;
+import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
@@ -54,6 +55,7 @@ public class ObeyController {
 	private final DigestWorker digestWorker;
 	private final AvatarWorker avatarWorker;
 	private final MotofanWorker motofanWorker;
+	private final CovidWorker covidWorker;
 	private final ExchangeService exchange;
 	private final SiteConfiguration config;
 
@@ -68,6 +70,7 @@ public class ObeyController {
 	                      DigestWorker digestWorker,
 	                      AvatarWorker avatarWorker,
 	                      MotofanWorker motofanWorker,
+	                      CovidWorker covidWorker,
 	                      ExchangeService exchange,
 	                      SiteConfiguration config) {
 		this.helper = helper;
@@ -76,6 +79,7 @@ public class ObeyController {
 		this.digestWorker = digestWorker;
 		this.avatarWorker = avatarWorker;
 		this.motofanWorker = motofanWorker;
+		this.covidWorker = covidWorker;
 		this.exchange = exchange;
 		this.config = config;
 	}
@@ -515,6 +519,14 @@ public class ObeyController {
 
 		return "redirect:/obey";
 	}
+
+	@RequestMapping(path = "/obey/covid/send")
+	public String obeyCovidSend() {
+		covidWorker.workOnCovidReport();
+
+		return "redirect:/obey";
+	}
+
 	private ExchangeRateEntity copyRateValues(ExchangeRateEntity from, ExchangeRateEntity to) {
 		to.setDate(from.getDate());
 		to.setUsd(from.getUsd());

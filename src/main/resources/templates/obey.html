@@ -97,16 +97,19 @@
 						<div class="spring"></div>
 					</div>
 					<div th:if="${sub_digest != null}">
-						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe},'sub-digest')}"></div>
+						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.digest},'sub-digest')}"></div>
 					</div>
 					<div th:if="${sub_motofan != null}">
-						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe},'sub-motofan')}"></div>
+						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.motofan},'sub-motofan')}"></div>
 					</div>
 					<div th:if="${sub_greeting != null}">
-						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe},'sub-greeting')}"></div>
+						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.greeting},'sub-greeting')}"></div>
 					</div>
 					<div th:if="${sub_covid != null}">
-						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe},'sub-covid')}"></div>
+						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.covid},'sub-covid')}"></div>
+					</div>
+					<div th:if="${exchange != null}">
+						<div th:replace="~{exchange :: exchange-form}"></div>
 					</div>
 				</div>
 			</div>

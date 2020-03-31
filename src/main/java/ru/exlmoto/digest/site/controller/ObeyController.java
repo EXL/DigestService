@@ -458,6 +458,49 @@ public class ObeyController {
 		return "redirect:/obey/sub-covid";
 	}
 
+	@RequestMapping(path = "/obey/exchange")
+	public String obeyExchange(Model model, ExchangeForm exchange) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		service.getBankRu().ifPresent(exchange::setRub);
+		service.getBankUa().ifPresent(exchange::setUah);
+		service.getBankBy().ifPresent(exchange::setByn);
+		service.getBankKz().ifPresent(exchange::setKzt);
+		service.getMetalRu().ifPresent(exchange::setMetal);
+		model.addAttribute("exchange", exchange);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/exchange/edit")
+	public String obeyExchange(ExchangeForm exchange) {
+		service.getBankRu().ifPresent(bankRu -> service.saveExchange(copyRateValues(exchange.getRub(), bankRu)));
+		service.getBankUa().ifPresent(bankUa -> service.saveExchange(copyRateValues(exchange.getUah(), bankUa)));
+		service.getBankBy().ifPresent(bankBy -> service.saveExchange(copyRateValues(exchange.getByn(), bankBy)));
+		service.getBankKz().ifPresent(bankKz -> service.saveExchange(copyRateValues(exchange.getKzt(), bankKz)));
+		service.getMetalRu().ifPresent(metalRu -> service.saveExchange(copyRateValues(exchange.getMetal(), metalRu)));
+
+		return "redirect:/obey/exchange";
+	}
+
+	private ExchangeRateEntity copyRateValues(ExchangeRateEntity from, ExchangeRateEntity to) {
+		to.setDate(from.getDate());
+		to.setUsd(from.getUsd());
+		to.setEur(from.getEur());
+		to.setGbp(from.getGbp());
+		to.setCny(from.getCny());
+		to.setRub(from.getRub());
+		to.setUah(from.getUah());
+		to.setByn(from.getByn());
+		to.setKzt(from.getKzt());
+		to.setGold(from.getGold());
+		to.setSilver(from.getSilver());
+		to.setPlatinum(from.getPlatinum());
+		to.setPalladium(from.getPalladium());
+		to.setPrev(from.getPrev());
+		return to;
+	}
+
 	private void saveDigestUser(BotDigestUserEntity user, UserForm userForm) {
 		user.setUsername(userForm.getUsername());
 		user.setAvatar(userForm.getAvatar());

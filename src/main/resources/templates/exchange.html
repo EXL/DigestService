@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<body>
+		<div class="page">
+			<div class="main">
+				<div class="content">
+					<div>
+						<div th:fragment="exchange-form">
+							<div class="post-form">
+								<h3 th:text="#{site.obey.exchange}">Exchange Rates</h3>
+								<!--/*@thymesVar id="exchange" type="ru.exlmoto.digest.site.form.ExchangeForm"*/-->
+								<form th:action="@{/obey/exchange/edit}" th:object="${exchange}" th:method="post">
+									<table class="small-table">
+										<tr>
+											<th>Name</th>
+											<th>Date</th>
+											<th>Usd</th>
+											<th>Eur</th>
+											<th>Gbp</th>
+											<th>Cny</th>
+											<th>Rub</th>
+											<th>Uah</th>
+											<th>Byn</th>
+											<th>Kzt</th>
+											<th>Gold</th>
+											<th>Silver</th>
+											<th>Platinum</th>
+											<th>Palladium</th>
+											<th>Prev</th>
+										</tr>
+										<tr>
+											<td>RUB</td>
+											<td><input type="text" th:field="*{rub.date}" size="10"/></td>
+											<td><input type="text" th:field="*{rub.usd}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.eur}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.gbp}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.cny}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.rub}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.uah}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.byn}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.kzt}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.gold}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.silver}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.platinum}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.palladium}" size="5"/></td>
+											<td><input type="text" th:field="*{rub.prev}" size="5"/></td>
+										</tr>
+										<tr>
+											<td>UAH</td>
+											<td><input type="text" th:field="*{uah.date}" size="10"/></td>
+											<td><input type="text" th:field="*{uah.usd}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.eur}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.gbp}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.cny}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.rub}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.uah}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.byn}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.kzt}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.gold}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.silver}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.platinum}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.palladium}" size="5"/></td>
+											<td><input type="text" th:field="*{uah.prev}" size="5"/></td>
+										</tr>
+										<tr>
+											<td>BYN</td>
+											<td><input type="text" th:field="*{byn.date}" size="10"/></td>
+											<td><input type="text" th:field="*{byn.usd}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.eur}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.gbp}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.cny}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.rub}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.uah}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.byn}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.kzt}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.gold}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.silver}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.platinum}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.palladium}" size="5"/></td>
+											<td><input type="text" th:field="*{byn.prev}" size="5"/></td>
+										</tr>
+										<tr>
+											<td>KZT</td>
+											<td><input type="text" th:field="*{kzt.date}" size="10"/></td>
+											<td><input type="text" th:field="*{kzt.usd}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.eur}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.gbp}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.cny}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.rub}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.uah}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.byn}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.kzt}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.gold}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.silver}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.platinum}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.palladium}" size="5"/></td>
+											<td><input type="text" th:field="*{kzt.prev}" size="5"/></td>
+										</tr>
+										<tr>
+											<td>Metal</td>
+											<td><input type="text" th:field="*{metal.date}" size="10"/></td>
+											<td><input type="text" th:field="*{metal.usd}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.eur}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.gbp}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.cny}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.rub}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.uah}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.byn}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.kzt}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.gold}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.silver}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.platinum}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.palladium}" size="5"/></td>
+											<td><input type="text" th:field="*{metal.prev}" size="5"/></td>
+										</tr>
+									</table>
+									<p>
+										<input class="button" type="submit" value="Save" th:value="#{site.obey.content.action.save}"/>
+									</p>
+								</form>
+							</div>
+							<div class="spring"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

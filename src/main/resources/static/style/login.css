@@ -1,0 +1,30 @@
+body {
+	max-width: max-content;
+	margin: auto;
+	font-size: 1.2em;
+}
+h1 {
+	text-align: center;
+}
+.login-table {
+	text-align: right;
+}
+.button {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	font-size: 1em;
+}
+.key {
+	text-align: left;
+}
+.text-field {
+	max-width: 200px;
+	min-width: 180px;
+}
+.error {
+	color: maroon;
+	font-weight: bold;
+	font-size: 0.75em;
+}

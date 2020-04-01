@@ -44,7 +44,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.logout()
 				.logoutUrl("/ds-auth-logout")
 				.logoutSuccessUrl("/")
-				.invalidateHttpSession(true);
+				.clearAuthentication(true)
+				.invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID");
 
 		/*
 		http

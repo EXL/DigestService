@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:lang="${#locale}">
-	<head th:replace="~{head :: data(#{site.obey.title},true)}"><title>Control Panel</title></head>
+	<head th:replace="~{head :: data(#{site.obey.title},'admin')}"><title>Control Panel</title></head>
 	<body>
 		<div class="page">
 			<div class="main">
@@ -16,7 +16,7 @@
 					<p><a href="/obey/exchange">Exchange Rate</a></p>
 					<h3 th:text="#{site.obey.frame.links}">Links</h3>
 					<p><a href="/obey/send" th:text="#{site.obey.send.title}">Send to chat</a></p>
-					<p><a href="/logout" th:text="#{site.obey.frame.link.logout}">Logout</a></p>
+					<p><a href="/ds-auth-logout" th:text="#{site.obey.frame.link.logout}">Logout</a></p>
 				</div>
 				<div class="content">
 					<h3 th:text="#{site.obey.content.data}">Data</h3>

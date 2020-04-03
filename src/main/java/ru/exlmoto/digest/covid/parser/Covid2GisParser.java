@@ -41,7 +41,7 @@ public class Covid2GisParser {
 	private final String CASES_URL = "/public/14.js";
 	private final String HISTS_URL = "/public/22.js";
 
-	private final String NAMES_MARKER = "var o=";
+	private final String NAMES_MARKER = "var t=";
 	private final String CASES_MARKER = "r=";
 	private final String HISTS_MARKER = "var r=";
 	private final String END_MARKER = "}}]);";

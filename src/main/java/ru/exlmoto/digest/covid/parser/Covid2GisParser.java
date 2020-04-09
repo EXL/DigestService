@@ -37,9 +37,9 @@ public class Covid2GisParser {
 	private final FilterHelper filter;
 	private final LocaleHelper locale;
 
-	private final String NAMES_URL = "/public/13.js";
-	private final String CASES_URL = "/public/14.js";
-	private final String HISTS_URL = "/public/22.js";
+	private final String NAMES_URL = "/public/21.js";
+	private final String CASES_URL = "/public/22.js";
+	private final String HISTS_URL = "/public/23.js";
 
 	private final String NAMES_MARKER = "var t=";
 	private final String CASES_MARKER = "r=";

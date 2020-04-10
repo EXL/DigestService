@@ -201,9 +201,11 @@ public class BotSender {
 
 	public String shrinkText(String text) {
 		int maxSendLength = config.getMaxSendLength();
-		if (text.length() > maxSendLength) {
+		int textLength = text.length();
+		if (textLength > maxSendLength) {
 			log.warn(String.format(
-				"Unexpectedly large response size! The text will be truncated to the '%d' characters.", maxSendLength
+				"Unexpectedly large response size: '%d', the text will be truncated to the '%d' characters.",
+				textLength, maxSendLength
 			));
 			return text.substring(0, maxSendLength) + "\n" + locale.i18n("bot.warn.send.long");
 		}

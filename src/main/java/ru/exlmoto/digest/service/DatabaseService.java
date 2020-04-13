@@ -16,6 +16,7 @@ import ru.exlmoto.digest.entity.BotSubGreetingEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.entity.BotSetupEntity;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
+import ru.exlmoto.digest.entity.UserEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.repository.BotSubDigestRepository;
@@ -24,6 +25,7 @@ import ru.exlmoto.digest.repository.BotSubGreetingRepository;
 import ru.exlmoto.digest.repository.BotSubCovidRepository;
 import ru.exlmoto.digest.repository.BotSetupRepository;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
+import ru.exlmoto.digest.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,14 +42,17 @@ public class DatabaseService {
 	private final BotSubCovidRepository subCovidRepository;
 	private final BotSetupRepository setupRepository;
 	private final ExchangeRateRepository exchangeRateRepository;
+	private final UserRepository userRepository;
 
 	public DatabaseService(BotDigestRepository digestRepository,
 	                       BotDigestUserRepository digestUserRepository,
 	                       BotSubMotofanRepository subMotofanRepository,
 	                       BotSubDigestRepository subDigestRepository,
 	                       BotSubGreetingRepository subGreetingRepository,
-	                       BotSubCovidRepository subCovidRepository, BotSetupRepository setupRepository,
-	                       ExchangeRateRepository exchangeRateRepository) {
+	                       BotSubCovidRepository subCovidRepository,
+	                       BotSetupRepository setupRepository,
+	                       ExchangeRateRepository exchangeRateRepository,
+	                       UserRepository userRepository) {
 		this.digestRepository = digestRepository;
 		this.digestUserRepository = digestUserRepository;
 		this.subMotofanRepository = subMotofanRepository;
@@ -56,6 +61,7 @@ public class DatabaseService {
 		this.subCovidRepository = subCovidRepository;
 		this.setupRepository = setupRepository;
 		this.exchangeRateRepository = exchangeRateRepository;
+		this.userRepository = userRepository;
 	}
 
 	public Optional<BotDigestEntity> getDigest(long id) {
@@ -262,5 +268,21 @@ public class DatabaseService {
 		} else {
 			log.error("Cannot save ExchangeRateEntity, because rate is null.");
 		}
+	}
+
+	public List<UserEntity> getAllUsers() {
+		return userRepository.findAll();
+	}
+
+	public UserEntity getUser(long id) {
+		return userRepository.findUserEntityById(id);
+	}
+
+	public void deleteUser(long id) {
+		userRepository.deleteUserEntityById(id);
+	}
+
+	public void saveUser(UserEntity user) {
+		userRepository.save(user);
 	}
 }

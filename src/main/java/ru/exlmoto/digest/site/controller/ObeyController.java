@@ -24,12 +24,14 @@ import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
+import ru.exlmoto.digest.entity.MemberEntity;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
 import ru.exlmoto.digest.site.form.ExchangeForm;
 import ru.exlmoto.digest.site.form.DigestForm;
 import ru.exlmoto.digest.site.form.GoToPageForm;
+import ru.exlmoto.digest.site.form.MemberForm;
 import ru.exlmoto.digest.site.form.SubscriberForm;
 import ru.exlmoto.digest.site.form.SetupForm;
 import ru.exlmoto.digest.site.form.UserForm;
@@ -38,7 +40,9 @@ import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.chat.Chat;
 import ru.exlmoto.digest.site.model.digest.Digest;
 import ru.exlmoto.digest.site.model.member.Member;
+import ru.exlmoto.digest.site.model.participant.Participant;
 import ru.exlmoto.digest.site.util.SiteHelper;
+import ru.exlmoto.digest.util.Role;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.util.ArrayList;
@@ -336,6 +340,9 @@ public class ObeyController {
 
 	@PostMapping(path = "/obey/sub-covid/edit")
 	public String obeySubCovidEdit(SubscriberForm subscriberForm) {
+
+
+
 		Optional.of(subscriberForm.getChatId()).ifPresent(chatId ->
 			service.saveCovidSub(new BotSubCovidEntity(chatId, subscriberForm.getChatName())));
 
@@ -414,6 +421,37 @@ public class ObeyController {
 		}
 
 		return "redirect:/obey/send";
+	}
+
+
+	@RequestMapping(path = "/obey/member")
+	public String obeyMember(MemberForm memberForm, Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		model.addAttribute("memberList", fillMemberList());
+		model.addAttribute("memberForm", memberForm);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/member/edit")
+	public String obeyMemberEdit(MemberForm memberForm) {
+		if (!memberForm.checkForm()) {
+			log.error(String.format("Member Form isn't valid! Parameters: '%s'.", memberForm.toString()));
+
+			return "redirect:/obey/member";
+		}
+
+		Optional.of(memberForm.getId()).ifPresent(memberId -> addOrEditMember(memberId, memberForm));
+
+		return "redirect:/obey/member";
+	}
+
+	@RequestMapping(path = "/obey/member/delete/{id}")
+	public String obeyMemberDelete(@PathVariable(name = "id") String id) {
+		Optional.of(helper.getLong(id)).ifPresent(service::deleteMember);
+
+		return "redirect:/obey/member";
 	}
 
 	private DigestForm fillDigestForm(String edit, DigestForm digestForm) {
@@ -549,5 +587,32 @@ public class ObeyController {
 		List<Chat> chatList = new ArrayList<>();
 		service.getAllCovidSubs().forEach(sub -> chatList.add(new Chat(sub.getSubscription(), sub.getName())));
 		return chatList;
+	}
+
+	private List<Participant> fillMemberList() {
+		List<Participant> participantList = new ArrayList<>();
+		service.getAllMembers().forEach(member -> participantList.add(
+			new Participant(member.getUsername(), member.getRole(), member.isEnable()))
+		);
+		return participantList;
+	}
+
+	private void addOrEditMember(Long memberId, MemberForm memberForm) {
+		MemberEntity member = service.getMember(memberId);
+
+		String username = memberForm.getUsername();
+		String password = memberForm.getPassword();
+		Role role = memberForm.getRole();
+		boolean enabled = memberForm.isEnabled();
+
+		if (member != null) {
+			member.setUsername(username);
+			member.setPassword(password);
+			member.setRole(role);
+			member.setEnable(enabled);
+			service.saveMember(member);
+		} else {
+			service.saveMember(new MemberEntity(memberId, username, password, role, enabled));
+		}
 	}
 }

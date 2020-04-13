@@ -35,12 +35,12 @@ class CovidTgHtmlGeneratorTest {
 
 	@Test
 	public void testGetTgHtmlReport() {
-		when(rest.getRestResponse(covidUrl + "/public/13.js"))
-			.thenReturn(Ok(helper.readFileToString("classpath:covid/13-next.js", StandardCharsets.ISO_8859_1)));
-		when(rest.getRestResponse(covidUrl + "/public/14.js"))
-			.thenReturn(Ok(helper.readFileToString("classpath:covid/14-next.js")));
+		when(rest.getRestResponse(covidUrl + "/public/21.js"))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/21.js", StandardCharsets.ISO_8859_1)));
 		when(rest.getRestResponse(covidUrl + "/public/22.js"))
-			.thenReturn(Ok(helper.readFileToString("classpath:covid/22-next.js")));
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/22.js")));
+		when(rest.getRestResponse(covidUrl + "/public/23.js"))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/23.js")));
 
 		String report = generator.getTgHtmlReport(covidUrl);
 		assertTrue(report.startsWith("<"));
@@ -50,12 +50,12 @@ class CovidTgHtmlGeneratorTest {
 
 	@Test
 	public void testGetTgHtmlReportOnError() {
-		when(rest.getRestResponse(covidUrl + "/public/13.js"))
-			.thenReturn(Ok(helper.readFileToString("classpath:covid/13-broken.js")));
-		when(rest.getRestResponse(covidUrl + "/public/14.js"))
-			.thenReturn(Ok(helper.readFileToString("classpath:covid/14-broken.js")));
+		when(rest.getRestResponse(covidUrl + "/public/21.js"))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/21-broken.js")));
 		when(rest.getRestResponse(covidUrl + "/public/22.js"))
 			.thenReturn(Ok(helper.readFileToString("classpath:covid/22-broken.js")));
+		when(rest.getRestResponse(covidUrl + "/public/23.js"))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/23-broken.js")));
 
 		String report = generator.getTgHtmlReport(covidUrl);
 		assertNull(report);

@@ -8,13 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user")
-public class UserEntity {
+@Table(name = "member")
+public class MemberEntity {
 	@Id
 	private long id;
 
 	@Column(nullable = false)
-	private String name;
+	private String username;
 
 	@Column(nullable = false)
 	private String password;
@@ -24,13 +24,13 @@ public class UserEntity {
 
 	private boolean enable;
 
-	public UserEntity() {
+	public MemberEntity() {
 
 	}
 
-	public UserEntity(long id, String name, String password, Role role, boolean enable) {
+	public MemberEntity(long id, String username, String password, Role role, boolean enable) {
 		this.id = id;
-		this.name = name;
+		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.enable = enable;
@@ -44,12 +44,12 @@ public class UserEntity {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -79,8 +79,8 @@ public class UserEntity {
 	@Override
 	public String toString() {
 		return
-			"UserEntity{id=" + id +
-			", name=" + name +
+			"MemberEntity{id=" + id +
+			", username=" + username +
 			", password=" + password +
 			", role=" + role +
 			", enable=" + enable +

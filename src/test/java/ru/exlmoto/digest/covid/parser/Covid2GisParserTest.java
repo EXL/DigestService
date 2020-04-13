@@ -39,12 +39,12 @@ class Covid2GisParserTest {
 
 	@Test
 	public void testParse2GisData() {
-		when(rest.getRestResponse(covidUrl + "/public/13.js"))
-			.thenReturn(Ok(helper.readFileToString("classpath:covid/13.js")));
-		when(rest.getRestResponse(covidUrl + "/public/14.js"))
-			.thenReturn(Ok(helper.readFileToString("classpath:covid/14.js")));
+		when(rest.getRestResponse(covidUrl + "/public/21.js"))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/21.js")));
 		when(rest.getRestResponse(covidUrl + "/public/22.js"))
 			.thenReturn(Ok(helper.readFileToString("classpath:covid/22.js")));
+		when(rest.getRestResponse(covidUrl + "/public/23.js"))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/23.js")));
 
 		Answer<Pair<List<Region>, Map<String, String>>> res = parser.parse2GisData(covidUrl);
 		assertTrue(res.ok());
@@ -52,12 +52,12 @@ class Covid2GisParserTest {
 
 	@Test
 	public void testParse2GisDataBroken() {
-		when(rest.getRestResponse(covidUrl + "/public/13.js"))
-			.thenReturn(Ok(helper.readFileToString("classpath:covid/13-broken.js")));
-		when(rest.getRestResponse(covidUrl + "/public/14.js"))
-			.thenReturn(Ok(helper.readFileToString("classpath:covid/14-broken.js")));
+		when(rest.getRestResponse(covidUrl + "/public/21.js"))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/21-broken.js")));
 		when(rest.getRestResponse(covidUrl + "/public/22.js"))
 			.thenReturn(Ok(helper.readFileToString("classpath:covid/22-broken.js")));
+		when(rest.getRestResponse(covidUrl + "/public/23.js"))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/23-broken.js")));
 
 		Answer<Pair<List<Region>, Map<String, String>>> res = parser.parse2GisData(covidUrl);
 		assertFalse(res.ok());

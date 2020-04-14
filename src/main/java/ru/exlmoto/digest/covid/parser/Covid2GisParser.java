@@ -29,7 +29,6 @@ import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
 
 @Component
-@Deprecated
 public class Covid2GisParser {
 	private final Logger log = LoggerFactory.getLogger(Covid2GisParser.class);
 
@@ -146,30 +145,34 @@ public class Covid2GisParser {
 	private Map<String, String> getHistMap(String data) {
 		String rawJson = chopData(data, HISTS_MARKER, END_MARKER);
 		if (rawJson != null) {
-			Map<String, String> history = new HashMap<>();
-
-			JsonArray array = JsonParser.parseString(rawJson).getAsJsonArray();
-			JsonObject previous = array.get(array.size() - 2).getAsJsonObject();
-			JsonObject last = array.get(array.size() - 1).getAsJsonObject();
-
-			String last_cases = last.getAsJsonPrimitive("cases").getAsString();
-			String prev_cases = previous.getAsJsonPrimitive("cases").getAsString();
-			String last_deaths = last.getAsJsonPrimitive("deaths").getAsString();
-			String prev_deaths = previous.getAsJsonPrimitive("deaths").getAsString();
-			String last_recover = last.getAsJsonPrimitive("recover").getAsString();
-			String prev_recover = previous.getAsJsonPrimitive("recover").getAsString();
-
-			history.put("date", last.getAsJsonPrimitive("date").getAsString());
-			history.put("cases", last_cases);
-			history.put("cases_diff", getDifference(prev_cases, last_cases));
-			history.put("deaths", last_deaths);
-			history.put("deaths_diff", getDifference(prev_deaths, last_deaths));
-			history.put("recover", last_recover);
-			history.put("recover_diff", getDifference(prev_recover, last_recover));
-
-			return history;
+			return parseHistsJson(rawJson);
 		}
 		return null;
+	}
+
+	public Map<String, String> parseHistsJson(String json) {
+		Map<String, String> history = new HashMap<>();
+
+		JsonArray array = JsonParser.parseString(json).getAsJsonArray();
+		JsonObject previous = array.get(array.size() - 2).getAsJsonObject();
+		JsonObject last = array.get(array.size() - 1).getAsJsonObject();
+
+		String last_cases = last.getAsJsonPrimitive("cases").getAsString();
+		String prev_cases = previous.getAsJsonPrimitive("cases").getAsString();
+		String last_deaths = last.getAsJsonPrimitive("deaths").getAsString();
+		String prev_deaths = previous.getAsJsonPrimitive("deaths").getAsString();
+		String last_recover = last.getAsJsonPrimitive("recover").getAsString();
+		String prev_recover = previous.getAsJsonPrimitive("recover").getAsString();
+
+		history.put("date", last.getAsJsonPrimitive("date").getAsString());
+		history.put("cases", last_cases);
+		history.put("cases_diff", getDifference(prev_cases, last_cases));
+		history.put("deaths", last_deaths);
+		history.put("deaths_diff", getDifference(prev_deaths, last_deaths));
+		history.put("recover", last_recover);
+		history.put("recover_diff", getDifference(prev_recover, last_recover));
+
+		return history;
 	}
 
 	private String getDifference(String previous, String last) {

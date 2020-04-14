@@ -6,7 +6,7 @@
 			<div th:fragment="copyright" class="copyright">
 				<div>
 					<span th:utext="#{site.footer.language}">Language: Russian | English.</span>
-					<span th:utext="#{site.footer.link}">Links: Link, Link, Link, Link.</span>
+					<span th:utext="#{site.footer.link}">Links: Link, Link, Link, Link, Link.</span>
 					<span th:if="${time != null}" th:with="ms=${T(java.lang.System).currentTimeMillis() - time},render=#{site.footer.render}" th:text="${#strings.replace(render, '%time%', ms)}">Render: 100ms.</span>
 				</div>
 				<div>

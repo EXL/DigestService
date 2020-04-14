@@ -3,27 +3,23 @@ package ru.exlmoto.digest.covid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ru.exlmoto.digest.covid.generator.CovidJsonGenerator;
-import ru.exlmoto.digest.covid.generator.CovidTgHtmlGenerator;
+import ru.exlmoto.digest.covid.generator.CovidJsonApiGenerator;
 
 @Service
 public class CovidService {
-	private final CovidJsonGenerator jsonGenerator;
-	private final CovidTgHtmlGenerator htmlGenerator;
+	private final CovidJsonApiGenerator jsonApiGenerator;
 
 	@Value("${covid.url}")
 	private String covidUrl;
 
-	public CovidService(CovidJsonGenerator jsonGenerator, CovidTgHtmlGenerator htmlGenerator) {
-		this.jsonGenerator = jsonGenerator;
-		this.htmlGenerator = htmlGenerator;
+	private final String CASES_RU_PATH = "covid19-ru-by-territory.json";
+	private final String HISTORY_RU_PATH = "covid19-ru-history.json";
+
+	public CovidService(CovidJsonApiGenerator jsonApiGenerator) {
+		this.jsonApiGenerator = jsonApiGenerator;
 	}
 
-	public String jsonReport() {
-		return jsonGenerator.getJsonReport(covidUrl);
-	}
-
-	public String tgHtmlReport() {
-		return htmlGenerator.getTgHtmlReport(covidUrl);
+	public String jsonReportRu() {
+		return jsonApiGenerator.getJsonReport(covidUrl, CASES_RU_PATH, HISTORY_RU_PATH);
 	}
 }

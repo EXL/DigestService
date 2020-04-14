@@ -32,7 +32,11 @@ public class CovidService {
 		return jsonGenerator.getJsonReport(covidUrl, CASES_UA_PATH, HISTORY_UA_PATH);
 	}
 
-	public String tgHtmlReport() {
-		return htmlGenerator.getTgHtmlReport(covidUrl);
+	public String tgHtmlRuReport() {
+		return htmlGenerator.getTgHtmlReport(covidUrl, CASES_RU_PATH, HISTORY_RU_PATH);
+	}
+
+	public String tgHtmlUaReport() {
+		return htmlGenerator.getTgHtmlReport(covidUrl, CASES_UA_PATH, HISTORY_UA_PATH);
 	}
 }

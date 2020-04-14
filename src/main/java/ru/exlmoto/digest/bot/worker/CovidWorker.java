@@ -13,6 +13,7 @@ import ru.exlmoto.digest.covid.CovidService;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -37,16 +38,31 @@ public class CovidWorker {
 	@Scheduled(cron = "${cron.bot.covid.report}")
 	public void workOnCovidReport() {
 		try {
-			String report = null;
-			//String report = covidService.tgHtmlReport();
-			if (report != null && !report.isEmpty()) {
-				sendCovidReport(report, databaseService.getAllCovidSubs());
+			String reportRu = covidService.tgHtmlRuReport();
+			if (checkCovidReport(reportRu)) {
+				sendCovidReport(reportRu, databaseService.getAllCovidSubs());
+			}
+
+			// Send Ukraine COVID-2019 report only to MotoFan.Ru Telegram chat.
+			String reportUa = covidService.tgHtmlUaReport();
+			if (checkCovidReport(reportUa)) {
+				sendCovidReport(reportUa, config.getMotofanChatId());
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Covid subscribe object from database.", dae);
 		} catch (RuntimeException re) {
 			log.error("Runtime exception on Covid report sender thread.", re);
 		}
+	}
+
+	private boolean checkCovidReport(String report) {
+		return report != null && !report.isEmpty();
+	}
+
+	private void sendCovidReport(String report, long chatId) {
+		List<BotSubCovidEntity> oneElementArrayList = new ArrayList<>();
+		oneElementArrayList.add(new BotSubCovidEntity(chatId, "MotoFan.Ru"));
+		sendCovidReport(report, oneElementArrayList);
 	}
 
 	private void sendCovidReport(String report, List<BotSubCovidEntity> subscribers) {

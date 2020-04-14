@@ -13,7 +13,8 @@ import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import java.time.Instant;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +30,8 @@ public class CovidTgHtmlGenerator {
 
 	@Value("${covid.date-format}")
 	private String dateFormat;
+
+	private String JSON_DATE_FORMAT = "yyyy-MM-dd";
 
 	public CovidTgHtmlGenerator(Covid2GisApiParser parser, LocaleHelper locale, FilterHelper filter) {
 		this.parser = parser;
@@ -51,9 +54,13 @@ public class CovidTgHtmlGenerator {
 	}
 
 	private Locale getLocale(String casesPath) {
-		String langTag = casesPath.substring(casesPath.lastIndexOf("covid19-"), 2);
-		System.out.println(langTag);
-		return Locale.forLanguageTag(langTag);
+		String tag = "covid19-";
+		int tagLength = tag.length();
+		if (casesPath.contains(tag) && (casesPath.length() > (tagLength + 3))) {
+			return Locale.forLanguageTag(casesPath.substring(tagLength, tagLength + 2));
+		}
+		// Default locale.
+		return Locale.forLanguageTag("en");
 	}
 
 	private String generateTgHtmlReport(List<RegionFull> cases, Map<String, String> history, Locale lang) {
@@ -78,14 +85,14 @@ public class CovidTgHtmlGenerator {
 	}
 
 	private String generateTable(List<RegionFull> cases, Locale lang) {
-		final int CHOP_NUMBER = 8;
+		final int CHOP_NUMBER = 7;
 		final int CHOP_CASES = 12;
-		final int CHOP_REGION = 12;
+		final int CHOP_REGION = 20;
 
 		StringBuilder builder = new StringBuilder("\n\n<pre>");
 		builder.append(filter.arrangeString(locale.i18nW("covid.table.region", lang), CHOP_REGION)).append(" ");
 		builder.append(filter.arrangeString(locale.i18nW("covid.table.cases", lang), CHOP_CASES)).append(" ");
-		builder.append(filter.arrangeString(locale.i18nW("covid.table.recover", lang), CHOP_NUMBER)).append(" ");
+		builder.append(filter.arrangeString(locale.i18nW("covid.table.recover", lang), CHOP_CASES)).append(" ");
 		builder.append(filter.arrangeString(locale.i18nW("covid.table.deaths", lang), CHOP_NUMBER)).append("\n");
 
 		for (int i = 0; i < CHOP_NUMBER * 2 + CHOP_REGION + CHOP_CASES + 3; ++i) {
@@ -100,7 +107,7 @@ public class CovidTgHtmlGenerator {
 			builder.append(filter.ellipsisRightA(report.getRecovered() +
 				getDiff(String.valueOf(report.getRecoveredInc()), true, lang), CHOP_CASES)).append(" ");
 			builder.append(filter.ellipsisRightA(report.getDeaths() +
-				getDiff(String.valueOf(report.getDeathsInc()), true, lang), CHOP_CASES)).append("\n");
+				getDiff(String.valueOf(report.getDeathsInc()), true, lang), CHOP_NUMBER)).append("\n");
 		}
 		builder.append("</pre>").append("\n");
 		builder.append(locale.i18nW("covid.source", lang));
@@ -108,8 +115,13 @@ public class CovidTgHtmlGenerator {
 		return builder.toString();
 	}
 
-	private String getDateFormat(String date) {
-		return filter.getDateFromTimeStamp(dateFormat, Instant.parse(date).getEpochSecond());
+	private String getDateFormat(String dateString) {
+		try {
+			return new SimpleDateFormat(dateFormat).format(new SimpleDateFormat(JSON_DATE_FORMAT).parse(dateString));
+		} catch (ParseException pe) {
+			log.error(String.format("Cannot parse date from string '%s'.", dateString), pe);
+			return dateString;
+		}
 	}
 
 	private String getDiff(String diff, boolean clear, Locale lang) {

@@ -29,8 +29,8 @@ public class ApiController {
 		return service.jsonReport();
 	}
 
-	@GetMapping("/api/covid")
-	public String covid() {
-		return covid.jsonReport();
+	@GetMapping("/api/covid/ru")
+	public String covidRu() {
+		return covid.jsonReportRu();
 	}
 }

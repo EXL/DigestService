@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +29,7 @@ import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
 
 @Component
+@Deprecated
 public class Covid2GisParser {
 	private final Logger log = LoggerFactory.getLogger(Covid2GisParser.class);
 
@@ -70,7 +70,7 @@ public class Covid2GisParser {
 
 		Answer<String> resCases = rest.getRestResponse(url + CASES_URL);
 		if (resCases.ok()) {
-			cases = getCaseMap(resCases.answer(), names);
+			cases = getCaseList(resCases.answer(), names);
 			if (cases == null) {
 				return Error(locale.i18n("covid.error.cases"));
 			}
@@ -114,7 +114,7 @@ public class Covid2GisParser {
 		return null;
 	}
 
-	private List<Region> getCaseMap(String data, Map<String, String> names) {
+	private List<Region> getCaseList(String data, Map<String, String> names) {
 		String rawJson = chopData(data, CASES_MARKER, END_MARKER);
 		if (rawJson != null) {
 			List<Region> cases = new ArrayList<>();

@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.covid.json;
 
+@Deprecated
 public class Region {
 	private String name;
 

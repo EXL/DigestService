@@ -37,7 +37,8 @@ public class CovidWorker {
 	@Scheduled(cron = "${cron.bot.covid.report}")
 	public void workOnCovidReport() {
 		try {
-			String report = covidService.tgHtmlReport();
+			String report = null;
+			//String report = covidService.tgHtmlReport();
 			if (report != null && !report.isEmpty()) {
 				sendCovidReport(report, databaseService.getAllCovidSubs());
 			}

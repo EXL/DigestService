@@ -119,7 +119,7 @@
 					<div th:if="${send != null}">
 						<div th:replace="~{send :: send-form}"></div>
 					</div>
-					<div>
+					<div th:if="${owner != null}">
 						<div th:if="${owner}">
 							<div th:if="${memberList != null}">
 								<div th:replace="~{participant :: member-form}"></div>

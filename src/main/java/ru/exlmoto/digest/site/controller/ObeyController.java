@@ -613,8 +613,21 @@ public class ObeyController {
 			member.setEnable(enabled);
 			service.saveMember(member);
 		} else {
-			service.saveMember(new MemberEntity(username, password, role, enabled));
+			if (isNameUnique(username)) {
+				service.saveMember(new MemberEntity(username, password, role, enabled));
+			}
 		}
+	}
+
+	private boolean isNameUnique(String username) {
+		List<MemberEntity> members = service.getAllMembers();
+		for (MemberEntity member : members) {
+			if (member.getUsername().equals(username)) {
+				log.error(String.format("Username '%s' isn't unique!", username));
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private MemberForm fillMemberForm(MemberForm memberForm, String edit) {

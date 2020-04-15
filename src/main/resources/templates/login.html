@@ -13,17 +13,7 @@
 						</tr>
 						<tr>
 							<td><label for="password-id" th:text="#{site.login.password}">Password:</label></td>
-							<td><input class="text-field" id="password-id" name="password" type="password" placeholder="Enter password..." th:placeholder="#{site.login.password.placeholder}"/></td>
-						</tr>
-						<tr>
-							<td><label for="key-a" th:text="#{site.login.key}">Key:</label></td>
-							<td>
-								<div class="key">
-									<div><input th:each="i: ${#numbers.sequence(1, 8, 1)}" id="key-a" th:id="${'key-a-' + i}" type="checkbox"/></div>
-									<div><input th:each="i: ${#numbers.sequence(1, 8, 1)}" id="key-b" th:id="${'key-b-' + i}" type="checkbox"/></div>
-									<div><input th:each="i: ${#numbers.sequence(1, 8, 1)}" id="key-c" th:id="${'key-c-' + i}" type="checkbox"/></div>
-								</div>
-							</td>
+							<td><input class="text-field" id="password-id" name="password" type="password" placeholder="Enter password..." th:placeholder="#{site.login.password.placeholder}" minlength="6" required/></td>
 						</tr>
 					</table>
 					<div th:if="${error != null}" class="error" th:text="#{site.login.error}">Incorrect user data!</div>

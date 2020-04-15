@@ -14,7 +14,7 @@
 									<label for="username-field" th:text="#{site.obey.content.username}">Username</label>
 									<input id="username-field" type="text" th:field="*{username}" size="20" th:placeholder="#{site.obey.content.nickname}"/>
 									<label for="password-field" th:text="#{site.obey.content.password}">Password</label>
-									<input id="password-field" type="password" th:field="*{password}" size="20" minlength="6" required/>
+									<input id="password-field" type="password" th:field="*{password}" size="20" th:placeholder="#{site.login.password.placeholder}" minlength="6" required/>
 									<label for="role-combobox" th:text="#{site.obey.content.role}">Role</label>
 									<select id="role-combobox" th:field="*{role}">
 										<option value="" th:text="#{site.obey.content.role.select}">Select a Role</option>

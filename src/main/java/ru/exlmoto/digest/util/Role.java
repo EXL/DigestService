@@ -1,8 +1,8 @@
 package ru.exlmoto.digest.util;
 
 public enum Role {
-	User,
-	Moderator,
+	// User,
+	// Moderator,
 	Administrator,
 	Owner
 }

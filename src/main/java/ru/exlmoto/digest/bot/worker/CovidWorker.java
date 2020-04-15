@@ -43,7 +43,7 @@ public class CovidWorker {
 				sendCovidReport(reportRu, databaseService.getAllCovidSubs());
 			}
 
-			// Send Ukraine COVID-2019 report only to MotoFan.Ru Telegram chat.
+			// Send Ukrainian COVID-2019 report only to MotoFan.Ru Telegram chat.
 			String reportUa = covidService.tgHtmlUaReport();
 			if (checkCovidReport(reportUa)) {
 				sendCovidReport(reportUa, config.getMotofanChatId());

@@ -24,6 +24,11 @@ public class SiteConfiguration {
 
 	private boolean autolinkerEnabled;
 
+	private boolean obeyProtection;
+	private String obeyDebugUsername;
+	private String obeyDebugPassword;
+	private String obeyDebugRole;
+
 	@Bean
 	public LocaleResolver localeResolver() {
 		final CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
@@ -110,5 +115,37 @@ public class SiteConfiguration {
 
 	public void setAutolinkerEnabled(boolean autolinkerEnabled) {
 		this.autolinkerEnabled = autolinkerEnabled;
+	}
+
+	public boolean isObeyProtection() {
+		return obeyProtection;
+	}
+
+	public void setObeyProtection(boolean obeyProtection) {
+		this.obeyProtection = obeyProtection;
+	}
+
+	public String getObeyDebugUsername() {
+		return obeyDebugUsername;
+	}
+
+	public void setObeyDebugUsername(String obeyDebugUsername) {
+		this.obeyDebugUsername = obeyDebugUsername;
+	}
+
+	public String getObeyDebugPassword() {
+		return obeyDebugPassword;
+	}
+
+	public void setObeyDebugPassword(String obeyDebugPassword) {
+		this.obeyDebugPassword = obeyDebugPassword;
+	}
+
+	public String getObeyDebugRole() {
+		return obeyDebugRole;
+	}
+
+	public void setObeyDebugRole(String obeyDebugRole) {
+		this.obeyDebugRole = obeyDebugRole;
 	}
 }

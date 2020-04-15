@@ -50,6 +50,7 @@ import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -615,6 +616,7 @@ public class ObeyController {
 		service.getAllMembers().forEach(member -> participantList.add(
 			new Participant(member.getId(), member.getUsername(), member.getRole(), member.isEnable()))
 		);
+		participantList.sort(Comparator.comparing(Participant::getId));
 		return participantList;
 	}
 

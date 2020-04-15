@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				Collections.singleton(new SimpleGrantedAuthority(member.getRole().name())));
 		} else {
 			return new User(
-				config.getObeyDebugUsername(),
+				"Administrator",
 				new BCryptPasswordEncoder().encode(config.getObeyDebugPassword()),
 				Collections.singleton(new SimpleGrantedAuthority(config.getObeyDebugRole()))
 			);

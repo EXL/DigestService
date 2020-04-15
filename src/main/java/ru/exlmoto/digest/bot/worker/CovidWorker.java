@@ -13,7 +13,6 @@ import ru.exlmoto.digest.covid.CovidService;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

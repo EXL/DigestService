@@ -85,29 +85,38 @@ public class CovidTgHtmlGenerator {
 	}
 
 	private String generateTable(List<RegionFull> cases, Locale lang) {
-		final int CHOP_NUMBER = 7;
+		final int MAX_REGIONS = 70;
+
+		final int CHOP_REGION = 16;
 		final int CHOP_CASES = 12;
-		final int CHOP_REGION = 20;
+		final int CHOP_RECOV = 10;
+		final int CHOP_DEATH = 7;
 
 		StringBuilder builder = new StringBuilder("\n\n<pre>");
 		builder.append(filter.arrangeString(locale.i18nW("covid.table.region", lang), CHOP_REGION)).append(" ");
 		builder.append(filter.arrangeString(locale.i18nW("covid.table.cases", lang), CHOP_CASES)).append(" ");
-		builder.append(filter.arrangeString(locale.i18nW("covid.table.recover", lang), CHOP_CASES)).append(" ");
-		builder.append(filter.arrangeString(locale.i18nW("covid.table.deaths", lang), CHOP_NUMBER)).append("\n");
+		builder.append(filter.arrangeString(locale.i18nW("covid.table.recover", lang), CHOP_RECOV)).append(" ");
+		builder.append(filter.arrangeString(locale.i18nW("covid.table.deaths", lang), CHOP_DEATH)).append("\n");
 
-		for (int i = 0; i < CHOP_NUMBER * 2 + CHOP_REGION + CHOP_CASES + 3; ++i) {
+		for (int i = 0; i < CHOP_REGION + CHOP_CASES + CHOP_RECOV + CHOP_DEATH + 3; ++i) {
 			builder.append("-");
 		}
 		builder.append("\n");
 
+		int row = 0;
 		for (RegionFull report : cases) {
+			if (row >= MAX_REGIONS) {
+				builder.append("\n").append(locale.i18n("covid.error.long")).append("\n");
+				break;
+			}
 			builder.append(filter.ellipsisRightA(report.getTerritoryName(), CHOP_REGION)).append(" ");
 			builder.append(filter.ellipsisRightA(report.getConfirmed() +
 				getDiff(String.valueOf(report.getConfirmedInc()), true, lang), CHOP_CASES)).append(" ");
 			builder.append(filter.ellipsisRightA(report.getRecovered() +
-				getDiff(String.valueOf(report.getRecoveredInc()), true, lang), CHOP_CASES)).append(" ");
+				getDiff(String.valueOf(report.getRecoveredInc()), true, lang), CHOP_RECOV)).append(" ");
 			builder.append(filter.ellipsisRightA(report.getDeaths() +
-				getDiff(String.valueOf(report.getDeathsInc()), true, lang), CHOP_NUMBER)).append("\n");
+				getDiff(String.valueOf(report.getDeathsInc()), true, lang), CHOP_DEATH)).append("\n");
+			row++;
 		}
 		builder.append("</pre>").append("\n");
 		builder.append(locale.i18nW("covid.source", lang));

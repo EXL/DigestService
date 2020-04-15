@@ -87,10 +87,10 @@ public class CovidTgHtmlGenerator {
 	private String generateTable(List<RegionFull> cases, Locale lang) {
 		final int MAX_REGIONS = 70;
 
-		final int CHOP_REGION = 16;
+		final int CHOP_REGION = 15;
 		final int CHOP_CASES = 12;
 		final int CHOP_RECOV = 10;
-		final int CHOP_DEATH = 7;
+		final int CHOP_DEATH = 9;
 
 		StringBuilder builder = new StringBuilder("\n\n<pre>");
 		builder.append(filter.arrangeString(locale.i18nW("covid.table.region", lang), CHOP_REGION)).append(" ");

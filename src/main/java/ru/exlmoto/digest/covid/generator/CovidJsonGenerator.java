@@ -9,8 +9,8 @@ import com.google.gson.JsonParser;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.covid.json.Region;
-import ru.exlmoto.digest.covid.parser.Covid2GisParser;
+import ru.exlmoto.digest.covid.json.RegionFull;
+import ru.exlmoto.digest.covid.parser.Covid2GisApiParser;
 import ru.exlmoto.digest.util.Answer;
 
 import javax.annotation.PostConstruct;
@@ -20,11 +20,11 @@ import java.util.Map;
 
 @Component
 public class CovidJsonGenerator {
-	private final Covid2GisParser parser;
+	private final Covid2GisApiParser parser;
 
 	private Gson gson;
 
-	public CovidJsonGenerator(Covid2GisParser parser) {
+	public CovidJsonGenerator(Covid2GisApiParser parser) {
 		this.parser = parser;
 	}
 
@@ -33,10 +33,11 @@ public class CovidJsonGenerator {
 		gson = new GsonBuilder().setPrettyPrinting().create();
 	}
 
-	public String getJsonReport(String covidUrl) {
-		Answer<Pair<List<Region>, Map<String, String>>> res = parser.parse2GisData(covidUrl);
+	public String getJsonReport(String covidUrl, String casesPath, String historyPath) {
+		Answer<Pair<List<RegionFull>, Map<String, String>>> res =
+			parser.parse2GisApiData(covidUrl, casesPath, historyPath);
 		if (res.ok()) {
-			Pair<List<Region>, Map<String, String>> answer = res.answer();
+			Pair<List<RegionFull>, Map<String, String>> answer = res.answer();
 			return generateJsonReport(answer.getFirst(), answer.getSecond());
 		} else {
 			JsonObject error = new JsonObject();
@@ -45,7 +46,7 @@ public class CovidJsonGenerator {
 		}
 	}
 
-	private String generateJsonReport(List<Region> cases, Map<String, String> history) {
+	private String generateJsonReport(List<RegionFull> cases, Map<String, String> history) {
 		JsonObject report = new JsonObject();
 		report.add("history", getHistory(history));
 		report.add("data", getCaseReport(cases));
@@ -56,7 +57,7 @@ public class CovidJsonGenerator {
 		return JsonParser.parseString(gson.toJson(history)).getAsJsonObject();
 	}
 
-	private JsonArray getCaseReport(List<Region> cases) {
+	private JsonArray getCaseReport(List<RegionFull> cases) {
 		JsonArray array = new JsonArray();
 		cases.forEach(value -> array.add(JsonParser.parseString(gson.toJson(value)).getAsJsonObject()));
 		return array;

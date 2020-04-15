@@ -14,16 +14,29 @@ public class CovidService {
 	@Value("${covid.url}")
 	private String covidUrl;
 
+	private final String CASES_RU_PATH = "covid19-ru-by-territory.json";
+	private final String HISTORY_RU_PATH = "covid19-ru-history.json";
+	private final String CASES_UA_PATH = "covid19-ua-by-territory.json";
+	private final String HISTORY_UA_PATH = "covid19-ua-history.json";
+
 	public CovidService(CovidJsonGenerator jsonGenerator, CovidTgHtmlGenerator htmlGenerator) {
 		this.jsonGenerator = jsonGenerator;
 		this.htmlGenerator = htmlGenerator;
 	}
 
-	public String jsonReport() {
-		return jsonGenerator.getJsonReport(covidUrl);
+	public String jsonRuReport() {
+		return jsonGenerator.getJsonReport(covidUrl, CASES_RU_PATH, HISTORY_RU_PATH);
 	}
 
-	public String tgHtmlReport() {
-		return htmlGenerator.getTgHtmlReport(covidUrl);
+	public String jsonUaReport() {
+		return jsonGenerator.getJsonReport(covidUrl, CASES_UA_PATH, HISTORY_UA_PATH);
+	}
+
+	public String tgHtmlRuReport() {
+		return htmlGenerator.getTgHtmlReport(covidUrl, CASES_RU_PATH, HISTORY_RU_PATH);
+	}
+
+	public String tgHtmlUaReport() {
+		return htmlGenerator.getTgHtmlReport(covidUrl, CASES_UA_PATH, HISTORY_UA_PATH);
 	}
 }

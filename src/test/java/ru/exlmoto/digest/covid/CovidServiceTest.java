@@ -14,11 +14,13 @@ class CovidServiceTest {
 
 	@Test
 	public void testJsonReport() {
-		assertTrue(service.jsonReport().startsWith("{"));
+		assertTrue(service.jsonRuReport().startsWith("{"));
+		assertTrue(service.jsonUaReport().startsWith("{"));
 	}
 
 	@Test
 	public void testTgHtmlReport() {
-		assertTrue(service.tgHtmlReport().startsWith("<"));
+		assertTrue(service.tgHtmlRuReport().startsWith("<"));
+		assertTrue(service.tgHtmlUaReport().startsWith("<"));
 	}
 }

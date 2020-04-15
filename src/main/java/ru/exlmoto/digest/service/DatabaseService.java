@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
@@ -276,6 +277,10 @@ public class DatabaseService {
 
 	public MemberEntity getMember(Long id) {
 		return (id != null) ? memberRepository.findMemberEntityById(id) : null;
+	}
+
+	public MemberEntity getMember(String username) {
+		return (StringUtils.hasText(username)) ? memberRepository.findMemberEntityByUsername(username) : null;
 	}
 
 	public void deleteMember(long id) {

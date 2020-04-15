@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -606,15 +607,17 @@ public class ObeyController {
 		Role role = memberForm.getRole();
 		boolean enabled = memberForm.isEnabled();
 
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 		if (member != null) {
 			member.setUsername(username);
-			member.setPassword(password);
+			member.setPassword(passwordEncoder.encode(password));
 			member.setRole(role);
 			member.setEnable(enabled);
 			service.saveMember(member);
 		} else {
 			if (isNameUnique(username)) {
-				service.saveMember(new MemberEntity(username, password, role, enabled));
+				service.saveMember(new MemberEntity(username, passwordEncoder.encode(password), role, enabled));
 			}
 		}
 	}

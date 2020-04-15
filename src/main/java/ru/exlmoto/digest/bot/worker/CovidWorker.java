@@ -14,6 +14,7 @@ import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -60,9 +61,7 @@ public class CovidWorker {
 	}
 
 	private void sendCovidReport(String report, long chatId) {
-		List<BotSubCovidEntity> oneElementArrayList = new ArrayList<>();
-		oneElementArrayList.add(new BotSubCovidEntity(chatId, "MotoFan.Ru"));
-		sendCovidReport(report, oneElementArrayList);
+		sendCovidReport(report, Collections.singletonList(new BotSubCovidEntity(chatId, "MotoFan.Ru")));
 	}
 
 	private void sendCovidReport(String report, List<BotSubCovidEntity> subscribers) {

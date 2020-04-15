@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -426,18 +428,29 @@ public class ObeyController {
 	@RequestMapping(path = "/obey/member")
 	public String obeyMember(@RequestParam(name = "edit", required = false) String edit,
 	                         MemberForm memberForm,
+	                         Authentication authentication,
 	                         Model model) {
 		model.addAttribute("time", System.currentTimeMillis());
 
-		model.addAttribute("memberList", fillMemberList());
-		model.addAttribute("memberForm", fillMemberForm(memberForm, edit));
-		model.addAttribute("roleList", Arrays.asList(Role.values()));
+		boolean isAuthorizedForChanging = isUserOwner(authentication);
+
+		if (isAuthorizedForChanging) {
+			model.addAttribute("memberList", fillMemberList());
+			model.addAttribute("memberForm", fillMemberForm(memberForm, edit));
+			model.addAttribute("roleList", Arrays.asList(Role.values()));
+		}
+		model.addAttribute("owner", isAuthorizedForChanging);
 
 		return "obey";
 	}
 
 	@PostMapping(path = "/obey/member/edit")
-	public String obeyMemberEdit(MemberForm memberForm) {
+	public String obeyMemberEdit(MemberForm memberForm, Authentication authentication) {
+		if (!isUserOwner(authentication)) {
+			log.error(String.format("Access denied for non owner! User: '%s'", authentication.getName()));
+
+			return "redirect:/obey";
+		}
 		if (!memberForm.checkForm()) {
 			log.error(String.format("Member Form isn't valid! Parameters: '%s'.", memberForm.toString()));
 
@@ -450,7 +463,13 @@ public class ObeyController {
 	}
 
 	@RequestMapping(path = "/obey/member/delete/{id}")
-	public String obeyMemberDelete(@PathVariable(name = "id") String id) {
+	public String obeyMemberDelete(@PathVariable(name = "id") String id, Authentication authentication) {
+		if (!isUserOwner(authentication)) {
+			log.error(String.format("Access denied for non owner! User: '%s'", authentication.getName()));
+
+			return "redirect:/obey";
+		}
+
 		Optional.of(helper.getLong(id)).ifPresent(service::deleteMember);
 
 		return "redirect:/obey/member";
@@ -652,5 +671,9 @@ public class ObeyController {
 			memberForm.setUpdate(false);
 		}
 		return memberForm;
+	}
+
+	private boolean isUserOwner(Authentication authentication) {
+		return authentication.getAuthorities().contains(new SimpleGrantedAuthority(Role.Owner.name()));
 	}
 }

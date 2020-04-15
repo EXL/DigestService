@@ -46,6 +46,7 @@ import ru.exlmoto.digest.util.Role;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -340,9 +341,6 @@ public class ObeyController {
 
 	@PostMapping(path = "/obey/sub-covid/edit")
 	public String obeySubCovidEdit(SubscriberForm subscriberForm) {
-
-
-
 		Optional.of(subscriberForm.getChatId()).ifPresent(chatId ->
 			service.saveCovidSub(new BotSubCovidEntity(chatId, subscriberForm.getChatName())));
 
@@ -425,11 +423,14 @@ public class ObeyController {
 
 
 	@RequestMapping(path = "/obey/member")
-	public String obeyMember(MemberForm memberForm, Model model) {
+	public String obeyMember(@RequestParam(name = "edit", required = false) String edit,
+	                         MemberForm memberForm,
+	                         Model model) {
 		model.addAttribute("time", System.currentTimeMillis());
 
 		model.addAttribute("memberList", fillMemberList());
-		model.addAttribute("memberForm", memberForm);
+		model.addAttribute("memberForm", fillMemberForm(memberForm, edit));
+		model.addAttribute("roleList", Arrays.asList(Role.values()));
 
 		return "obey";
 	}
@@ -442,7 +443,7 @@ public class ObeyController {
 			return "redirect:/obey/member";
 		}
 
-		Optional.of(memberForm.getId()).ifPresent(memberId -> addOrEditMember(memberId, memberForm));
+		addOrEditMember(memberForm.getId(), memberForm);
 
 		return "redirect:/obey/member";
 	}
@@ -592,7 +593,7 @@ public class ObeyController {
 	private List<Participant> fillMemberList() {
 		List<Participant> participantList = new ArrayList<>();
 		service.getAllMembers().forEach(member -> participantList.add(
-			new Participant(member.getUsername(), member.getRole(), member.isEnable()))
+			new Participant(member.getId(), member.getUsername(), member.getRole(), member.isEnable()))
 		);
 		return participantList;
 	}
@@ -612,7 +613,28 @@ public class ObeyController {
 			member.setEnable(enabled);
 			service.saveMember(member);
 		} else {
-			service.saveMember(new MemberEntity(memberId, username, password, role, enabled));
+			service.saveMember(new MemberEntity(username, password, role, enabled));
 		}
+	}
+
+	private MemberForm fillMemberForm(MemberForm memberForm, String edit) {
+		Long memberId = helper.getLong(edit);
+		// Enable member by default.
+		memberForm.setEnabled(true);
+		if (memberId != null) {
+			MemberEntity member = service.getMember(memberId);
+			if (member != null) {
+				memberForm.setUpdate(true);
+				memberForm.setId(member.getId());
+				memberForm.setUsername(member.getUsername());
+				// Drop filling password hash.
+				// memberForm.setPassword(member.getPassword());
+				memberForm.setRole(member.getRole());
+				memberForm.setEnabled(member.isEnable());
+			}
+		} else {
+			memberForm.setUpdate(false);
+		}
+		return memberForm;
 	}
 }

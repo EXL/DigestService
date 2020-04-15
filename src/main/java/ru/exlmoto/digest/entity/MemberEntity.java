@@ -3,6 +3,8 @@ package ru.exlmoto.digest.entity;
 import ru.exlmoto.digest.util.Role;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "member")
 public class MemberEntity {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Column(nullable = false)
@@ -28,8 +31,7 @@ public class MemberEntity {
 
 	}
 
-	public MemberEntity(long id, String username, String password, Role role, boolean enable) {
-		this.id = id;
+	public MemberEntity(String username, String password, Role role, boolean enable) {
 		this.username = username;
 		this.password = password;
 		this.role = role;

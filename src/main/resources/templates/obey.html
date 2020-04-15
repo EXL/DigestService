@@ -14,6 +14,7 @@
 					<p><a href="/obey/sub-greeting">Digest Sub Greeting</a></p>
 					<p><a href="/obey/sub-covid">Digest Sub Covid</a></p>
 					<p><a href="/obey/exchange">Exchange Rate</a></p>
+					<p><a href="/obey/member">Member</a></p>
 					<h3 th:text="#{site.obey.frame.links}">Links</h3>
 					<p><a href="/obey/send" th:text="#{site.obey.send.title}">Send to chat</a></p>
 					<p><a href="/ds-auth-logout" th:text="#{site.obey.frame.link.logout}">Logout</a></p>
@@ -117,6 +118,28 @@
 					</div>
 					<div th:if="${send != null}">
 						<div th:replace="~{send :: send-form}"></div>
+					</div>
+					<div th:if="${memberList != null}">
+						<div th:replace="~{participant :: member-form}"></div>
+						<table class="small-table">
+							<tr>
+								<th th:text="#{site.obey.content.id}" nowrap>ID</th>
+								<th th:text="#{site.obey.content.username}" nowrap>Username</th>
+								<th th:text="#{site.obey.content.role}" nowrap>Role</th>
+								<th th:text="#{site.obey.content.enabled}" nowrap>Enabled</th>
+								<th th:text="#{site.obey.content.action}" nowrap>Action</th>
+							</tr>
+							<tr th:each="member : ${memberList}">
+								<td th:text="${member.id}">ID</td>
+								<td class="td-left" th:text="${member.username}">Username</td>
+								<td class="td-left" th:utext="${member.role}">Role</td>
+								<td th:utext="${member.enabled}">Enabled</td>
+								<td>
+									<a th:href="@{/obey/member/(edit=${member.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/member/delete/{id}(id=${member.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
+								</td>
+							</tr>
+						</table>
+						<div class="spring"></div>
 					</div>
 				</div>
 			</div>

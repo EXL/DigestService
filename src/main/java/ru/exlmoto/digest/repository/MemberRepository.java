@@ -8,6 +8,8 @@ import ru.exlmoto.digest.entity.MemberEntity;
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 	MemberEntity findMemberEntityById(long id);
 
+	MemberEntity findMemberEntityByUsername(String username);
+
 	@Transactional
 	void deleteMemberEntityById(long id);
 }

@@ -5,6 +5,8 @@ import org.springframework.util.StringUtils;
 import ru.exlmoto.digest.util.Role;
 
 public class MemberForm {
+	private boolean update;
+
 	private Long id;
 	private String username;
 	private String password;
@@ -13,6 +15,14 @@ public class MemberForm {
 
 	public boolean checkForm() {
 		return role != null && StringUtils.hasText(username) && StringUtils.hasText(password);
+	}
+
+	public boolean isUpdate() {
+		return update;
+	}
+
+	public void setUpdate(boolean update) {
+		this.update = update;
 	}
 
 	public Long getId() {

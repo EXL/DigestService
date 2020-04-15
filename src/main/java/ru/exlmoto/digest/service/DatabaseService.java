@@ -274,8 +274,8 @@ public class DatabaseService {
 		return memberRepository.findAll();
 	}
 
-	public MemberEntity getMember(long id) {
-		return memberRepository.findMemberEntityById(id);
+	public MemberEntity getMember(Long id) {
+		return (id != null) ? memberRepository.findMemberEntityById(id) : null;
 	}
 
 	public void deleteMember(long id) {

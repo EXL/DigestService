@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<body>
+		<div class="page">
+			<div class="main">
+				<div class="content">
+					<div>
+						<!--/*@thymesVar id="memberForm" type="ru.exlmoto.digest.site.form.MemberForm"*/-->
+						<!--/*@thymesVar id="roleList" type="java.util.List<ru.exlmoto.digest.util.Role>"*/-->
+						<div th:fragment="member-form" class="post-form" th:with="update=${memberForm.update},add=#{site.obey.content.action.add},edit=#{site.obey.content.action.edit},addTitle=#{site.obey.member.add},editTitle=#{site.obey.member.edit}">
+							<h3 th:text="${update ? editTitle : addTitle}">Add Member</h3>
+							<form th:action="@{/obey/member/edit}" th:object="${memberForm}" th:method="post">
+								<div>
+									<label for="username-field" th:text="#{site.obey.content.username}">Username</label>
+									<input id="username-field" type="text" th:field="*{username}" size="20" th:placeholder="#{site.obey.content.nickname}"/>
+									<label for="password-field" th:text="#{site.obey.content.password}">Password</label>
+									<input id="password-field" type="password" th:field="*{password}" size="20" minlength="6" required/>
+									<label for="role-combobox" th:text="#{site.obey.content.role}">Role</label>
+									<select id="role-combobox" th:field="*{role}">
+										<option value="" th:text="#{site.obey.content.role.select}">Select a Role</option>
+										<option th:each="role : ${roleList}" th:value="${role.name()}" th:text="${role.name()}"></option>
+									</select>
+								</div>
+								<div>
+									<input id="user-checkbox" type="checkbox" th:field="*{enabled}"/>
+									<label for="user-checkbox" th:text="#{site.obey.content.enabled}">Enabled</label>
+									<input type="hidden" th:field="*{id}"/>
+									<input class="button" type="submit" value="Add" th:value="${update ? edit : add}"/>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

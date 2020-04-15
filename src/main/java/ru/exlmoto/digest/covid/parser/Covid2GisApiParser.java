@@ -2,6 +2,7 @@ package ru.exlmoto.digest.covid.parser;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,25 +74,29 @@ public class Covid2GisApiParser {
 
 	private List<RegionFull> getCaseList(String json) {
 		if (StringUtils.hasText(json)) {
-			List<RegionFull> cases = new ArrayList<>();
+			try {
+				List<RegionFull> cases = new ArrayList<>();
 
-			JsonParser.parseString(json).getAsJsonObject().getAsJsonArray("items").forEach(item -> {
-				JsonObject inner = item.getAsJsonObject();
-				cases.add(new RegionFull(
-					inner.getAsJsonPrimitive("territoryName").getAsString(),
-					inner.getAsJsonPrimitive("confirmed").getAsLong(),
-					inner.getAsJsonPrimitive("recovered").getAsLong(),
-					inner.getAsJsonPrimitive("deaths").getAsLong(),
-					inner.getAsJsonPrimitive("confirmedInc").getAsLong(),
-					inner.getAsJsonPrimitive("recoveredInc").getAsLong(),
-					inner.getAsJsonPrimitive("deathsInc").getAsLong()
-				));
-			});
+				JsonParser.parseString(json).getAsJsonObject().getAsJsonArray("items").forEach(item -> {
+					JsonObject inner = item.getAsJsonObject();
+					cases.add(new RegionFull(
+						inner.getAsJsonPrimitive("territoryName").getAsString(),
+						inner.getAsJsonPrimitive("confirmed").getAsLong(),
+						inner.getAsJsonPrimitive("recovered").getAsLong(),
+						inner.getAsJsonPrimitive("deaths").getAsLong(),
+						inner.getAsJsonPrimitive("confirmedInc").getAsLong(),
+						inner.getAsJsonPrimitive("recoveredInc").getAsLong(),
+						inner.getAsJsonPrimitive("deathsInc").getAsLong()
+					));
+				});
 
-			if (!cases.isEmpty()) {
-				cases.sort(Comparator.comparingLong(RegionFull::getConfirmed));
-				Collections.reverse(cases);
-				return cases;
+				if (!cases.isEmpty()) {
+					cases.sort(Comparator.comparingLong(RegionFull::getConfirmed));
+					Collections.reverse(cases);
+					return cases;
+				}
+			} catch (JsonSyntaxException mje) {
+				log.error("Cannot parse JSON cases data!", mje);
 			}
 		}
 		return null;

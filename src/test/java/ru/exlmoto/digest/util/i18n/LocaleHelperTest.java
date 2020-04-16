@@ -45,19 +45,19 @@ class LocaleHelperTest {
 
 	@Test
 	public void testLocalizationStringWithLocale() {
-		String stringDefault = locale.i18nW("exchange.change", Locale.getDefault());
+		String stringDefault = locale.i18nW("motofan.title", Locale.getDefault());
 		System.out.println(stringDefault);
 		assertThat(stringDefault).isInstanceOf(String.class).isNotEmpty();
 
-		String stringEn = locale.i18nW("exchange.change", Locale.forLanguageTag("en"));
+		String stringEn = locale.i18nW("motofan.title", Locale.forLanguageTag("en"));
 		System.out.println(stringEn);
 		assertThat(stringEn).isInstanceOf(String.class).isNotEmpty();
 
-		String stringRu = locale.i18nW("exchange.change", Locale.forLanguageTag("ru"));
+		String stringRu = locale.i18nW("motofan.title", Locale.forLanguageTag("ru"));
 		System.out.println(stringRu);
 		assertThat(stringRu).isInstanceOf(String.class).isNotEmpty();
 
-		String stringNull = locale.i18nW("exchange.change", null);
+		String stringNull = locale.i18nW("motofan.title", null);
 		System.out.println(stringNull);
 		assertThat(stringNull).isInstanceOf(String.class).isNotEmpty();
 

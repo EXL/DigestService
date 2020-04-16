@@ -32,9 +32,9 @@ class GeneratorHelperTest {
 		assertNull(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0001")));
 		assertNull(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.001")));
 
-		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.005"))).isEqualTo("-0.01");
-		assertThat(helper.getDifference(new BigDecimal("1.005"), new BigDecimal("1.0"))).isEqualTo("0.01");
-		assertThat(helper.getDifference(new BigDecimal("4.0"), new BigDecimal("3.0"))).isEqualTo("1.00");
+		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.005"))).isEqualTo("0.01");
+		assertThat(helper.getDifference(new BigDecimal("1.005"), new BigDecimal("1.0"))).isEqualTo("-0.01");
+		assertThat(helper.getDifference(new BigDecimal("4.0"), new BigDecimal("3.0"))).isEqualTo("-1.00");
 	}
 	
 	@Test

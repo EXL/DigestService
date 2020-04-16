@@ -29,6 +29,10 @@ input, textarea, select {
 	padding: 2px;
 	margin-right: 3px;
 }
+textarea {
+	font-size: 11px;
+	vertical-align: baseline;
+}
 table {
 	border-collapse: collapse;
 	border: 1px solid black;
@@ -80,6 +84,9 @@ table td, table th {
 }
 .spring {
 	min-height: 700px;
+}
+.send-text-field {
+	width: 500px;
 }
 
 /* Pager */

@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
-import ru.exlmoto.digest.repository.ExchangeRateRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -23,7 +23,7 @@ class RateTgMarkdownGeneratorTest {
 	private RateTgMarkdownGenerator generator;
 
 	@MockBean
-	private ExchangeRateRepository repository;
+	private DatabaseService service;
 
 	@Test
 	public void testBankRuMarkdownReport() {
@@ -44,7 +44,7 @@ class RateTgMarkdownGeneratorTest {
 		bankRuEntity.setPrevCny(new BigDecimal("23.0"));
 		bankRuEntity.setPrevGbp(new BigDecimal("3456.45566"));
 
-		when(repository.getBankRu()).thenReturn(Optional.of(bankRuEntity));
+		when(service.getBankRu()).thenReturn(Optional.of(bankRuEntity));
 		String report = generator.rateReportByKey(ExchangeKey.bank_ru.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
@@ -69,7 +69,7 @@ class RateTgMarkdownGeneratorTest {
 		bankUaEntity.setPrevCny(new BigDecimal("111.00"));
 		bankUaEntity.setPrevGbp(null);
 
-		when(repository.getBankUa()).thenReturn(Optional.of(bankUaEntity));
+		when(service.getBankUa()).thenReturn(Optional.of(bankUaEntity));
 		String report = generator.rateReportByKey(ExchangeKey.bank_ua.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
@@ -94,7 +94,7 @@ class RateTgMarkdownGeneratorTest {
 		bankByEntity.setPrevCny(new BigDecimal("21"));
 		bankByEntity.setPrevGbp(new BigDecimal("2000.1"));
 
-		when(repository.getBankBy()).thenReturn(Optional.of(bankByEntity));
+		when(service.getBankBy()).thenReturn(Optional.of(bankByEntity));
 		String report = generator.rateReportByKey(ExchangeKey.bank_by.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
@@ -113,7 +113,7 @@ class RateTgMarkdownGeneratorTest {
 		metalRuEntity.setPrevPlatinum(new BigDecimal("932.59"));
 		metalRuEntity.setPrevPalladium(new BigDecimal("25.48"));
 
-		when(repository.getMetalRu()).thenReturn(Optional.of(metalRuEntity));
+		when(service.getMetalRu()).thenReturn(Optional.of(metalRuEntity));
 		String report = generator.rateReportByKey(ExchangeKey.metal_ru.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);

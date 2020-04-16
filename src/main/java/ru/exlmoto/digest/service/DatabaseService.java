@@ -244,23 +244,23 @@ public class DatabaseService {
 	}
 
 	public Optional<ExchangeRateEntity> getBankRu() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_RU_ROW);
+		return exchangeRateRepository.getBankRu();
 	}
 
 	public Optional<ExchangeRateEntity> getBankUa() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_UA_ROW);
+		return exchangeRateRepository.getBankUa();
 	}
 
 	public Optional<ExchangeRateEntity> getBankBy() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_BY_ROW);
+		return exchangeRateRepository.getBankBy();
 	}
 
 	public Optional<ExchangeRateEntity> getBankKz() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.BANK_KZ_ROW);
+		return exchangeRateRepository.getBankKz();
 	}
 
 	public Optional<ExchangeRateEntity> getMetalRu() {
-		return exchangeRateRepository.findById(ExchangeRateEntity.METAL_RU_ROW);
+		return exchangeRateRepository.getMetalRu();
 	}
 
 	public void saveExchange(ExchangeRateEntity rate) {

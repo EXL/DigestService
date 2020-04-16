@@ -21,7 +21,7 @@ public class GeneratorHelper {
 		if (prev.compareTo(current) == 0) {
 			return null;
 		}
-		BigDecimal difference = new BigDecimal(String.format("%.2f", prev.subtract(current)));
+		BigDecimal difference = new BigDecimal(String.format("%.2f", current.subtract(prev)));
 		if (difference.signum() == 0) {
 			return null;
 		}

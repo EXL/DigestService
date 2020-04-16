@@ -30,8 +30,8 @@ public abstract class BankParser extends RateParser {
 		} else {
 			entity.setPrevUsd(usd);
 			entity.setPrevEur(eur);
-			entity.setPrevGbp(gbp);
 			entity.setPrevCny(cny);
+			entity.setPrevGbp(gbp);
 			setPrevValuesFirstAux(entity);
 		}
 	}

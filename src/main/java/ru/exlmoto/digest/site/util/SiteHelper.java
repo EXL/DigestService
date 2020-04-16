@@ -455,7 +455,18 @@ public class SiteHelper {
 		toRate.setSilver(fromRate.getSilver());
 		toRate.setPlatinum(fromRate.getPlatinum());
 		toRate.setPalladium(fromRate.getPalladium());
-		toRate.setPrev(fromRate.getPrev());
+		toRate.setPrevUsd(fromRate.getPrevUsd());
+		toRate.setPrevEur(fromRate.getPrevEur());
+		toRate.setPrevGbp(fromRate.getPrevGbp());
+		toRate.setPrevCny(fromRate.getPrevCny());
+		toRate.setPrevRub(fromRate.getPrevRub());
+		toRate.setPrevUah(fromRate.getPrevUah());
+		toRate.setPrevByn(fromRate.getPrevByn());
+		toRate.setPrevKzt(fromRate.getPrevKzt());
+		toRate.setPrevGold(fromRate.getPrevGold());
+		toRate.setPrevSilver(fromRate.getPrevSilver());
+		toRate.setPrevPlatinum(fromRate.getPrevPlatinum());
+		toRate.setPrevPalladium(fromRate.getPrevPalladium());
 		return toRate;
 	}
 }

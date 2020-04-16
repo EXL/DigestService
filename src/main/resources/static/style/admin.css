@@ -78,6 +78,9 @@ table td, table th {
 .small-table {
 	width: unset;
 }
+.exchange-table {
+	width: 1024px;
+}
 .spring {
 	min-height: 700px;
 }

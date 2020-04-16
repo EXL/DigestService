@@ -36,7 +36,13 @@ class RateTgMarkdownGeneratorTest {
 		bankRuEntity.setByn(new BigDecimal("184.0"));
 		bankRuEntity.setCny(new BigDecimal("423.0"));
 		bankRuEntity.setGbp(new BigDecimal("13456.45566"));
-		bankRuEntity.setPrev(new BigDecimal("88.100000000000000001"));
+		bankRuEntity.setPrevUsd(new BigDecimal("88.100000000000000001"));
+		bankRuEntity.setPrevEur(new BigDecimal("9.5600"));
+		bankRuEntity.setPrevKzt(new BigDecimal("0.1334231"));
+		bankRuEntity.setPrevUah(new BigDecimal("866.45565"));
+		bankRuEntity.setPrevByn(new BigDecimal("84.0"));
+		bankRuEntity.setPrevCny(new BigDecimal("23.0"));
+		bankRuEntity.setPrevGbp(new BigDecimal("3456.45566"));
 
 		when(repository.getBankRu()).thenReturn(Optional.of(bankRuEntity));
 		String report = generator.rateReportByKey(ExchangeKey.bank_ru.name());
@@ -55,7 +61,13 @@ class RateTgMarkdownGeneratorTest {
 		bankUaEntity.setRub(new BigDecimal("1.00"));
 		bankUaEntity.setCny(new BigDecimal("1111.00"));
 		bankUaEntity.setGbp(null);
-		bankUaEntity.setPrev(new BigDecimal("1233"));
+		bankUaEntity.setPrevUsd(new BigDecimal("1233"));
+		bankUaEntity.setPrevEur(new BigDecimal("1.0013"));
+		bankUaEntity.setPrevKzt(new BigDecimal("1.0"));
+		bankUaEntity.setPrevByn(new BigDecimal("1"));
+		bankUaEntity.setPrevRub(new BigDecimal("2.00"));
+		bankUaEntity.setPrevCny(new BigDecimal("111.00"));
+		bankUaEntity.setPrevGbp(null);
 
 		when(repository.getBankUa()).thenReturn(Optional.of(bankUaEntity));
 		String report = generator.rateReportByKey(ExchangeKey.bank_ua.name());
@@ -74,7 +86,13 @@ class RateTgMarkdownGeneratorTest {
 		bankByEntity.setUah(null);
 		bankByEntity.setCny(new BigDecimal("11"));
 		bankByEntity.setGbp(new BigDecimal("1000.1"));
-		bankByEntity.setPrev(new BigDecimal("1235.0002"));
+		bankByEntity.setPrevUsd(new BigDecimal("235.0001"));
+		bankByEntity.setPrevEur(new BigDecimal("023113"));
+		bankByEntity.setPrevKzt(new BigDecimal("-1.12"));
+		bankByEntity.setPrevRub(new BigDecimal("0.234"));
+		bankByEntity.setPrevUah(null);
+		bankByEntity.setPrevCny(new BigDecimal("21"));
+		bankByEntity.setPrevGbp(new BigDecimal("2000.1"));
 
 		when(repository.getBankBy()).thenReturn(Optional.of(bankByEntity));
 		String report = generator.rateReportByKey(ExchangeKey.bank_by.name());
@@ -90,7 +108,10 @@ class RateTgMarkdownGeneratorTest {
 		metalRuEntity.setSilver(new BigDecimal("3821.40"));
 		metalRuEntity.setPlatinum(new BigDecimal("1932.59"));
 		metalRuEntity.setPalladium(new BigDecimal("35.48"));
-		metalRuEntity.setPrev(new BigDecimal("3031.15"));
+		metalRuEntity.setPrevGold(new BigDecimal("2031.25"));
+		metalRuEntity.setPrevSilver(new BigDecimal("2821.40"));
+		metalRuEntity.setPrevPlatinum(new BigDecimal("932.59"));
+		metalRuEntity.setPrevPalladium(new BigDecimal("25.48"));
 
 		when(repository.getMetalRu()).thenReturn(Optional.of(metalRuEntity));
 		String report = generator.rateReportByKey(ExchangeKey.metal_ru.name());

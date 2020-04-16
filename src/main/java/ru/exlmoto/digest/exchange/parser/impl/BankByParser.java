@@ -39,6 +39,20 @@ public class BankByParser extends BankParser {
 	}
 
 	@Override
+	protected void setPrevValuesFirstAux(ExchangeRateEntity entity) {
+		entity.setPrevRub(rub);
+		entity.setPrevUah(uah);
+		entity.setPrevKzt(kzt);
+	}
+
+	@Override
+	protected void setPrevValuesAux(ExchangeRateEntity entity) {
+		entity.setPrevRub(entity.getRub());
+		entity.setPrevUah(entity.getUah());
+		entity.setPrevKzt(entity.getKzt());
+	}
+
+	@Override
 	protected BigDecimal parseValueAux(Document document, String valueId) {
 		Element element = document.selectFirst("Currency[Id=" + valueId + "]");
 		BigDecimal nominal = new BigDecimal(filterCommas(element.selectFirst("Scale").text()));

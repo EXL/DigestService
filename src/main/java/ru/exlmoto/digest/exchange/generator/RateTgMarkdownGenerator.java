@@ -157,11 +157,16 @@ public class RateTgMarkdownGenerator {
 	}
 
 	private String filterDifference(BigDecimal prev, BigDecimal current) {
+		final int LIMIT = 6;
+		final String SPACE = " ";
+
 		String difference = helper.getDifference(prev, current);
 		if (difference != null) {
 			return ", " + (difference.startsWith("-") ?
-				difference + " " + locale.i18n("exchange.change.down") :
-				"+" + difference + " " + locale.i18n("exchange.change.up"));
+				helper.addTrailingSigns(difference, SPACE, LIMIT) +
+					" " + locale.i18n("exchange.change.down") :
+				helper.addTrailingSigns("+" + difference, SPACE, LIMIT) +
+					" " + locale.i18n("exchange.change.up"));
 		}
 		return ".";
 	}

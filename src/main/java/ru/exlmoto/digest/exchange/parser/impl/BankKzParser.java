@@ -28,6 +28,20 @@ public class BankKzParser extends BankParser {
 	}
 
 	@Override
+	protected void setPrevValuesFirstAux(ExchangeRateEntity entity) {
+		entity.setPrevRub(rub);
+		entity.setPrevUah(uah);
+		entity.setPrevByn(byn);
+	}
+
+	@Override
+	protected void setPrevValuesAux(ExchangeRateEntity entity) {
+		entity.setPrevRub(entity.getRub());
+		entity.setPrevUah(entity.getUah());
+		entity.setPrevByn(entity.getByn());
+	}
+
+	@Override
 	protected void parseDocumentAux(Document document) {
 		usd = parseValue(document, "USD");
 		eur = parseValue(document, "EUR");

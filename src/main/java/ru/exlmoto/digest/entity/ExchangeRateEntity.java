@@ -58,8 +58,41 @@ public class ExchangeRateEntity {
 	@Column
 	private BigDecimal palladium;
 
-	@Column(nullable = false)
-	private BigDecimal prev;
+	@Column
+	private BigDecimal prevUsd;
+
+	@Column
+	private BigDecimal prevEur;
+
+	@Column
+	private BigDecimal prevByn;
+
+	@Column
+	private BigDecimal prevKzt;
+
+	@Column
+	private BigDecimal prevUah;
+
+	@Column
+	private BigDecimal prevRub;
+
+	@Column
+	private BigDecimal prevCny;
+
+	@Column
+	private BigDecimal prevGbp;
+
+	@Column
+	private BigDecimal prevGold;
+
+	@Column
+	private BigDecimal prevSilver;
+
+	@Column
+	private BigDecimal prevPlatinum;
+
+	@Column
+	private BigDecimal prevPalladium;
 
 	public int getId() {
 		return id;
@@ -173,12 +206,100 @@ public class ExchangeRateEntity {
 		this.palladium = palladium;
 	}
 
-	public BigDecimal getPrev() {
-		return prev;
+	public BigDecimal getPrevUsd() {
+		return prevUsd;
 	}
 
-	public void setPrev(BigDecimal prev) {
-		this.prev = prev;
+	public void setPrevUsd(BigDecimal prevUsd) {
+		this.prevUsd = prevUsd;
+	}
+
+	public BigDecimal getPrevEur() {
+		return prevEur;
+	}
+
+	public void setPrevEur(BigDecimal prevEur) {
+		this.prevEur = prevEur;
+	}
+
+	public BigDecimal getPrevByn() {
+		return prevByn;
+	}
+
+	public void setPrevByn(BigDecimal prevByn) {
+		this.prevByn = prevByn;
+	}
+
+	public BigDecimal getPrevKzt() {
+		return prevKzt;
+	}
+
+	public void setPrevKzt(BigDecimal prevKzt) {
+		this.prevKzt = prevKzt;
+	}
+
+	public BigDecimal getPrevUah() {
+		return prevUah;
+	}
+
+	public void setPrevUah(BigDecimal prevUah) {
+		this.prevUah = prevUah;
+	}
+
+	public BigDecimal getPrevRub() {
+		return prevRub;
+	}
+
+	public void setPrevRub(BigDecimal prevRub) {
+		this.prevRub = prevRub;
+	}
+
+	public BigDecimal getPrevCny() {
+		return prevCny;
+	}
+
+	public void setPrevCny(BigDecimal prevCny) {
+		this.prevCny = prevCny;
+	}
+
+	public BigDecimal getPrevGbp() {
+		return prevGbp;
+	}
+
+	public void setPrevGbp(BigDecimal prevGbp) {
+		this.prevGbp = prevGbp;
+	}
+
+	public BigDecimal getPrevGold() {
+		return prevGold;
+	}
+
+	public void setPrevGold(BigDecimal prevGold) {
+		this.prevGold = prevGold;
+	}
+
+	public BigDecimal getPrevSilver() {
+		return prevSilver;
+	}
+
+	public void setPrevSilver(BigDecimal prevSilver) {
+		this.prevSilver = prevSilver;
+	}
+
+	public BigDecimal getPrevPlatinum() {
+		return prevPlatinum;
+	}
+
+	public void setPrevPlatinum(BigDecimal prevPlatinum) {
+		this.prevPlatinum = prevPlatinum;
+	}
+
+	public BigDecimal getPrevPalladium() {
+		return prevPalladium;
+	}
+
+	public void setPrevPalladium(BigDecimal prevPalladium) {
+		this.prevPalladium = prevPalladium;
 	}
 
 	@Override
@@ -192,12 +313,24 @@ public class ExchangeRateEntity {
 			", kzt=" + kzt +
 			", uah=" + uah +
 			", rub=" + rub +
+			", cny=" + cny +
 			", gbp=" + gbp +
 			", gold=" + gold +
 			", silver=" + silver +
 			", platinum=" + platinum +
 			", palladium=" + palladium +
-			", prev=" + prev +
+			", prevUsd=" + prevUsd +
+			", prevEur=" + prevEur +
+			", prevByn=" + prevByn +
+			", prevKzt=" + prevKzt +
+			", prevUah=" + prevUah +
+			", prevRub=" + prevRub +
+			", prevCny=" + prevCny +
+			", prevGbp=" + prevGbp +
+			", prevGold=" + prevGold +
+			", prevSilver=" + prevSilver +
+			", prevPlatinum=" + prevPlatinum +
+			", prevPalladium=" + prevPalladium +
 			"}";
 	}
 }

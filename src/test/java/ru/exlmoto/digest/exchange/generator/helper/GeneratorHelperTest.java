@@ -92,4 +92,14 @@ class GeneratorHelperTest {
 		assertTrue(helper.isDateNotEmpty("08/01/20"));
 		assertTrue(helper.isDateNotEmpty("StringValue"));
 	}
+
+	@Test
+	public void testGetValue() {
+		assertEquals("0.0", helper.getValue(null));
+		assertEquals("0.0", helper.getValue(""));
+		assertEquals("0.0", helper.getValue("abc"));
+		assertEquals("0", helper.getValue("0"));
+		assertEquals("1", helper.getValue("1"));
+		assertEquals("1.0", helper.getValue("1.0"));
+	}
 }

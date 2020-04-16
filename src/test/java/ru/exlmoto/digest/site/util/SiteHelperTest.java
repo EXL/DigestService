@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.service.DatabaseService;
@@ -14,7 +15,6 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -362,7 +362,18 @@ class SiteHelperTest {
 		String silver = "13213.1";
 		String platinum = "1234.1";
 		String palladium = "55534.1";
-		String prev = "88.100000000000000001";
+		String prevUsd = "88.100000000000000001";
+		String prevEur = "9.5600";
+		String prevGbp = "3456.45566";
+		String prevCny = "23.0";
+		String prevRub = "33.0";
+		String prevUah = "866.45565";
+		String prevByn = "84.0";
+		String prevKzt = "0.1334231";
+		String prevGold = "4124.9";
+		String prevSilver = "3213.1";
+		String prevPlatinum = "234.1";
+		String prevPalladium = "5534.1";
 
 		first.setDate(date);
 		first.setUsd(new BigDecimal(usd));
@@ -377,7 +388,18 @@ class SiteHelperTest {
 		first.setSilver(new BigDecimal(silver));
 		first.setPlatinum(new BigDecimal(platinum));
 		first.setPalladium(new BigDecimal(palladium));
-		first.setPrev(new BigDecimal(prev));
+		first.setPrevUsd(new BigDecimal(prevUsd));
+		first.setPrevEur(new BigDecimal(prevEur));
+		first.setPrevGbp(new BigDecimal(prevGbp));
+		first.setPrevCny(new BigDecimal(prevCny));
+		first.setPrevRub(new BigDecimal(prevRub));
+		first.setPrevUah(new BigDecimal(prevUah));
+		first.setPrevByn(new BigDecimal(prevByn));
+		first.setPrevKzt(new BigDecimal(prevKzt));
+		first.setPrevGold(new BigDecimal(prevGold));
+		first.setPrevSilver(new BigDecimal(prevSilver));
+		first.setPrevPlatinum(new BigDecimal(prevPlatinum));
+		first.setPrevPalladium(new BigDecimal(prevPalladium));
 
 		helper.copyRateValues(first, second);
 
@@ -394,6 +416,17 @@ class SiteHelperTest {
 		assertEquals(silver, second.getSilver().toPlainString());
 		assertEquals(platinum, second.getPlatinum().toPlainString());
 		assertEquals(palladium, second.getPalladium().toPlainString());
-		assertEquals(prev, second.getPrev().toPlainString());
+		assertEquals(prevUsd, second.getPrevUsd().toPlainString());
+		assertEquals(prevEur, second.getPrevEur().toPlainString());
+		assertEquals(prevGbp, second.getPrevGbp().toPlainString());
+		assertEquals(prevCny, second.getPrevCny().toPlainString());
+		assertEquals(prevRub, second.getPrevRub().toPlainString());
+		assertEquals(prevUah, second.getPrevUah().toPlainString());
+		assertEquals(prevByn, second.getPrevByn().toPlainString());
+		assertEquals(prevKzt, second.getPrevKzt().toPlainString());
+		assertEquals(prevGold, second.getPrevGold().toPlainString());
+		assertEquals(prevSilver, second.getPrevSilver().toPlainString());
+		assertEquals(prevPlatinum, second.getPrevPlatinum().toPlainString());
+		assertEquals(prevPalladium, second.getPrevPalladium().toPlainString());
 	}
 }

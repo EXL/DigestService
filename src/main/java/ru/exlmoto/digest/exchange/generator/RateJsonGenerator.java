@@ -50,9 +50,19 @@ public class RateJsonGenerator {
 	private void addBankRuToReport(JsonObject report) {
 		service.getBankRu().ifPresent(bankRu -> {
 			JsonObject field = addBankProperties(bankRu);
-			field.addProperty("uah", bankRu.getUah());
-			field.addProperty("byn", bankRu.getByn());
-			field.addProperty("kzt", bankRu.getKzt());
+
+			BigDecimal uah = bankRu.getUah();
+			BigDecimal byn = bankRu.getByn();
+			BigDecimal kzt = bankRu.getKzt();
+
+			field.addProperty("uah", uah);
+			field.addProperty("byn", byn);
+			field.addProperty("kzt", kzt);
+
+			field.addProperty("diff_uah", helper.getValue(helper.getDifference(bankRu.getPrevUah(), uah)));
+			field.addProperty("diff_byn", helper.getValue(helper.getDifference(bankRu.getPrevByn(), byn)));
+			field.addProperty("diff_kzt", helper.getValue(helper.getDifference(bankRu.getPrevKzt(), kzt)));
+
 			report.add("bank_ru", field);
 		});
 	}
@@ -60,19 +70,59 @@ public class RateJsonGenerator {
 	private void addBankUaToReport(JsonObject report) {
 		service.getBankUa().ifPresent(bankUa -> {
 			JsonObject field = addBankProperties(bankUa);
-			field.addProperty("rub", bankUa.getRub());
-			field.addProperty("byn", bankUa.getByn());
-			field.addProperty("kzt", bankUa.getKzt());
+
+			BigDecimal rub = bankUa.getRub();
+			BigDecimal byn = bankUa.getByn();
+			BigDecimal kzt = bankUa.getKzt();
+
+			field.addProperty("rub", rub);
+			field.addProperty("byn", byn);
+			field.addProperty("kzt", kzt);
+
+			field.addProperty("diff_rub", helper.getValue(helper.getDifference(bankUa.getPrevRub(), rub)));
+			field.addProperty("diff_byn", helper.getValue(helper.getDifference(bankUa.getPrevByn(), byn)));
+			field.addProperty("diff_kzt", helper.getValue(helper.getDifference(bankUa.getPrevKzt(), kzt)));
+
 			report.add("bank_ua", field);
 		});
 	}
 
 	private void addBankByToReport(JsonObject report) {
+		service.getBankBy().ifPresent(bankBy -> {
+			JsonObject field = addBankProperties(bankBy);
+
+			BigDecimal rub = bankBy.getRub();
+			BigDecimal uah = bankBy.getUah();
+			BigDecimal kzt = bankBy.getKzt();
+
+			field.addProperty("rub", rub);
+			field.addProperty("uah", uah);
+			field.addProperty("kzt", kzt);
+
+			field.addProperty("diff_rub", helper.getValue(helper.getDifference(bankBy.getPrevRub(), rub)));
+			field.addProperty("diff_uah", helper.getValue(helper.getDifference(bankBy.getPrevUah(), uah)));
+			field.addProperty("diff_kzt", helper.getValue(helper.getDifference(bankBy.getPrevKzt(), kzt)));
+
+			report.add("bank_by", field);
+		});
+	}
+
+	private void addBankKzToReport(JsonObject report) {
 		service.getBankKz().ifPresent(bankKz -> {
 			JsonObject field = addBankProperties(bankKz);
+
+			BigDecimal rub = bankKz.getRub();
+			BigDecimal uah = bankKz.getUah();
+			BigDecimal byn = bankKz.getByn();
+
 			field.addProperty("rub", bankKz.getRub());
 			field.addProperty("uah", bankKz.getUah());
 			field.addProperty("byn", bankKz.getByn());
+
+			field.addProperty("diff_rub", helper.getValue(helper.getDifference(bankKz.getPrevRub(), rub)));
+			field.addProperty("diff_uah", helper.getValue(helper.getDifference(bankKz.getPrevUah(), uah)));
+			field.addProperty("diff_byn", helper.getValue(helper.getDifference(bankKz.getPrevByn(), byn)));
+
 			report.add("bank_kz", field);
 		});
 	}
@@ -81,40 +131,49 @@ public class RateJsonGenerator {
 		service.getMetalRu().ifPresent(metalRu -> report.add("metal_ru", addMetalProperties(metalRu)));
 	}
 
-	private void addBankKzToReport(JsonObject report) {
-		service.getBankBy().ifPresent(bankBy -> {
-			JsonObject field = addBankProperties(bankBy);
-			field.addProperty("rub", bankBy.getRub());
-			field.addProperty("uah", bankBy.getUah());
-			field.addProperty("kzt", bankBy.getKzt());
-			report.add("bank_by", field);
-		});
-	}
-
-	private void addDiffProperty(BigDecimal prev, BigDecimal value, JsonObject field) {
-		String diff = helper.getDifference(prev, value);
-		field.addProperty("diff", (diff != null) ? diff : "0.0");
-	}
-
 	private JsonObject addBankProperties(ExchangeRateEntity rate) {
 		JsonObject field = new JsonObject();
+
 		BigDecimal usd = rate.getUsd();
-		addDiffProperty(rate.getPrev(), usd, field);
+		BigDecimal eur = rate.getEur();
+		BigDecimal cny = rate.getCny();
+		BigDecimal gbp = rate.getGbp();
+
 		field.addProperty("usd", usd);
-		field.addProperty("eur", rate.getEur());
-		field.addProperty("cny", rate.getCny());
-		field.addProperty("gbp", rate.getGbp());
+		field.addProperty("eur", eur);
+		field.addProperty("cny", cny);
+		field.addProperty("gbp", gbp);
+
+		field.addProperty("diff_usd", helper.getValue(helper.getDifference(rate.getPrevUsd(), usd)));
+		field.addProperty("diff_eur", helper.getValue(helper.getDifference(rate.getPrevEur(), eur)));
+		field.addProperty("diff_cny", helper.getValue(helper.getDifference(rate.getPrevCny(), cny)));
+		field.addProperty("diff_gbp", helper.getValue(helper.getDifference(rate.getPrevGbp(), gbp)));
+
 		return field;
 	}
 
 	private JsonObject addMetalProperties(ExchangeRateEntity rate) {
 		JsonObject field = new JsonObject();
+
 		BigDecimal gold = rate.getGold();
-		addDiffProperty(rate.getPrev(), gold, field);
+		BigDecimal silver = rate.getSilver();
+		BigDecimal platinum = rate.getPlatinum();
+		BigDecimal palladium = rate.getPalladium();
+
 		field.addProperty("gold", gold);
-		field.addProperty("silver", rate.getSilver());
-		field.addProperty("platinum", rate.getPlatinum());
-		field.addProperty("palladium", rate.getPalladium());
+		field.addProperty("silver", silver);
+		field.addProperty("platinum", platinum);
+		field.addProperty("palladium", palladium);
+
+		field.addProperty("diff_gold",
+			helper.getValue(helper.getDifference(rate.getPrevGold(), gold)));
+		field.addProperty("diff_silver",
+			helper.getValue(helper.getDifference(rate.getPrevSilver(), silver)));
+		field.addProperty("diff_platinum",
+			helper.getValue(helper.getDifference(rate.getPrevPlatinum(), platinum)));
+		field.addProperty("diff_palladium",
+			helper.getValue(helper.getDifference(rate.getPrevPalladium(), palladium)));
+
 		return field;
 	}
 }

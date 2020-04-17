@@ -4,23 +4,21 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
-import org.springframework.data.domain.Pageable;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
-import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest(properties = "bot.silent=true")
@@ -28,8 +26,8 @@ class ShowKeyboardTest {
 	@Autowired
 	private ShowKeyboard keyboard;
 
-	@MockBean
-	private BotDigestRepository botDigestRepository;
+	@SpyBean
+	private DatabaseService service;
 
 	@Autowired
 	private BotHelper helper;
@@ -67,8 +65,7 @@ class ShowKeyboardTest {
 
 		keyboard.handle(0, update.getChat(), update.getUser("exlmoto"), 1, true, sender);
 
-		doThrow(new InvalidDataAccessResourceUsageException("Test!"))
-			.when(botDigestRepository).findAll(any(Pageable.class));
+		doThrow(new InvalidDataAccessResourceUsageException("Test!")).when(service).getAllDigests(anyInt(), anyInt());
 
 		keyboard.handle(0, update.getChat(), update.getUser("exlmoto"), 2, true, sender);
 	}

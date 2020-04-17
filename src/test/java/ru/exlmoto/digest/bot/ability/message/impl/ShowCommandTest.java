@@ -6,15 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
-import org.springframework.data.domain.Pageable;
 
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
-import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest(properties = "bot.silent=true")
@@ -23,7 +22,7 @@ class ShowCommandTest {
 	private ShowCommand command;
 
 	@MockBean
-	private BotDigestRepository botDigestRepository;
+	private DatabaseService service;
 
 	@Autowired
 	private BotHelper helper;
@@ -40,8 +39,7 @@ class ShowCommandTest {
 	public void testShowCommand() {
 		command.execute(helper, sender, locale, update.getSimpleMessage("/show", "exlmoto"));
 
-		doThrow(new InvalidDataAccessResourceUsageException("Test!"))
-			.when(botDigestRepository).findAll(any(Pageable.class));
+		doThrow(new InvalidDataAccessResourceUsageException("Test!")).when(service).getAllDigests(anyInt(), anyInt());
 
 		command.execute(helper, sender, locale, update.getSimpleMessage("/show", "exlmoto"));
 	}

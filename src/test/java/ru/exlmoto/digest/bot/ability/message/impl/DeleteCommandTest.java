@@ -10,7 +10,7 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
-import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -22,7 +22,7 @@ class DeleteCommandTest {
 	private DeleteCommand command;
 
 	@MockBean
-	private BotDigestRepository botDigestRepository;
+	private DatabaseService service;
 
 	@Autowired
 	private BotHelper helper;
@@ -53,7 +53,7 @@ class DeleteCommandTest {
 		System.out.println("===");
 
 		/* Exception. */
-		doThrow(new InvalidDataAccessResourceUsageException("Test!")).when(botDigestRepository).deleteById(anyLong());
+		doThrow(new InvalidDataAccessResourceUsageException("Test!")).when(service).deleteDigest(anyLong());
 		command.execute(helper, sender, locale, update.getSimpleMessage("/delete 42", "anyone"));
 		System.out.println("===");
 	}

@@ -62,6 +62,7 @@ public class DigestWorker {
 	}
 
 	public void sendDigestToSubscribers(BotSender sender, Message message, String digest) {
+		int userId = message.from().id();
 		try {
 			List<BotSubDigestEntity> subscribers = service.getAllDigestSubs();
 			new Thread(() -> subscribers.forEach(subscriber -> {
@@ -71,9 +72,18 @@ public class DigestWorker {
 					throw new RuntimeException(ie);
 				}
 				long subscription = subscriber.getSubscription();
-				log.info(String.format("=> Send Digest Message to chat '%s', id: '%d', subscribers: '%d'.",
-					subscriber.getName(), subscription, subscribers.size()));
-				sender.sendHtml(subscription, htmlGenerator.generateDigestMessageHtmlReport(message, digest));
+				if (subscription != userId) {
+					log.info(String.format("=> Send Digest Message to chat '%s', id: '%d', subscribers: '%d'.",
+						subscriber.getName(), subscription, subscribers.size()));
+					sender.sendHtml(subscription, htmlGenerator.generateDigestMessageHtmlReport(message, digest));
+				} else {
+					log.info(
+						String.format(
+							"=> Ignoring Send Digest Message to chat '%s', id==userId: '%d'=='%d', subscribers: '%d'.",
+							subscriber.getName(), subscription, userId, subscribers.size()
+						)
+					);
+				}
 			})).start();
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Digest subscribe object from database.", dae);

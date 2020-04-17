@@ -19,22 +19,22 @@ public class ApiController {
 		this.covid = covid;
 	}
 
-	@GetMapping("/api/info")
+	@GetMapping(value = "/api/info", produces = "text/plain")
 	public String info() {
-		return report.getSystemReportHtml();
+		return report.getSystemReportMarkdown();
 	}
 
-	@GetMapping("/api/rate")
+	@GetMapping(value = "/api/rate", produces = "application/json")
 	public String rate() {
 		return service.jsonReport();
 	}
 
-	@GetMapping("/api/covid/ru")
+	@GetMapping(value = "/api/covid/ru", produces = "application/json")
 	public String covidRu() {
 		return covid.jsonRuReport();
 	}
 
-	@GetMapping("/api/covid/ua")
+	@GetMapping(value = "/api/covid/ua", produces = "application/json")
 	public String covidUa() {
 		return covid.jsonUaReport();
 	}

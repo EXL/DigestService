@@ -67,6 +67,9 @@ public class SiteHelper {
 	@Value("${bot.motofan-chat-id}")
 	private long motofanChatId;
 
+	@Value("${bot.admins}")
+	private String[] botAdmins;
+
 	public SiteHelper(SiteConfiguration config, LocaleHelper locale, FilterHelper filter, BotHelper helper) {
 		this.config = config;
 		this.locale = locale;
@@ -468,5 +471,15 @@ public class SiteHelper {
 		toRate.setPrevPlatinum(fromRate.getPrevPlatinum());
 		toRate.setPrevPalladium(fromRate.getPrevPalladium());
 		return toRate;
+	}
+
+	public String generateAdminLink() {
+		StringJoiner joiner = new StringJoiner(", ");
+		for (String admin : botAdmins) {
+			String adminWithAt = "@" + admin;
+			joiner.add("<a href=\"//t.me/" + admin + "\" title=\"" + adminWithAt + "\" target=\"_blank\">" +
+				adminWithAt + "</a>");
+		}
+		return joiner.toString();
 	}
 }

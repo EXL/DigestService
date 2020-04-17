@@ -16,6 +16,7 @@ import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.form.SearchForm;
 import ru.exlmoto.digest.site.model.DigestModel;
 import ru.exlmoto.digest.site.model.PagerModel;
+import ru.exlmoto.digest.site.model.help.Help;
 import ru.exlmoto.digest.site.util.SiteHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -33,6 +34,12 @@ public class SiteController {
 
 	@Value("${bot.motofan-chat-id}")
 	private long motofanChatId;
+
+	@Value("${bot.max-digest-length}")
+	private long digestLength;
+
+	@Value("${bot.digest-page-posts}")
+	private long digestPerPage;
 
 	public SiteController(SiteConfiguration config,
 	                      DatabaseService service,
@@ -157,7 +164,7 @@ public class SiteController {
 	@RequestMapping(path = "/help")
 	public String help(@CookieValue(value = "lang", defaultValue = "ru") String tag, Model model) {
 		setTitleAndTime(model, "site.title.help", Locale.forLanguageTag(tag));
-		model.addAttribute("help", new Object());
+		model.addAttribute("help", new Help(digestLength, digestPerPage, helper.generateAdminLink()));
 
 		return "index";
 	}

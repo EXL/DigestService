@@ -63,12 +63,12 @@ class BotSenderTest {
 	@Test
 	public void testShrinkTest() {
 		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < 4000; i++) {
+		for (int i = 0; i < 5000; i++) {
 			builder.append("A");
 		}
 		String result = sender.shrinkText(builder.toString());
 		int length = result.length();
-		assertTrue(length < 3500);
+		assertTrue(length < 4096);
 		System.out.println(result.substring(length - 30));
 	}
 

@@ -8,10 +8,37 @@
 					<span class="table-header-description" th:utext="#{site.goto.home}">Description</span>
 				</span>
 				<div class="help-content">
-					<h2 class="help-title" th:text="#{site.help.title.commands}">User Commands</h2>
+					<h2 id="commands" class="help-title" th:text="#{site.help.title.commands}">User Commands</h2>
 					<p>
-						<span class="help-command">/digest</span> <span th:text="#{site.help.command.digest}"></span>
+						&bull; <strong class="help-command">/digest</strong> <span th:utext="#{site.help.command.digest}"></span>
 					</p>
+					<p>
+						<img class="help-image" src="../static/image/help-digest.png" th:src="@{/image/help-digest.png}" alt="/digest comand output." th:alt="#{site.help.command.digest.alt}" th:title="#{site.help.command.digest.alt}"/>
+					</p>
+					<p th:utext="#{site.help.command.digest.desc}"></p>
+					<p>
+						&bull; <strong class="help-command">/rate</strong> <span th:utext="#{site.help.command.rate}"></span>
+					</p>
+					<p>
+						<img class="help-image" src="../static/image/help-digest.png" th:src="@{/image/help-digest.png}" alt="/rate comand output." th:alt="#{site.help.command.rate.alt}" th:title="#{site.help.command.rate.alt}"/>
+					</p>
+					<p th:utext="#{site.help.command.rate.desc}"></p>
+					<p>
+						&bull; <strong class="help-command">/chart</strong> <span th:utext="#{site.help.command.chart}"></span>
+					</p>
+					<p>
+						&bull; <strong class="help-command">/start</strong> <span th:utext="#{site.help.command.start}"></span>
+					</p>
+					<p>
+						&bull; <strong class="help-command">/coffee</strong> <span th:utext="#{site.help.command.coffee}"></span>
+					</p>
+					<p>
+						&bull; <strong class="help-command">/game</strong> <span th:utext="#{site.help.command.game}"></span>
+					</p>
+					<p>
+						<img class="help-image" src="../static/image/help-game.png" th:src="@{/image/help-game.png}" alt="/game comand output." th:alt="#{site.help.command.game.alt}" th:title="#{site.help.command.game.alt}"/>
+					</p>
+					<p th:utext="#{site.help.command.game.desc}"></p>
 				</div>
 			</div>
 		</div>

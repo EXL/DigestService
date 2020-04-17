@@ -237,7 +237,7 @@ input, textarea, select {
 	min-height: 200px;
 	font-size: 12px;
 	line-height: 160%;
-	word-break: break-all;
+	word-break: break-word;
 }
 .divider {
 	background: #E6AD00;
@@ -302,6 +302,12 @@ input, textarea, select {
 }
 .help-command {
 	color: #0088CC;
+}
+.help-image {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid black;
 }
 
 /* Footer */

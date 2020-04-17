@@ -31,7 +31,7 @@ input, textarea, select {
 }
 textarea {
 	font-size: 11px;
-	vertical-align: baseline;
+	vertical-align: top;
 }
 table {
 	border-collapse: collapse;

@@ -297,6 +297,12 @@ input, textarea, select {
 	background: #FFF9EC;
 	padding: 5px;
 }
+.help-title {
+	color: chocolate;
+}
+.help-command {
+	color: #0088CC;
+}
 
 /* Footer */
 .copyright {

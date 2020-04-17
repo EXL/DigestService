@@ -7,7 +7,12 @@
 					<span class="table-header-title" th:utext="#{site.help.title}">Title</span>
 					<span class="table-header-description" th:utext="#{site.goto.home}">Description</span>
 				</span>
-				<div class="help-content" th:utext="#{site.help.content}">Help</div>
+				<div class="help-content">
+					<h2 class="help-title" th:text="#{site.help.title.commands}">User Commands</h2>
+					<p>
+						<span class="help-command">/digest</span> <span th:text="#{site.help.command.digest}"></span>
+					</p>
+				</div>
 			</div>
 		</div>
 	</body>

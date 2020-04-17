@@ -32,9 +32,9 @@ class GeneratorHelperTest {
 		assertNull(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.0001")));
 		assertNull(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.001")));
 
-		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.005"))).isEqualTo("-0.01");
-		assertThat(helper.getDifference(new BigDecimal("1.005"), new BigDecimal("1.0"))).isEqualTo("0.01");
-		assertThat(helper.getDifference(new BigDecimal("4.0"), new BigDecimal("3.0"))).isEqualTo("1.00");
+		assertThat(helper.getDifference(new BigDecimal("1.0"), new BigDecimal("1.005"))).isEqualTo("0.01");
+		assertThat(helper.getDifference(new BigDecimal("1.005"), new BigDecimal("1.0"))).isEqualTo("-0.01");
+		assertThat(helper.getDifference(new BigDecimal("4.0"), new BigDecimal("3.0"))).isEqualTo("-1.00");
 	}
 	
 	@Test
@@ -91,5 +91,15 @@ class GeneratorHelperTest {
 		assertTrue(helper.isDateNotEmpty("08-JAN-2020"));
 		assertTrue(helper.isDateNotEmpty("08/01/20"));
 		assertTrue(helper.isDateNotEmpty("StringValue"));
+	}
+
+	@Test
+	public void testGetValue() {
+		assertEquals("0.0", helper.getValue(null));
+		assertEquals("0.0", helper.getValue(""));
+		assertEquals("0.0", helper.getValue("abc"));
+		assertEquals("0", helper.getValue("0"));
+		assertEquals("1", helper.getValue("1"));
+		assertEquals("1.0", helper.getValue("1.0"));
 	}
 }

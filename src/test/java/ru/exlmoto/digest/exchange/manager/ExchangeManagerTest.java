@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
 import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
-import ru.exlmoto.digest.repository.ExchangeRateRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,18 +24,18 @@ class ExchangeManagerTest {
 	private ExchangeConfiguration config;
 
 	@MockBean
-	private ExchangeRateRepository repository;
+	private DatabaseService service;
 
 	@Test
 	public void testRateException() {
-		when(repository.getBankRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
+		when(service.getBankRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
 		manager.commitBankRu(config.getBankRu(), config.getBankRuMirror());
 
-		when(repository.getBankUa()).thenReturn(null);
-		assertNull(repository.getBankUa());
+		when(service.getBankUa()).thenReturn(null);
+		assertNull(service.getBankUa());
 
-		when(repository.getMetalRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
-		assertThrows(InvalidDataAccessResourceUsageException.class, () -> repository.getMetalRu());
+		when(service.getMetalRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
+		assertThrows(InvalidDataAccessResourceUsageException.class, () -> service.getMetalRu());
 	}
 
 	@Test

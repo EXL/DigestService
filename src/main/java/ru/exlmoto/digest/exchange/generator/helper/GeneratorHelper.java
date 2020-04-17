@@ -1,11 +1,16 @@
 package ru.exlmoto.digest.exchange.generator.helper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Component
 public class GeneratorHelper {
+	private final Logger log = LoggerFactory.getLogger(GeneratorHelper.class);
+
 	public String getDifference(BigDecimal prev, BigDecimal current) {
 		if (prev == null || current == null) {
 			return null;
@@ -16,11 +21,23 @@ public class GeneratorHelper {
 		if (prev.compareTo(current) == 0) {
 			return null;
 		}
-		BigDecimal difference = new BigDecimal(String.format("%.2f", prev.subtract(current)));
+		BigDecimal difference = new BigDecimal(String.format("%.2f", current.subtract(prev)));
 		if (difference.signum() == 0) {
 			return null;
 		}
 		return difference.toString();
+	}
+
+	public String getValue(String diff) {
+		if (diff != null && !diff.isEmpty()) {
+			try {
+				new BigDecimal(diff);
+				return diff;
+			} catch (NumberFormatException nfe) {
+				log.error(String.format("Cannot parse number value from '%s' string.", diff), nfe);
+			}
+		}
+		return "0.0";
 	}
 
 	public String normalizeValue(BigDecimal value) {

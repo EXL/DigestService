@@ -6,15 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
-import org.springframework.data.domain.Pageable;
 
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
-import ru.exlmoto.digest.repository.BotDigestRepository;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 
@@ -24,7 +23,7 @@ class DigestCommandTest {
 	private DigestCommand command;
 
 	@MockBean
-	private BotDigestRepository botDigestRepository;
+	private DatabaseService service;
 
 	@Autowired
 	private BotHelper helper;
@@ -42,7 +41,7 @@ class DigestCommandTest {
 		command.execute(helper, sender, locale, update.getSimpleMessage("/digest", "anyone"));
 
 		doThrow(new InvalidDataAccessResourceUsageException("Test!"))
-			.when(botDigestRepository).findBotDigestEntitiesByChat(any(Pageable.class), anyLong());
+			.when(service).getChatDigestsCommand(anyInt(), anyInt(), anyLong());
 
 		command.execute(helper, sender, locale, update.getSimpleMessage("/digest", "anyone"));
 	}

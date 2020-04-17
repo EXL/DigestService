@@ -89,8 +89,7 @@ public abstract class RateParser {
 		}
 
 		entity.setDate(date);
-		entity.setPrev((prevValue == null) ? parsedPrevValue() : prevValue);
-
+		setPrevGeneralValues(entity, prevValue);
 		commitGeneralValues(entity);
 
 		service.saveExchange(entity);
@@ -108,7 +107,7 @@ public abstract class RateParser {
 
 	protected abstract ExchangeRateEntity getEntity(DatabaseService service);
 
-	protected abstract BigDecimal parsedPrevValue();
+	protected abstract void setPrevGeneralValues(ExchangeRateEntity entity, BigDecimal prevValue);
 
 	protected abstract int entityId();
 

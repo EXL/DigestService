@@ -20,16 +20,28 @@ public abstract class BankParser extends RateParser {
 	protected BigDecimal gbp = null;
 
 	@Override
-	protected BigDecimal parsedPrevValue() {
-		return usd;
+	protected void setPrevGeneralValues(ExchangeRateEntity entity, BigDecimal prevValue) {
+		if (prevValue != null) {
+			entity.setPrevUsd(entity.getUsd());
+			entity.setPrevEur(entity.getEur());
+			entity.setPrevGbp(entity.getGbp());
+			entity.setPrevCny(entity.getCny());
+			setPrevValuesAux(entity);
+		} else {
+			entity.setPrevUsd(usd);
+			entity.setPrevEur(eur);
+			entity.setPrevCny(cny);
+			entity.setPrevGbp(gbp);
+			setPrevValuesFirstAux(entity);
+		}
 	}
 
 	@Override
 	protected void commitGeneralValues(ExchangeRateEntity entity) {
 		entity.setUsd(usd);
 		entity.setEur(eur);
-		entity.setCny(cny);
 		entity.setGbp(gbp);
+		entity.setCny(cny);
 
 		commitAux(entity);
 	}
@@ -49,4 +61,8 @@ public abstract class BankParser extends RateParser {
 	}
 
 	protected abstract void commitAux(ExchangeRateEntity entity);
+
+	protected abstract void setPrevValuesFirstAux(ExchangeRateEntity entity);
+
+	protected abstract void setPrevValuesAux(ExchangeRateEntity entity);
 }

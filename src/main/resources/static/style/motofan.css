@@ -237,7 +237,7 @@ input, textarea, select {
 	min-height: 200px;
 	font-size: 12px;
 	line-height: 160%;
-	word-break: break-all;
+	word-break: break-word;
 }
 .divider {
 	background: #E6AD00;
@@ -296,6 +296,40 @@ input, textarea, select {
 .help-content {
 	background: #FFF9EC;
 	padding: 5px;
+}
+.help-title {
+	color: chocolate;
+}
+.help-title a {
+	text-decoration: none;
+	color: orange;
+}
+.help-title a:hover {
+	color: red;
+}
+.help-command {
+	color: #0088CC;
+}
+.help-argument {
+	color: darkblue;
+}
+.help-image {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid black;
+}
+.help-shift {
+	margin-left: 10px;
+}
+.help-navigation {
+	float: right;
+}
+.help-admins a {
+	color: red;
+}
+.help-admins a:hover {
+	color: #FF6600;
 }
 
 /* Footer */

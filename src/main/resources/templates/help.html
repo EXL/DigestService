@@ -2,43 +2,84 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 	<body>
 		<div class="page">
+			<!--/*@thymesVar id="help" type="ru.exlmoto.digest.site.model.help.Help"*/-->
 			<div th:fragment="assist" class="user">
-				<span class="table-header">
+				<span id="up" class="table-header">
 					<span class="table-header-title" th:utext="#{site.help.title}">Title</span>
 					<span class="table-header-description" th:utext="#{site.goto.home}">Description</span>
 				</span>
-				<div class="help-content">
-					<h2 id="commands" class="help-title" th:text="#{site.help.title.commands}">User Commands</h2>
-					<p>
-						&bull; <strong class="help-command">/digest</strong> <span th:utext="#{site.help.command.digest}"></span>
-					</p>
+				<div class="help-content" th:with="desc=#{site.help.command.digest.desc}">
+					<h2 id="commands" class="help-title">
+						<a href="#commands" th:title="#{site.help.title.commands}">#</a>
+						<span th:text="#{site.help.title.commands}">User Commands</span>
+						<span class="help-navigation">
+							<a href="#down" class="copyright" th:title="#{site.help.down.title}" th:text="#{site.help.down}">Go Down</a>
+						</span>
+					</h2>
+					<p th:utext="#{site.help.command.digest}">/digest</p>
 					<p>
 						<img class="help-image" src="../static/image/help-digest.png" th:src="@{/image/help-digest.png}" alt="/digest comand output." th:alt="#{site.help.command.digest.alt}" th:title="#{site.help.command.digest.alt}"/>
 					</p>
-					<p th:utext="#{site.help.command.digest.desc}"></p>
-					<p>
-						&bull; <strong class="help-command">/rate</strong> <span th:utext="#{site.help.command.rate}"></span>
-					</p>
+					<p th:with="part=${#strings.replace(desc, '%message%', help.digestPerPage)}" th:utext="${#strings.replace(part, '%length%', help.digestLength)}"></p>
+					<p th:utext="#{site.help.command.rate}">/rate</p>
 					<p>
 						<img class="help-image" src="../static/image/help-digest.png" th:src="@{/image/help-digest.png}" alt="/rate comand output." th:alt="#{site.help.command.rate.alt}" th:title="#{site.help.command.rate.alt}"/>
 					</p>
 					<p th:utext="#{site.help.command.rate.desc}"></p>
-					<p>
-						&bull; <strong class="help-command">/chart</strong> <span th:utext="#{site.help.command.chart}"></span>
-					</p>
-					<p>
-						&bull; <strong class="help-command">/start</strong> <span th:utext="#{site.help.command.start}"></span>
-					</p>
-					<p>
-						&bull; <strong class="help-command">/coffee</strong> <span th:utext="#{site.help.command.coffee}"></span>
-					</p>
-					<p>
-						&bull; <strong class="help-command">/game</strong> <span th:utext="#{site.help.command.game}"></span>
-					</p>
+					<p th:utext="#{site.help.command.chart}">/chart</p>
+					<p th:utext="#{site.help.command.start}">/start</p>
+					<p th:utext="#{site.help.command.coffee}">/coffee</p>
+					<p th:utext="#{site.help.command.game}">/game</p>
 					<p>
 						<img class="help-image" src="../static/image/help-game.png" th:src="@{/image/help-game.png}" alt="/game comand output." th:alt="#{site.help.command.game.alt}" th:title="#{site.help.command.game.alt}"/>
 					</p>
 					<p th:utext="#{site.help.command.game.desc}"></p>
+					<p th:utext="#{site.help.command.subscribe}">/subscribe</p>
+					<p>
+						<img class="help-image" src="../static/image/help-subscribe.png" th:src="@{/image/help-subscribe.png}" alt="/subscribe comand output." th:alt="#{site.help.command.subscribe.alt}" th:title="#{site.help.command.subscribe.alt}"/>
+					</p>
+					<p th:utext="#{site.help.command.subscribe.desc}"></p>
+					<p th:utext="#{site.help.command.game}">/help</p>
+					<h2 id="admin-commands" class="help-title">
+						<a href="#admin-commands" th:title="#{site.help.title.admin}">#</a>
+						<span th:text="#{site.help.title.admin}">Admin Commands</span>
+					</h2>
+					<p th:utext="#{site.help.command.greeting}">/greeting</p>
+					<p>
+						<img class="help-image" src="../static/image/help-greeting.png" th:src="@{/image/help-greeting.png}" alt="/greeting comand output." th:alt="#{site.help.command.greeting.alt}" th:title="#{site.help.command.greeting.alt}"/>
+					</p>
+					<p th:utext="#{site.help.command.greeting.desc}"></p>
+					<h2 id="owner-commands" class="help-title">
+						<a href="#owner-commands" th:title="#{site.help.title.owner}">#</a>
+						<span th:text="#{site.help.title.owner}">Owner Commands</span>
+					</h2>
+					<p th:utext="#{site.help.command.hello}">/hello</p>
+					<p th:utext="#{site.help.command.show}">/show</p>
+					<p>
+						<img class="help-image" src="../static/image/help-show.png" th:src="@{/image/help-show.png}" alt="/show comand output." th:alt="#{site.help.command.show.alt}" th:title="#{site.help.command.show.alt}"/>
+					</p>
+					<p th:utext="#{site.help.command.show.desc}"></p>
+					<p th:utext="#{site.help.command.delete}">/delete</p>
+					<p th:utext="#{site.help.command.send}">/send</p>
+					<p th:utext="#{site.help.command.sticker}">/sticker</p>
+					<p th:utext="#{site.help.command.image}">/image</p>
+					<p th:utext="#{site.help.command.debug}">/debug</p>
+					<p>
+						<img class="help-image" src="../static/image/help-debug.png" th:src="@{/image/help-debug.png}" alt="/debug comand output." th:alt="#{site.help.command.debug.alt}" th:title="#{site.help.command.debug.alt}"/>
+					</p>
+					<p th:utext="#{site.help.command.debug.desc}"></p>
+					<p th:utext="#{site.help.command.info}">/info</p>
+					<h2 id="other" class="help-title">
+						<a href="#other" th:title="#{site.help.title.other}">#</a>
+						<span th:text="#{site.help.title.other}">Other Information</span>
+					</h2>
+					<p th:utext="#{site.help.other}">Information</p>
+					<h2 id="down" class="help-title">
+						<span class="help-navigation">
+							<a href="#up" class="copyright" th:title="#{site.help.up.title}" th:text="#{site.help.up}">Go Up</a>
+						</span>
+					</h2>
+					<p th:with="admins=#{site.help.other.admin}" th:utext="${#strings.replace(admins, '%admin%', help.admins)}">Admins</p>
 				</div>
 			</div>
 		</div>

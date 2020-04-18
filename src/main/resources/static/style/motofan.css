@@ -300,14 +300,30 @@ input, textarea, select {
 .help-title {
 	color: chocolate;
 }
+.help-title a {
+	text-decoration: none;
+	color: orange;
+}
+.help-title a:hover {
+	color: red;
+}
 .help-command {
 	color: #0088CC;
+}
+.help-argument {
+	color: darkblue;
 }
 .help-image {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 	border: 1px solid black;
+}
+.help-shift {
+	margin-left: 10px;
+}
+.help-navigation {
+	float: right;
 }
 
 /* Footer */

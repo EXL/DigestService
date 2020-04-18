@@ -477,8 +477,8 @@ public class SiteHelper {
 		StringJoiner joiner = new StringJoiner(", ");
 		for (String admin : botAdmins) {
 			String adminWithAt = "@" + admin;
-			joiner.add("<a href=\"//t.me/" + admin + "\" title=\"" + adminWithAt + "\" target=\"_blank\">" +
-				adminWithAt + "</a>");
+			joiner.add("<strong><a href=\"//t.me/" + admin + "\" title=\"" + adminWithAt + "\" target=\"_blank\">" +
+				admin + "</a></strong>");
 		}
 		return joiner.toString();
 	}

@@ -84,7 +84,7 @@
 							<a href="#up" class="copyright" th:title="#{site.help.up.title}" th:text="#{site.help.up}">Go Up</a>
 						</span>
 					</h2>
-					<p th:with="admins=#{site.help.other.admin}" th:utext="${#strings.replace(admins, '%admin%', help.admins)}">Admins</p>
+					<p class="help-admins" th:with="admins=#{site.help.other.admin}" th:utext="${#strings.replace(admins, '%admin%', help.admins)}">Admins</p>
 				</div>
 			</div>
 		</div>

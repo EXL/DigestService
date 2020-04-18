@@ -325,6 +325,12 @@ input, textarea, select {
 .help-navigation {
 	float: right;
 }
+.help-admins a {
+	color: red;
+}
+.help-admins a:hover {
+	color: #FF6600;
+}
 
 /* Footer */
 .copyright {

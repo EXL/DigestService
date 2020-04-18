@@ -433,7 +433,7 @@ class SiteHelperTest {
 	@Test
 	public void testGenerateAdminLink() {
 		String res = helper.generateAdminLink();
-		assertTrue(res.contains("<a href=\"//t.me/exlmoto\" title=\"@exlmoto\" target=\"_blank\">@exlmoto</a>"));
+		assertTrue(res.contains("<a href=\"//t.me/exlmoto\" title=\"@exlmoto\" target=\"_blank\">exlmoto</a>"));
 		System.out.println(res);
 	}
 }

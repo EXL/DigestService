@@ -9,14 +9,38 @@
 					<span class="table-header-description" th:utext="#{site.goto.home}">Description</span>
 				</span>
 				<div class="help-content" th:with="desc=#{site.help.command.digest.desc}">
-					<h2 id="about" class="help-title">
-						<a href="#about" th:title="#{site.help.title.about}">#</a>
-						<span th:text="#{site.help.title.about}">About Service</span>
+					<h2 id="content" class="help-title">
+						<a href="#content" th:title="#{site.help.title.content}">#</a>
+						<span th:text="#{site.help.title.content}">Table of Contents</span>
 						<span class="help-navigation">
 							<a href="#down" class="copyright" th:title="#{site.help.down.title}" th:text="#{site.help.down}">Go Down</a>
 						</span>
 					</h2>
+					<ol class="help-content-table">
+						<li>
+							<a href="#about" th:title="#{site.help.title.about}" th:text="#{site.help.title.about}">About Service</a>
+						</li>
+						<li>
+							<a href="#commands" th:title="#{site.help.title.commands}" th:text="#{site.help.title.commands}">User Commands</a>
+						</li>
+						<li>
+							<a href="#admin-commands" th:title="#{site.help.title.admin}" th:text="#{site.help.title.admin}">Admin Commands</a>
+						</li>
+						<li>
+							<a href="#owner-commands" th:title="#{site.help.title.owner}" th:text="#{site.help.title.owner}">Owner Commands</a>
+						</li>
+						<li>
+							<a href="#other" th:title="#{site.help.title.other}" th:text="#{site.help.title.other}">Other Information</a>
+						</li>
+					</ol>
+					<h2 id="about" class="help-title">
+						<a href="#about" th:title="#{site.help.title.about}">#</a>
+						<span th:text="#{site.help.title.about}">About Service</span>
+					</h2>
 					<p th:utext="#{site.help.about}"></p>
+					<p>
+						<a href="#content" th:text="#{site.help.back}">Back to the Table of Contents</a>
+					</p>
 					<h2 id="commands" class="help-title">
 						<a href="#commands" th:title="#{site.help.title.commands}">#</a>
 						<span th:text="#{site.help.title.commands}">User Commands</span>
@@ -45,6 +69,9 @@
 					</p>
 					<p th:utext="#{site.help.command.subscribe.desc}"></p>
 					<p th:utext="#{site.help.command.help}">/help</p>
+					<p>
+						<a href="#content" th:text="#{site.help.back}">Back to the Table of Contents</a>
+					</p>
 					<h2 id="admin-commands" class="help-title">
 						<a href="#admin-commands" th:title="#{site.help.title.admin}">#</a>
 						<span th:text="#{site.help.title.admin}">Admin Commands</span>
@@ -54,6 +81,9 @@
 						<img class="help-image" src="../static/image/help-greeting.png" th:src="@{/image/help-greeting.png}" alt="/greeting comand output." th:alt="#{site.help.command.greeting.alt}" th:title="#{site.help.command.greeting.alt}"/>
 					</p>
 					<p th:utext="#{site.help.command.greeting.desc}"></p>
+					<p>
+						<a href="#content" th:text="#{site.help.back}">Back to the Table of Contents</a>
+					</p>
 					<h2 id="owner-commands" class="help-title">
 						<a href="#owner-commands" th:title="#{site.help.title.owner}">#</a>
 						<span th:text="#{site.help.title.owner}">Owner Commands</span>
@@ -74,17 +104,23 @@
 					</p>
 					<p th:utext="#{site.help.command.debug.desc}"></p>
 					<p th:utext="#{site.help.command.info}">/info</p>
+					<p>
+						<a href="#content" th:text="#{site.help.back}">Back to the Table of Contents</a>
+					</p>
 					<h2 id="other" class="help-title">
 						<a href="#other" th:title="#{site.help.title.other}">#</a>
 						<span th:text="#{site.help.title.other}">Other Information</span>
 					</h2>
 					<p th:utext="#{site.help.other}">Information</p>
+					<p class="help-admins" th:with="admins=#{site.help.other.admin}" th:utext="${#strings.replace(admins, '%admin%', help.admins)}">Admins</p>
 					<h2 id="down" class="help-title">
 						<span class="help-navigation">
 							<a href="#up" class="copyright" th:title="#{site.help.up.title}" th:text="#{site.help.up}">Go Up</a>
 						</span>
 					</h2>
-					<p class="help-admins" th:with="admins=#{site.help.other.admin}" th:utext="${#strings.replace(admins, '%admin%', help.admins)}">Admins</p>
+					<p>
+						<a href="#content" th:text="#{site.help.back}">Back to the Table of Contents</a>
+					</p>
 				</div>
 			</div>
 		</div>

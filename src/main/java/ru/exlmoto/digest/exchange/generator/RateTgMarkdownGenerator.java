@@ -146,18 +146,26 @@ public class RateTgMarkdownGenerator {
 			filterDate(metalRuEntity.getDate()));
 		report += "\n```\n";
 		report += String.format("%s %s RUB%s\n", filterMetalName(locale.i18n("exchange.metal.ru.gold")),
-			filterValue(gold), filterDifference(metalRuEntity.getPrevGold(), gold));
+			filterValue(gold), filterDifferenceMetal(metalRuEntity.getPrevGold(), gold));
 		report += String.format("%s %s RUB%s\n", filterMetalName(locale.i18n("exchange.metal.ru.silver")),
-			filterValue(silver), filterDifference(metalRuEntity.getPrevSilver(), silver));
+			filterValue(silver), filterDifferenceMetal(metalRuEntity.getPrevSilver(), silver));
 		report += String.format("%s %s RUB%s\n", filterMetalName(locale.i18n("exchange.metal.ru.platinum")),
-			filterValue(platinum), filterDifference(metalRuEntity.getPrevPlatinum(), platinum));
+			filterValue(platinum), filterDifferenceMetal(metalRuEntity.getPrevPlatinum(), platinum));
 		report += String.format("%s %s RUB%s\n", filterMetalName(locale.i18n("exchange.metal.ru.palladium")),
-			filterValue(palladium), filterDifference(metalRuEntity.getPrevPalladium(), palladium));
+			filterValue(palladium), filterDifferenceMetal(metalRuEntity.getPrevPalladium(), palladium));
 		return report + "```";
 	}
 
 	private String filterDifference(BigDecimal prev, BigDecimal current) {
-		final int LIMIT = 6;
+		return filterDifference(prev, current, false);
+	}
+
+	private String filterDifferenceMetal(BigDecimal prev, BigDecimal current) {
+		return filterDifference(prev, current, true);
+	}
+
+	private String filterDifference(BigDecimal prev, BigDecimal current, boolean isLong) {
+		final int LIMIT = (isLong) ? 8 : 6;
 		final String SPACE = " ";
 
 		String difference = helper.getDifference(prev, current);

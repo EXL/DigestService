@@ -25,11 +25,11 @@ class LoginControllerTest {
 		helper.checkUnauthorized(mvc, "/ds-auth-login");
 		helper.checkAuthorizedWithoutCsrf(mvc, "/ds-auth-login");
 		// helper.checkAuthorizedWithCsrf(mvc, "/ds-auth-login");
-		helper.checkAuthorizedWithCsrfRedirect(mvc, "/ds-auth-login", "/obey");
+		helper.checkAuthorizedWithCsrfRedirect(mvc, "/ds-auth-login", "/**/obey");
 	}
 
 	@Test
 	public void testLogout() throws Exception {
-		helper.checkRedirect(mvc, "/ds-auth-logout", "/");
+		helper.checkRedirect(mvc, "/ds-auth-logout", "/**");
 	}
 }

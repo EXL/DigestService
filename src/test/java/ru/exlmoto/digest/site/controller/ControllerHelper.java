@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.site.controller;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
@@ -15,7 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -41,14 +42,14 @@ public class ControllerHelper {
 		validateHtmlAux(mvc, path, "text/html", contains);
 	}
 
-	public void checkRedirect(MockMvc mvc, String path, String redirectPath) throws Exception {
-		mvc.perform(get(path).contentType(MediaType.TEXT_HTML))
-			.andExpect(redirectedUrl(redirectPath))
-			.andExpect(status().isFound());
-	}
-
 	public void validateHtmlUtf8(MockMvc mvc, String path, String contains) throws Exception {
 		validateHtmlAux(mvc, path, "text/html;charset=UTF-8", contains);
+	}
+
+	public void checkRedirect(MockMvc mvc, String path, String redirectPattern) throws Exception {
+		mvc.perform(get(path).contentType(MediaType.TEXT_HTML))
+			.andExpect(redirectedUrlPattern(redirectPattern))
+			.andExpect(status().isFound());
 	}
 
 	public void checkUnauthorized(MockMvc mvc, String path) throws Exception {
@@ -56,6 +57,7 @@ public class ControllerHelper {
 			.param("username", "user")
 			.param("password", "wrong-password")
 			.with(unauthorizedUser()))
+				.andDo(print())
 				.andExpect(status().isForbidden());
 	}
 
@@ -64,6 +66,7 @@ public class ControllerHelper {
 			.param("username", "admin")
 			.param("password", "password")
 			.with(authorizedUser()))
+				.andDo(print())
 				.andExpect(status().isForbidden());
 	}
 
@@ -73,17 +76,39 @@ public class ControllerHelper {
 			.param("password", "password")
 			.with(authorizedUser())
 			.with(csrf()))
-			.andExpect(status().isCreated());
+				.andDo(print())
+				.andExpect(status().isCreated());
 	}
 
-	public void checkAuthorizedWithCsrfRedirect(MockMvc mvc, String path, String redirectPath) throws Exception {
+	public void checkAuthorizedWithCsrfRedirect(MockMvc mvc, String path, String redirectPattern) throws Exception {
+		checkAuthorizedWithCsrfRedirectParam(mvc, path, redirectPattern,
+			"username", "admin", "password", "password");
+	}
+
+	public void checkAuthorizedWithCsrfRedirectParam(MockMvc mvc, String path, String redirectPattern,
+	                                                 String paramFirst, String valueFirst,
+	                                                 String paramSecond, String valueSecond) throws Exception {
+		authorizedAux(mvc, path, redirectPattern, paramFirst, valueFirst, paramSecond, valueSecond, authorizedUser());
+	}
+
+	public void checkAuthorizedWithCsrfRedirectWrongRole(MockMvc mvc, String path,
+	                                                     String redirectPattern) throws Exception {
+		authorizedAux(mvc, path, redirectPattern,
+			"username", "admin", "password", "password",
+			authorizedUserWrongRole());
+	}
+
+	private void authorizedAux(MockMvc mvc, String path, String redirectPattern,
+	                           String paramFirst, String valueFirst, String paramSecond, String valueSecond,
+	                           RequestPostProcessor user) throws Exception {
 		mvc.perform(post(path).contentType(MediaType.TEXT_HTML)
-			.param("username", "admin")
-			.param("password", "password")
-			.with(authorizedUser())
+			.param(paramFirst, valueFirst)
+			.param(paramSecond, valueSecond)
+			.with(user)
 			.with(csrf()))
-			.andExpect(redirectedUrl(redirectPath))
-			.andExpect(status().isFound());
+				.andDo(print())
+				.andExpect(redirectedUrlPattern(redirectPattern))
+				.andExpect(status().isFound());
 	}
 
 	private void validateHtmlAux(MockMvc mvc, String path, String produces, String contains) throws Exception {
@@ -106,10 +131,17 @@ public class ControllerHelper {
 	}
 
 	private RequestPostProcessor unauthorizedUser() {
-		return user("user").password("wrong-password").roles(Role.Administrator.name());
+		return user("user").password("wrong-password")
+			.authorities(new SimpleGrantedAuthority(Role.Administrator.name()));
 	}
 
 	private RequestPostProcessor authorizedUser() {
-		return user("admin").password("password").roles(Role.Owner.name());
+		return user("admin").password("password")
+			.authorities(new SimpleGrantedAuthority(Role.Owner.name()));
+	}
+
+	private RequestPostProcessor authorizedUserWrongRole() {
+		return user("admin").password("password")
+			.authorities(new SimpleGrantedAuthority(Role.Administrator.name()));
 	}
 }

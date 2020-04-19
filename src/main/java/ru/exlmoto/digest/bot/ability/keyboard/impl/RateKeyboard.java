@@ -31,7 +31,8 @@ public class RateKeyboard extends KeyboardSimpleAbility {
 	private void generateKeyboard() {
 		InlineKeyboardButton[] keyboardRow = new InlineKeyboardButton[ExchangeKey.values().length];
 		int i = 0;
-		for(ExchangeKey key: ExchangeKey.values()) {
+		ExchangeKey[] exchangeKeys = ExchangeKey.values();
+		for (ExchangeKey key : exchangeKeys) {
 			keyboardRow[i++] = new InlineKeyboardButton(service.buttonLabel(key.name()))
 				.callbackData(Keyboard.rate.withName() + key);
 		}

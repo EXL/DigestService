@@ -31,7 +31,8 @@ public class AvatarWorker {
 
 		public static boolean checkImageExtension(String link) {
 			if (link != null) {
-				for (Extension value : values()) {
+				Extension[] extensions = values();
+				for (Extension value : extensions) {
 					if (link.endsWith("." + value.name()) || link.endsWith("." + value.name().toUpperCase())) {
 						return true;
 					}

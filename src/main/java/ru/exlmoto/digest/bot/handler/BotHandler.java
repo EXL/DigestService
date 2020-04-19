@@ -61,7 +61,8 @@ public class BotHandler {
 
 	public void onCommand(Message message) {
 		final int START = 0;
-		for (MessageEntity entity : message.entities()) {
+		MessageEntity[] messageEntities = message.entities();
+		for (MessageEntity entity : messageEntities) {
 			if (entity.type().equals(bot_command) && entity.offset() == START) {
 				Optional<BotAbility<Message>> ability =
 					abilityFactory.getMessageAbility(message.text().substring(START, entity.length()));
@@ -76,7 +77,8 @@ public class BotHandler {
 	}
 
 	public void onHashTag(Message message) {
-		for (MessageEntity entity : message.entities()) {
+		MessageEntity[] messageEntities = message.entities();
+		for (MessageEntity entity : messageEntities) {
 			if (entity.type().equals(hashtag)) {
 				int offset = entity.offset();
 				Optional<BotAbility<Message>> ability =

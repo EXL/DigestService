@@ -45,7 +45,9 @@ import ru.exlmoto.digest.site.model.digest.Digest;
 import ru.exlmoto.digest.site.model.member.Member;
 import ru.exlmoto.digest.site.model.participant.Participant;
 import ru.exlmoto.digest.site.util.SiteHelper;
+import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.Role;
+import ru.exlmoto.digest.util.file.ImageHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.util.ArrayList;
@@ -69,6 +71,7 @@ public class ObeyController {
 	private final CovidWorker covidWorker;
 	private final ExchangeService exchange;
 	private final BotSender sender;
+	private final ImageHelper rest;
 	private final SiteConfiguration config;
 
 	final int LONG_TEXT = 100;
@@ -89,7 +92,7 @@ public class ObeyController {
 	                      MorningWorker morningWorker,
 	                      CovidWorker covidWorker,
 	                      ExchangeService exchange,
-	                      BotSender sender, SiteConfiguration config) {
+	                      BotSender sender, ImageHelper rest, SiteConfiguration config) {
 		this.helper = helper;
 		this.service = service;
 		this.filter = filter;
@@ -101,6 +104,7 @@ public class ObeyController {
 		this.covidWorker = covidWorker;
 		this.exchange = exchange;
 		this.sender = sender;
+		this.rest = rest;
 		this.config = config;
 	}
 
@@ -419,12 +423,17 @@ public class ObeyController {
 			sender.sendStickerToChat(send.getStickerChatId(), send.getStickerChatArg());
 		}
 		if (send.checkImage()) {
-			sender.sendPhotoToChat(send.getImageChatId(), send.getImageChatArg());
+			String imageLink = send.getImageChatArg();
+			Answer<String> imageRes = rest.getImageByLink(imageLink);
+			if (imageRes.ok()) {
+				sender.sendPhotoToChat(send.getImageChatId(), imageRes.answer());
+			} else {
+				log.error(String.format("Cannot get image by link '%s', reason: '%s'.", imageLink, imageRes.error()));
+			}
 		}
 
 		return "redirect:/obey/send";
 	}
-
 
 	@RequestMapping(path = "/obey/member")
 	public String obeyMember(@RequestParam(name = "edit", required = false) String edit,

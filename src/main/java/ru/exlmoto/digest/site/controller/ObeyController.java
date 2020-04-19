@@ -304,7 +304,7 @@ public class ObeyController {
 	public String obeyMotofanUpdate() {
 		motofanWorker.workOnMotofanPosts();
 
-		return "redirect:/obey";
+		return "redirect:/obey/sub-motofan";
 	}
 
 	@RequestMapping(path = "/obey/sub-greeting")
@@ -366,7 +366,7 @@ public class ObeyController {
 	public String obeyCovidSend() {
 		covidWorker.workOnCovidReport();
 
-		return "redirect:/obey";
+		return "redirect:/obey/sub-covid";
 	}
 
 	@RequestMapping(path = "/obey/exchange")

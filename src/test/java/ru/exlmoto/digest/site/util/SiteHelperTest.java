@@ -431,6 +431,13 @@ class SiteHelperTest {
 	}
 
 	@Test
+	public void testCopyRateValuesNullable() {
+		assertNull(helper.copyRateValues(null, null));
+		assertNull(helper.copyRateValues(null, new ExchangeRateEntity()));
+		assertNull(helper.copyRateValues(new ExchangeRateEntity(), null));
+	}
+
+	@Test
 	public void testGenerateAdminLink() {
 		String res = helper.generateAdminLink();
 		assertTrue(res.contains("<a href=\"//t.me/exlmoto\" title=\"@exlmoto\" target=\"_blank\">exlmoto</a>"));

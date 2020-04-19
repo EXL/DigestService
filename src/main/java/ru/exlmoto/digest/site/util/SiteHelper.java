@@ -445,6 +445,9 @@ public class SiteHelper {
 	}
 
 	public ExchangeRateEntity copyRateValues(ExchangeRateEntity fromRate, ExchangeRateEntity toRate) {
+		if (fromRate == null || toRate == null) {
+			return null;
+		}
 		toRate.setDate(fromRate.getDate());
 		toRate.setUsd(fromRate.getUsd());
 		toRate.setEur(fromRate.getEur());

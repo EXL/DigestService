@@ -47,7 +47,7 @@ class SiteControllerTest {
 	public void testLanguage() throws Exception {
 		helper.checkRedirectAndCookie(mvc, "/language", "/**", "lang", "ru");
 		helper.checkRedirectAndCookie(mvc, "/language?tag=en", "/**",
-			"lang", "ru");
+			"lang", "en");
 	}
 
 	@Test

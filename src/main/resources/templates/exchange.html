@@ -11,200 +11,199 @@
 							<div class="post-form">
 								<h3 th:text="#{site.obey.exchange}">Exchange Rates</h3>
 								<form th:action="@{/obey/exchange/edit}" th:object="${exchange}" th:method="post">
+									<table class="exchange-table">
+										<tr>
+											<th>Name</th>
+											<th>Date</th>
+											<th>Usd</th>
+											<th>Eur</th>
+											<th>Gbp</th>
+											<th>Cny</th>
+											<th>Rub</th>
+											<th>Uah</th>
+											<th>Byn</th>
+											<th>Kzt</th>
+											<th>Gold</th>
+											<th>Silver</th>
+											<th>Platinum</th>
+											<th>Palladium</th>
+										</tr>
+										<tr>
+											<td>RUB</td>
+											<td><label><input type="text" th:field="*{rub.date}" size="15"/></label></td>
+											<td><label><input type="text" th:field="*{rub.usd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.eur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.gbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.cny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.rub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.uah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.byn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.kzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.gold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.silver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.platinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.palladium}" size="10"/></label></td>
+										</tr>
+										<tr>
+											<td>UAH</td>
+											<td><label><input type="text" th:field="*{uah.date}" size="15"/></label></td>
+											<td><label><input type="text" th:field="*{uah.usd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.eur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.gbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.cny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.rub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.uah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.byn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.kzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.gold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.silver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.platinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.palladium}" size="10"/></label></td>
+										</tr>
+										<tr>
+											<td>BYN</td>
+											<td><label><input type="text" th:field="*{byn.date}" size="15"/></label></td>
+											<td><label><input type="text" th:field="*{byn.usd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.eur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.gbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.cny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.rub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.uah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.byn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.kzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.gold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.silver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.platinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.palladium}" size="10"/></label></td>
+										</tr>
+										<tr>
+											<td>KZT</td>
+											<td><label><input type="text" th:field="*{kzt.date}" size="15"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.usd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.eur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.gbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.cny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.rub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.uah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.byn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.kzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.gold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.silver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.platinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.palladium}" size="10"/></label></td>
+										</tr>
+										<tr>
+											<td>Metal</td>
+											<td><label><input type="text" th:field="*{metal.date}" size="15"/></label></td>
+											<td><label><input type="text" th:field="*{metal.usd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.eur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.gbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.cny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.rub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.uah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.byn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.kzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.gold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.silver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.platinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.palladium}" size="10"/></label></td>
+										</tr>
+									</table>
+									<table class="exchange-table">
+										<tr>
+											<th>Name</th>
+											<th>prevUsd</th>
+											<th>prevEur</th>
+											<th>prevGbp</th>
+											<th>prevCny</th>
+											<th>prevRub</th>
+											<th>prevUah</th>
+											<th>prevByn</th>
+											<th>prevKzt</th>
+											<th>prevGold</th>
+											<th>prevSilver</th>
+											<th>prevPlatinum</th>
+											<th>prevPalladium</th>
+										</tr>
+										<tr>
+											<td>RUB</td>
+											<td><label><input type="text" th:field="*{rub.prevUsd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevEur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevGbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevCny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevRub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevUah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevByn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevKzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevGold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevSilver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevPlatinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{rub.prevPalladium}" size="10"/></label></td>
+										</tr>
+										<tr>
+											<td>UAH</td>
+											<td><label><input type="text" th:field="*{uah.prevUsd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevEur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevGbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevCny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevRub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevUah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevByn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevKzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevGold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevSilver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevPlatinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{uah.prevPalladium}" size="10"/></label></td>
+										</tr>
+										<tr>
+											<td>BYN</td>
+											<td><label><input type="text" th:field="*{byn.prevUsd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevEur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevGbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevCny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevRub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevUah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevByn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevKzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevGold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevSilver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevPlatinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{byn.prevPalladium}" size="10"/></label></td>
+										</tr>
+										<tr>
+											<td>KZT</td>
+											<td><label><input type="text" th:field="*{kzt.prevUsd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevEur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevGbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevCny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevRub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevUah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevByn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevKzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevGold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevSilver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevPlatinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{kzt.prevPalladium}" size="10"/></label></td>
+										</tr>
+										<tr>
+											<td>Metal</td>
+											<td><label><input type="text" th:field="*{metal.prevUsd}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevEur}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevGbp}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevCny}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevRub}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevUah}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevByn}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevKzt}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevGold}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevSilver}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevPlatinum}" size="10"/></label></td>
+											<td><label><input type="text" th:field="*{metal.prevPalladium}" size="10"/></label></td>
+										</tr>
+									</table>
 									<p>
-										<table class="exchange-table">
-											<tr>
-												<th>Name</th>
-												<th>Date</th>
-												<th>Usd</th>
-												<th>Eur</th>
-												<th>Gbp</th>
-												<th>Cny</th>
-												<th>Rub</th>
-												<th>Uah</th>
-												<th>Byn</th>
-												<th>Kzt</th>
-												<th>Gold</th>
-												<th>Silver</th>
-												<th>Platinum</th>
-												<th>Palladium</th>
-											</tr>
-											<tr>
-												<td>RUB</td>
-												<td><input type="text" th:field="*{rub.date}" size="15"/></td>
-												<td><input type="text" th:field="*{rub.usd}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.eur}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.gbp}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.cny}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.rub}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.uah}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.byn}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.kzt}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.gold}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.silver}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.platinum}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.palladium}" size="10"/></td>
-											</tr>
-											<tr>
-												<td>UAH</td>
-												<td><input type="text" th:field="*{uah.date}" size="15"/></td>
-												<td><input type="text" th:field="*{uah.usd}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.eur}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.gbp}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.cny}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.rub}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.uah}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.byn}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.kzt}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.gold}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.silver}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.platinum}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.palladium}" size="10"/></td>
-											</tr>
-											<tr>
-												<td>BYN</td>
-												<td><input type="text" th:field="*{byn.date}" size="15"/></td>
-												<td><input type="text" th:field="*{byn.usd}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.eur}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.gbp}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.cny}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.rub}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.uah}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.byn}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.kzt}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.gold}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.silver}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.platinum}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.palladium}" size="10"/></td>
-											</tr>
-											<tr>
-												<td>KZT</td>
-												<td><input type="text" th:field="*{kzt.date}" size="15"/></td>
-												<td><input type="text" th:field="*{kzt.usd}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.eur}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.gbp}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.cny}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.rub}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.uah}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.byn}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.kzt}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.gold}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.silver}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.platinum}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.palladium}" size="10"/></td>
-											</tr>
-											<tr>
-												<td>Metal</td>
-												<td><input type="text" th:field="*{metal.date}" size="15"/></td>
-												<td><input type="text" th:field="*{metal.usd}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.eur}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.gbp}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.cny}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.rub}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.uah}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.byn}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.kzt}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.gold}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.silver}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.platinum}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.palladium}" size="10"/></td>
-											</tr>
-										</table>
-										<br/>
-										<table class="exchange-table">
-											<tr>
-												<th>Name</th>
-												<th>prevUsd</th>
-												<th>prevEur</th>
-												<th>prevGbp</th>
-												<th>prevCny</th>
-												<th>prevRub</th>
-												<th>prevUah</th>
-												<th>prevByn</th>
-												<th>prevKzt</th>
-												<th>prevGold</th>
-												<th>prevSilver</th>
-												<th>prevPlatinum</th>
-												<th>prevPalladium</th>
-											</tr>
-											<tr>
-												<td>RUB</td>
-												<td><input type="text" th:field="*{rub.prevUsd}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevEur}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevGbp}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevCny}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevRub}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevUah}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevByn}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevKzt}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevGold}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevSilver}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevPlatinum}" size="10"/></td>
-												<td><input type="text" th:field="*{rub.prevPalladium}" size="10"/></td>
-											</tr>
-											<tr>
-												<td>UAH</td>
-												<td><input type="text" th:field="*{uah.prevUsd}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevEur}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevGbp}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevCny}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevRub}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevUah}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevByn}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevKzt}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevGold}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevSilver}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevPlatinum}" size="10"/></td>
-												<td><input type="text" th:field="*{uah.prevPalladium}" size="10"/></td>
-											</tr>
-											<tr>
-												<td>BYN</td>
-												<td><input type="text" th:field="*{byn.prevUsd}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevEur}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevGbp}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevCny}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevRub}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevUah}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevByn}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevKzt}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevGold}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevSilver}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevPlatinum}" size="10"/></td>
-												<td><input type="text" th:field="*{byn.prevPalladium}" size="10"/></td>
-											</tr>
-											<tr>
-												<td>KZT</td>
-												<td><input type="text" th:field="*{kzt.prevUsd}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevEur}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevGbp}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevCny}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevRub}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevUah}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevByn}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevKzt}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevGold}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevSilver}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevPlatinum}" size="10"/></td>
-												<td><input type="text" th:field="*{kzt.prevPalladium}" size="10"/></td>
-											</tr>
-											<tr>
-												<td>Metal</td>
-												<td><input type="text" th:field="*{metal.prevUsd}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevEur}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevGbp}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevCny}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevRub}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevUah}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevByn}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevKzt}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevGold}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevSilver}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevPlatinum}" size="10"/></td>
-												<td><input type="text" th:field="*{metal.prevPalladium}" size="10"/></td>
-											</tr>
-										</table>
+										<input class="button" type="submit" value="Save" th:value="#{site.obey.content.action.save}"/>
 									</p>
-									<p><input class="button" type="submit" value="Save" th:value="#{site.obey.content.action.save}"/></p>
 								</form>
 							</div>
 							<div class="spring"></div>

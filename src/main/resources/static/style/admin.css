@@ -84,6 +84,7 @@ table td, table th {
 }
 .exchange-table {
 	width: 1024px;
+	margin-top: 5px;
 }
 .spring {
 	min-height: 700px;

@@ -68,7 +68,8 @@ public class MemberForm {
 	@Override
 	public String toString() {
 		return
-			"MemberForm{id=" + id +
+			"MemberForm{update=" + update +
+			", id=" + id +
 			", username=" + username +
 			", password=<cropped>" +
 			", role=" + role +

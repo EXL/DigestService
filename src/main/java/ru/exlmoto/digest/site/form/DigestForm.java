@@ -1,5 +1,7 @@
 package ru.exlmoto.digest.site.form;
 
+import org.springframework.util.StringUtils;
+
 public class DigestForm {
 	private boolean update;
 
@@ -11,7 +13,7 @@ public class DigestForm {
 	private String digest;
 
 	public boolean checkForm() {
-		return chatId != null && date != null && digest != null && userId != null;
+		return chatId != null && date != null && StringUtils.hasText(digest) && userId != null;
 	}
 
 	public boolean isUpdate() {

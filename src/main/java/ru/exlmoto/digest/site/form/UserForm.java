@@ -1,5 +1,7 @@
 package ru.exlmoto.digest.site.form;
 
+import org.springframework.util.StringUtils;
+
 public class UserForm {
 	private boolean update;
 
@@ -8,7 +10,7 @@ public class UserForm {
 	private String username;
 
 	public boolean checkForm() {
-		return id != null && username != null;
+		return id != null && StringUtils.hasText(username);
 	}
 
 	public boolean isUpdate() {

@@ -1,5 +1,7 @@
 package ru.exlmoto.digest.site.form;
 
+import org.springframework.util.StringUtils;
+
 public class SendForm {
 	private Long sendChatId;
 	private String sendChatArg;
@@ -11,15 +13,15 @@ public class SendForm {
 	private String imageChatArg;
 
 	public boolean checkSend() {
-		return sendChatId != null && sendChatArg != null && !sendChatArg.isEmpty();
+		return sendChatId != null && StringUtils.hasText(sendChatArg);
 	}
 
 	public boolean checkSticker() {
-		return stickerChatId != null && stickerChatArg != null && !stickerChatArg.isEmpty();
+		return stickerChatId != null && StringUtils.hasText(stickerChatArg);
 	}
 
 	public boolean checkImage() {
-		return imageChatId != null && imageChatArg != null && !imageChatArg.isEmpty();
+		return imageChatId != null && StringUtils.hasText(imageChatArg);
 	}
 
 	public Long getSendChatId() {

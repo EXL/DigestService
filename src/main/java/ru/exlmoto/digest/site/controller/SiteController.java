@@ -142,7 +142,7 @@ public class SiteController {
 	}
 
 	@RequestMapping(path = "/language")
-	public String lang(@RequestParam(name = "tag", defaultValue = "ru") String tag, HttpServletResponse response) {
+	public String language(@RequestParam(name = "tag", defaultValue = "ru") String tag, HttpServletResponse response) {
 		response.addCookie(new Cookie("lang", tag));
 
 		return "redirect:/";

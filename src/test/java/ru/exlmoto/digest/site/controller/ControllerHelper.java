@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
@@ -48,8 +49,24 @@ public class ControllerHelper {
 
 	public void checkRedirect(MockMvc mvc, String path, String redirectPattern) throws Exception {
 		mvc.perform(get(path).contentType(MediaType.TEXT_HTML))
+			.andDo(print())
 			.andExpect(redirectedUrlPattern(redirectPattern))
 			.andExpect(status().isFound());
+	}
+
+	public void checkRedirectAndCookie(MockMvc mvc, String path, String redirectPattern,
+	                                   String cookieName, String cookieValue) throws Exception {
+		mvc.perform(get(path).contentType(MediaType.TEXT_HTML))
+			.andExpect(cookie().value(cookieName, cookieValue))
+			.andDo(print())
+			.andExpect(redirectedUrlPattern(redirectPattern))
+			.andExpect(status().isFound());
+	}
+
+	public void checkError4xx(MockMvc mvc, String path) throws Exception {
+		mvc.perform(get(path).contentType(MediaType.TEXT_HTML))
+			.andDo(print())
+			.andExpect(status().is4xxClientError());
 	}
 
 	public void checkUnauthorized(MockMvc mvc, String path) throws Exception {

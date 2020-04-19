@@ -142,9 +142,8 @@ public class DatabaseService {
 	}
 
 	public int getDigestIndex(long chatId, long postId) {
-		return digestRepository.findBotDigestEntitiesByChat(
-			Sort.by(Sort.Order.asc("id")), chatId).indexOf(new BotDigestEntity(postId)
-		);
+		return digestRepository.findBotDigestEntitiesByChat(Sort.by(Sort.Order.asc("id")), chatId)
+			.indexOf(new BotDigestEntity(postId));
 	}
 
 	public List<BotDigestUserEntity> getAllDigestUsers() {

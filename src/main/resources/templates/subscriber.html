@@ -13,8 +13,8 @@
 								<form th:action="@{/obey/{table}/edit(table=${chunk})}" th:object="${subscriberForm}" th:method="post">
 									<label for="chat-field" th:text="#{site.obey.content.chat}">Chat</label>
 									<input id="chat-field" type="text" th:field="*{chatId}" size="20" th:placeholder="#{site.obey.content.chat.id}"/>
-									<label th:if="${subscriberForm.showName}" for="chatname-field" th:text="#{site.obey.content.chat.name}">Chat Name</label>
-									<input th:if="${subscriberForm.showName}" id="chatname-field" type="text" th:field="*{chatName}" size="20" th:placeholder="#{site.obey.content.chat.name}"/>
+									<label th:if="${subscriberForm.showName}" for="chat-name-field" th:text="#{site.obey.content.chat.name}">Chat Name</label>
+									<input th:if="${subscriberForm.showName}" id="chat-name-field" type="text" th:field="*{chatName}" size="20" th:placeholder="#{site.obey.content.chat.name}"/>
 									<input class="button" type="submit" value="Add" th:value="#{site.obey.content.action.add}"/>
 								</form>
 							</div>

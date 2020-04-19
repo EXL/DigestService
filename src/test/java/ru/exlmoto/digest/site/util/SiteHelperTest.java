@@ -167,8 +167,8 @@ class SiteHelperTest {
 
 		System.out.println(helper.activateUsers("@exlmoto test@test"));
 		System.out.println(helper.activateUsers("ada@adasd.ru"));
-		System.out.println(helper.activateUsers("@azxczxz asd zc@"));
-		System.out.println(helper.activateUsers("adsa@ @ asdas (@exlmoto)"));
+		System.out.println(helper.activateUsers("@gibberish asd zc@"));
+		System.out.println(helper.activateUsers("cat@ @ cat (@exlmoto)"));
 		System.out.println(helper.activateUsers("@ZorgeR '@ZorgeR"));
 		System.out.println(helper.activateUsers("@@mb@v06 @@mbv06"));
 		System.out.println(helper.activateUsers("Test <@exlmoto and '@exlmoto"));

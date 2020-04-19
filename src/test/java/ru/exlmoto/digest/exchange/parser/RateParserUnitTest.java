@@ -167,11 +167,11 @@ class RateParserUnitTest {
 	}
 	
 	private void generalTests(RateParser parser) {
-		assertFalse(parserHelper.process(parser, "mulfunction data"));
-		assertFalse(parserHelper.process(parser, "mulfunction\ndata"));
-		assertFalse(parserHelper.process(parser, "mulfunction\t\ndata"));
-		assertFalse(parserHelper.process(parser, "mulfunction\t\r\ndata"));
-		assertFalse(parserHelper.process(parser, "mulfunction\t\t\t\t\n\r\n\r\ndata"));
+		assertFalse(parserHelper.process(parser, "malfunction data"));
+		assertFalse(parserHelper.process(parser, "malfunction\ndata"));
+		assertFalse(parserHelper.process(parser, "malfunction\t\ndata"));
+		assertFalse(parserHelper.process(parser, "malfunction\t\r\ndata"));
+		assertFalse(parserHelper.process(parser, "malfunction\t\t\t\t\n\r\n\r\ndata"));
 		assertFalse(parserHelper.process(parser, ""));
 		assertFalse(parserHelper.process(parser, null));
 	}

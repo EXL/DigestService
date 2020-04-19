@@ -10,13 +10,6 @@ public class DigestModel {
 
 	private List<Post> digests;
 
-	public DigestModel(List<Post> digests, String title, String description) {
-		this.digests = digests;
-
-		this.title = title;
-		this.description = description;
-	}
-
 	public String getTitle() {
 		return title;
 	}

@@ -31,7 +31,7 @@ public class CovidTgHtmlGenerator {
 	@Value("${covid.date-format}")
 	private String dateFormat;
 
-	private String JSON_DATE_FORMAT = "yyyy-MM-dd";
+	private final String JSON_DATE_FORMAT = "yyyy-MM-dd";
 
 	public CovidTgHtmlGenerator(Covid2GisApiParser parser, LocaleHelper locale, FilterHelper filter) {
 		this.parser = parser;

@@ -22,7 +22,7 @@ class FilterHelperTest {
 
 		assertEquals("test text test", filter.removeHtmlTags("test <b>text</b> test"));
 		assertEquals("test text test", filter.removeHtmlTags("test <b id=\"a\">text</b> test"));
-		assertEquals("test text test", filter.removeHtmlTags("test <asdasd> text test</..."));
+		assertEquals("test text test", filter.removeHtmlTags("test <gibberish> text test</..."));
 		assertEquals("test text test", filter.removeHtmlTags("test <blockquote> text test</block"));
 	}
 
@@ -75,8 +75,8 @@ class FilterHelperTest {
 	public void testRemoveUserCasts() {
 		assertEquals("exlmoto test@test", filter.removeUserCasts("@exlmoto test@test"));
 		assertEquals("ada@adasd.ru", filter.removeUserCasts("ada@adasd.ru"));
-		assertEquals("azxczxz asd zc@", filter.removeUserCasts("@azxczxz asd zc@"));
-		assertEquals("adsa@  asdas (exlmoto)", filter.removeUserCasts("adsa@ @ asdas (@exlmoto)"));
+		assertEquals("gibberish asd zc@", filter.removeUserCasts("@gibberish asd zc@"));
+		assertEquals("cat@  cat (exlmoto)", filter.removeUserCasts("cat@ @ cat (@exlmoto)"));
 		assertEquals("ZorgeR 'ZorgeR", filter.removeUserCasts("@ZorgeR '@ZorgeR"));
 		assertEquals("mb@v06 mbv06", filter.removeUserCasts("@@mb@v06 @@mbv06"));
 		assertEquals("Test <exlmoto and 'exlmoto", filter.removeUserCasts("Test <@exlmoto and '@exlmoto"));

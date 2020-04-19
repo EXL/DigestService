@@ -44,7 +44,7 @@ class BotHandlerTest {
 		handler.onCommand(update.getCommand("/unknown", "anyone"));
 		Thread.sleep(1000);
 
-		handler.onCommand(update.getCommand("asdsa /start sdasd", "exlmoto"));
+		handler.onCommand(update.getCommand("gibberish /start gibberish", "exlmoto"));
 		Thread.sleep(1000);
 	}
 

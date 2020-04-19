@@ -1,6 +1,5 @@
 package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
-import com.pengrad.telegrambot.model.Chat;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @SpringBootTest(properties = "bot.silent=true")
 class GreetingKeyboardTest {

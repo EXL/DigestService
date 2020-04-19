@@ -29,12 +29,12 @@ public class ApiController {
 		return service.jsonReport();
 	}
 
-	@GetMapping(value = "/api/covid/ru", produces = "application/json")
+	@GetMapping(value = "/api/covid/ru", produces = "application/json;charset=UTF-8")
 	public String covidRu() {
 		return covid.jsonRuReport();
 	}
 
-	@GetMapping(value = "/api/covid/ua", produces = "application/json")
+	@GetMapping(value = "/api/covid/ua", produces = "application/json;charset=UTF-8")
 	public String covidUa() {
 		return covid.jsonUaReport();
 	}

@@ -205,7 +205,8 @@ public class Covid2GisParser {
 			long curr = Long.parseLong(last);
 			return String.valueOf(curr - prev);
 		} catch (NumberFormatException nfe) {
-			log.error("Cannot cast 'previous' or 'last' value from String to Long.", nfe);
+			log.error(String.format("Cannot cast 'previous':'%s' or 'last':'%s' values from String to Long.",
+				previous, last), nfe);
 		}
 		return "0";
 	}

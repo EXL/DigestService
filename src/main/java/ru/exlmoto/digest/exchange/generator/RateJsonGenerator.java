@@ -156,7 +156,7 @@ public class RateJsonGenerator {
 	}
 
 	private JsonObject addBankProperties(ExchangeRateEntity rate) {
-		JsonObject field = new JsonObject();
+		JsonObject field = createJsonObjectAndAddDate(rate);
 
 		BigDecimal usd = rate.getUsd();
 		BigDecimal eur = rate.getEur();
@@ -177,7 +177,7 @@ public class RateJsonGenerator {
 	}
 
 	private JsonObject addMetalProperties(ExchangeRateEntity rate) {
-		JsonObject field = new JsonObject();
+		JsonObject field = createJsonObjectAndAddDate(rate);
 
 		BigDecimal gold = rate.getGold();
 		BigDecimal silver = rate.getSilver();
@@ -198,6 +198,12 @@ public class RateJsonGenerator {
 		field.addProperty("diff_palladium",
 			helper.getValue(helper.getDifference(rate.getPrevPalladium(), palladium)));
 
+		return field;
+	}
+
+	private JsonObject createJsonObjectAndAddDate(ExchangeRateEntity rate) {
+		JsonObject field = new JsonObject();
+		field.addProperty("date", rate.getDate());
 		return field;
 	}
 }

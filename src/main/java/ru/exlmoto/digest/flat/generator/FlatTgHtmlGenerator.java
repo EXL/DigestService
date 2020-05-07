@@ -2,56 +2,35 @@ package ru.exlmoto.digest.flat.generator;
 
 import org.springframework.stereotype.Component;
 
-import ru.exlmoto.digest.flat.manager.FlatManager;
+import ru.exlmoto.digest.flat.model.Flat;
 import ru.exlmoto.digest.flat.parser.impl.FlatCianParser;
 import ru.exlmoto.digest.flat.parser.impl.FlatN1Parser;
-import ru.exlmoto.digest.util.Answer;
+
+import java.util.List;
 
 @Component
 public class FlatTgHtmlGenerator {
-	private final FlatManager manager;
 	private final FlatCianParser cianParser;
 	private final FlatN1Parser n1Parser;
 
-	public FlatTgHtmlGenerator(FlatManager manager, FlatCianParser cianParser, FlatN1Parser n1Parser) {
-		this.manager = manager;
+	public FlatTgHtmlGenerator(FlatCianParser cianParser, FlatN1Parser n1Parser) {
 		this.cianParser = cianParser;
 		this.n1Parser = n1Parser;
 	}
 
-	public String getTgHtmlReportCianFirst() {
-		Answer<String> res = manager.getHtmlContentCianFirst();
-		if (res.ok()) {
-			cianParser.getAvailableFlats(res.answer());
-			///
+	public String getTgHtmlReportCian(String url) {
+		List<Flat> flatList = cianParser.getAvailableFlats(url);
+		if (!flatList.isEmpty()) {
+
 		}
-		return res.error();
+		return "EMPTY";
 	}
 
-	public String getTgHtmlReportCianSecond() {
-		Answer<String> res = manager.getHtmlContentCianSecond();
-		if (res.ok()) {
-			cianParser.getAvailableFlats(res.answer());
-			///
-		}
-		return res.error();
-	}
+	public String getTgHtmlReportN1(String url) {
+		List<Flat> flatList = n1Parser.getAvailableFlats(url);
+		if (!flatList.isEmpty()) {
 
-	public String getTgHtmlReportN1First() {
-		Answer<String> res = manager.getHtmlContentN1First();
-		if (res.ok()) {
-			n1Parser.getAvailableFlats(res.answer());
-			///
 		}
-		return res.error();
-	}
-
-	public String getTgHtmlReportN1Second() {
-		Answer<String> res = manager.getHtmlContentN1Second();
-		if (res.ok()) {
-			n1Parser.getAvailableFlats(res.answer());
-			///
-		}
-		return res.error();
+		return "EMPTY";
 	}
 }

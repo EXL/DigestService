@@ -10,11 +10,7 @@ import java.util.List;
 @Component
 public class FlatCianParser extends FlatParser {
 	@Override
-	public List<Flat> getAvailableFlats(String content) {
-		System.out.println("========== CIAN ==========");
-		System.out.println(content);
-		System.out.println("========== CIAN ==========");
-
+	public List<Flat> getAvailableFlats(String url) {
 		return null;
 	}
 }

@@ -4,30 +4,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import ru.exlmoto.digest.flat.generator.FlatTgHtmlGenerator;
-import ru.exlmoto.digest.util.rest.RestHelper;
 
 @Service
 public class FlatService {
 	private final FlatTgHtmlGenerator generator;
 
+	@Value("${flat.cian.url}")
+	private String cianUrl;
+
+	@Value("${flat.n1.url}")
+	private String n1Url;
+
 	public FlatService(FlatTgHtmlGenerator generator) {
 		this.generator = generator;
 	}
 
-	public String tgHtmlReportCianSlotFirst() {
-		return generator.getTgHtmlReportCianFirst();
+	public String tgHtmlReportCian() {
+		return generator.getTgHtmlReportCian(cianUrl);
 	}
 
-	public String tgHtmlReportCianSlotSecond() {
-		return generator.getTgHtmlReportCianSecond();
-	}
-
-
-	public String tgHtmlReportN1SlotFirst() {
-		return generator.getTgHtmlReportN1First();
-	}
-
-	public String tgHtmlReportN1SlotSecond() {
-		return generator.getTgHtmlReportN1Second();
+	public String tgHtmlReportN1() {
+		return generator.getTgHtmlReportN1(n1Url);
 	}
 }

@@ -5,5 +5,5 @@ import ru.exlmoto.digest.flat.model.Flat;
 import java.util.List;
 
 public abstract class FlatParser {
-	public abstract List<Flat> getAvailableFlats(String content);
+	public abstract List<Flat> getAvailableFlats(String url);
 }

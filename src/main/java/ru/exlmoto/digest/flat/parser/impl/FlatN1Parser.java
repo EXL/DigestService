@@ -8,9 +8,13 @@ import ru.exlmoto.digest.flat.parser.FlatParser;
 import java.util.List;
 
 @Component
-public class N1Parser extends FlatParser {
+public class FlatN1Parser extends FlatParser {
 	@Override
-	public List<Flat> getAvailableFlats(String url) {
+	public List<Flat> getAvailableFlats(String content) {
+		System.out.println("========== N1 ==========");
+		System.out.println(content);
+		System.out.println("========== N1 ==========");
+
 		return null;
 	}
 }

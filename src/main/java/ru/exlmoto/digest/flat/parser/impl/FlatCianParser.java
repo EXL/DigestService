@@ -8,9 +8,13 @@ import ru.exlmoto.digest.flat.parser.FlatParser;
 import java.util.List;
 
 @Component
-public class CianParser extends FlatParser {
+public class FlatCianParser extends FlatParser {
 	@Override
-	public List<Flat> getAvailableFlats(String url) {
+	public List<Flat> getAvailableFlats(String content) {
+		System.out.println("========== CIAN ==========");
+		System.out.println(content);
+		System.out.println("========== CIAN ==========");
+
 		return null;
 	}
 }

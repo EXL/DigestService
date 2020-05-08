@@ -478,7 +478,16 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyFlatEdit() throws Exception {
-		doNothing().when(databaseService).saveSettings(any());
+		doNothing().when(databaseService).saveFlatSettings(any());
+
+		helper.checkUnauthorized(mvc, "/obey/flat/edit");
+		helper.checkAuthorizedWithoutCsrf(mvc, "/obey/flat/edit");
+		helper.checkAuthorizedWithCsrfRedirectWrongRole(mvc, "/obey/member/delete/100", "/**/obey");
+	}
+
+	@Test
+	public void testObeyFlatEditAuthorized() throws Exception {
+		doNothing().when(databaseService).saveFlatSettings(any());
 
 		helper.checkUnauthorized(mvc, "/obey/flat/edit");
 		helper.checkAuthorizedWithoutCsrf(mvc, "/obey/flat/edit");
@@ -488,6 +497,7 @@ class ObeyControllerTest {
 	@Test
 	public void testObeyFlatSend() throws Exception {
 		helper.checkRedirect(mvc, "/obey/flat/send", "**/ds-auth-login");
+		helper.checkAuthorizedWithCsrfRedirectWrongRole(mvc, "/obey/flat/send", "/**/obey");
 	}
 
 	@Test

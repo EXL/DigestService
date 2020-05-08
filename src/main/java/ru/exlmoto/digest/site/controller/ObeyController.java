@@ -486,7 +486,7 @@ public class ObeyController {
 	@PostMapping(path = "/obey/member/edit")
 	public String obeyMemberEdit(MemberForm memberForm, Authentication authentication) {
 		if (!isUserOwner(authentication)) {
-			log.error(String.format("Access denied for non owner! User: '%s'", authentication.getName()));
+			log.error(String.format("Access denied for non owner (member-edit)! User: '%s'", authentication.getName()));
 
 			return "redirect:/obey";
 		}
@@ -515,23 +515,33 @@ public class ObeyController {
 	}
 
 	@RequestMapping(path = "/obey/flat")
-	public String obeyFlat(Model model, FlatForm setup) {
+	public String obeyFlat(Model model, FlatForm setup, Authentication authentication) {
 		model.addAttribute("time", System.currentTimeMillis());
 
-		service.getFlatSettings().ifPresent(settings -> {
-			setup.setMaxVariants(settings.getMaxVariants());
-			setup.setApiCianUrl(settings.getApiCianUrl());
-			setup.setApiN1Url(settings.getApiN1Url());
-			setup.setViewCianUrl(settings.getViewCianUrl());
-			setup.setViewN1Url(settings.getViewN1Url());
-		});
-		model.addAttribute("flatSetup", setup);
+		boolean isAuthorizedForChanging = isUserOwner(authentication);
+		if (isAuthorizedForChanging) {
+			service.getFlatSettings().ifPresent(settings -> {
+				setup.setMaxVariants(settings.getMaxVariants());
+				setup.setApiCianUrl(settings.getApiCianUrl());
+				setup.setApiN1Url(settings.getApiN1Url());
+				setup.setViewCianUrl(settings.getViewCianUrl());
+				setup.setViewN1Url(settings.getViewN1Url());
+			});
+			model.addAttribute("flatSetup", setup);
+		}
+		model.addAttribute("owner", isAuthorizedForChanging);
 
 		return "obey";
 	}
 
 	@PostMapping(path = "/obey/flat/edit")
-	public String obeyFlatEdit(FlatForm setup) {
+	public String obeyFlatEdit(FlatForm setup, Authentication authentication) {
+		if (!isUserOwner(authentication)) {
+			log.error(String.format("Access denied for non owner (flat-edit)! User: '%s'", authentication.getName()));
+
+			return "redirect:/obey";
+		}
+
 		service.getFlatSettings().ifPresent(settings -> {
 			settings.setMaxVariants(setup.getMaxVariants());
 			settings.setApiCianUrl(setup.getApiCianUrl());
@@ -544,7 +554,12 @@ public class ObeyController {
 	}
 
 	@RequestMapping(path = "/obey/flat/send")
-	public String obeyFlatSend() {
+	public String obeyFlatSend(Authentication authentication) {
+		if (!isUserOwner(authentication)) {
+			log.error(String.format("Access denied for non owner (flat-send)! User: '%s'", authentication.getName()));
+
+			return "redirect:/obey";
+		}
 		flatWorker.workOnFlatReport();
 
 		return "redirect:/obey/flat";

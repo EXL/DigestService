@@ -41,6 +41,7 @@ import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MorningWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
+import ru.exlmoto.digest.bot.worker.FlatWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.service.DatabaseService;
 
@@ -74,6 +75,9 @@ class ObeyControllerTest {
 
 	@MockBean
 	private CovidWorker covidWorker;
+
+	@MockBean
+	private FlatWorker flatWorker;
 
 	@MockBean
 	private ExchangeService exchangeService;
@@ -459,5 +463,36 @@ class ObeyControllerTest {
 		helper.checkUnauthorized(mvc, "/obey/member/delete/100");
 		helper.checkAuthorizedWithoutCsrf(mvc, "/obey/member/delete/100");
 		helper.checkAuthorizedWithCsrfRedirect(mvc, "/obey/member/delete/100", "/**/obey/member");
+	}
+
+	@Test
+	public void testObeyFlat() throws Exception {
+		helper.checkRedirect(mvc, "/obey/flat", "**/ds-auth-login");
+	}
+
+	@Test
+	@WithMockUser
+	public void testObeyFlatAuthorized() throws Exception {
+		helper.validateHtmlUtf8(mvc, "/obey/flat", "!DOCTYPE");
+	}
+
+	@Test
+	public void testObeyFlatEdit() throws Exception {
+		doNothing().when(databaseService).saveSettings(any());
+
+		helper.checkUnauthorized(mvc, "/obey/flat/edit");
+		helper.checkAuthorizedWithoutCsrf(mvc, "/obey/flat/edit");
+		helper.checkAuthorizedWithCsrfRedirect(mvc, "/obey/flat/edit", "/**/obey/flat");
+	}
+
+	@Test
+	public void testObeyFlatSend() throws Exception {
+		helper.checkRedirect(mvc, "/obey/flat/send", "**/ds-auth-login");
+	}
+
+	@Test
+	@WithMockUser
+	public void testObeyFlatSendAuthorized() throws Exception {
+		helper.checkRedirect(mvc, "/obey/flat/send", "/**/obey/exchange");
 	}
 }

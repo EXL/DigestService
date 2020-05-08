@@ -46,6 +46,7 @@ import ru.exlmoto.digest.bot.worker.MorningWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
+import ru.exlmoto.digest.bot.worker.FlatWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
@@ -63,6 +64,7 @@ import ru.exlmoto.digest.site.form.SubscriberForm;
 import ru.exlmoto.digest.site.form.SetupForm;
 import ru.exlmoto.digest.site.form.UserForm;
 import ru.exlmoto.digest.site.form.SendForm;
+import ru.exlmoto.digest.site.form.FlatForm;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.chat.Chat;
 import ru.exlmoto.digest.site.model.digest.Digest;
@@ -93,6 +95,7 @@ public class ObeyController {
 	private final CallbackQueriesWorker callbackQueriesWorker;
 	private final MorningWorker morningWorker;
 	private final CovidWorker covidWorker;
+	private final FlatWorker flatWorker;
 	private final ExchangeService exchange;
 	private final BotSender sender;
 	private final ImageHelper rest;
@@ -115,6 +118,7 @@ public class ObeyController {
 	                      CallbackQueriesWorker callbackQueriesWorker,
 	                      MorningWorker morningWorker,
 	                      CovidWorker covidWorker,
+	                      FlatWorker flatWorker,
 	                      ExchangeService exchange,
 	                      BotSender sender, ImageHelper rest, SiteConfiguration config) {
 		this.helper = helper;
@@ -126,6 +130,7 @@ public class ObeyController {
 		this.callbackQueriesWorker = callbackQueriesWorker;
 		this.morningWorker = morningWorker;
 		this.covidWorker = covidWorker;
+		this.flatWorker = flatWorker;
 		this.exchange = exchange;
 		this.sender = sender;
 		this.rest = rest;
@@ -507,6 +512,42 @@ public class ObeyController {
 		Optional.of(helper.getLong(id)).ifPresent(service::deleteMember);
 
 		return "redirect:/obey/member";
+	}
+
+	@RequestMapping(path = "/obey/flat")
+	public String obeyFlat(Model model, FlatForm setup) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		service.getFlatSettings().ifPresent(settings -> {
+			setup.setMaxVariants(settings.getMaxVariants());
+			setup.setApiCianUrl(settings.getApiCianUrl());
+			setup.setApiN1Url(settings.getApiN1Url());
+			setup.setViewCianUrl(settings.getViewCianUrl());
+			setup.setViewN1Url(settings.getViewN1Url());
+		});
+		model.addAttribute("flatSetup", setup);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/flat/edit")
+	public String obeyFlatEdit(FlatForm setup) {
+		service.getFlatSettings().ifPresent(settings -> {
+			settings.setMaxVariants(setup.getMaxVariants());
+			settings.setApiCianUrl(setup.getApiCianUrl());
+			settings.setApiN1Url(setup.getApiN1Url());
+			settings.setViewCianUrl(setup.getViewCianUrl());
+			settings.setViewN1Url(setup.getViewN1Url());
+		});
+
+		return "redirect:/obey/flat";
+	}
+
+	@RequestMapping(path = "/obey/flat/send")
+	public String obeyFlatSend() {
+		flatWorker.workOnFlatReport();
+
+		return "redirect:/obey/flat";
 	}
 
 	private DigestForm fillDigestForm(String edit, DigestForm digestForm) {

@@ -194,6 +194,10 @@ public class DatabaseService {
 		return digestUserRepository.getBotDigestUserEntityById(userId);
 	}
 
+	public BotDigestUserEntity getDigestUserNullable(String usernameWithAt) {
+		return digestUserRepository.getBotDigestUserEntityByUsername(usernameWithAt);
+	}
+
 	public List<BotSubMotofanEntity> getAllMotofanSubs() {
 		return subMotofanRepository.findAll();
 	}

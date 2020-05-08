@@ -38,4 +38,6 @@ public interface BotDigestUserRepository extends JpaRepository<BotDigestUserEnti
 	List<BotDigestUserEntity> findBotDigestUserEntitiesByUsernameStartsWith(String startWith);
 
 	BotDigestUserEntity getBotDigestUserEntityById(long id);
+
+	BotDigestUserEntity getBotDigestUserEntityByUsername(String username);
 }

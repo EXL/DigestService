@@ -776,10 +776,10 @@ public class ObeyController {
 
 	private void fillFlatSettings(FlatSetupEntity settings, FlatForm flat) {
 		settings.setMaxVariants(flat.getMaxVariants());
-		settings.setApiCianUrl(flat.getApiCianUrl());
-		settings.setApiN1Url(flat.getApiN1Url());
-		settings.setViewCianUrl(flat.getViewCianUrl());
-		settings.setViewN1Url(flat.getViewN1Url());
+		settings.setApiCianUrl(filter.strip(flat.getApiCianUrl()));
+		settings.setApiN1Url(filter.strip(flat.getApiN1Url()));
+		settings.setViewCianUrl(filter.strip(flat.getViewCianUrl()));
+		settings.setViewN1Url(filter.strip(flat.getViewN1Url()));
 		service.saveFlatSettings(settings);
 	}
 }

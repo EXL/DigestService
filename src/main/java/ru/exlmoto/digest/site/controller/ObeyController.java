@@ -53,6 +53,7 @@ import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.entity.MemberEntity;
+import ru.exlmoto.digest.entity.FlatSetupEntity;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
@@ -542,13 +543,7 @@ public class ObeyController {
 			return "redirect:/obey";
 		}
 
-		service.getFlatSettings().ifPresent(settings -> {
-			settings.setMaxVariants(flat.getMaxVariants());
-			settings.setApiCianUrl(flat.getApiCianUrl());
-			settings.setApiN1Url(flat.getApiN1Url());
-			settings.setViewCianUrl(flat.getViewCianUrl());
-			settings.setViewN1Url(flat.getViewN1Url());
-		});
+		saveOrUpdateFlatSettings(flat);
 
 		return "redirect:/obey/flat";
 	}
@@ -766,5 +761,25 @@ public class ObeyController {
 
 	private boolean isUserOwner(Authentication authentication) {
 		return authentication.getAuthorities().contains(new SimpleGrantedAuthority(Role.Owner.name()));
+	}
+
+	private void saveOrUpdateFlatSettings(FlatForm flat) {
+		Optional<FlatSetupEntity> settingsOptional = service.getFlatSettings();
+		if (settingsOptional.isPresent()) {
+			fillFlatSettings(settingsOptional.get(), flat);
+		} else {
+			FlatSetupEntity settings = new FlatSetupEntity();
+			settings.setId(FlatSetupEntity.FLAT_ROW);
+			fillFlatSettings(settings, flat);
+		}
+	}
+
+	private void fillFlatSettings(FlatSetupEntity settings, FlatForm flat) {
+		settings.setMaxVariants(flat.getMaxVariants());
+		settings.setApiCianUrl(flat.getApiCianUrl());
+		settings.setApiN1Url(flat.getApiN1Url());
+		settings.setViewCianUrl(flat.getViewCianUrl());
+		settings.setViewN1Url(flat.getViewN1Url());
+		service.saveFlatSettings(settings);
 	}
 }

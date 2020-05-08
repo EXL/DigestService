@@ -515,19 +515,19 @@ public class ObeyController {
 	}
 
 	@RequestMapping(path = "/obey/flat")
-	public String obeyFlat(Model model, FlatForm setup, Authentication authentication) {
+	public String obeyFlat(Model model, FlatForm flat, Authentication authentication) {
 		model.addAttribute("time", System.currentTimeMillis());
 
 		boolean isAuthorizedForChanging = isUserOwner(authentication);
 		if (isAuthorizedForChanging) {
 			service.getFlatSettings().ifPresent(settings -> {
-				setup.setMaxVariants(settings.getMaxVariants());
-				setup.setApiCianUrl(settings.getApiCianUrl());
-				setup.setApiN1Url(settings.getApiN1Url());
-				setup.setViewCianUrl(settings.getViewCianUrl());
-				setup.setViewN1Url(settings.getViewN1Url());
+				flat.setMaxVariants(settings.getMaxVariants());
+				flat.setApiCianUrl(settings.getApiCianUrl());
+				flat.setApiN1Url(settings.getApiN1Url());
+				flat.setViewCianUrl(settings.getViewCianUrl());
+				flat.setViewN1Url(settings.getViewN1Url());
 			});
-			model.addAttribute("flatSetup", setup);
+			model.addAttribute("flat", flat);
 		}
 		model.addAttribute("owner", isAuthorizedForChanging);
 
@@ -535,7 +535,7 @@ public class ObeyController {
 	}
 
 	@PostMapping(path = "/obey/flat/edit")
-	public String obeyFlatEdit(FlatForm setup, Authentication authentication) {
+	public String obeyFlatEdit(FlatForm flat, Authentication authentication) {
 		if (!isUserOwner(authentication)) {
 			log.error(String.format("Access denied for non owner (flat-edit)! User: '%s'", authentication.getName()));
 
@@ -543,11 +543,11 @@ public class ObeyController {
 		}
 
 		service.getFlatSettings().ifPresent(settings -> {
-			settings.setMaxVariants(setup.getMaxVariants());
-			settings.setApiCianUrl(setup.getApiCianUrl());
-			settings.setApiN1Url(setup.getApiN1Url());
-			settings.setViewCianUrl(setup.getViewCianUrl());
-			settings.setViewN1Url(setup.getViewN1Url());
+			settings.setMaxVariants(flat.getMaxVariants());
+			settings.setApiCianUrl(flat.getApiCianUrl());
+			settings.setApiN1Url(flat.getApiN1Url());
+			settings.setViewCianUrl(flat.getViewCianUrl());
+			settings.setViewN1Url(flat.getViewN1Url());
 		});
 
 		return "redirect:/obey/flat";

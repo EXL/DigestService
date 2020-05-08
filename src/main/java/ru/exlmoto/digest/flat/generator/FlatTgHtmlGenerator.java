@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.flat.generator;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -10,6 +11,7 @@ import ru.exlmoto.digest.flat.parser.FlatParser;
 import ru.exlmoto.digest.flat.parser.impl.FlatCianParser;
 import ru.exlmoto.digest.flat.parser.impl.FlatN1Parser;
 import ru.exlmoto.digest.util.Answer;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.List;
@@ -24,17 +26,23 @@ public class FlatTgHtmlGenerator {
 	private final FlatCianParser cianParser;
 	private final FlatN1Parser n1Parser;
 	private final LocaleHelper locale;
+	private final FilterHelper filter;
+
+	@Value("${general.date-format}")
+	private String dateFormat;
 
 	public FlatTgHtmlGenerator(FlatConfiguration config,
 	                           FlatManager manager,
 	                           FlatCianParser cianParser,
 	                           FlatN1Parser n1Parser,
-	                           LocaleHelper locale) {
+	                           LocaleHelper locale,
+	                           FilterHelper filter) {
 		this.config = config;
 		this.manager = manager;
 		this.cianParser = cianParser;
 		this.n1Parser = n1Parser;
 		this.locale = locale;
+		this.filter = filter;
 	}
 
 	public String getTgHtmlReportCian() {
@@ -98,7 +106,15 @@ public class FlatTgHtmlGenerator {
 		int size = flats.size();
 
 		StringBuilder builder = new StringBuilder();
-		builder.append(determineFlatCount(size, max)).append("/").append(size).append("</strong>\n");
+		builder
+			.append(" ")
+			.append(determineFlatCount(size, max))
+			.append("/")
+			.append(size)
+			.append("\n")
+			.append(String.format(locale.i18n("flat.header.date"),
+				filter.getDateFromTimeStamp(dateFormat, filter.getCurrentUnixTime())))
+			.append("</strong>\n");
 
 		List<Flat> cropped = flats;
 		if (size > max) {
@@ -109,9 +125,9 @@ public class FlatTgHtmlGenerator {
 		for (int i = 0; i < size; ++i) {
 			Flat flat = cropped.get(i);
 			builder
-				.append("\n<strong>")
+				.append("\n")
 				.append(i + 1)
-				.append(".</strong> ")
+				.append("| ")
 				.append(flat.getRooms())
 				.append(locale.i18n("flat.room.postfix"))
 				.append(", ")
@@ -120,9 +136,9 @@ public class FlatTgHtmlGenerator {
 				.append(locale.i18n("flat.square.postfix"))
 				.append(", ")
 				.append(flat.getFloor())
-				.append(", ")
+				.append(", <strong>")
 				.append(createTgHtmlLink(flat.getLink(), flat.getPrice()))
-				.append("\n")
+				.append("</strong>\n")
 				.append(flat.getAddress())
 				.append("; ")
 				.append(flat.getPhone())

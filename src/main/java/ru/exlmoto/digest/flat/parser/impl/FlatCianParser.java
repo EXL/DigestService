@@ -1,10 +1,10 @@
 package ru.exlmoto.digest.flat.parser.impl;
 
-import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +30,11 @@ import static ru.exlmoto.digest.util.Answer.Error;
 public class FlatCianParser extends FlatParser {
 	private final Logger log = LoggerFactory.getLogger(FlatCianParser.class);
 
-	private final String patchWord1 = "улица";
-	private final String patchWord2 = "Владимира";
+	private final String patchAddress1 = "улица";
+	private final String patchAddress2 = "Владимира";
+	private final String patchAddress3 = "В.";
+	private final String patchPrice1 = "руб";
+	private final String patchPrice2 = "р";
 
 	private final FilterHelper filter;
 
@@ -69,8 +72,8 @@ public class FlatCianParser extends FlatParser {
 					parseCell(row, ROOM),
 					parseSquare(parseCell(row, SQUARE)),
 					parseFloor(parseCell(row, FLOOR)),
-					applyAddressPatches(parseAddress(parseCell(row, ADDRESS))),
-					parsePrice(parseCell(row, PRICE)),
+					applyAddressPatch(parseAddress(parseCell(row, ADDRESS))),
+					applyPricePatch(parsePrice(parseCell(row, PRICE))),
 					applyPhonePatch(parsePhone(parseCell(row, PHONE))),
 					parseCell(row, LINK)
 				));
@@ -142,7 +145,12 @@ public class FlatCianParser extends FlatParser {
 		return phone;
 	}
 
-	private String applyAddressPatches(String address) {
-		return filter.strip(address.replace(patchWord1, "").replace(patchWord2, "В.")).replace(" ,", ",");
+	private String applyAddressPatch(String address) {
+		return filter.strip(address.replace(patchAddress1, "").replace(patchAddress2, patchAddress3))
+			.replace(" ,", ",");
+	}
+
+	private String applyPricePatch(String price) {
+		return price.replace(patchPrice1, patchPrice2);
 	}
 }

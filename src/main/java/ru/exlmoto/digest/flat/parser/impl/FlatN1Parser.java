@@ -68,8 +68,6 @@ public class FlatN1Parser extends FlatParser {
 			log.error(error, jse);
 		}
 
-		flats.forEach(System.out::println);
-
 		if (flats.isEmpty()) {
 			if (error == null) {
 				error = "Flat list is empty, please check N1 JSON parser.";

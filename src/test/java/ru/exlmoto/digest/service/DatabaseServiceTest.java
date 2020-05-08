@@ -29,9 +29,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import ru.exlmoto.digest.entity.FlatSetupEntity;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class DatabaseServiceTest {
@@ -48,5 +51,34 @@ class DatabaseServiceTest {
 	public void testOnWrongPageArgument() {
 		assertThrows(IllegalArgumentException.class, () -> service.getChatDigestsCommand(0, 10, 0L));
 		assertThrows(IllegalArgumentException.class, () -> service.getAllDigests(0, 10));
+	}
+
+	@Test
+	public void testCheckFlatSettings() {
+		FlatSetupEntity settings = new FlatSetupEntity();
+		assertFalse(service.checkFlatSettings(settings));
+
+		settings.setMaxVariants(25);
+		assertFalse(service.checkFlatSettings(settings));
+
+		settings.setApiCianUrl("https://exlmoto.ru");
+		assertFalse(service.checkFlatSettings(settings));
+
+		settings.setViewCianUrl("https://exlmoto.ru");
+		assertTrue(service.checkFlatSettings(settings));
+
+		settings = new FlatSetupEntity();
+		settings.setMaxVariants(25);
+		settings.setApiN1Url("https://exlmoto.ru");
+		assertFalse(service.checkFlatSettings(settings));
+
+		settings.setViewN1Url("https://exlmoto.ru");
+		assertTrue(service.checkFlatSettings(settings));
+
+		settings.setApiCianUrl("https://exlmoto.ru");
+		assertTrue(service.checkFlatSettings(settings));
+
+		settings.setViewCianUrl("https://exlmoto.ru");
+		assertTrue(service.checkFlatSettings(settings));
 	}
 }

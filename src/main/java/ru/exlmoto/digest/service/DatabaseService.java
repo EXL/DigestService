@@ -332,11 +332,8 @@ public class DatabaseService {
 	}
 
 	public boolean checkFlatSettings(FlatSetupEntity settings) {
-		return
-			(settings.getMaxVariants() > 0) &&
-			StringUtils.hasText(settings.getApiCianUrl()) &&
-			StringUtils.hasText(settings.getApiN1Url()) &&
-			StringUtils.hasText(settings.getViewCianUrl()) &&
-			StringUtils.hasText(settings.getViewN1Url());
+		boolean cian = StringUtils.hasText(settings.getApiCianUrl()) && StringUtils.hasText(settings.getViewCianUrl());
+		boolean n1 = StringUtils.hasText(settings.getApiN1Url()) && StringUtils.hasText(settings.getViewN1Url());
+		return (settings.getMaxVariants() > 0) && (cian || n1);
 	}
 }

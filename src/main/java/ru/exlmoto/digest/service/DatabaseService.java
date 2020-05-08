@@ -42,6 +42,7 @@ import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.entity.BotSetupEntity;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.entity.MemberEntity;
+import ru.exlmoto.digest.entity.FlatSetupEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.repository.BotSubDigestRepository;
@@ -51,6 +52,7 @@ import ru.exlmoto.digest.repository.BotSubCovidRepository;
 import ru.exlmoto.digest.repository.BotSetupRepository;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
 import ru.exlmoto.digest.repository.MemberRepository;
+import ru.exlmoto.digest.repository.FlatSetupRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +70,7 @@ public class DatabaseService {
 	private final BotSetupRepository setupRepository;
 	private final ExchangeRateRepository exchangeRateRepository;
 	private final MemberRepository memberRepository;
+	private final FlatSetupRepository flatSetupRepository;
 
 	public DatabaseService(BotDigestRepository digestRepository,
 	                       BotDigestUserRepository digestUserRepository,
@@ -77,7 +80,8 @@ public class DatabaseService {
 	                       BotSubCovidRepository subCovidRepository,
 	                       BotSetupRepository setupRepository,
 	                       ExchangeRateRepository exchangeRateRepository,
-	                       MemberRepository memberRepository) {
+	                       MemberRepository memberRepository,
+	                       FlatSetupRepository flatSetupRepository) {
 		this.digestRepository = digestRepository;
 		this.digestUserRepository = digestUserRepository;
 		this.subMotofanRepository = subMotofanRepository;
@@ -87,6 +91,7 @@ public class DatabaseService {
 		this.setupRepository = setupRepository;
 		this.exchangeRateRepository = exchangeRateRepository;
 		this.memberRepository = memberRepository;
+		this.flatSetupRepository = flatSetupRepository;
 	}
 
 	public Optional<BotDigestEntity> getDigest(long id) {
@@ -316,5 +321,13 @@ public class DatabaseService {
 
 	public void saveMember(MemberEntity member) {
 		memberRepository.save(member);
+	}
+
+	public Optional<FlatSetupEntity> getFlatSettings() {
+		return flatSetupRepository.getSetupFlat();
+	}
+
+	public void saveFlatSettings(FlatSetupEntity settings) {
+		flatSetupRepository.save(settings);
 	}
 }

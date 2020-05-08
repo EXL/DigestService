@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.flat.parser.impl;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -8,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.flat.model.Flat;
 import ru.exlmoto.digest.flat.parser.FlatParser;
@@ -35,7 +37,7 @@ public class FlatN1Parser extends FlatParser {
 	 * Square:  result[i].params.total_area / 100
 	 * Floor:   result[i].params.floor / result[i].params.floors_count
 	 * Price:   result[i].params.price
-	 * Phone:   result[i].original_phones[j].formatted
+	 * Phone:   result[i].original_phones[j].value
 	 * Link:    result[i].url
 	 */
 
@@ -57,7 +59,7 @@ public class FlatN1Parser extends FlatParser {
 					parseFloor(params),
 					parseAddress(params),
 					parsePrice(params),
-					parsePhones(flat),
+					applyPhonePatch(parsePhones(flat)),
 					parseLink(flat.getAsJsonPrimitive("url").getAsString())
 				));
 			});
@@ -84,7 +86,6 @@ public class FlatN1Parser extends FlatParser {
 
 	protected String parseAddress(JsonObject params) {
 		StringJoiner joiner = new StringJoiner("; ");
-
 		params.getAsJsonArray("house_addresses").forEach(item -> {
 			JsonObject address = item.getAsJsonObject();
 			JsonObject street = address.getAsJsonObject("street");
@@ -94,12 +95,11 @@ public class FlatN1Parser extends FlatParser {
 				address.getAsJsonPrimitive("house_number").getAsString()
 			);
 		});
-
 		return joiner.toString();
 	}
 
 	protected String parseSquare(JsonObject params) {
-		return String.format("%.2f", params.getAsJsonPrimitive("total_area").getAsInt() / 100.0D);
+		return String.format("%.1f", params.getAsJsonPrimitive("total_area").getAsInt() / 100.0d);
 	}
 
 	protected String parseFloor(JsonObject params) {
@@ -112,12 +112,18 @@ public class FlatN1Parser extends FlatParser {
 	}
 
 	protected String parsePhones(JsonObject flat) {
-		StringJoiner joiner = new StringJoiner(", ");
-		flat.getAsJsonArray("original_phones").forEach(item -> {
-			JsonObject phone = item.getAsJsonObject();
-			joiner.add(phone.getAsJsonPrimitive("formatted").getAsString());
-		});
-		return joiner.toString();
+		JsonArray phones = flat.getAsJsonArray("original_phones");
+		if (onePhone) {
+			String phone = "+" + phones.get(0).getAsJsonObject().getAsJsonPrimitive("value").getAsString();
+			return StringUtils.hasText(phone) ? phone : "";
+		} else {
+			StringJoiner joiner = new StringJoiner(", ");
+			phones.forEach(item -> {
+				JsonObject phone = item.getAsJsonObject();
+				joiner.add("+" + phone.getAsJsonPrimitive("value").getAsString());
+			});
+			return joiner.toString();
+		}
 	}
 
 	protected String parseLink(String url) {

@@ -14,6 +14,8 @@ import java.util.Locale;
 public abstract class FlatParser {
 	private final Logger log = LoggerFactory.getLogger(FlatParser.class);
 
+	protected final boolean onePhone = true;
+
 	/*
 	 * For convenience, prices with millions should use the number format that is used in the United States.
 	 * Example: 2,300,300
@@ -29,6 +31,13 @@ public abstract class FlatParser {
 			return NumberFormat.getInstance(Locale.US).format(parsed);
 		}
 		return price;
+	}
+
+	protected String applyPhonePatch(String phone) {
+		if (phone.startsWith("+7")) {
+			return "8" + phone.substring(2);
+		}
+		return phone;
 	}
 
 	public abstract Answer<List<Flat>> getAvailableFlats(String content);

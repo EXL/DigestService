@@ -30,9 +30,10 @@ import static ru.exlmoto.digest.util.Answer.Error;
 public class FlatCianParser extends FlatParser {
 	private final Logger log = LoggerFactory.getLogger(FlatCianParser.class);
 
-	private final FilterHelper filter;
+	private final String patchWord1 = "улица";
+	private final String patchWord2 = "Владимира";
 
-	private final boolean enableFilters = true;
+	private final FilterHelper filter;
 
 	// Cell indexes format constants.
 	// See XLSX file for column indexes.
@@ -68,9 +69,9 @@ public class FlatCianParser extends FlatParser {
 					parseCell(row, ROOM),
 					parseSquare(parseCell(row, SQUARE)),
 					parseFloor(parseCell(row, FLOOR)),
-					parseAddress(parseCell(row, ADDRESS)),
+					applyAddressPatches(parseAddress(parseCell(row, ADDRESS))),
 					parsePrice(parseCell(row, PRICE)),
-					parseCell(row, PHONE),
+					applyPhonePatch(parsePhone(parseCell(row, PHONE))),
 					parseCell(row, LINK)
 				));
 			}
@@ -99,21 +100,21 @@ public class FlatCianParser extends FlatParser {
 	}
 
 	protected String parseSquare(String squares) {
-		if (squares.contains("/") && enableFilters) {
+		if (squares.contains("/")) {
 			return squares.substring(0, squares.indexOf("/"));
 		}
 		return squares;
 	}
 
 	protected String parseFloor(String floor) {
-		if (floor.contains(",") && enableFilters) {
+		if (floor.contains(",")) {
 			return floor.substring(0, floor.indexOf(","));
 		}
 		return floor;
 	}
 
 	protected String parseAddress(String address) {
-		if (address.contains(", ") && enableFilters) {
+		if (address.contains(", ")) {
 			String reversed = new StringBuilder(address).reverse().toString();
 			String[] parsed = reversed.split(" ,");
 			// 0 - house number, 1 - street.
@@ -124,7 +125,7 @@ public class FlatCianParser extends FlatParser {
 	}
 
 	protected String parsePrice(String price) {
-		if (price.contains(" ") && enableFilters) {
+		if (price.contains(" ")) {
 			String[] parsed = filter.strip(price).split("\\s+");
 			// 0 - price, 1 - currency.
 			String res = adjustPrice(parsed[0]) + " " + parsed[1];
@@ -132,5 +133,16 @@ public class FlatCianParser extends FlatParser {
 			return (res.endsWith(",")) ? res.replaceFirst(".$", "") : res;
 		}
 		return price;
+	}
+
+	protected String parsePhone(String phone) {
+		if (onePhone && phone.contains(", ")) {
+			return phone.substring(0, phone.indexOf(", "));
+		}
+		return phone;
+	}
+
+	private String applyAddressPatches(String address) {
+		return filter.strip(address.replace(patchWord1, "").replace(patchWord2, "В.")).replace(" ,", ",");
 	}
 }

@@ -1,6 +1,7 @@
 package ru.exlmoto.digest.flat.generator;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.flat.configuration.FlatConfiguration;
 import ru.exlmoto.digest.flat.manager.FlatManager;
@@ -12,6 +13,9 @@ import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.List;
+
+import static ru.exlmoto.digest.util.Answer.Ok;
+import static ru.exlmoto.digest.util.Answer.Error;
 
 @Component
 public class FlatTgHtmlGenerator {
@@ -34,24 +38,55 @@ public class FlatTgHtmlGenerator {
 	}
 
 	public String getTgHtmlReportCian() {
-		String body = getTgHtmlReportAux(manager.getXlsxCianFile(), cianParser);
-		return body;
+		Answer<String> res = getTgHtmlReportAux(manager.getXlsxCianFile(), cianParser);
+		if (res.ok()) {
+			return
+				"<strong>" + locale.i18n("flat.header.cian") +                              // Header.
+				res.answer() +                                                              // Body.
+				addSuggestionsLink("manager.getCianLink", locale.i18n("flat.link.cian"));   // Footer.
+		} else {
+			return sendError("CIAN", res.error());
+		}
 	}
 
 	public String getTgHtmlReportN1() {
-		String body = getTgHtmlReportAux(manager.getJsonN1Response(), n1Parser);
-		return body;
+		Answer<String> res = getTgHtmlReportAux(manager.getJsonN1Response(), n1Parser);
+		if (res.ok()) {
+			return
+				"<strong>" + locale.i18n("flat.header.n1") +                            // Header.
+				res.answer() +                                                          // Body.
+				addSuggestionsLink("manager.getN1Link", locale.i18n("flat.link.n1"));   // Footer.
+		} else {
+			return sendError("N1", res.error());
+		}
 	}
 
-	private String getTgHtmlReportAux(Answer<String> content, FlatParser parser) {
+	private String sendError(String serviceId, String error) {
+		return String.format(locale.i18n("flat.error"), serviceId, error);
+	}
+
+	private String addSuggestionsLink(String link, String title) {
+		if (StringUtils.hasText(link)) {
+			return "\n" + locale.i18n("flat.link.icon") + " " + createTgHtmlLink(link, title);
+		}
+		return "";
+	}
+
+	private Answer<String> getTgHtmlReportAux(Answer<String> content, FlatParser parser) {
 		if (content.ok()) {
 			Answer<List<Flat>> res = parser.getAvailableFlats(content.answer());
 			if (res.ok()) {
-				return getFlatList(res.answer());
+				List<Flat> flats = res.answer();
+				if (!flats.isEmpty()) {
+					return Ok(getFlatList(flats));
+				}
+				else {
+					return Error(getTgHtmlError(locale.i18n("flat.error.empty")));
+				}
 			}
-			return getTgHtmlError(res.error());
+			return Error(getTgHtmlError(res.error()));
 		}
-		return getTgHtmlError(content.error());
+		return Error(getTgHtmlError(content.error()));
 	}
 
 	private String getTgHtmlError(String error) {
@@ -63,35 +98,36 @@ public class FlatTgHtmlGenerator {
 		int size = flats.size();
 
 		StringBuilder builder = new StringBuilder();
-		builder.append(String.format(locale.i18n("flat.header"), determineFlatCount(size, max), size));
-		builder.append("\n");
+		builder.append(determineFlatCount(size, max)).append("/").append(size).append("</strong>\n");
 
 		List<Flat> cropped = flats;
 		if (size > max) {
 			cropped = flats.subList(0, max);
 		}
 
-		cropped.forEach(flat -> builder
-			.append("<pre>\n")
-			.append(flat.getRooms())
-			.append(locale.i18n("flat.room.postfix"))
-			.append(", ")
-			.append(flat.getSquares())
-			.append(" ")
-			.append(locale.i18n("flat.square.postfix"))
-			.append(", ")
-			.append(flat.getFloor())
-			.append(" ")
-			.append(locale.i18n("flat.floor"))
-			.append("\n")
-			.append(String.format(locale.i18n("flat.price"), flat.getPrice()))
-			.append("\n")
-			.append(String.format(locale.i18n("flat.address"), flat.getAddress()))
-			.append("\n")
-			.append(String.format(locale.i18n("flat.phone"), flat.getPhone()))
-			.append("\n</pre>\n")
-			.append(createTgHtmlLink(flat.getLink(), locale.i18n("flat.link")))
-		);
+		size = cropped.size();
+		for (int i = 0; i < size; ++i) {
+			Flat flat = cropped.get(i);
+			builder
+				.append("\n<strong>")
+				.append(i + 1)
+				.append(".</strong> ")
+				.append(flat.getRooms())
+				.append(locale.i18n("flat.room.postfix"))
+				.append(", ")
+				.append(flat.getSquares())
+				.append(" ")
+				.append(locale.i18n("flat.square.postfix"))
+				.append(", ")
+				.append(flat.getFloor())
+				.append(", ")
+				.append(createTgHtmlLink(flat.getLink(), flat.getPrice()))
+				.append("\n")
+				.append(flat.getAddress())
+				.append("; ")
+				.append(flat.getPhone())
+				.append("\n");
+		}
 		return builder.toString();
 	}
 

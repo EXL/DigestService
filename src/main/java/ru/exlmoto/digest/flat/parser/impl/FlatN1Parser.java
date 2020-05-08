@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.flat.model.Flat;
 import ru.exlmoto.digest.flat.parser.FlatParser;
 import ru.exlmoto.digest.util.Answer;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ import static ru.exlmoto.digest.util.Answer.Error;
 public class FlatN1Parser extends FlatParser {
 	private final Logger log = LoggerFactory.getLogger(FlatN1Parser.class);
 
+	private final LocaleHelper locale;
+
 	/*
 	 * JSON Parameters.
 	 *
@@ -35,6 +38,10 @@ public class FlatN1Parser extends FlatParser {
 	 * Phone:   result[i].original_phones[j].formatted
 	 * Link:    result[i].url
 	 */
+
+	public FlatN1Parser(LocaleHelper locale) {
+		this.locale = locale;
+	}
 
 	@Override
 	public Answer<List<Flat>> getAvailableFlats(String content) {
@@ -101,7 +108,7 @@ public class FlatN1Parser extends FlatParser {
 	}
 
 	protected String parsePrice(JsonObject params) {
-		return params.getAsJsonPrimitive("price").getAsString();
+		return adjustPrice(params.getAsJsonPrimitive("price").getAsString()) + " " + locale.i18n("flat.price.symbol");
 	}
 
 	protected String parsePhones(JsonObject flat) {

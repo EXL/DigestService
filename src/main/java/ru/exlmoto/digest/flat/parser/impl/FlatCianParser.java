@@ -127,7 +127,7 @@ public class FlatCianParser extends FlatParser {
 		if (price.contains(" ") && enableFilters) {
 			String[] parsed = filter.strip(price).split("\\s+");
 			// 0 - price, 1 - currency.
-			String res = parsed[0] + " " + parsed[1];
+			String res = adjustPrice(parsed[0]) + " " + parsed[1];
 			// Delete last comma if exist.
 			return (res.endsWith(",")) ? res.replaceFirst(".$", "") : res;
 		}

@@ -43,6 +43,7 @@ import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
 import ru.exlmoto.digest.bot.worker.MorningWorker;
+import ru.exlmoto.digest.bot.worker.FlatWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -59,6 +60,7 @@ public class DebugCommand extends MessageAdminAbility {
 	private final CovidWorker covidWorker;
 	private final CallbackQueriesWorker callbackQueriesWorker;
 	private final MorningWorker morningWorker;
+	private final FlatWorker flatWorker;
 
 	public DebugCommand(BotTelegram telegram,
 	                    BotConfiguration config,
@@ -68,7 +70,8 @@ public class DebugCommand extends MessageAdminAbility {
 	                    DigestWorker digestWorker,
 	                    CovidWorker covidWorker,
 	                    CallbackQueriesWorker callbackQueriesWorker,
-	                    MorningWorker morningWorker) {
+	                    MorningWorker morningWorker,
+	                    FlatWorker flatWorker) {
 		this.telegram = telegram;
 		this.config = config;
 		this.exchangeService = exchangeService;
@@ -78,6 +81,7 @@ public class DebugCommand extends MessageAdminAbility {
 		this.covidWorker = covidWorker;
 		this.callbackQueriesWorker = callbackQueriesWorker;
 		this.morningWorker = morningWorker;
+		this.flatWorker = flatWorker;
 	}
 
 	private enum Option {
@@ -88,6 +92,7 @@ public class DebugCommand extends MessageAdminAbility {
 		VQueries,
 		VCovid,
 		VMorning,
+		VFlat,
 		BLogUpdates,
 		BGreetings,
 		BSilent,
@@ -107,6 +112,7 @@ public class DebugCommand extends MessageAdminAbility {
 				case VQueries: { text = processQueries(locale); break; }
 				case VCovid: { text = processCovid(locale); break; }
 				case VMorning: { text = processMorning(locale); break; }
+				case VFlat: { text = processFlat(locale); break; }
 				case BLogUpdates: { text = toggleUpdates(locale); break; }
 				case BGreetings: { text = toggleGreetings(locale); break; }
 				case BSilent: { text = toggleSilent(locale); break; }
@@ -155,6 +161,11 @@ public class DebugCommand extends MessageAdminAbility {
 
 	private String processMorning(LocaleHelper locale) {
 		morningWorker.sendGoodMorning();
+		return locale.i18n("bot.command.debug.data");
+	}
+
+	private String processFlat(LocaleHelper locale) {
+		flatWorker.workOnFlatReport();
 		return locale.i18n("bot.command.debug.data");
 	}
 

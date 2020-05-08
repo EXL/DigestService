@@ -9,6 +9,7 @@
 					<p><a href="/obey">Digest</a></p>
 					<p><a href="/obey/user">Digest User</a></p>
 					<p><a href="/obey/setup">Digest Setup</a></p>
+					<p><a href="/obey/flat">Flat Setup</a></p>
 					<p><a href="/obey/sub-digest">Digest Sub Digest</a></p>
 					<p><a href="/obey/sub-motofan">Digest Sub MotoFan</a></p>
 					<p><a href="/obey/sub-greeting">Digest Sub Greeting</a></p>
@@ -98,6 +99,13 @@
 							</form>
 						</div>
 						<div class="spring"></div>
+					</div>
+					<div th:if="${owner != null}">
+						<div th:if="${owner}">
+							<div th:if="${owner && flat != null}">
+								<div th:replace="~{flat :: flat-form}"></div>
+							</div>
+						</div>
 					</div>
 					<div th:if="${sub_digest != null}">
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.digest},'sub-digest')}"></div>

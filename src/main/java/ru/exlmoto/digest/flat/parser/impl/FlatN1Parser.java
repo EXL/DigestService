@@ -3,6 +3,7 @@ package ru.exlmoto.digest.flat.parser.impl;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
 import org.slf4j.Logger;
@@ -79,20 +80,24 @@ public class FlatN1Parser extends FlatParser {
 	}
 
 	protected String parseRooms(JsonObject params) {
-		return params.getAsJsonPrimitive("rooms_count").getAsString();
+		JsonElement count = params.get("rooms_count");
+		return (count != null && !count.isJsonNull()) ? count.getAsString() : "1";
 	}
 
 	protected String parseAddress(JsonObject params) {
 		StringJoiner joiner = new StringJoiner("; ");
-		params.getAsJsonArray("house_addresses").forEach(item -> {
-			JsonObject address = item.getAsJsonObject();
-			JsonObject street = address.getAsJsonObject("street");
-			joiner.add(
-				street.getAsJsonPrimitive("name_ru").getAsString() +
-				", " +
-				address.getAsJsonPrimitive("house_number").getAsString()
-			);
-		});
+		JsonElement element = params.get("house_addresses");
+		if (element != null && !element.isJsonNull()) {
+			params.getAsJsonArray("house_addresses").forEach(item -> {
+				JsonObject address = item.getAsJsonObject();
+				JsonObject street = address.getAsJsonObject("street");
+				joiner.add(
+					street.getAsJsonPrimitive("name_ru").getAsString() +
+					", " +
+					address.getAsJsonPrimitive("house_number").getAsString()
+				);
+			});
+		}
 		return joiner.toString();
 	}
 
@@ -101,8 +106,10 @@ public class FlatN1Parser extends FlatParser {
 	}
 
 	protected String parseFloor(JsonObject params) {
-		return params.getAsJsonPrimitive("floor").getAsString() + "/" +
-			params.getAsJsonPrimitive("floors_count").getAsString();
+		JsonElement floor = params.get("floor");
+		JsonElement count = params.get("floors_count");
+		return (floor != null && !floor.isJsonNull() && count != null && !count.isJsonNull()) ?
+			floor.getAsString() + "/" + count.getAsString() : "1/1";
 	}
 
 	protected String parsePrice(JsonObject params) {

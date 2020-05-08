@@ -330,4 +330,13 @@ public class DatabaseService {
 	public void saveFlatSettings(FlatSetupEntity settings) {
 		flatSetupRepository.save(settings);
 	}
+
+	public boolean checkFlatSettings(FlatSetupEntity settings) {
+		return
+			(settings.getMaxVariants() > 0) &&
+			StringUtils.hasText(settings.getApiCianUrl()) &&
+			StringUtils.hasText(settings.getApiN1Url()) &&
+			StringUtils.hasText(settings.getViewCianUrl()) &&
+			StringUtils.hasText(settings.getViewN1Url());
+	}
 }

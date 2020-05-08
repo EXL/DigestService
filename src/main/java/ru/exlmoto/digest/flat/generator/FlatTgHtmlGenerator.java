@@ -1,5 +1,8 @@
 package ru.exlmoto.digest.flat.generator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,6 +23,10 @@ import static ru.exlmoto.digest.util.Answer.Error;
 
 @Component
 public class FlatTgHtmlGenerator {
+	private final Logger log = LoggerFactory.getLogger(FlatTgHtmlGenerator.class);
+
+	private final int ellipsis = 30;
+
 	private final FlatManager manager;
 	private final FlatCianParser cianParser;
 	private final FlatN1Parser n1Parser;
@@ -42,26 +49,26 @@ public class FlatTgHtmlGenerator {
 	}
 
 	public String getTgHtmlReportCian(String apiUrl, String viewUrl, int maxVariants) {
-		Answer<String> res = getTgHtmlReportAux(manager.getXlsxCianFile(apiUrl), cianParser, maxVariants);
-		if (res.ok()) {
-			return
-				"<strong>" + locale.i18n("flat.header.cian") +              // Header.
-				res.answer() +                                              // Body.
-				addSuggestionsLink(viewUrl, locale.i18n("flat.link.cian")); // Footer.
-		} else {
-			return sendError("CIAN", res.error());
-		}
+		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getXlsxCianFile(apiUrl), cianParser,
+			"CIAN", locale.i18n("flat.header.cian"), locale.i18n("flat.link.cian"));
 	}
 
 	public String getTgHtmlReportN1(String apiUrl, String viewUrl, int maxVariants) {
-		Answer<String> res = getTgHtmlReportAux(manager.getJsonN1Response(apiUrl), n1Parser, maxVariants);
+		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getJsonN1Response(apiUrl), n1Parser,
+			"N1", locale.i18n("flat.header.n1"), locale.i18n("flat.link.n1"));
+	}
+
+	private String getTgHtmlReportAux(String apiUrl, String viewUrl, int maxVariants,
+	                                  Answer<String> content, FlatParser parser,
+	                                  String label, String header, String footer) {
+		String link = filter.ellipsisMiddle(apiUrl, ellipsis);
+		log.info(String.format("=> Start receive %s Flat report on '%s' link.", label, link));
+		Answer<String> res = getTgHtmlReport(content, parser, maxVariants);
+		log.info(String.format("=> End receive %s Flat report on '%s' link.", label, link));
 		if (res.ok()) {
-			return
-				"<strong>" + locale.i18n("flat.header.n1") +                // Header.
-				res.answer() +                                              // Body.
-				addSuggestionsLink(viewUrl, locale.i18n("flat.link.n1"));   // Footer.
+			return "<strong>" + header + res.answer() + addSuggestionsLink(viewUrl, footer);
 		} else {
-			return sendError("N1", res.error());
+			return sendError(label, res.error());
 		}
 	}
 
@@ -76,7 +83,7 @@ public class FlatTgHtmlGenerator {
 		return "";
 	}
 
-	private Answer<String> getTgHtmlReportAux(Answer<String> content, FlatParser parser, int max) {
+	private Answer<String> getTgHtmlReport(Answer<String> content, FlatParser parser, int max) {
 		if (content.ok()) {
 			Answer<List<Flat>> res = parser.getAvailableFlats(content.answer());
 			if (res.ok()) {

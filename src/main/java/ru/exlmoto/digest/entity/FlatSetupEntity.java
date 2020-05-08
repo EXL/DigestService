@@ -40,16 +40,16 @@ public class FlatSetupEntity {
 	@Column
 	private int maxVariants;
 
-	@Column
+	@Column(length = 4095)
 	private String apiCianUrl;
 
-	@Column
+	@Column(length = 4095)
 	private String apiN1Url;
 
-	@Column
+	@Column(length = 4095)
 	private String viewCianUrl;
 
-	@Column
+	@Column(length = 4095)
 	private String viewN1Url;
 
 	public int getId() {

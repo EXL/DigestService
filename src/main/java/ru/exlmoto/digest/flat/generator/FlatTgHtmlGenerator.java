@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import ru.exlmoto.digest.flat.configuration.FlatConfiguration;
 import ru.exlmoto.digest.flat.manager.FlatManager;
 import ru.exlmoto.digest.flat.model.Flat;
 import ru.exlmoto.digest.flat.parser.FlatParser;
@@ -21,7 +20,6 @@ import static ru.exlmoto.digest.util.Answer.Error;
 
 @Component
 public class FlatTgHtmlGenerator {
-	private final FlatConfiguration config;
 	private final FlatManager manager;
 	private final FlatCianParser cianParser;
 	private final FlatN1Parser n1Parser;
@@ -31,13 +29,11 @@ public class FlatTgHtmlGenerator {
 	@Value("${general.date-format}")
 	private String dateFormat;
 
-	public FlatTgHtmlGenerator(FlatConfiguration config,
-	                           FlatManager manager,
+	public FlatTgHtmlGenerator(FlatManager manager,
 	                           FlatCianParser cianParser,
 	                           FlatN1Parser n1Parser,
 	                           LocaleHelper locale,
 	                           FilterHelper filter) {
-		this.config = config;
 		this.manager = manager;
 		this.cianParser = cianParser;
 		this.n1Parser = n1Parser;
@@ -45,25 +41,25 @@ public class FlatTgHtmlGenerator {
 		this.filter = filter;
 	}
 
-	public String getTgHtmlReportCian() {
-		Answer<String> res = getTgHtmlReportAux(manager.getXlsxCianFile(), cianParser);
+	public String getTgHtmlReportCian(String apiUrl, String viewUrl, int maxVariants) {
+		Answer<String> res = getTgHtmlReportAux(manager.getXlsxCianFile(apiUrl), cianParser, maxVariants);
 		if (res.ok()) {
 			return
-				"<strong>" + locale.i18n("flat.header.cian") +                              // Header.
-				res.answer() +                                                              // Body.
-				addSuggestionsLink("manager.getCianLink", locale.i18n("flat.link.cian"));   // Footer.
+				"<strong>" + locale.i18n("flat.header.cian") +              // Header.
+				res.answer() +                                              // Body.
+				addSuggestionsLink(viewUrl, locale.i18n("flat.link.cian")); // Footer.
 		} else {
 			return sendError("CIAN", res.error());
 		}
 	}
 
-	public String getTgHtmlReportN1() {
-		Answer<String> res = getTgHtmlReportAux(manager.getJsonN1Response(), n1Parser);
+	public String getTgHtmlReportN1(String apiUrl, String viewUrl, int maxVariants) {
+		Answer<String> res = getTgHtmlReportAux(manager.getJsonN1Response(apiUrl), n1Parser, maxVariants);
 		if (res.ok()) {
 			return
-				"<strong>" + locale.i18n("flat.header.n1") +                            // Header.
-				res.answer() +                                                          // Body.
-				addSuggestionsLink("manager.getN1Link", locale.i18n("flat.link.n1"));   // Footer.
+				"<strong>" + locale.i18n("flat.header.n1") +                // Header.
+				res.answer() +                                              // Body.
+				addSuggestionsLink(viewUrl, locale.i18n("flat.link.n1"));   // Footer.
 		} else {
 			return sendError("N1", res.error());
 		}
@@ -80,13 +76,13 @@ public class FlatTgHtmlGenerator {
 		return "";
 	}
 
-	private Answer<String> getTgHtmlReportAux(Answer<String> content, FlatParser parser) {
+	private Answer<String> getTgHtmlReportAux(Answer<String> content, FlatParser parser, int max) {
 		if (content.ok()) {
 			Answer<List<Flat>> res = parser.getAvailableFlats(content.answer());
 			if (res.ok()) {
 				List<Flat> flats = res.answer();
 				if (!flats.isEmpty()) {
-					return Ok(getFlatList(flats));
+					return Ok(getFlatList(flats, max));
 				}
 				else {
 					return Error(getTgHtmlError(locale.i18n("flat.error.empty")));
@@ -101,8 +97,7 @@ public class FlatTgHtmlGenerator {
 		return error;
 	}
 
-	private String getFlatList(List<Flat> flats) {
-		int max = config.getMaxVariants();
+	private String getFlatList(List<Flat> flats, int max) {
 		int size = flats.size();
 
 		StringBuilder builder = new StringBuilder();

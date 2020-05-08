@@ -12,11 +12,11 @@ public class FlatService {
 		this.generator = generator;
 	}
 
-	public String tgHtmlReportCian() {
-		return generator.getTgHtmlReportCian();
+	public String tgHtmlReportCian(String apiUrl, String viewUrl, int maxVariants) {
+		return generator.getTgHtmlReportCian(apiUrl, viewUrl, maxVariants);
 	}
 
-	public String tgHtmlReportN1() {
-		return generator.getTgHtmlReportN1();
+	public String tgHtmlReportN1(String apiUrl, String viewUrl, int maxVariants) {
+		return generator.getTgHtmlReportN1(apiUrl, viewUrl, maxVariants);
 	}
 }

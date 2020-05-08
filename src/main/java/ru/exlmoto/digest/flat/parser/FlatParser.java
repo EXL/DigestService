@@ -18,7 +18,7 @@ public abstract class FlatParser {
 
 	/*
 	 * For convenience, prices with millions should use the number format that is used in the United States.
-	 * Example: 2,300,300
+	 * Example: 2,300,300 r.
 	 */
 	protected String adjustPrice(String price) {
 		int parsed = -1;

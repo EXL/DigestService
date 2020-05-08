@@ -21,7 +21,6 @@ public class FlatManager {
 	}
 
 	public Answer<String> getXlsxCianFile() {
-		System.out.println(cianFileUrl);
 		return rest.getRestFile(cianFileUrl);
 	}
 

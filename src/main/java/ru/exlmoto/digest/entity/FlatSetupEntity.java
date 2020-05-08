@@ -60,6 +60,14 @@ public class FlatSetupEntity {
 		this.id = id;
 	}
 
+	public int getMaxVariants() {
+		return maxVariants;
+	}
+
+	public void setMaxVariants(int maxVariants) {
+		this.maxVariants = maxVariants;
+	}
+
 	public String getApiCianUrl() {
 		return apiCianUrl;
 	}
@@ -94,8 +102,9 @@ public class FlatSetupEntity {
 
 	@Override
 	public String toString() {
-		return
+		return 
 			"FlatSetupEntity{id=" + id +
+			", maxVariants=" + maxVariants +
 			", apiCianUrl=" + apiCianUrl +
 			", apiN1Url=" + apiN1Url +
 			", viewCianUrl=" + viewCianUrl +

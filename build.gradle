@@ -40,7 +40,7 @@ springBoot {
 	buildInfo {
 		properties {
 			additional = [
-				'revision': 'git rev-parse --short HEAD'.execute().text.trim()
+				'revision': getShortGitRevision()
 			]
 		}
 	}
@@ -68,4 +68,13 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+def getShortGitRevision() {
+	try {
+		return 'git rev-parse --short HEAD'.execute().text.trim()
+	} catch (IOException ignored) {
+		logger.warn('Cannot get Git Revision. Is Git installed?')
+		return 'unknown'
+	}
 }

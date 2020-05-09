@@ -165,7 +165,14 @@ See [application.properties](../src/main/resources/application.properties) file 
   * `true` - Use [autolink-java](https://github.com/robinst/autolink-java) library for an auto-linking.
   * `false` - Use RegExp for an auto-linking.
 
-* *site.obey-protection* - Enable or disable administration module protection.
+* *site.obey-protection* - Enable or disable administration module protection via environment variable.
+
+  Example:
+
+  ```
+  PROTECT=true
+  site.obey-protection=${PROTECT}
+  ```
 
   Note: This is a useful option for the first deploy.
 

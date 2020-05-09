@@ -95,7 +95,7 @@ public class FlatCianParser extends FlatParser {
 		}
 		if (flats.isEmpty()) {
 			if (error == null) {
-				error = "Flat list is empty, please check CIAN parser.";
+				error = locale.i18n("flat.error.empty");
 			}
 			return Error(error);
 		}

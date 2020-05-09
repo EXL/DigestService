@@ -71,7 +71,7 @@ public class FlatN1Parser extends FlatParser {
 
 		if (flats.isEmpty()) {
 			if (error == null) {
-				error = "Flat list is empty, please check N1 JSON parser.";
+				error = locale.i18n("flat.error.empty");
 			}
 			return Error(error);
 		}

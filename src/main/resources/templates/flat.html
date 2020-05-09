@@ -17,8 +17,12 @@
 								<h3 th:text="#{site.obey.flat.title}">Flat Service settings</h3>
 								<form th:action="@{/obey/flat/edit}" th:object="${flat}" th:method="post">
 									<div class="form-block">
-										<label for="variants" th:text="#{site.obey.flat.variants}">Maximum variants</label>
-										<input id="variants" type="text" th:field="*{maxVariants}" size="60" th:placeholder="#{site.obey.flat.variants.number}"/>
+										<label for="variants" th:text="#{site.obey.flat.variants}">Maximum variants:</label>
+										<input id="variants" type="text" th:field="*{maxVariants}" size="50" th:placeholder="#{site.obey.flat.variants.number}"/>
+									</div>
+									<div class="form-block">
+										<label for="subscribers" th:text="#{site.obey.flat.subscribers}">Subscriber Ids:</label>
+										<input id="subscribers" type="text" th:field="*{subscriberIds}" size="50" th:placeholder="#{site.obey.flat.subscribers.comma}"/>
 									</div>
 									<div class="form-block">
 										<textarea id="cian-api" class="send-text-field" rows="5" cols="80" th:field="*{apiCianUrl}" th:placeholder="#{site.obey.flat.url}">Url Link</textarea>

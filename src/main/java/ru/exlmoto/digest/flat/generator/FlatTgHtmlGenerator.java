@@ -9,9 +9,6 @@ import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.flat.manager.FlatManager;
 import ru.exlmoto.digest.flat.model.Flat;
-import ru.exlmoto.digest.flat.parser.FlatParser;
-import ru.exlmoto.digest.flat.parser.impl.FlatCianParser;
-import ru.exlmoto.digest.flat.parser.impl.FlatN1Parser;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
@@ -25,45 +22,37 @@ import static ru.exlmoto.digest.util.Answer.Error;
 public class FlatTgHtmlGenerator {
 	private final Logger log = LoggerFactory.getLogger(FlatTgHtmlGenerator.class);
 
-	private final int ellipsis = 30;
+	private final int LONG_URL_WIDTH = 50;
 
 	private final FlatManager manager;
-	private final FlatCianParser cianParser;
-	private final FlatN1Parser n1Parser;
 	private final LocaleHelper locale;
 	private final FilterHelper filter;
 
 	@Value("${general.date-format}")
 	private String dateFormat;
 
-	public FlatTgHtmlGenerator(FlatManager manager,
-	                           FlatCianParser cianParser,
-	                           FlatN1Parser n1Parser,
-	                           LocaleHelper locale,
-	                           FilterHelper filter) {
+	public FlatTgHtmlGenerator(FlatManager manager, LocaleHelper locale, FilterHelper filter) {
 		this.manager = manager;
-		this.cianParser = cianParser;
-		this.n1Parser = n1Parser;
 		this.locale = locale;
 		this.filter = filter;
 	}
 
 	public String getTgHtmlReportCian(String apiUrl, String viewUrl, int maxVariants) {
-		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getXlsxCianFile(apiUrl), cianParser,
-			"CIAN", locale.i18n("flat.header.cian"), locale.i18n("flat.link.cian"));
+		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getCianFlatList(apiUrl), "CIAN",
+			locale.i18n("flat.header.cian"), locale.i18n("flat.link.cian"));
 	}
 
 	public String getTgHtmlReportN1(String apiUrl, String viewUrl, int maxVariants) {
-		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getJsonN1Response(apiUrl), n1Parser,
-			"N1", locale.i18n("flat.header.n1"), locale.i18n("flat.link.n1"));
+		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getN1FlatList(apiUrl), "N1",
+			locale.i18n("flat.header.n1"), locale.i18n("flat.link.n1"));
 	}
 
 	private String getTgHtmlReportAux(String apiUrl, String viewUrl, int maxVariants,
-	                                  Answer<String> content, FlatParser parser,
+	                                  Answer<List<Flat>> flatAnswer,
 	                                  String label, String header, String footer) {
-		String link = filter.ellipsisMiddle(apiUrl, ellipsis);
+		String link = filter.ellipsisMiddle(apiUrl, LONG_URL_WIDTH);
 		log.info(String.format("=> Start receive %s Flat report on '%s' link.", label, link));
-		Answer<String> res = getTgHtmlReport(content, parser, maxVariants);
+		Answer<String> res = getTgHtmlReport(flatAnswer, maxVariants);
 		log.info(String.format("=> End receive %s Flat report on '%s' link.", label, link));
 		if (res.ok()) {
 			return "<strong>" + header + res.answer() + addSuggestionsLink(viewUrl, footer);
@@ -83,21 +72,17 @@ public class FlatTgHtmlGenerator {
 		return "";
 	}
 
-	private Answer<String> getTgHtmlReport(Answer<String> content, FlatParser parser, int max) {
-		if (content.ok()) {
-			Answer<List<Flat>> res = parser.getAvailableFlats(content.answer());
-			if (res.ok()) {
-				List<Flat> flats = res.answer();
-				if (!flats.isEmpty()) {
-					return Ok(getFlatList(flats, max));
-				}
-				else {
-					return Error(getTgHtmlError(locale.i18n("flat.error.empty")));
-				}
+	private Answer<String> getTgHtmlReport(Answer<List<Flat>> flatAnswer, int max) {
+		if (flatAnswer.ok()) {
+			List<Flat> flats = flatAnswer.answer();
+			if (!flats.isEmpty()) {
+				return Ok(getFlatList(flats, max));
 			}
-			return Error(getTgHtmlError(res.error()));
+			else {
+				return Error(getTgHtmlError(locale.i18n("flat.error.empty")));
+			}
 		}
-		return Error(getTgHtmlError(content.error()));
+		return Error(getTgHtmlError(flatAnswer.error()));
 	}
 
 	private String getTgHtmlError(String error) {

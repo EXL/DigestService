@@ -50,7 +50,7 @@ class ChartKeyboardTest {
 
 	@Autowired
 	private LocaleHelper locale;
-	
+
 	private final UpdateHelper update = new UpdateHelper();
 
 	@Test

@@ -51,7 +51,7 @@ class KeyboardPagerAbilityUnitTest {
 
 		}
 	};
-	
+
 	@Test
 	public void testGetPageFromArgument() {
 		assertEquals(1, keyboard.getPageFromArgument("0"));

@@ -49,7 +49,7 @@ class HelloCommandTest {
 	private LocaleHelper locale;
 
 	private final UpdateHelper update = new UpdateHelper();
-	
+
 	@Test
 	public void testHelloCommand() {
 		command.execute(helper, sender, locale, update.getSimpleMessage("/hi", "exlmoto"));

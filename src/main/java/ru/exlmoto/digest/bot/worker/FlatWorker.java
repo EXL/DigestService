@@ -96,7 +96,7 @@ public class FlatWorker {
 	protected List<Long> getSubscriberIds(String subscriberIds) {
 		List<Long> subscribers = new ArrayList<>();
 		if (StringUtils.hasText(subscriberIds)) {
-			String parsed = subscriberIds.replaceAll("\\s+", "");
+			String parsed = subscriberIds.replaceAll("\\s+", ",");
 			if (parsed.contains(",")) {
 				String[] ids = parsed.split(",");
 				for (String id : ids) {

@@ -25,13 +25,13 @@
 package ru.exlmoto.digest.flat.model;
 
 public class Flat {
-	private String rooms;
-	private String squares;
-	private String floor;
-	private String address;
-	private String price;
-	private String phone;
-	private String link;
+	private final String rooms;
+	private final String squares;
+	private final String floor;
+	private final String address;
+	private final String price;
+	private final String phone;
+	private final String link;
 
 	public Flat(String rooms, String squares, String floor, String address, String price, String phone, String link) {
 		this.rooms = rooms;

@@ -65,17 +65,22 @@ public class FlatWorker {
 		try {
 			List<String> reports = new ArrayList<>();
 			databaseService.getFlatSettings().ifPresent(settings -> {
-				if (databaseService.checkFlatSettings(settings)) {
-					addCianReportToList(settings, reports);
-					addN1ReportToList(settings, reports);
+				List<Long> subscribers = getSubscriberIds(settings.getSubscribeIds());
+				if (!subscribers.isEmpty()) {
+					if (databaseService.checkFlatSettings(settings)) {
+						addCianReportToList(settings, reports);
+						addN1ReportToList(settings, reports);
 
-					sendFlatReports(getSubscriberIds(settings.getSubscribeIds()), reports);
+						sendFlatReports(subscribers, reports);
+					} else {
+						log.error("Flat settings checks failed, sending reports disabled.");
+					}
 				} else {
-					log.error("Flat settings checks failed, sending reports disabled.");
+					log.info("=> Subscribers list is empty, Flat reports service disabled.");
 				}
 			});
 		} catch (DataAccessException dae) {
-			log.error("Cannot get flat links settings from database.", dae);
+			log.error("Cannot get Flat settings from database.", dae);
 		} catch (RuntimeException re) {
 			log.error("Runtime exception on Flat report sender thread.", re);
 		}
@@ -83,7 +88,7 @@ public class FlatWorker {
 
 	private void sendFlatReports(List<Long> chatIds, List<String> reports) {
 		chatIds.forEach(chatId -> reports.forEach(report -> {
-			log.info(String.format("=> Send Flat report to chat '%d'.", chatId));
+			log.info(String.format("=> Send Flat report to chat '%d', reports: '%d'.", chatId, reports.size()));
 			sender.sendHtml(chatId, report);
 			try {
 				Thread.sleep(config.getMessageDelay() * 1000);

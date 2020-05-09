@@ -1,5 +1,6 @@
 package ru.exlmoto.digest.flat.parser.impl;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -99,7 +100,13 @@ public class FlatCianParser extends FlatParser {
 	}
 
 	private String parseCell(Row row, int index) {
-		return row.getCell(index).getStringCellValue();
+		if (row != null) {
+			Cell cell = row.getCell(index);
+			if (cell != null) {
+				return cell.getStringCellValue();
+			}
+		}
+		return "???";
 	}
 
 	protected String parseSquare(String squares) {

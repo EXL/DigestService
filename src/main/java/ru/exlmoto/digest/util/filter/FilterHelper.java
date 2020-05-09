@@ -83,7 +83,7 @@ public class FilterHelper {
 	}
 
 	public String strip(String str) {
-		return str.replaceAll("\\s+", " ").trim();
+		return (!StringUtils.isEmpty(str)) ? str.replaceAll("\\s+", " ").trim() : str;
 	}
 
 	public String escapeTags(String str) {

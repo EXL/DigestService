@@ -91,6 +91,8 @@ class FilterHelperTest {
 
 	@Test
 	public void testStrip() {
+		assertNull(filter.strip(null));
+		assertEquals("", filter.strip(""));
 		assertEquals("a a@ as (exl)", filter.strip(filter.removeUserCasts("\na\ta@ @ as (@exl)\n\n")));
 		assertEquals("Check this a! A as asd!", filter.strip("\t\n\n\nCheck this   a! A  as\t asd!"));
 	}

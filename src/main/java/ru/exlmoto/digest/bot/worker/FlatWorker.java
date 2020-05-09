@@ -34,7 +34,7 @@ import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
-import ru.exlmoto.digest.entity.BotDigestUserEntity;
+import ru.exlmoto.digest.entity.FlatSetupEntity;
 import ru.exlmoto.digest.flat.FlatService;
 import ru.exlmoto.digest.service.DatabaseService;
 
@@ -44,8 +44,6 @@ import java.util.List;
 @Component
 public class FlatWorker {
 	private final Logger log = LoggerFactory.getLogger(FlatWorker.class);
-
-	private final String usernameWithAt = "@exlmoto";
 
 	private final FlatService flatService;
 	private final DatabaseService databaseService;
@@ -65,43 +63,17 @@ public class FlatWorker {
 	@Scheduled(cron = "${cron.flat.report.send}")
 	public void workOnFlatReport() {
 		try {
-			List<Long> chatIds = new ArrayList<>();
-			BotDigestUserEntity user = databaseService.getDigestUserNullable(usernameWithAt);
-			if (user != null) {
-				chatIds.add(user.getId());
-			}
-
 			List<String> reports = new ArrayList<>();
 			databaseService.getFlatSettings().ifPresent(settings -> {
 				if (databaseService.checkFlatSettings(settings)) {
-					String apiCianUrl = settings.getApiCianUrl();
-					if (StringUtils.hasText(apiCianUrl)) {
-						String cianReport = flatService.tgHtmlReportCian(apiCianUrl,
-							settings.getViewCianUrl(), settings.getMaxVariants());
-						if (StringUtils.hasText(cianReport)) {
-							reports.add(cianReport);
-						}
-					}
+					addCianReportToList(settings, reports);
+					addN1ReportToList(settings, reports);
 
-					String apiN1Url = settings.getApiN1Url();
-					if (StringUtils.hasText(apiN1Url)) {
-						String n1Report = flatService.tgHtmlReportN1(settings.getApiN1Url(),
-							settings.getViewN1Url(), settings.getMaxVariants());
-						if (StringUtils.hasText(n1Report)) {
-							reports.add(n1Report);
-						}
-					}
+					sendFlatReports(getSubscriberIds(settings.getSubscribeIds()), reports);
 				} else {
-					log.error("Flat settings checks failed.");
+					log.error("Flat settings checks failed, sending reports disabled.");
 				}
 			});
-
-			if (!reports.isEmpty() && !chatIds.isEmpty()) {
-				sendFlatReports(chatIds, reports);
-			} else {
-				log.error(String.format("Cannot send flat reports. Report List '%d' or Chat List '%d' are empty!",
-					reports.size(), chatIds.size()));
-			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get flat links settings from database.", dae);
 		} catch (RuntimeException re) {
@@ -109,7 +81,7 @@ public class FlatWorker {
 		}
 	}
 
-	public void sendFlatReports(List<Long> chatIds, List<String> reports) {
+	private void sendFlatReports(List<Long> chatIds, List<String> reports) {
 		chatIds.forEach(chatId -> reports.forEach(report -> {
 			log.info(String.format("=> Send Flat report to chat '%d'.", chatId));
 			sender.sendHtml(chatId, report);
@@ -119,5 +91,53 @@ public class FlatWorker {
 				throw new RuntimeException(ie);
 			}
 		}));
+	}
+
+	protected List<Long> getSubscriberIds(String subscriberIds) {
+		List<Long> subscribers = new ArrayList<>();
+		if (StringUtils.hasText(subscriberIds)) {
+			String parsed = subscriberIds.replaceAll("\\s+", "");
+			if (parsed.contains(",")) {
+				String[] ids = parsed.split(",");
+				for (String id : ids) {
+					addIdToList(id, subscribers);
+				}
+			} else {
+				addIdToList(parsed, subscribers);
+			}
+		}
+		return subscribers;
+	}
+
+	private void addIdToList(String subscriberId, List<Long> subscribers) {
+		if (StringUtils.hasText(subscriberId)) {
+			try {
+				subscribers.add(Long.parseLong(subscriberId));
+			} catch (NumberFormatException nfe) {
+				log.error(String.format("Cannot parse '%s' value as Long.", subscriberId), nfe);
+			}
+		}
+	}
+
+	private void addCianReportToList(FlatSetupEntity settings, List<String> reports) {
+		String apiCianUrl = settings.getApiCianUrl();
+		if (StringUtils.hasText(apiCianUrl)) {
+			addReportToList(flatService.tgHtmlReportCian(apiCianUrl,
+				settings.getViewCianUrl(), settings.getMaxVariants()), reports);
+		}
+	}
+
+	private void addN1ReportToList(FlatSetupEntity settings, List<String> reports) {
+		String apiN1Url = settings.getApiN1Url();
+		if (StringUtils.hasText(apiN1Url)) {
+			addReportToList(flatService.tgHtmlReportN1(settings.getApiN1Url(),
+				settings.getViewN1Url(), settings.getMaxVariants()), reports);
+		}
+	}
+
+	private void addReportToList(String report, List<String> reports) {
+		if (StringUtils.hasText(report)) {
+			reports.add(report);
+		}
 	}
 }

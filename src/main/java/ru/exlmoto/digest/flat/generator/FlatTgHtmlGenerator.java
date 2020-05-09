@@ -74,13 +74,7 @@ public class FlatTgHtmlGenerator {
 
 	private Answer<String> getTgHtmlReport(Answer<List<Flat>> flatAnswer, int max) {
 		if (flatAnswer.ok()) {
-			List<Flat> flats = flatAnswer.answer();
-			if (!flats.isEmpty()) {
-				return Ok(getFlatList(flats, max));
-			}
-			else {
-				return Error(getTgHtmlError(locale.i18n("flat.error.empty")));
-			}
+			return Ok(getFlatList(flatAnswer.answer(), max));
 		}
 		return Error(getTgHtmlError(flatAnswer.error()));
 	}

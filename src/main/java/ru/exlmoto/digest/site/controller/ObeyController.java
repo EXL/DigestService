@@ -523,6 +523,7 @@ public class ObeyController {
 		if (isAuthorizedForChanging) {
 			service.getFlatSettings().ifPresent(settings -> {
 				flat.setMaxVariants(settings.getMaxVariants());
+				flat.setSubscriberIds(settings.getSubscribeIds());
 				flat.setApiCianUrl(settings.getApiCianUrl());
 				flat.setApiN1Url(settings.getApiN1Url());
 				flat.setViewCianUrl(settings.getViewCianUrl());
@@ -768,14 +769,13 @@ public class ObeyController {
 		if (settingsOptional.isPresent()) {
 			fillFlatSettings(settingsOptional.get(), flat);
 		} else {
-			FlatSetupEntity settings = new FlatSetupEntity();
-			settings.setId(FlatSetupEntity.FLAT_ROW);
-			fillFlatSettings(settings, flat);
+			fillFlatSettings(new FlatSetupEntity(FlatSetupEntity.FLAT_ROW), flat);
 		}
 	}
 
 	private void fillFlatSettings(FlatSetupEntity settings, FlatForm flat) {
 		settings.setMaxVariants(flat.getMaxVariants());
+		settings.setSubscribeIds(filter.strip(flat.getSubscriberIds()));
 		settings.setApiCianUrl(filter.strip(flat.getApiCianUrl()));
 		settings.setApiN1Url(filter.strip(flat.getApiN1Url()));
 		settings.setViewCianUrl(filter.strip(flat.getViewCianUrl()));

@@ -41,6 +41,9 @@ public class FlatSetupEntity {
 	private int maxVariants;
 
 	@Column(length = 4095)
+	private String subscribeIds;
+
+	@Column(length = 4095)
 	private String apiCianUrl;
 
 	@Column(length = 4095)
@@ -51,6 +54,14 @@ public class FlatSetupEntity {
 
 	@Column(length = 4095)
 	private String viewN1Url;
+
+	public FlatSetupEntity() {
+
+	}
+
+	public FlatSetupEntity(int id) {
+		this.id = id;
+	}
 
 	public int getId() {
 		return id;
@@ -66,6 +77,14 @@ public class FlatSetupEntity {
 
 	public void setMaxVariants(int maxVariants) {
 		this.maxVariants = maxVariants;
+	}
+
+	public String getSubscribeIds() {
+		return subscribeIds;
+	}
+
+	public void setSubscribeIds(String subscribeIds) {
+		this.subscribeIds = subscribeIds;
 	}
 
 	public String getApiCianUrl() {
@@ -102,9 +121,10 @@ public class FlatSetupEntity {
 
 	@Override
 	public String toString() {
-		return 
+		return
 			"FlatSetupEntity{id=" + id +
 			", maxVariants=" + maxVariants +
+			", subscribeIds=" + subscribeIds +
 			", apiCianUrl=" + apiCianUrl +
 			", apiN1Url=" + apiN1Url +
 			", viewCianUrl=" + viewCianUrl +

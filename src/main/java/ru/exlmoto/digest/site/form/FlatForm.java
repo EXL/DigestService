@@ -26,6 +26,7 @@ package ru.exlmoto.digest.site.form;
 
 public class FlatForm {
 	private int maxVariants;
+	private String subscriberIds;
 	private String apiCianUrl;
 	private String apiN1Url;
 	private String viewCianUrl;
@@ -37,6 +38,14 @@ public class FlatForm {
 
 	public void setMaxVariants(int maxVariants) {
 		this.maxVariants = maxVariants;
+	}
+
+	public String getSubscriberIds() {
+		return subscriberIds;
+	}
+
+	public void setSubscriberIds(String subscriberIds) {
+		this.subscriberIds = subscriberIds;
 	}
 
 	public String getApiCianUrl() {

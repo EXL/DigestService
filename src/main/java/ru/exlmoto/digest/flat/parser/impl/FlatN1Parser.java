@@ -79,12 +79,22 @@ public class FlatN1Parser extends FlatParser {
 		return Ok(flats);
 	}
 
-	protected String parseRooms(JsonObject params) {
+	protected String parseLink(String url) {
+		if (StringUtils.hasText(url)) {
+			String trimmed = url.trim();
+			if (trimmed.startsWith("//")) {
+				return "https:" + trimmed;
+			}
+		}
+		return url;
+	}
+
+	private String parseRooms(JsonObject params) {
 		JsonElement count = params.get("rooms_count");
 		return (count != null && !count.isJsonNull()) ? count.getAsString() : "1";
 	}
 
-	protected String parseAddress(JsonObject params) {
+	private String parseAddress(JsonObject params) {
 		StringJoiner joiner = new StringJoiner("; ");
 		JsonElement element = params.get("house_addresses");
 		if (element != null && !element.isJsonNull()) {
@@ -101,22 +111,22 @@ public class FlatN1Parser extends FlatParser {
 		return joiner.toString();
 	}
 
-	protected String parseSquare(JsonObject params) {
+	private String parseSquare(JsonObject params) {
 		return String.format("%.1f", params.getAsJsonPrimitive("total_area").getAsInt() / 100.0d);
 	}
 
-	protected String parseFloor(JsonObject params) {
+	private String parseFloor(JsonObject params) {
 		JsonElement floor = params.get("floor");
 		JsonElement count = params.get("floors_count");
 		return (floor != null && !floor.isJsonNull() && count != null && !count.isJsonNull()) ?
 			floor.getAsString() + "/" + count.getAsString() : "1/1";
 	}
 
-	protected String parsePrice(JsonObject params) {
+	private String parsePrice(JsonObject params) {
 		return adjustPrice(params.getAsJsonPrimitive("price").getAsString()) + " " + locale.i18n("flat.price.symbol");
 	}
 
-	protected String parsePhones(JsonObject flat) {
+	private String parsePhones(JsonObject flat) {
 		JsonArray phones = flat.getAsJsonArray("original_phones");
 		if (onePhone) {
 			String phone = "+" + phones.get(0).getAsJsonObject().getAsJsonPrimitive("value").getAsString();
@@ -129,12 +139,5 @@ public class FlatN1Parser extends FlatParser {
 			});
 			return joiner.toString();
 		}
-	}
-
-	protected String parseLink(String url) {
-		if (!url.startsWith("http")) {
-			return "https:" + url;
-		}
-		return url;
 	}
 }

@@ -3,6 +3,8 @@ package ru.exlmoto.digest.flat.parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.util.StringUtils;
+
 import ru.exlmoto.digest.flat.model.Flat;
 import ru.exlmoto.digest.util.Answer;
 
@@ -18,7 +20,7 @@ public abstract class FlatParser {
 
 	/*
 	 * For convenience, prices with millions should use the number format that is used in the United States.
-	 * Example: 2,300,300 r.
+	 * Example: 2,300,300 rub.
 	 */
 	protected String adjustPrice(String price) {
 		int parsed = -1;
@@ -34,7 +36,7 @@ public abstract class FlatParser {
 	}
 
 	protected String applyPhonePatch(String phone) {
-		if (phone.startsWith("+7")) {
+		if (StringUtils.hasText(phone) && phone.startsWith("+7")) {
 			return "8" + phone.substring(2);
 		}
 		return phone;

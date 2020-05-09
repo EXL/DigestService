@@ -11,11 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.flat.model.Flat;
 import ru.exlmoto.digest.flat.parser.FlatParser;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.filter.FilterHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,13 +33,13 @@ import static ru.exlmoto.digest.util.Answer.Error;
 public class FlatCianParser extends FlatParser {
 	private final Logger log = LoggerFactory.getLogger(FlatCianParser.class);
 
+	private final String patchAddress0 = "ул.";
 	private final String patchAddress1 = "улица";
 	private final String patchAddress2 = "Владимира";
 	private final String patchAddress3 = "В.";
-	private final String patchPrice1 = "руб";
-	private final String patchPrice2 = "р";
 
 	private final FilterHelper filter;
+	private final LocaleHelper locale;
 
 	// Cell indexes format constants.
 	// See XLSX file for column indexes.
@@ -49,8 +51,9 @@ public class FlatCianParser extends FlatParser {
 	private final int PHONE   =  9;
 	private final int LINK    = 19;
 
-	public FlatCianParser(FilterHelper filter) {
+	public FlatCianParser(FilterHelper filter, LocaleHelper locale) {
 		this.filter = filter;
+		this.locale = locale;
 	}
 
 	@Override
@@ -74,7 +77,7 @@ public class FlatCianParser extends FlatParser {
 					parseSquare(parseCell(row, SQUARE)),
 					parseFloor(parseCell(row, FLOOR)),
 					applyAddressPatch(parseAddress(parseCell(row, ADDRESS))),
-					applyPricePatch(parsePrice(parseCell(row, PRICE))),
+					parsePrice(parseCell(row, PRICE)),
 					applyPhonePatch(parsePhone(parseCell(row, PHONE))),
 					parseCell(row, LINK)
 				));
@@ -109,55 +112,49 @@ public class FlatCianParser extends FlatParser {
 		return "???";
 	}
 
-	protected String parseSquare(String squares) {
-		if (squares.contains("/")) {
-			return squares.substring(0, squares.indexOf("/"));
-		}
-		return squares;
+	private String parseSquare(String squares) {
+		return getFirstChunk(squares, "/");
 	}
 
-	protected String parseFloor(String floor) {
-		if (floor.contains(",")) {
-			return floor.substring(0, floor.indexOf(","));
-		}
-		return floor;
+	private String parseFloor(String floor) {
+		return getFirstChunk(floor, ",");
+	}
+
+	private String parsePhone(String phone) {
+		return (onePhone) ? getFirstChunk(phone, ",") : phone;
 	}
 
 	protected String parseAddress(String address) {
-		if (address.contains(", ")) {
+		if (address.contains(",")) {
 			String reversed = new StringBuilder(address).reverse().toString();
-			String[] parsed = reversed.split(" ,");
+			String[] parsed = reversed.split(",");
 			// 0 - house number, 1 - street.
 			String res = parsed[0] + " ," + parsed[1];
-			return new StringBuilder(res).reverse().toString();
+			return filter.strip(new StringBuilder(res).reverse().toString());
 		}
 		return address;
 	}
 
 	protected String parsePrice(String price) {
-		if (price.contains(" ")) {
-			String[] parsed = filter.strip(price).split("\\s+");
-			// 0 - price, 1 - currency.
-			String res = adjustPrice(parsed[0]) + " " + parsed[1];
-			// Delete last comma if exist.
-			return (res.endsWith(",")) ? res.replaceFirst(".$", "") : res;
+		if (StringUtils.hasText(price)) {
+			return adjustPrice(filter.strip(price).split("\\s+")[0]) + " " + locale.i18n("flat.price.symbol");
 		}
 		return price;
 	}
 
-	protected String parsePhone(String phone) {
-		if (onePhone && phone.contains(", ")) {
-			return phone.substring(0, phone.indexOf(", "));
+	protected String getFirstChunk(String full, String stop) {
+		if (full.contains(stop)) {
+			return full.substring(0, full.indexOf(stop));
 		}
-		return phone;
+		return full;
 	}
 
-	private String applyAddressPatch(String address) {
-		return filter.strip(address.replace(patchAddress1, "").replace(patchAddress2, patchAddress3))
-			.replace(" ,", ",");
-	}
-
-	private String applyPricePatch(String price) {
-		return price.replace(patchPrice1, patchPrice2);
+	protected String applyAddressPatch(String address) {
+		return filter.strip(
+			address
+				.replace(patchAddress0, "")
+				.replace(patchAddress1, "")
+				.replace(patchAddress2, patchAddress3)
+		).replace(" ,", ",");
 	}
 }

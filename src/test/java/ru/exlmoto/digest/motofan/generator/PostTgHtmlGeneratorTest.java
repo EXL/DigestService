@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class PostTgHtmlGeneratorTest {
 	@Autowired
 	private PostTgHtmlGenerator htmlGenerator;
-	
+
 	private final MotofanPostHelper post = new MotofanPostHelper();
 
 	@Test

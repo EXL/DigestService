@@ -111,7 +111,7 @@ class FilterHelperTest {
 		assertEquals("Test email@exlmoto.ru", filter.removeUserCasts("Test email@exlmoto.ru"));
 		assertEquals("Test >exlmoto and end.", filter.removeUserCasts("Test >@exlmoto and end."));
 	}
-	
+
 	@Test
 	public void testArrangeString() {
 		assertEquals("i     ", filter.arrangeString("i", 6));

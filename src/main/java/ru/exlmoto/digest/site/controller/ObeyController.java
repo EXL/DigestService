@@ -46,12 +46,14 @@ import ru.exlmoto.digest.bot.worker.MorningWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
+import ru.exlmoto.digest.bot.worker.FlatWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.entity.MemberEntity;
+import ru.exlmoto.digest.entity.FlatSetupEntity;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
@@ -63,6 +65,7 @@ import ru.exlmoto.digest.site.form.SubscriberForm;
 import ru.exlmoto.digest.site.form.SetupForm;
 import ru.exlmoto.digest.site.form.UserForm;
 import ru.exlmoto.digest.site.form.SendForm;
+import ru.exlmoto.digest.site.form.FlatForm;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.chat.Chat;
 import ru.exlmoto.digest.site.model.digest.Digest;
@@ -93,6 +96,7 @@ public class ObeyController {
 	private final CallbackQueriesWorker callbackQueriesWorker;
 	private final MorningWorker morningWorker;
 	private final CovidWorker covidWorker;
+	private final FlatWorker flatWorker;
 	private final ExchangeService exchange;
 	private final BotSender sender;
 	private final ImageHelper rest;
@@ -115,6 +119,7 @@ public class ObeyController {
 	                      CallbackQueriesWorker callbackQueriesWorker,
 	                      MorningWorker morningWorker,
 	                      CovidWorker covidWorker,
+	                      FlatWorker flatWorker,
 	                      ExchangeService exchange,
 	                      BotSender sender, ImageHelper rest, SiteConfiguration config) {
 		this.helper = helper;
@@ -126,6 +131,7 @@ public class ObeyController {
 		this.callbackQueriesWorker = callbackQueriesWorker;
 		this.morningWorker = morningWorker;
 		this.covidWorker = covidWorker;
+		this.flatWorker = flatWorker;
 		this.exchange = exchange;
 		this.sender = sender;
 		this.rest = rest;
@@ -481,7 +487,7 @@ public class ObeyController {
 	@PostMapping(path = "/obey/member/edit")
 	public String obeyMemberEdit(MemberForm memberForm, Authentication authentication) {
 		if (!isUserOwner(authentication)) {
-			log.error(String.format("Access denied for non owner! User: '%s'", authentication.getName()));
+			log.error(String.format("Access denied for non owner (member-edit)! User: '%s'", authentication.getName()));
 
 			return "redirect:/obey";
 		}
@@ -507,6 +513,52 @@ public class ObeyController {
 		Optional.of(helper.getLong(id)).ifPresent(service::deleteMember);
 
 		return "redirect:/obey/member";
+	}
+
+	@RequestMapping(path = "/obey/flat")
+	public String obeyFlat(Model model, FlatForm flat, Authentication authentication) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		boolean isAuthorizedForChanging = isUserOwner(authentication);
+		if (isAuthorizedForChanging) {
+			service.getFlatSettings().ifPresent(settings -> {
+				flat.setMaxVariants(settings.getMaxVariants());
+				flat.setSubscriberIds(settings.getSubscribeIds());
+				flat.setApiCianUrl(settings.getApiCianUrl());
+				flat.setApiN1Url(settings.getApiN1Url());
+				flat.setViewCianUrl(settings.getViewCianUrl());
+				flat.setViewN1Url(settings.getViewN1Url());
+			});
+			model.addAttribute("flat", flat);
+		}
+		model.addAttribute("owner", isAuthorizedForChanging);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/flat/edit")
+	public String obeyFlatEdit(FlatForm flat, Authentication authentication) {
+		if (!isUserOwner(authentication)) {
+			log.error(String.format("Access denied for non owner (flat-edit)! User: '%s'", authentication.getName()));
+
+			return "redirect:/obey";
+		}
+
+		saveOrUpdateFlatSettings(flat);
+
+		return "redirect:/obey/flat";
+	}
+
+	@RequestMapping(path = "/obey/flat/send")
+	public String obeyFlatSend(Authentication authentication) {
+		if (!isUserOwner(authentication)) {
+			log.error(String.format("Access denied for non owner (flat-send)! User: '%s'", authentication.getName()));
+
+			return "redirect:/obey";
+		}
+		flatWorker.workOnFlatReport();
+
+		return "redirect:/obey/flat";
 	}
 
 	private DigestForm fillDigestForm(String edit, DigestForm digestForm) {
@@ -710,5 +762,24 @@ public class ObeyController {
 
 	private boolean isUserOwner(Authentication authentication) {
 		return authentication.getAuthorities().contains(new SimpleGrantedAuthority(Role.Owner.name()));
+	}
+
+	private void saveOrUpdateFlatSettings(FlatForm flat) {
+		Optional<FlatSetupEntity> settingsOptional = service.getFlatSettings();
+		if (settingsOptional.isPresent()) {
+			fillFlatSettings(settingsOptional.get(), flat);
+		} else {
+			fillFlatSettings(new FlatSetupEntity(FlatSetupEntity.FLAT_ROW), flat);
+		}
+	}
+
+	private void fillFlatSettings(FlatSetupEntity settings, FlatForm flat) {
+		settings.setMaxVariants(flat.getMaxVariants());
+		settings.setSubscribeIds(filter.strip(flat.getSubscriberIds()));
+		settings.setApiCianUrl(filter.strip(flat.getApiCianUrl()));
+		settings.setApiN1Url(filter.strip(flat.getApiN1Url()));
+		settings.setViewCianUrl(filter.strip(flat.getViewCianUrl()));
+		settings.setViewN1Url(filter.strip(flat.getViewN1Url()));
+		service.saveFlatSettings(settings);
 	}
 }

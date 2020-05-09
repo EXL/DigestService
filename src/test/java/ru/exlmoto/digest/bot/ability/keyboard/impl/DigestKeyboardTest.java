@@ -65,7 +65,7 @@ class DigestKeyboardTest {
 
 	@Autowired
 	private LocaleHelper locale;
-	
+
 	private final UpdateHelper update = new UpdateHelper();
 
 	@Test

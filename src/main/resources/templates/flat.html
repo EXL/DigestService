@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<body>
+		<div class="page">
+			<div class="main">
+				<div class="content">
+					<div>
+						<!--/*@thymesVar id="flat" type="ru.exlmoto.digest.site.form.FlatForm"*/-->
+						<div th:fragment="flat-form">
+							<p>
+								<a href="/obey/flat/send" th:text="#{site.obey.flat.send}">Send apartment variants</a>
+								|
+								<a href="https://www.google.com/search?q=percent+encoding+decoding+url" target="_blank" th:text="#{site.obey.flat.decoding}">Find URL Decoding/Encoding Service</a>
+							</p>
+							<p><em th:text="#{site.obey.flat.advice}">URL Decoding Advice</em></p>
+							<div class="post-form">
+								<h3 th:text="#{site.obey.flat.title}">Flat Service settings</h3>
+								<form th:action="@{/obey/flat/edit}" th:object="${flat}" th:method="post">
+									<div class="form-block">
+										<label for="subscribers" th:text="#{site.obey.flat.subscribers}">Subscriber Ids:</label>
+										<input id="subscribers" type="text" th:field="*{subscriberIds}" size="38" th:placeholder="#{site.obey.flat.subscribers.comma}"/>
+										<label for="variants" th:text="#{site.obey.flat.variants}">Maximum variants:</label>
+										<input id="variants" type="text" th:field="*{maxVariants}" size="5" th:placeholder="#{site.obey.flat.variants.number}"/>
+									</div>
+									<div class="form-block">
+										<textarea id="cian-api" class="send-text-field" rows="5" cols="80" th:field="*{apiCianUrl}" th:placeholder="#{site.obey.flat.url}">URL Link</textarea>
+										<label for="cian-api" th:text="#{site.obey.flat.cian.api}">CIAN API</label>
+									</div>
+									<div class="form-block">
+										<textarea id="n1-api" class="send-text-field" rows="5" cols="80" th:field="*{apiN1Url}" th:placeholder="#{site.obey.flat.url}">URL Link</textarea>
+										<label for="n1-api" th:text="#{site.obey.flat.n1.api}">N1 API</label>
+									</div>
+									<div class="form-block">
+										<textarea id="cian-view" class="send-text-field" rows="5" cols="80" th:field="*{viewCianUrl}" th:placeholder="#{site.obey.flat.url}">URL Link</textarea>
+										<label for="cian-view" th:text="#{site.obey.flat.cian.view}">CIAN View</label>
+									</div>
+									<div class="form-block">
+										<textarea id="n1-view" class="send-text-field" rows="5" cols="80" th:field="*{viewN1Url}" th:placeholder="#{site.obey.flat.url}">URL Link</textarea>
+										<label for="n1-view" th:text="#{site.obey.flat.n1.view}">N1 View</label>
+									</div>
+									<p><input class="button" type="submit" value="Send" th:value="#{site.obey.content.action.save}"/></p>
+								</form>
+							</div>
+							<div class="spring"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

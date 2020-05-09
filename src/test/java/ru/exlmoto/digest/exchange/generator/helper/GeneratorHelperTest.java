@@ -60,7 +60,7 @@ class GeneratorHelperTest {
 		assertThat(helper.getDifference(new BigDecimal("1.005"), new BigDecimal("1.0"))).isEqualTo("-0.01");
 		assertThat(helper.getDifference(new BigDecimal("4.0"), new BigDecimal("3.0"))).isEqualTo("-1.00");
 	}
-	
+
 	@Test
 	public void testNormalizeValue() {
 		assertEquals("-12.0000", helper.normalizeValue(new BigDecimal("-12")));

@@ -189,7 +189,7 @@ class RateParserUnitTest {
 
 		generalTests(new MetalRuMirrorParser());
 	}
-	
+
 	private void generalTests(RateParser parser) {
 		assertFalse(parserHelper.process(parser, "malfunction data"));
 		assertFalse(parserHelper.process(parser, "malfunction\ndata"));

@@ -46,7 +46,7 @@ class AvatarWorkerTest {
 
 	@Autowired
 	private ResourceHelper resourceHelper;
-	
+
 	private final UpdateHelper update = new UpdateHelper();
 
 	@Test

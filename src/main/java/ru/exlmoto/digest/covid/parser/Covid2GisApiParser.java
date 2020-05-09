@@ -119,8 +119,8 @@ public class Covid2GisApiParser {
 					Collections.reverse(cases);
 					return cases;
 				}
-			} catch (JsonSyntaxException mje) {
-				log.error("Cannot parse JSON cases data!", mje);
+			} catch (JsonSyntaxException jse) {
+				log.error("Cannot parse JSON cases data!", jse);
 			}
 		}
 		return null;

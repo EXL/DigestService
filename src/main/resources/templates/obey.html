@@ -9,6 +9,7 @@
 					<p><a href="/obey">Digest</a></p>
 					<p><a href="/obey/user">Digest User</a></p>
 					<p><a href="/obey/setup">Digest Setup</a></p>
+					<p><a href="/obey/flat">Flat Setup</a></p>
 					<p><a href="/obey/sub-digest">Digest Sub Digest</a></p>
 					<p><a href="/obey/sub-motofan">Digest Sub MotoFan</a></p>
 					<p><a href="/obey/sub-greeting">Digest Sub Greeting</a></p>
@@ -99,6 +100,9 @@
 						</div>
 						<div class="spring"></div>
 					</div>
+					<div th:if="${owner == true && flat != null}">
+						<div th:replace="~{flat :: flat-form}"></div>
+					</div>
 					<div th:if="${sub_digest != null}">
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.digest},'sub-digest')}"></div>
 					</div>
@@ -119,34 +123,33 @@
 					<div th:if="${send != null}">
 						<div th:replace="~{send :: send-form}"></div>
 					</div>
+					<div th:if="${owner == true && memberList != null}">
+						<div th:replace="~{participant :: member-form}"></div>
+						<table class="small-table">
+							<tr>
+								<th th:text="#{site.obey.content.id}" nowrap>ID</th>
+								<th th:text="#{site.obey.content.username}" nowrap>Username</th>
+								<th th:text="#{site.obey.content.role}" nowrap>Role</th>
+								<th th:text="#{site.obey.content.enabled}" nowrap>Enabled</th>
+								<th th:text="#{site.obey.content.action}" nowrap>Action</th>
+							</tr>
+							<tr th:each="member : ${memberList}">
+								<td th:text="${member.id}">ID</td>
+								<td class="td-left" th:text="${member.username}">Username</td>
+								<td class="td-left" th:utext="${member.role}">Role</td>
+								<td th:utext="${member.enabled}">Enabled</td>
+								<td>
+									<a th:href="@{/obey/member/(edit=${member.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/member/delete/{id}(id=${member.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
+								</td>
+							</tr>
+						</table>
+						<div class="spring"></div>
+					</div>
 					<div th:if="${owner != null}">
-						<div th:if="${owner}">
-							<div th:if="${memberList != null}">
-								<div th:replace="~{participant :: member-form}"></div>
-								<table class="small-table">
-									<tr>
-										<th th:text="#{site.obey.content.id}" nowrap>ID</th>
-										<th th:text="#{site.obey.content.username}" nowrap>Username</th>
-										<th th:text="#{site.obey.content.role}" nowrap>Role</th>
-										<th th:text="#{site.obey.content.enabled}" nowrap>Enabled</th>
-										<th th:text="#{site.obey.content.action}" nowrap>Action</th>
-									</tr>
-									<tr th:each="member : ${memberList}">
-										<td th:text="${member.id}">ID</td>
-										<td class="td-left" th:text="${member.username}">Username</td>
-										<td class="td-left" th:utext="${member.role}">Role</td>
-										<td th:utext="${member.enabled}">Enabled</td>
-										<td>
-											<a th:href="@{/obey/member/(edit=${member.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/member/delete/{id}(id=${member.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
 						<div th:unless="${owner}">
 							<h4 th:text="#{site.obey.member.access.denied}">Access Denied!</h4>
+							<div class="spring"></div>
 						</div>
-						<div class="spring"></div>
 					</div>
 				</div>
 			</div>

@@ -34,6 +34,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -132,6 +133,14 @@ public class RestHelper {
 			 */
 			if (hsee.getStatusCode() != HttpStatus.NOT_IMPLEMENTED) {
 				throw hsee;
+			}
+		} catch (HttpClientErrorException hcee) {
+			/*
+			 * Ignore "405 Method Not Allowed" error on head request.
+			 */
+
+			if (hcee.getStatusCode() != HttpStatus.METHOD_NOT_ALLOWED) {
+				throw hcee;
 			}
 		}
 	}

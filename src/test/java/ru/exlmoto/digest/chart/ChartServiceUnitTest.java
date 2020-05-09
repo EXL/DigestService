@@ -40,7 +40,7 @@ class ChartServiceUnitTest {
 	private final ChartService chart = new ChartService(null, null);
 
 	private final ResourceHelper resource = new ResourceHelper();
-	
+
 	@Test
 	public void testParseChartsYamlFileIncorrect() {
 		final String yamlChunk = resource.readFileToString("classpath:chart/charts-chunk.yaml");

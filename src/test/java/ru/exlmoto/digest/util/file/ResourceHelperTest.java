@@ -35,6 +35,7 @@ import java.io.UncheckedIOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -65,5 +66,22 @@ class ResourceHelperTest {
 		System.out.println(res.substring(0, 40));
 
 		assertThrows(UncheckedIOException.class, () -> resourceHelper.asString(resourceFail));
+	}
+
+	@Test
+	public void testGetResourceFilePath() {
+		assertNull(resourceHelper.getResourceFilePath(null));
+		assertNull(resourceHelper.getResourceFilePath(""));
+		assertNull(resourceHelper.getResourceFilePath("classpath:"));
+		assertNull(resourceHelper.getResourceFilePath("flat/unknown.file"));
+		assertNull(resourceHelper.getResourceFilePath("classpath:flat/unknown.file"));
+
+		checkFilePath(resourceHelper.getResourceFilePath("classpath:flat/cian.xlsx"));
+		checkFilePath(resourceHelper.getResourceFilePath("flat/cian.xlsx"));
+	}
+
+	private void checkFilePath(String path) {
+		assertThat(path).isNotEmpty();
+		System.out.println(path);
 	}
 }

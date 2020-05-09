@@ -29,11 +29,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
+
+import java.net.URL;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -66,5 +69,18 @@ public class ResourceHelper {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		Resource resource = resourceLoader.getResource(path);
 		return asString(resource, charset);
+	}
+
+	public String getResourceFilePath(String path) {
+		if (StringUtils.hasText(path)) {
+			String resource = path.replaceAll("classpath:", "");
+			if (StringUtils.hasText(resource)) {
+				URL fileUri = getClass().getClassLoader().getResource(resource);
+				if (fileUri != null) {
+					return fileUri.getFile();
+				}
+			}
+		}
+		return null;
 	}
 }

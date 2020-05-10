@@ -79,28 +79,31 @@ class SubscribeKeyboardTest {
 
 	@Test
 	public void testHandle() {
+		System.out.println("=== START testHandle() ===");
 		/* Admin access error. */
 		testHandleOnUsername("anyone");
-
+		System.out.println("---");
 		/* All ok. */
 		testHandleOnUsername("exlmoto");
+		System.out.println("=== END testHandle() ===");
 	}
 
 	@Test
 	public void testProcessSubscribeStatusMessage() {
+		System.out.println("=== START testProcessSubscribeStatusMessage() ===");
 		Chat chat = new Chat();
 		setField(chat, "id", 0L);
 		setField(chat, "title", "Chat Title");
-
 		setField(chat, "type", Type.supergroup);
 		keyboard.processSubscribeStatusMessage(0, chat, false, sender);
 		keyboard.processSubscribeStatusMessage(0, chat, true, sender);
-
+		System.out.println("---");
 		setField(chat, "type", Type.Private);
 		setField(chat, "username", "username");
 		setField(chat, "title", null);
 		keyboard.processSubscribeStatusMessage(0, chat, false, sender);
 		keyboard.processSubscribeStatusMessage(0, chat, true, sender);
+		System.out.println("=== END testProcessSubscribeStatusMessage() ===");
 	}
 
 	private void testHandleOnUsername(String username) {

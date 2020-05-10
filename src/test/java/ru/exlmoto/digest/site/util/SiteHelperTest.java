@@ -78,16 +78,17 @@ class SiteHelperTest {
 
 	@Test
 	public void testGetMotofanTitleSearch() {
+		System.out.println("=== START testGetMotofanTitleSearch() ===");
 		System.out.println(helper.getMotofanTitleSearch(null, null, null));
 		System.out.println(helper.getMotofanTitleSearch(null, "", null));
 		System.out.println(helper.getMotofanTitleSearch(null, "No-No-No", null));
 		System.out.println("---");
-
 		BotDigestUserEntity botDigestUserEntity = new BotDigestUserEntity();
 		botDigestUserEntity.setUsername("@username");
 		System.out.println(helper.getMotofanTitleSearch(botDigestUserEntity, null, null));
 		System.out.println(helper.getMotofanTitleSearch(botDigestUserEntity, "", null));
 		System.out.println(helper.getMotofanTitleSearch(botDigestUserEntity, "No-No-No", null));
+		System.out.println("=== END testGetMotofanTitleSearch() ===");
 	}
 
 	@Test
@@ -101,12 +102,15 @@ class SiteHelperTest {
 
 	@Test
 	public void testFilterDescription() {
+		System.out.println("=== START testFilterDescription() ===");
 		System.out.println(helper.filterDescription(100, 110L, 120L, null));
 		System.out.println(helper.filterDescription(100, 110L, null, null));
+		System.out.println("=== END testFilterDescription() ===");
 	}
 
 	@Test
 	public void testFilterUsername() {
+		System.out.println("=== START testFilterUsername() ===");
 		assertNull(helper.filterUsername(null, false));
 		assertNull(helper.filterUsername(null, true));
 
@@ -130,18 +134,22 @@ class SiteHelperTest {
 
 		filterWithoutAt = helper.filterUsername("@exlmoto", true);
 		assertTrue(filterWithoutAt.contains("member-administrator"));
+		System.out.println("=== END testFilterUsername() ===");
 	}
 
 	@Test
 	public void testFilterUsernameTooLong() {
+		System.out.println("=== START testFilterUsernameTooLong() ===");
 		System.out.println(helper.filterUsername("@longlonglonglonglonglonglonglonglong_username", false));
 		System.out.println(helper.filterUsername("@longlonglonglonglonglonglonglonglong_username", true));
 		System.out.println(helper.filterUsername("longlonglonglonglonglonglonglonglong_name", false));
 		System.out.println(helper.filterUsername("longlonglonglonglonglonglonglonglong_name", true));
+		System.out.println("=== END testFilterUsernameTooLong() ===");
 	}
 
 	@Test
 	public void testFilterAvatarLink() {
+		System.out.println("=== START testFilterAvatarLink() ===");
 		assertNull(helper.filterAvatarLink(null));
 		assertEquals("", helper.filterAvatarLink(""));
 
@@ -151,28 +159,34 @@ class SiteHelperTest {
 		System.out.println(helper.filterAvatarLink("://exlmoto.ru/test.jpg"));
 		System.out.println(helper.filterAvatarLink("http://exlmoto.ru/test.jpg"));
 		System.out.println(helper.filterAvatarLink("https://exlmoto.ru/test.jpg"));
+		System.out.println("=== END testFilterAvatarLink() ===");
 	}
 
 	@Test
 	public void testFilterGroup() {
+		System.out.println("=== START testFilterGroup() ===");
 		System.out.println(helper.filterGroup(null, null));
 		System.out.println(helper.filterGroup("", null));
 		System.out.println(helper.filterGroup("Guest", null));
 		System.out.println(helper.filterGroup("@Guest", null));
 		System.out.println(helper.filterGroup("@yakimka", null));
 		System.out.println(helper.filterGroup("@exlmoto", Locale.forLanguageTag("ru")));
+		System.out.println("=== END testFilterGroup() ===");
 	}
 
 	@Test
 	public void testFilterDateAndTime() {
+		System.out.println("=== START testFilterDateAndTime() ===");
 		System.out.println(helper.filterDateAndTime(0L, null));
 		System.out.println(helper.filterDateAndTime(1584464518L, Locale.forLanguageTag("ru")));
 		System.out.println(helper.filterDateAndTime(15844645181L, Locale.forLanguageTag("ru")));
 		System.out.println(helper.filterDateAndTime(158446451821L, Locale.forLanguageTag("ru")));
+		System.out.println("=== END testFilterDateAndTime() ===");
 	}
 
 	@Test
 	public void testFilterDigestOrder() {
+		System.out.println("=== START testFilterDigestOrder() ===");
 		assertNull(helper.filterDigestOrder(null, null));
 		assertNull(helper.filterDigestOrder(null, ""));
 		assertNull(helper.filterDigestOrder(null, "st"));
@@ -186,10 +200,12 @@ class SiteHelperTest {
 
 		System.out.println(helper.filterDigestOrder("Test @exlmoto https://exlmoto.ru", ""));
 		System.out.println(helper.filterDigestOrder("Test @exlmoto https://exlmoto.ru", "st"));
+		System.out.println("=== END testFilterDigestOrder() ===");
 	}
 
 	@Test
 	public void testActivateUsers() {
+		System.out.println("=== START testActivateUsers() ===");
 		assertNull(helper.activateUsers(null));
 		assertEquals("", helper.activateUsers(""));
 		assertEquals("Test", helper.activateUsers("Test"));
@@ -207,10 +223,12 @@ class SiteHelperTest {
 		System.out.println(helper.activateUsers("Test >@exlmoto and end."));
 		System.out.println(helper.activateUsers("Test email@exlmoto.ru"));
 		System.out.println(helper.activateUsers("Test _@exlmoto."));
+		System.out.println("=== END testActivateUsers() ===");
 	}
 
 	@Test
 	public void testActivateLinks() {
+		System.out.println("=== START testActivateLinks() ===");
 		assertNull(helper.activateLinks(null));
 		assertEquals("", helper.activateLinks(""));
 		assertEquals("Test", helper.activateLinks("Test"));
@@ -233,10 +251,12 @@ class SiteHelperTest {
 
 		System.out.println(helper.activateLinks("Test https://exlmotoexlmotoexlmotoexlmotoexlmotoe" +
 			"xlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmotoexlmoto.ru"));
+		System.out.println("=== END testActivateLinks() ===");
 	}
 
 	@Test
 	public void testActivateLinksSpecialCases() {
+		System.out.println("=== START testActivateLinksSpecialCases() ===");
 		// Unicode link.
 		System.out.println(helper.activateLinks("Test https://президент.рф"));
 
@@ -249,10 +269,12 @@ class SiteHelperTest {
 		System.out.println(helper.activateLinks("Test @exlmoto"));
 		System.out.println(helper.activateLinks("Test test@exlmoto"));
 		System.out.println(helper.activateLinks("Test test@exlmoto.ru"));
+		System.out.println("=== END testActivateLinksSpecialCases() ===");
 	}
 
 	@Test
 	public void testActivateHighlight() {
+		System.out.println("=== START testActivateHighlight() ===");
 		assertNull(helper.activateHighlight(null, null));
 		assertNull(helper.activateHighlight(null, ""));
 		assertNull(helper.activateHighlight(null, "test"));
@@ -267,22 +289,22 @@ class SiteHelperTest {
 		System.out.println(helper.activateHighlight("is there is some text here", "text"));
 		System.out.println(helper.activateHighlight("is there is some text here", "here"));
 		System.out.println("---");
-
 		System.out.println(helper.activateHighlight("is there is some text here", " "));
 		System.out.println(helper.activateHighlight("is there is some text here", "e"));
 		System.out.println(helper.activateHighlight("is there is some text here", "as"));
 		System.out.println("---");
-
 		System.out.println(helper.activateHighlight("is @there is some text here", "here"));
 		System.out.println(helper.activateHighlight("is http://there is some text here", "here"));
 		System.out.println(helper.activateHighlight("is https://there is some text here", "here"));
-		System.out.println("---");
+		System.out.println("=== END testActivateHighlight() ===");
 	}
 
 	@Test
 	public void testFilterDigestCount() {
+		System.out.println("=== START testFilterDigestCount() ===");
 		System.out.println(helper.filterDigestCount(100L, 110L, null));
 		System.out.println(helper.filterDigestCount(120L, 130L, Locale.forLanguageTag("ru")));
+		System.out.println("=== END testFilterDigestCount() ===");
 	}
 
 	@Test
@@ -368,12 +390,14 @@ class SiteHelperTest {
 
 	@Test
 	public void testChopQuery() {
+		System.out.println("=== START testChopQuery() ===");
 		assertNull(helper.chopQuery(null));
 		assertEquals("", helper.chopQuery(""));
 		assertEquals("test", helper.chopQuery("test"));
 
 		System.out.println(helper.chopQuery("longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglong" +
 			"longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonga"));
+		System.out.println("=== END testChopQuery() ===");
 	}
 
 	@Test
@@ -471,8 +495,10 @@ class SiteHelperTest {
 
 	@Test
 	public void testGenerateAdminLink() {
+		System.out.println("=== START testGenerateAdminLink() ===");
 		String res = helper.generateAdminLink();
 		assertTrue(res.contains("<a href=\"//t.me/exlmoto\" title=\"@exlmoto\" target=\"_blank\">exlmoto</a>"));
 		System.out.println(res);
+		System.out.println("=== END testGenerateAdminLink() ===");
 	}
 }

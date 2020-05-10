@@ -65,6 +65,8 @@ class HelloCommandTest {
 
 	@Test
 	public void testHelloCommand() {
+		System.out.println("=== START testHelloCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/hi", "exlmoto"));
+		System.out.println("=== END testHelloCommand() ===");
 	}
 }

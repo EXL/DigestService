@@ -67,12 +67,15 @@ class BotTelegramTest {
 
 	@Test
 	public void testProcessTelegramBotSettings() {
+		System.out.println("=== START testProcessTelegramBotSettings() ===");
 		telegram.createTelegramBotSettings();
 		telegram.updateTelegramBotSettings();
+		System.out.println("=== END testProcessTelegramBotSettings() ===");
 	}
 
 	@Test
 	public void testBotParameters() {
+		System.out.println("=== START testBotParameters() ===");
 		String name = telegram.getFirstName();
 		String username = telegram.getUsername();
 		int id = telegram.getId();
@@ -88,6 +91,7 @@ class BotTelegramTest {
 		System.out.println(username);
 		System.out.println(id);
 		System.out.println(token);
+		System.out.println("=== END testBotParameters() ===");
 	}
 
 	@Test

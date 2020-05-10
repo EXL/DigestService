@@ -66,11 +66,13 @@ class MessageModerAbilityTest {
 
 	@Test
 	public void testProcessAux() throws InterruptedException {
+		System.out.println("=== START testProcessAux() ===");
 		command.process(helper, sender, locale, update.getSimpleMessage("/greeting", "anyone"));
-		Thread.sleep(2000);
-
+		Thread.sleep(1000);
+		System.out.println("---");
 		command.process(helper, sender, locale,
 			update.getSimpleMessageAdmin("/greeting", "exlmoto", config.getMotofanChatId()));
-		Thread.sleep(2000);
+		Thread.sleep(1000);
+		System.out.println("=== END testProcessAux() ===");
 	}
 }

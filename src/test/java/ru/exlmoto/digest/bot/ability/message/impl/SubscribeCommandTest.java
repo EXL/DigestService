@@ -65,6 +65,8 @@ class SubscribeCommandTest {
 
 	@Test
 	public void testSubscribeCommand() {
+		System.out.println("=== START testSubscribeCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/subscribe", "anyone"));
+		System.out.println("=== END testSubscribeCommand() ===");
 	}
 }

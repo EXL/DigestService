@@ -65,6 +65,8 @@ class InfoCommandTest {
 
 	@Test
 	public void testInfoCommand() {
+		System.out.println("=== START testInfoCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/info", "exlmoto"));
+		System.out.println("=== END testInfoCommand() ===");
 	}
 }

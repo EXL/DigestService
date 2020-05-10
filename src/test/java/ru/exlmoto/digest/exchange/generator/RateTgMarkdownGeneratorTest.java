@@ -52,6 +52,7 @@ class RateTgMarkdownGeneratorTest {
 
 	@Test
 	public void testBankRuMarkdownReport() {
+		System.out.println("=== START testBankRuMarkdownReport() ===");
 		ExchangeRateEntity bankRuEntity = new ExchangeRateEntity();
 		bankRuEntity.setDate("08/01/2020");
 		bankRuEntity.setUsd(new BigDecimal("78"));
@@ -73,10 +74,12 @@ class RateTgMarkdownGeneratorTest {
 		String report = generator.rateReportByKey(ExchangeKey.bank_ru.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
+		System.out.println("=== END testBankRuMarkdownReport() ===");
 	}
 
 	@Test
 	public void testBankUaMarkdownReport() {
+		System.out.println("=== START testBankUaMarkdownReport() ===");
 		ExchangeRateEntity bankUaEntity = new ExchangeRateEntity();
 		bankUaEntity.setDate("08-JAN-2020");
 		bankUaEntity.setUsd(new BigDecimal("1235"));
@@ -98,10 +101,12 @@ class RateTgMarkdownGeneratorTest {
 		String report = generator.rateReportByKey(ExchangeKey.bank_ua.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
+		System.out.println("=== END testBankUaMarkdownReport() ===");
 	}
 
 	@Test
 	public void testBankByMarkdownReport() {
+		System.out.println("=== START testBankByMarkdownReport() ===");
 		ExchangeRateEntity bankByEntity = new ExchangeRateEntity();
 		bankByEntity.setDate("10.01.2020");
 		bankByEntity.setUsd(new BigDecimal("1235.0001"));
@@ -123,10 +128,12 @@ class RateTgMarkdownGeneratorTest {
 		String report = generator.rateReportByKey(ExchangeKey.bank_by.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
+		System.out.println("=== END testBankByMarkdownReport() ===");
 	}
 
 	@Test
 	public void testMetalRuMarkdownReport() {
+		System.out.println("=== START testMetalRuMarkdownReport() ===");
 		ExchangeRateEntity metalRuEntity = new ExchangeRateEntity();
 		metalRuEntity.setDate("08.01.2020");
 		metalRuEntity.setGold(new BigDecimal("3031.25"));
@@ -142,5 +149,6 @@ class RateTgMarkdownGeneratorTest {
 		String report = generator.rateReportByKey(ExchangeKey.metal_ru.name());
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
+		System.out.println("=== END testMetalRuMarkdownReport() ===");
 	}
 }

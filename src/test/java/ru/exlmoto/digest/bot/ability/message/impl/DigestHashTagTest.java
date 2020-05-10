@@ -76,19 +76,23 @@ class DigestHashTagTest {
 
 	@Test
 	public void testDigestHashTag() {
+		System.out.println("=== START testDigestHashTag() ===");
 		hashTag.execute(helper, sender, locale, update.getSimpleMessage("#digest Test!", "anyone"));
 		hashTag.execute(helper, sender, locale, update.getSimpleMessage("#news Test!", "anyone"));
 		hashTag.execute(helper, sender, locale, update.getSimpleMessage("#digest  ", "anyone"));
 		hashTag.execute(helper, sender, locale, update.getSimpleMessage("#news", "anyone"));
+		System.out.println("=== END testDigestHashTag() ===");
 	}
 
 	@Test
 	public void testDigestHashTagLong() {
+		System.out.println("=== START testDigestHashTagLong() ===");
 		StringBuilder longMessage = new StringBuilder("#news");
 		for (int i = 0; i < 100; i++) {
 			longMessage.append(" ").append("check");
 		}
 		hashTag.execute(helper, sender, locale, update.getSimpleMessage(longMessage.toString(), "anyone"));
+		System.out.println("=== END testDigestHashTagLong() ===");
 	}
 
 	@Test

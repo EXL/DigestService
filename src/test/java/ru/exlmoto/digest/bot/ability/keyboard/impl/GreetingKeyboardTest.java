@@ -73,46 +73,44 @@ class GreetingKeyboardTest {
 	}
 
 	@Test
-	public void testHandle() throws InterruptedException {
+	public void testHandle() {
+		System.out.println("=== START testHandle() ===");
 		/* Admin access error. */
 		keyboard.execute(helper, sender, locale,
 			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "on", "anyone"));
-		Thread.sleep(1000);
-
+		System.out.println("---");
 		keyboard.execute(helper, sender, locale,
 			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "off", "anyone"));
-		Thread.sleep(1000);
-
+		System.out.println("---");
 		keyboard.execute(helper, sender, locale,
 			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "wtf", "anyone"));
-		Thread.sleep(1000);
+		System.out.println("=== END testHandle() ===");
 	}
 
 	@Test
-	public void testHandleAdmin() throws InterruptedException {
+	public void testHandleAdmin() {
+		System.out.println("=== START testHandleAdmin() ===");
 		/* All ok. */
 		keyboard.execute(helper, sender, locale,
 			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "on", "exlmoto", 87336977,
 				config.getMotofanChatId()));
-		Thread.sleep(1000);
-
+		System.out.println("---");
 		keyboard.execute(helper, sender, locale,
 			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "off", "exlmoto", 87336977,
 				config.getMotofanChatId()));
-		Thread.sleep(1000);
-
+		System.out.println("---");
 		keyboard.execute(helper, sender, locale,
 			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "wtf", "exlmoto", 87336977,
 				config.getMotofanChatId()));
-		Thread.sleep(1000);
+		System.out.println("=== END testHandleAdmin() ===");
 	}
 
 	@Test
-	public void testProcessGreetingStatusMessage() throws InterruptedException {
+	public void testProcessGreetingStatusMessage() {
+		System.out.println("=== START testProcessGreetingStatusMessage() ===");
 		keyboard.processGreetingStatusMessage(config.getMotofanChatId(), 0, false, sender);
-		Thread.sleep(1000);
-
+		System.out.println("---");
 		keyboard.processGreetingStatusMessage(config.getMotofanChatId(), 0, true, sender);
-		Thread.sleep(1000);
+		System.out.println("=== END testProcessGreetingStatusMessage() ===");
 	}
 }

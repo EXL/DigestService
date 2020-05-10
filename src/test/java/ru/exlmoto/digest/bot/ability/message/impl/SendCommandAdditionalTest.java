@@ -65,24 +65,30 @@ class SendCommandAdditionalTest {
 
 	@Test
 	public void testOnWrongCommand() {
+		System.out.println("=== START testOnWrongCommand() ===");
 		/* Wrong command. */
 		onCmd("/test error");
+		System.out.println("=== END testOnWrongCommand() ===");
 	}
 
 	@Test
 	public void testSendOnWrongChats() {
+		System.out.println("=== START testSendOnWrongChats() ===");
 		/* Wrong chat. */
 		onCmd("/send 87123336977 ad");
 		onCmd("/sticker 87123336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI");
 		onCmd("/image 87123336977 https://www.apple.com/apple-touch-icon.png");
+		System.out.println("=== END testSendOnWrongChats() ===");
 	}
 
 	@Test
 	public void testSendOnImageError() {
+		System.out.println("=== START testSendOnImageError() ===");
 		/* Image error. */
 		onCmd("/image 87336977 https://exlmoto.ru");
 		onCmd("/image 87336977 https://exlmotor.ru");
 		onCmd("/image 87336977 https://mirror.yandex.ru/astra/current/orel/iso/orel-current.iso");
+		System.out.println("=== END testSendOnImageError() ===");
 	}
 
 	private void onCmd(String message) {

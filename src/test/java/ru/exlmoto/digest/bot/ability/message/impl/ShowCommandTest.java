@@ -73,10 +73,11 @@ class ShowCommandTest {
 
 	@Test
 	public void testShowCommand() {
+		System.out.println("=== START testShowCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/show", "exlmoto"));
-
+		System.out.println("---");
 		doThrow(new InvalidDataAccessResourceUsageException("Test!")).when(service).getAllDigests(anyInt(), anyInt());
-
 		command.execute(helper, sender, locale, update.getSimpleMessage("/show", "exlmoto"));
+		System.out.println("=== END testShowCommand() ===");
 	}
 }

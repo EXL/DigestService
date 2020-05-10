@@ -81,6 +81,7 @@ class CovidJsonGeneratorTest {
 
 	@Test
 	public void testGetJsonReport() {
+		System.out.println("=== START testGetJsonReport() ===");
 		when(rest.getRestResponse(filter.checkLink(covidUrl) + CASES_RU_PATH))
 			.thenReturn(Ok(helper.readFileToString("classpath:covid/" + CASES_RU_PATH)));
 		when(rest.getRestResponse(filter.checkLink(covidUrl) + HISTORY_RU_PATH))
@@ -90,10 +91,12 @@ class CovidJsonGeneratorTest {
 		assertTrue(report.startsWith("{"));
 
 		System.out.println(report);
+		System.out.println("=== END testGetJsonReport() ===");
 	}
 
 	@Test
 	public void testGetJsonReportOnError() {
+		System.out.println("=== START testGetJsonReportOnError() ===");
 		when(rest.getRestResponse(filter.checkLink(covidUrl) + CASES_RU_PATH))
 			.thenReturn(Ok(helper.readFileToString("classpath:covid/" + CASES_RU_PATH_BROKEN)));
 		when(rest.getRestResponse(filter.checkLink(covidUrl) + HISTORY_RU_PATH))
@@ -103,5 +106,6 @@ class CovidJsonGeneratorTest {
 		assertTrue(report.startsWith("{"));
 
 		System.out.println(report);
+		System.out.println("=== END testGetJsonReportOnError() ===");
 	}
 }

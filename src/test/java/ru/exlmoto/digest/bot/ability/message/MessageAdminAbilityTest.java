@@ -65,8 +65,13 @@ class MessageAdminAbilityTest {
 	}
 
 	@Test
-	public void testProcessAux() {
+	public void testProcessAux() throws InterruptedException {
+		System.out.println("=== START testProcessAux() ===");
 		command.process(helper, sender, locale, update.getSimpleMessage("/hi", "exlmoto"));
+		Thread.sleep(1000);
+		System.out.println("---");
 		command.process(helper, sender, locale, update.getSimpleMessage("/hi", "anyone"));
+		Thread.sleep(1000);
+		System.out.println("=== END testProcessAux() ===");
 	}
 }

@@ -65,6 +65,8 @@ class GameCommandTest {
 
 	@Test
 	public void testGameCommand() {
+		System.out.println("=== START testGameCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/game", "anyone"));
+		System.out.println("=== END testGameCommand() ===");
 	}
 }

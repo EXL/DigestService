@@ -41,6 +41,7 @@ class ImageHelperTest {
 
 	@Test
 	public void testGetImageByLink() {
+		System.out.println("=== START testGetImageByLink() ===");
 		// Wrong link.
 		Answer<String> res = imageHelper.getImageByLink("https://exlmotor.ru");
 		assertFalse(res.ok());
@@ -52,7 +53,7 @@ class ImageHelperTest {
 		System.out.println("Get: " + res.error());
 
 		// Good image.
-		res = imageHelper.getImageByLink("https://api.z-lab.me/charts/wti.png");
+		res = imageHelper.getImageByLink("https://www.apple.com/apple-touch-icon.png");
 		assertTrue(res.ok());
 		System.out.println("Get: " + res.answer());
 
@@ -60,5 +61,6 @@ class ImageHelperTest {
 		res = imageHelper.getImageByLink("https://forum.motofan.ru/index.php?act=Attach&type=post&id=274426");
 		assertTrue(res.ok());
 		System.out.println("Get: " + res.answer());
+		System.out.println("=== END testGetImageByLink() ===");
 	}
 }

@@ -64,8 +64,10 @@ class ExchangeManagerTest {
 
 	@Test
 	public void testRateMirrors() {
+		System.out.println("=== START testRateMirrors() ===");
 		manager.commitBankRu(null, config.getBankRuMirror());
 		manager.commitBankUa(null, config.getBankUaMirror());
 		manager.commitMetalRu(null, config.getMetalRuMirror());
+		System.out.println("=== END testRateMirrors() ===");
 	}
 }

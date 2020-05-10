@@ -51,9 +51,11 @@ class PostTgHtmlGeneratorTest {
 
 	@Test
 	public void testGenerateHtmlReport() {
+		System.out.println("=== START testGenerateHtmlReport() ===");
 		generateHtmlReports(1L);
 		generateHtmlReports(2L);
 		generateHtmlReports(3L);
+		System.out.println("=== END testGenerateHtmlReport() ===");
 	}
 
 	@Test
@@ -69,6 +71,6 @@ class PostTgHtmlGeneratorTest {
 	private void generateHtmlReports(long timestamp) {
 		String result = htmlGenerator.generateMotofanPostHtmlReport(post.getRandomMotofanPost(timestamp));
 		assertThat(result).isNotEmpty();
-		System.out.println(result + "\n");
+		System.out.println(result + "\n\n---\n");
 	}
 }

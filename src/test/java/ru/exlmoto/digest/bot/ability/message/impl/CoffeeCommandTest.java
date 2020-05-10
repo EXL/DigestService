@@ -65,6 +65,8 @@ class CoffeeCommandTest {
 
 	@Test
 	public void testCoffeeCommand() {
+		System.out.println("=== START testCoffeeCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/coffee", "anyone"));
+		System.out.println("=== END testCoffeeCommand() ===");
 	}
 }

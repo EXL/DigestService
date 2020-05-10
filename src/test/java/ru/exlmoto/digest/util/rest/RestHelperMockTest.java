@@ -62,19 +62,25 @@ class RestHelperMockTest {
 
 	@Test
 	public void testRestServiceEmptyAnswer() {
+		System.out.println("=== START testRestServiceEmptyAnswer() ===");
 		Answer<String> res = getContentFromMockServer("");
 		assertFalse(res.ok());
 		assertNull(res.answer());
-		assertThat(res.error()).isNotEmpty();
-		System.out.println(res.error());
+		String error = res.error();
+		assertThat(error).isNotEmpty();
+		System.out.println("Error: " + error);
+		System.out.println("=== END testRestServiceEmptyAnswer() ===");
 	}
 
 	@Test
 	public void testRestServiceNonEmptyAnswer() {
+		System.out.println("=== START testRestServiceNonEmptyAnswer() ===");
 		Answer<String> res = getContentFromMockServer("Test answer");
 		assertTrue(res.ok());
-		assertThat(res.answer()).isNotEmpty();
-		System.out.println(res.answer());
+		String answer = res.answer();
+		assertThat(answer).isNotEmpty();
+		System.out.println("Answer: " + answer);
+		System.out.println("=== END testRestServiceNonEmptyAnswer() ===");
 	}
 
 	private Answer<String> getContentFromMockServer(String answer) {

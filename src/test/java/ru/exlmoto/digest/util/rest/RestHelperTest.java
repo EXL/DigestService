@@ -44,6 +44,7 @@ class RestHelperTest {
 
 	@Test
 	public void testGetRestContent() {
+		System.out.println("=== START testGetRestContent() ===");
 		Answer<String> res = rest.getRestResponse("https://exlmoto.ru");
 		assertTrue(res.ok());
 		assertThat(res.answer()).isNotEmpty();
@@ -51,32 +52,41 @@ class RestHelperTest {
 
 		res = rest.getRestResponse("https://exlmotor.ru");
 		assertFalse(res.ok());
-		assertThat(res.error()).isNotEmpty();
-		System.out.println(res.error());
+		String error = res.error();
+		assertThat(error).isNotEmpty();
+		System.out.println("Error: " + error);
+		System.out.println("=== END testGetRestContent() ===");
 	}
 
 	@Test
 	public void testDropLargeRestContent() {
+		System.out.println("=== START testDropLargeRestContent() ===");
 		Answer<String> res = rest.getRestResponse("https://mirror.yandex.ru/astra/current/orel/iso/orel-current.iso");
 		assertFalse(res.ok());
-		assertThat(res.error()).isNotEmpty();
-		System.out.println(res.error());
+		String error = res.error();
+		assertThat(error).isNotEmpty();
+		System.out.println("Error: " + error);
+		System.out.println("=== END testDropLargeRestContent() ===");
 	}
 
 	@Test
 	public void testGetRestFile() {
-		System.out.println(rest.getRestFile("https://api.z-lab.me/charts/mmvb.png").answer());
+		System.out.println("=== START testGetRestFile() ===");
+		System.out.println(rest.getRestFile("https://www.apple.com/apple-touch-icon.png").answer());
 		System.out.println(rest.getRestFile("https://www.linux.org.ru/tracker/").answer());
 		System.out.println(rest.getRestFile("https://exlmoto.ru/").answer());
 		assertNull(rest.getRestFile("https://exlmoto.ru/404").answer());
+		System.out.println("=== END testGetRestFile() ===");
 	}
 
 	@Test
 	public void testRestFileManagerLargeFileDrop() {
+		System.out.println("=== START testRestFileManagerLargeFileDrop() ===");
 		Answer<String> res = rest.getRestFile("https://mirror.yandex.ru/astra/current/orel/iso/orel-current.iso");
 		assertNull(res.answer());
 		String error = res.error();
 		assertThat(error).isNotEmpty();
-		System.out.println(error);
+		System.out.println("Error: " + error);
+		System.out.println("=== END testRestFileManagerLargeFileDrop() ===");
 	}
 }

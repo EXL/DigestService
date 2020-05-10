@@ -35,8 +35,11 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -56,24 +59,36 @@ class DebugCommandTest {
 	@SpyBean
 	private BotConfiguration config;
 
+	@SpyBean
+	private DatabaseService service;
+
 	private final UpdateHelper update = new UpdateHelper();
 
 	@BeforeEach
 	public void setUpTests() {
 		when(config.isSilent()).thenReturn(true);
+		doNothing().when(service).saveSettings(any());
 	}
 
 	@Test
 	public void testDebugCommand() {
+		System.out.println("=== START testDebugCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/debug", "exlmoto"));
+		System.out.println("---");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/debug Unk", "exlmoto"));
+		System.out.println("---");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/debug Unk Unk", "exlmoto"));
+		System.out.println("=== END testDebugCommand() ===");
 	}
 
 	@Test
 	public void testDebugCommandOnSomeOptions() {
+		System.out.println("=== START testDebugCommandOnSomeOptions() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/debug VStatus", "exlmoto"));
+		System.out.println("---");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/debug VQueries", "exlmoto"));
+		System.out.println("---");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/debug BGreetings", "exlmoto"));
+		System.out.println("=== END testDebugCommandOnSomeOptions() ===");
 	}
 }

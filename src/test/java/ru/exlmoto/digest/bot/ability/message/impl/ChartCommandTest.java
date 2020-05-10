@@ -65,6 +65,8 @@ class ChartCommandTest {
 
 	@Test
 	public void testChartCommand() {
+		System.out.println("=== START testChartCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/chart", "anyone"));
+		System.out.println("=== END testChartCommand() ===");
 	}
 }

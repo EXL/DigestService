@@ -65,6 +65,8 @@ class RateCommandTest {
 
 	@Test
 	public void testRateCommand() {
+		System.out.println("=== START testRateCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/rate", "anyone"));
+		System.out.println("=== END testRateCommand() ===");
 	}
 }

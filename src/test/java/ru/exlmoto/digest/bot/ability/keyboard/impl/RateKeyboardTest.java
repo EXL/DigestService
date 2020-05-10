@@ -73,8 +73,12 @@ class RateKeyboardTest {
 
 	@Test
 	public void testHandle() {
+		System.out.println("=== START testHandle() ===");
 		keyboard.execute(helper, sender, locale, update.getCallbackQuery(Keyboard.rate.withName()));
+		System.out.println("---");
 		keyboard.execute(helper, sender, locale, update.getCallbackQuery(Keyboard.rate.withName() + "key"));
+		System.out.println("---");
 		keyboard.execute(helper, sender, locale, update.getCallbackQuery(Keyboard.rate.withName() + "bank_ua"));
+		System.out.println("=== END testHandle() ===");
 	}
 }

@@ -40,7 +40,9 @@ class DigestTgHtmlGeneratorTest {
 
 	@Test
 	public void testGenerateDigestMessageHtmlReport() {
+		System.out.println("=== START testGenerateDigestMessageHtmlReport() ===");
 		System.out.println(htmlGenerator.generateDigestMessageHtmlReport(
 			update.getSimpleMessage("#digest there is news!", "anyone"), "there is news!"));
+		System.out.println("=== END testGenerateDigestMessageHtmlReport() ===");
 	}
 }

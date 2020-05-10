@@ -47,13 +47,16 @@ class ChartServiceTest {
 
 	@Test
 	public void testGetChartKeys() {
+		System.out.println("=== START testGetChartKeys() ===");
 		List<String> keys = chartService.getChartKeys();
 		assertThat(keys).isNotEmpty();
 		System.out.println(keys);
+		System.out.println("=== END testGetChartKeys() ===");
 	}
 
 	@Test
 	public void testGetTitle() {
+		System.out.println("=== START testGetTitle() ===");
 		String title = chartService.getTitle("usd_rub");
 		assertThat(title).isNotEmpty();
 		assertThat(title).isInstanceOf(String.class);
@@ -61,18 +64,22 @@ class ChartServiceTest {
 
 		title = chartService.getTitle("unknown_key");
 		assertEquals("???", title);
+		System.out.println("=== END testGetTitle() ===");
 	}
 
 	@Test
 	public void testMarkdownDescriptions() {
+		System.out.println("=== START testMarkdownDescriptions() ===");
 		String descriptions = chartService.markdownDescriptions();
 		assertThat(descriptions).isNotEmpty();
 		assertThat(descriptions).isInstanceOf(String.class);
 		System.out.println(descriptions);
+		System.out.println("=== END testMarkdownDescriptions() ===");
 	}
 
 	@Test
 	public void testGetButtonLabel() {
+		System.out.println("=== START testGetButtonLabel() ===");
 		String label = chartService.getButtonLabel("usd_rub");
 		assertThat(label).isNotEmpty();
 		assertThat(label).isInstanceOf(String.class);
@@ -80,10 +87,12 @@ class ChartServiceTest {
 
 		label = chartService.getButtonLabel("unknown_key");
 		assertEquals("???", label);
+		System.out.println("=== END testGetButtonLabel() ===");
 	}
 
 	@Test
 	public void testGetChart() {
+		System.out.println("=== START testGetChart() ===");
 		Answer<Chart> res = chartService.getChart("unknown_key");
 		assertFalse(res.ok());
 		System.out.println(res.error());
@@ -95,5 +104,6 @@ class ChartServiceTest {
 		System.out.println(chart.getButton());
 		System.out.println(chart.getUrl());
 		System.out.println(chart.getPath());
+		System.out.println("=== END testGetChart() ===");
 	}
 }

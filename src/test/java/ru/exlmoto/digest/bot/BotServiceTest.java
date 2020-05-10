@@ -55,10 +55,12 @@ class BotServiceTest {
 
 	@Test
 	public void testManyUpdates() {
+		System.out.println("=== START testManyUpdates() ===");
 		manyUpdatesHelper(config.getMaxUpdates() * 2);
 		manyUpdatesHelper(config.getMaxUpdates());
 		manyUpdatesHelper(config.getMaxUpdates() - 1);
 		manyUpdatesHelper(config.getMaxUpdates() + 1);
+		System.out.println("=== END testManyUpdates() ===");
 	}
 
 	private void manyUpdatesHelper(int updatesCount) {
@@ -67,6 +69,6 @@ class BotServiceTest {
 			updates.add(new Update());
 		}
 		botService.process(updates);
-		System.out.println("===");
+		System.out.println("---");
 	}
 }

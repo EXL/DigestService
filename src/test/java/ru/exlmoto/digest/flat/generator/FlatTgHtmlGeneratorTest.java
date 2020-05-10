@@ -57,56 +57,68 @@ class FlatTgHtmlGeneratorTest {
 
 	@Test
 	public void testGetTgHtmlReportCian() {
+		System.out.println("=== START testGetTgHtmlReportCian() ===");
 		parser.setDeleteXslxFile(false);
 
 		when(rest.getRestFile(anyString()))
 			.thenReturn(Ok(helper.getResourceFilePath("classpath:flat/cian.xlsx")));
 
 		checkReport(generator.getTgHtmlReportCian("https://example.com", "https://example.com", 25));
+		System.out.println("=== END testGetTgHtmlReportCian() ===");
 	}
 
 	@Test
 	public void testGetTgHtmlReportCianOnError() {
+		System.out.println("=== START testGetTgHtmlReportCianOnError() ===");
 		parser.setDeleteXslxFile(false);
 
 		when(rest.getRestFile(anyString()))
 			.thenReturn(Ok(helper.getResourceFilePath("classpath:flat/cian-broken.xlsx")));
 
 		checkReport(generator.getTgHtmlReportCian("https://example.com", "https://example.com", 25));
+		System.out.println("=== END testGetTgHtmlReportCianOnError() ===");
 	}
 
 	@Test
 	public void testGetTgHtmlReportCianOnEmpty() {
+		System.out.println("=== START testGetTgHtmlReportCianOnEmpty() ===");
 		parser.setDeleteXslxFile(false);
 
 		when(rest.getRestFile(anyString()))
 			.thenReturn(Ok(helper.getResourceFilePath("classpath:flat/cian-empty.xlsx")));
 
 		checkReport(generator.getTgHtmlReportCian("https://example.com", "https://example.com", 25));
+		System.out.println("=== END testGetTgHtmlReportCianOnEmpty() ===");
 	}
 
 	@Test
 	public void testGetTgHtmlReportN1() {
+		System.out.println("=== START testGetTgHtmlReportN1() ===");
 		when(rest.getRestResponse(anyString()))
 			.thenReturn(Ok(helper.readFileToString("classpath:flat/n1.json")));
 
 		checkReport(generator.getTgHtmlReportN1("https://example.com", "https://example.com", 25));
+		System.out.println("=== END testGetTgHtmlReportN1() ===");
 	}
 
 	@Test
 	public void testGetTgHtmlReportN1OnError() {
+		System.out.println("=== START testGetTgHtmlReportN1OnError() ===");
 		when(rest.getRestResponse(anyString()))
 			.thenReturn(Ok(helper.readFileToString("classpath:flat/n1-broken.json")));
 
 		checkReport(generator.getTgHtmlReportN1("https://example.com", "https://example.com", 25));
+		System.out.println("=== END testGetTgHtmlReportN1OnError() ===");
 	}
 
 	@Test
 	public void testGetTgHtmlReportN1OnEmpty() {
+		System.out.println("=== START testGetTgHtmlReportN1OnEmpty() ===");
 		when(rest.getRestResponse(anyString()))
 			.thenReturn(Ok(helper.readFileToString("classpath:flat/n1-empty.json")));
 
 		checkReport(generator.getTgHtmlReportN1("https://example.com", "https://example.com", 25));
+		System.out.println("=== END testGetTgHtmlReportN1OnEmpty() ===");
 	}
 
 	private void checkReport(String report) {

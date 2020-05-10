@@ -67,27 +67,27 @@ class SendCommandTest {
 
 	@Test
 	public void testSendCommand() {
+		System.out.println("=== START testSendCommand() ===");
 		/* Wrong format. */
 		onCmd("/send");
 		onCmd("/send wrong-id");
 		onCmd("/send 87336977");
-		System.out.println("===");
-
+		System.out.println("---");
 		/* Wrong id. */
 		onCmd("/send wrong-id first");
 		onCmd("/send wrong-id first second");
-		System.out.println("===");
-
+		System.out.println("---");
 		/* Ok. */
 		onCmd("/send 87336977 text");
 		onCmd("/send 87336977 text text");
 		onCmd("/send -1001148683293 text");
 		onCmd("/send -1001148683293 text text");
-		System.out.println("===");
+		System.out.println("=== END testSendCommand() ===");
 	}
 
 	@Test
 	public void testStickerCommand() {
+		System.out.println("=== START testStickerCommand() ===");
 		/* Wrong format. */
 		onCmd("/sticker");
 		onCmd("/sticker wrong-id");
@@ -95,20 +95,19 @@ class SendCommandTest {
 		onCmd("/sticker 87336977");
 		onCmd("/sticker 87336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI text");
 		onCmd("/sticker -1001148683293 CAADAgADzAEAAhGoNAVFRRJu94qe3gI text");
-		System.out.println("===");
-
+		System.out.println("---");
 		/* Wrong id. */
 		onCmd("/sticker wrong-id CAADAgADzAEAAhGoNAVFRRJu94qe3gI");
-		System.out.println("===");
-
+		System.out.println("---");
 		/* Ok. */
 		onCmd("/sticker 87336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI");
 		onCmd("/sticker -1001148683293 CAADAgADzAEAAhGoNAVFRRJu94qe3gI");
-		System.out.println("===");
+		System.out.println("=== END testStickerCommand() ===");
 	}
 
 	@Test
 	public void testImageCommand() {
+		System.out.println("=== START testImageCommand() ===");
 		/* Wrong format. */
 		onCmd("/image");
 		onCmd("/image wrong-id");
@@ -116,16 +115,14 @@ class SendCommandTest {
 		onCmd("/image 87336977");
 		onCmd("/image 87336977 https://www.apple.com/apple-touch-icon.png text");
 		onCmd("/image -1001148683293 https://www.apple.com/apple-touch-icon.png text");
-		System.out.println("===");
-
+		System.out.println("---");
 		/* Wrong id. */
 		onCmd("/image wrong-id https://www.apple.com/apple-touch-icon.png");
-		System.out.println("===");
-
+		System.out.println("---");
 		/* Ok. */
 		onCmd("/image 87336977 https://www.apple.com/apple-touch-icon.png");
 		onCmd("/image -1001148683293 https://www.apple.com/apple-touch-icon.png");
-		System.out.println("===");
+		System.out.println("=== END testImageCommand() ===");
 	}
 
 	@Test

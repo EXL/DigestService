@@ -65,7 +65,9 @@ class GreetingCommandTest {
 
 	@Test
 	public void testGreetingCommand() {
+		System.out.println("=== START testGreetingCommand() ===");
 		command.execute(helper, sender, locale,
 			update.getSimpleMessageAdmin("/greeting", "exlmoto", config.getMotofanChatId()));
+		System.out.println("=== END testGreetingCommand() ===");
 	}
 }

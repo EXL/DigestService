@@ -64,19 +64,17 @@ class HelpCommandTest {
 	}
 
 	@Test
-	public void testHelpCommand() throws InterruptedException {
+	public void testHelpCommand() {
+		System.out.println("=== START testHelpCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/help", "anyone"));
-		Thread.sleep(1000);
-
+		System.out.println("---");
 		command.execute(helper, sender, locale,
 			update.getSimpleMessageAdmin("/help", "anyone", config.getMotofanChatId()));
-		Thread.sleep(1000);
-
+		System.out.println("---");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/help", "exlmoto"));
-		Thread.sleep(1000);
-
+		System.out.println("---");
 		command.execute(helper, sender, locale,
 			update.getSimpleMessageAdmin("/help", "exlmoto", config.getMotofanChatId()));
-		Thread.sleep(1000);
+		System.out.println("=== END testHelpCommand() ===");
 	}
 }

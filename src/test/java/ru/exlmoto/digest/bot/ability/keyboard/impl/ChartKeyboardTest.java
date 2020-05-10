@@ -73,8 +73,12 @@ class ChartKeyboardTest {
 
 	@Test
 	public void testHandle() {
+		System.out.println("=== START testHandle() ===");
 		keyboard.execute(helper, sender, locale, update.getCallbackQuery(Keyboard.chart.withName()));
+		System.out.println("---");
 		keyboard.execute(helper, sender, locale, update.getCallbackQuery(Keyboard.chart.withName() + "key"));
+		System.out.println("---");
 		keyboard.execute(helper, sender, locale, update.getCallbackQuery(Keyboard.chart.withName() + "usd_rub"));
+		System.out.println("=== END testHandle() ===");
 	}
 }

@@ -82,6 +82,7 @@ class CovidTgHtmlGeneratorTest {
 
 	@Test
 	public void testGetTgHtmlReport() {
+		System.out.println("=== START testGetTgHtmlReport() ===");
 		when(rest.getRestResponse(filter.checkLink(covidUrl) + CASES_RU_PATH))
 			.thenReturn(Ok(helper.readFileToString("classpath:covid/" + CASES_RU_PATH)));
 		when(rest.getRestResponse(filter.checkLink(covidUrl) + HISTORY_RU_PATH))
@@ -91,10 +92,12 @@ class CovidTgHtmlGeneratorTest {
 		assertTrue(report.startsWith("<"));
 
 		System.out.println(report);
+		System.out.println("=== END testGetTgHtmlReport() ===");
 	}
 
 	@Test
 	public void testGetTgHtmlReportOnError() {
+		System.out.println("=== START testGetTgHtmlReportOnError() ===");
 		when(rest.getRestResponse(filter.checkLink(covidUrl) + CASES_RU_PATH))
 			.thenReturn(Ok(helper.readFileToString("classpath:covid/" + CASES_RU_PATH_BROKEN)));
 		when(rest.getRestResponse(filter.checkLink(covidUrl) + HISTORY_RU_PATH))
@@ -102,5 +105,6 @@ class CovidTgHtmlGeneratorTest {
 
 		String report = generator.getTgHtmlReport(covidUrl, CASES_RU_PATH, HISTORY_RU_PATH);
 		assertNull(report);
+		System.out.println("=== END testGetTgHtmlReportOnError() ===");
 	}
 }

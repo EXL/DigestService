@@ -73,24 +73,22 @@ class DeleteCommandTest {
 
 	@Test
 	public void testDeleteCommand() {
+		System.out.println("=== START testDeleteCommand() ===");
 		/* Format error. */
 		command.execute(helper, sender, locale, update.getSimpleMessage("/delete", "anyone"));
 		command.execute(helper, sender, locale, update.getSimpleMessage("/delete asd sad", "anyone"));
 		command.execute(helper, sender, locale, update.getSimpleMessage("/delete 5 sad", "anyone"));
 		command.execute(helper, sender, locale, update.getSimpleMessage("/delete 5 4", "anyone"));
-		System.out.println("===");
-
+		System.out.println("---");
 		/* Wrong id. */
 		command.execute(helper, sender, locale, update.getSimpleMessage("/delete asd", "anyone"));
-		System.out.println("===");
-
+		System.out.println("---");
 		/* Ok. */
 		command.execute(helper, sender, locale, update.getSimpleMessage("/delete 5", "anyone"));
-		System.out.println("===");
-
+		System.out.println("---");
 		/* Exception. */
 		doThrow(new InvalidDataAccessResourceUsageException("Test!")).when(service).deleteDigest(anyLong());
 		command.execute(helper, sender, locale, update.getSimpleMessage("/delete 42", "anyone"));
-		System.out.println("===");
+		System.out.println("=== END testDeleteCommand() ===");
 	}
 }

@@ -65,6 +65,8 @@ class StartCommandTest {
 
 	@Test
 	public void testStartCommand() {
+		System.out.println("=== START testStartCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/start", "anyone"));
+		System.out.println("=== END testStartCommand() ===");
 	}
 }

@@ -68,6 +68,7 @@ class BotHandlerTest {
 
 	@Test
 	public void testOnCommand() throws InterruptedException {
+		System.out.println("=== START testOnCommand() ===");
 		handler.onCommand(update.getCommand("/start", "exlmoto"));
 		Thread.sleep(1000);
 		handler.onCommand(update.getCommand("/hi", "exlmoto"));
@@ -79,10 +80,12 @@ class BotHandlerTest {
 
 		handler.onCommand(update.getCommand("gibberish /start gibberish", "exlmoto"));
 		Thread.sleep(1000);
+		System.out.println("=== END testOnCommand() ===");
 	}
 
 	@Test
 	public void testOnHashTag() throws InterruptedException {
+		System.out.println("=== START testOnHashTag() ===");
 		handler.onHashTag(update.getHashTag("#news test", 0, 5, "exlmoto"));
 		Thread.sleep(1000);
 		handler.onHashTag(update.getHashTag("#digest test", 0, 7, "exlmoto"));
@@ -91,10 +94,12 @@ class BotHandlerTest {
 		Thread.sleep(1000);
 		handler.onHashTag(update.getHashTag("#digest test", 0, 7 ,"anyone"));
 		Thread.sleep(1000);
+		System.out.println("=== END testOnHashTag() ===");
 	}
 
 	@Test
 	public void testOnHashTagEmpty() throws InterruptedException {
+		System.out.println("=== START testOnHashTagEmpty() ===");
 		handler.onHashTag(update.getHashTag("#digest", 0, 7, "anyone"));
 		Thread.sleep(1000);
 
@@ -108,10 +113,12 @@ class BotHandlerTest {
 		handler.onHashTag(update.getTwoHashTags("#digest #news",
 			0, 7, 8, 5, "anyone"));
 		Thread.sleep(1000);
+		System.out.println("=== END testOnHashTagEmpty() ===");
 	}
 
 	@Test
 	public void testOnHashTagTwice() throws InterruptedException {
+		System.out.println("=== START testOnHashTagTwice() ===");
 		handler.onHashTag(update.getTwoHashTags("#digest #news test",
 			0, 7, 8, 5, "anyone"));
 		Thread.sleep(1000);
@@ -127,10 +134,12 @@ class BotHandlerTest {
 		handler.onHashTag(update.getTwoHashTags("#digest #digest test",
 			0, 7, 8, 7, "anyone"));
 		Thread.sleep(1000);
+		System.out.println("=== END testOnHashTagTwice() ===");
 	}
 
 	@Test
 	public void testOnHashTagMiddle() throws InterruptedException {
+		System.out.println("=== START testOnHashTagMiddle() ===");
 		handler.onHashTag(update.getHashTag("test #digest asd", 5, 7, "anyone"));
 		Thread.sleep(1000);
 
@@ -148,10 +157,12 @@ class BotHandlerTest {
 		handler.onHashTag(update.getTwoHashTags("test #digest #digest asd",
 			5, 7, 13, 7, "anyone"));
 		Thread.sleep(1000);
+		System.out.println("=== END testOnHashTagMiddle() ===");
 	}
 
 	@Test
-	public void testOnHashTagCastsAnsLinks() throws InterruptedException {
+	public void testOnHashTagCastsAndLinks() throws InterruptedException {
+		System.out.println("=== START testOnHashTagCastsAndLinks() ===");
 		assertThrows(NullPointerException.class, () ->
 			handler.onHashTag(update.getSimpleMessage("https://exlmoto.ru/manual#digest", "anyone")));
 		Thread.sleep(1000);
@@ -169,18 +180,22 @@ class BotHandlerTest {
 		handler.onHashTag(update.getHashTag("#digest Check nickname and links: @exlmoto и https://exlmoto.ru",
 			0, 7, "anyone"));
 		Thread.sleep(1000);
+		System.out.println("=== END testOnHashTagCastsAndLinks() ===");
 	}
 
 	@Test
 	public void testOnCallbackQuery() throws InterruptedException {
+		System.out.println("=== START testOnCallbackQuery() ===");
 		handler.onCallbackQuery(update.getCallbackQueryUsername("show_page_1", "anyone"));
 		Thread.sleep(config.getCooldown() * 1000);
 		handler.onCallbackQuery(update.getCallbackQueryUsername("show_page_2", "exlmoto"));
 		Thread.sleep(config.getCooldown() * 1000);
+		System.out.println("=== END testOnCallbackQuery() ===");
 	}
 
 	@Test
 	public void testOnKeyboard() throws InterruptedException {
+		System.out.println("=== START testOnKeyboard() ===");
 		handler.onKeyboard(update.getCallbackQueryUsername("unknown", "anyone"));
 		Thread.sleep(config.getCooldown() * 1000);
 		handler.onKeyboard(update.getCallbackQueryUsername("digest", "anyone"));
@@ -190,35 +205,42 @@ class BotHandlerTest {
 		Thread.sleep(config.getCooldown() * 1000);
 		handler.onKeyboard(update.getCallbackQueryUsername("chart_usd_rub", "anyone"));
 		Thread.sleep(config.getCooldown() * 1000);
+		System.out.println("=== END testOnKeyboard() ===");
 	}
 
 	@Test
 	public void testOnNewUsers() {
+		System.out.println("=== START testOnNewUsers() ===");
 		handler.onNewUsers(update.getNewUsers(1));
 		handler.onNewUsers(update.getNewUsers(2));
 		handler.onNewUsers(update.getNewUsers(3));
 		handler.onNewUsers(update.getNewUsers(4));
+		handler.onNewUsers(update.getNewUsers(5));
+		handler.onNewUsers(update.getNewUsers(6));
 		System.out.println("---");
 		for (int i = 0; i < 20; i++) {
 			handler.onNewUsers(update.getNewUsersWithUsername(telegram.getUsername().substring(1)));
 		}
-		System.out.println("---");
+		System.out.println("=== END testOnNewUsers() ===");
 	}
 
 	@Test
 	public void testOnLeftUser() {
+		System.out.println("=== START testOnLeftUser() ===");
 		handler.onLeftUser(update.getLeftUser("Left"));
 		System.out.println("---");
 		/* Empty, no send. */
 		handler.onLeftUser(update.getLeftUser(telegram.getUsername().substring(1)));
-		System.out.println("---");
+		System.out.println("=== END testOnLeftUser() ===");
 	}
 
 	@Test
 	public void testOnNewPhotos() {
+		System.out.println("=== START testOnNewPhotos() ===");
 		handler.onNewPhotos(update.getNewPhotos(1));
 		handler.onNewPhotos(update.getNewPhotos(2));
 		handler.onNewPhotos(update.getNewPhotos(3));
 		handler.onNewPhotos(update.getNewPhotos(4));
+		System.out.println("=== END testOnNewPhotos() ===");
 	}
 }

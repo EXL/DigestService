@@ -74,11 +74,12 @@ class DigestCommandTest {
 
 	@Test
 	public void testDigestCommand() {
+		System.out.println("=== START testDigestCommand() ===");
 		command.execute(helper, sender, locale, update.getSimpleMessage("/digest", "anyone"));
-
+		System.out.println("---");
 		doThrow(new InvalidDataAccessResourceUsageException("Test!"))
 			.when(service).getChatDigestsCommand(anyInt(), anyInt(), anyLong());
-
 		command.execute(helper, sender, locale, update.getSimpleMessage("/digest", "anyone"));
+		System.out.println("=== END testDigestCommand() ===");
 	}
 }

@@ -86,20 +86,23 @@ class DigestKeyboardTest {
 
 	@Test
 	public void testHandleQuery() {
+		System.out.println("=== START testHandleQuery() ===");
 		keyboard.handleQuery("Fake callbackId", update.getUser("exlmoto"), 1, sender, helper);
+		System.out.println("---");
 		keyboard.handleQuery("Fake callbackId", update.getUser("anyone"), 1, sender, helper);
+		System.out.println("=== END testHandleQuery() ===");
 	}
 
 	@Test
 	public void testHandle() {
+		System.out.println("=== START testHandle() ===");
 		assertThrows(IllegalArgumentException.class, () -> keyboard.handle(0, update.getChat(),
 			update.getUser("exlmoto"), 0, true, sender));
-
 		keyboard.handle(0, update.getChat(), update.getUser("exlmoto"), 1, true, sender);
-
+		System.out.println("---");
 		doThrow(new InvalidDataAccessResourceUsageException("Test!"))
 			.when(service).getChatDigestsCommand(anyInt(), anyInt(), anyLong());
-
 		keyboard.handle(0, update.getChat(), update.getUser("exlmoto"), 2, true, sender);
+		System.out.println("=== END testHandle() ===");
 	}
 }

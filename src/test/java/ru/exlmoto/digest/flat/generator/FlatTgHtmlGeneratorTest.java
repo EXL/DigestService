@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import ru.exlmoto.digest.flat.parser.impl.FlatCianParser;
 import ru.exlmoto.digest.util.file.ResourceHelper;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
@@ -51,8 +52,13 @@ class FlatTgHtmlGeneratorTest {
 	@Autowired
 	private ResourceHelper helper;
 
+	@Autowired
+	private FlatCianParser parser;
+
 	@Test
 	void testGetTgHtmlReportCian() {
+		parser.setDeleteXslxFile(false);
+
 		when(rest.getRestFile(anyString()))
 			.thenReturn(Ok(helper.getResourceFilePath("classpath:flat/cian.xlsx")));
 
@@ -61,6 +67,8 @@ class FlatTgHtmlGeneratorTest {
 
 	@Test
 	void testGetTgHtmlReportCianOnError() {
+		parser.setDeleteXslxFile(false);
+
 		when(rest.getRestFile(anyString()))
 			.thenReturn(Ok(helper.getResourceFilePath("classpath:flat/cian-broken.xlsx")));
 
@@ -69,6 +77,8 @@ class FlatTgHtmlGeneratorTest {
 
 	@Test
 	void testGetTgHtmlReportCianOnEmpty() {
+		parser.setDeleteXslxFile(false);
+
 		when(rest.getRestFile(anyString()))
 			.thenReturn(Ok(helper.getResourceFilePath("classpath:flat/cian-empty.xlsx")));
 

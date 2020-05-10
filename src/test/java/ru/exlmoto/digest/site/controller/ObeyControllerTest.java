@@ -503,6 +503,6 @@ class ObeyControllerTest {
 	@Test
 	@WithMockUser
 	public void testObeyFlatSendAuthorized() throws Exception {
-		helper.checkRedirect(mvc, "/obey/flat/send", "/**/obey/exchange");
+		helper.checkRedirect(mvc, "/obey/flat/send", "/**/obey");
 	}
 }

@@ -33,6 +33,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.flat.model.Flat;
+import ru.exlmoto.digest.flat.parser.impl.FlatCianParser;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.file.ResourceHelper;
 import ru.exlmoto.digest.util.rest.RestHelper;
@@ -58,8 +59,13 @@ class FlatManagerTest {
 	@Autowired
 	private ResourceHelper helper;
 
+	@Autowired
+	private FlatCianParser parser;
+
 	@Test
 	void testGetCianFlatList() {
+		parser.setDeleteXslxFile(false);
+
 		when(rest.getRestFile(anyString()))
 			.thenReturn(Ok(helper.getResourceFilePath("classpath:flat/cian.xlsx")));
 
@@ -68,6 +74,8 @@ class FlatManagerTest {
 
 	@Test
 	void testGetCianFlatListOnError() {
+		parser.setDeleteXslxFile(false);
+
 		when(rest.getRestFile(anyString()))
 			.thenReturn(Ok(helper.getResourceFilePath("classpath:flat/cian-broken.xlsx")));
 
@@ -76,6 +84,8 @@ class FlatManagerTest {
 
 	@Test
 	void testGetCianFlatListOnEmpty() {
+		parser.setDeleteXslxFile(false);
+
 		when(rest.getRestFile(anyString()))
 			.thenReturn(Ok(helper.getResourceFilePath("classpath:flat/cian-empty.xlsx")));
 

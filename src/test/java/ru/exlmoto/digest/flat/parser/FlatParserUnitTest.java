@@ -34,8 +34,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import static org.mockito.ArgumentMatchers.anyString;
-
 class FlatParserUnitTest {
 	private final FlatParser parser = new FlatParser() {
 		@Override
@@ -86,6 +84,6 @@ class FlatParserUnitTest {
 
 	@Test
 	void testGetAvailableFlats() {
-		assertNull(parser.getAvailableFlats(anyString()));
+		assertNull(parser.getAvailableFlats("https://example.com"));
 	}
 }

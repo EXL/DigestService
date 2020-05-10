@@ -27,13 +27,16 @@ package ru.exlmoto.digest.site.util;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 
 import java.math.BigDecimal;
+
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -49,8 +52,15 @@ class SiteHelperTest {
 	@Autowired
 	private DatabaseService service;
 
+	@Value("${bot.motofan-chat-id}")
+	private long motofanChatId;
+
 	@Test
 	public void testGetUsers() {
+		if (service.getAllDigestUsers().isEmpty()) {
+			addTestDigestAndDigestUser();
+		}
+
 		assertFalse(helper.getUsers(service, null, true, null).isEmpty());
 		assertFalse(helper.getUsers(service, null, false, null).isEmpty());
 		assertFalse(helper.getUsers(service, "", true, null).isEmpty());
@@ -466,5 +476,17 @@ class SiteHelperTest {
 		String res = helper.generateAdminLink();
 		assertTrue(res.contains("<a href=\"//t.me/exlmoto\" title=\"@exlmoto\" target=\"_blank\">exlmoto</a>"));
 		System.out.println(res);
+	}
+
+	private void addTestDigestAndDigestUser() {
+		BotDigestUserEntity user = new BotDigestUserEntity(123L);
+		user.setUsername("@username");
+		BotDigestEntity digest = new BotDigestEntity();
+		digest.setChat(motofanChatId);
+		digest.setDate(10L);
+		digest.setDigest("text");
+		service.saveDigestUser(user);
+		digest.setUser(user);
+		service.saveDigest(digest);
 	}
 }

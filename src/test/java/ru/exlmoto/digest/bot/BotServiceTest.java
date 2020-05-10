@@ -26,23 +26,32 @@ package ru.exlmoto.digest.bot;
 
 import com.pengrad.telegrambot.model.Update;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest(properties = "bot.log-updates=true" )
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
 class BotServiceTest {
 	@Autowired
 	private BotService botService;
 
-	@Autowired
+	@SpyBean
 	private BotConfiguration config;
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isLogUpdates()).thenReturn(true);
+	}
 
 	@Test
 	public void testManyUpdates() {

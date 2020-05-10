@@ -51,6 +51,8 @@ class FlatCianParserTest {
 
 	@Test
 	void testGetAvailableFlats() {
+		parser.setDeleteXslxFile(false);
+
 		Answer<List<Flat>> res = parser.getAvailableFlats(helper.getResourceFilePath("classpath:flat/cian.xlsx"));
 		assertTrue(res.ok());
 		assertEquals(res.answer().size(), 16);

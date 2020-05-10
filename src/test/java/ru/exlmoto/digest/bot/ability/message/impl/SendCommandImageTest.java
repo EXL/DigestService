@@ -22,9 +22,7 @@
  * SOFTWARE.
  */
 
-package ru.exlmoto.digest.bot;
-
-import com.pengrad.telegrambot.model.Update;
+package ru.exlmoto.digest.bot.ability.message.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,42 +32,53 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
-
-import java.util.ArrayList;
-import java.util.List;
+import ru.exlmoto.digest.bot.sender.BotSender;
+import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.bot.util.UpdateHelper;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-class BotServiceTest {
+@SpringBootTest(properties = "image.download-file=true")
+class SendCommandImageTest {
 	@Autowired
-	private BotService botService;
+	private SendCommand command;
+
+	@Autowired
+	private BotHelper helper;
+
+	@Autowired
+	private BotSender sender;
+
+	@Autowired
+	private LocaleHelper locale;
 
 	@SpyBean
 	private BotConfiguration config;
 
+	private final UpdateHelper update = new UpdateHelper();
+
 	@BeforeEach
 	public void setUpTests() {
-		when(config.isLogUpdates()).thenReturn(true);
+		when(config.isSilent()).thenReturn(true);
 	}
 
 	@Test
-	public void testManyUpdates() {
-		System.out.println("=== START testManyUpdates() ===");
-		manyUpdatesHelper(config.getMaxUpdates() * 2);
-		manyUpdatesHelper(config.getMaxUpdates());
-		manyUpdatesHelper(config.getMaxUpdates() - 1);
-		manyUpdatesHelper(config.getMaxUpdates() + 1);
-		System.out.println("Max Updates: " + config.getMaxUpdates());
-		System.out.println("=== END testManyUpdates() ===");
+	public void testSendOnImageErrorShowMessage() {
+		System.out.println("=== START testSendOnImageErrorShowMessage() ===");
+		when(config.isSilent()).thenReturn(true);
+		/* Image error. */
+		onCmd("/image 87336977 https://exlmoto.ru");
+		onCmd("/image 87336977 https://exlmotor.ru");
+		onCmd("/image 87336977 https://mirror.yandex.ru/astra/current/orel/iso/orel-current.iso");
+		System.out.println("---");
+		/* Ok. */
+		onCmd("/image 87336977 https://www.apple.com/apple-touch-icon.png");
+		onCmd("/image -1001148683293 https://www.apple.com/apple-touch-icon.png");
+		System.out.println("=== END testSendOnImageErrorShowMessage() ===");
 	}
 
-	private void manyUpdatesHelper(int updatesCount) {
-		List<Update> updates = new ArrayList<>();
-		for (int i = 0; i < updatesCount; i++) {
-			updates.add(new Update());
-		}
-		botService.process(updates);
-		System.out.println("---");
+	private void onCmd(String message) {
+		command.execute(helper, sender, locale, update.getSimpleMessage(message, "exlmoto"));
 	}
 }

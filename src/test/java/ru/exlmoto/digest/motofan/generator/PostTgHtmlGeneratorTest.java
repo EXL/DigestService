@@ -71,6 +71,6 @@ class PostTgHtmlGeneratorTest {
 	private void generateHtmlReports(long timestamp) {
 		String result = htmlGenerator.generateMotofanPostHtmlReport(post.getRandomMotofanPost(timestamp));
 		assertThat(result).isNotEmpty();
-		System.out.println(result + "\n\n---\n");
+		System.out.println(result + "\n");
 	}
 }

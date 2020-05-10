@@ -50,6 +50,7 @@ public class BotConfiguration {
 	private int digestPagePosts;
 	private int digestPageDeep;
 	private long obsoleteDataDelay;
+	private boolean digestShredder;
 
 	public boolean isInitialize() {
 		return initialize;
@@ -225,5 +226,13 @@ public class BotConfiguration {
 
 	public void setObsoleteDataDelay(long obsoleteDataDelay) {
 		this.obsoleteDataDelay = obsoleteDataDelay;
+	}
+
+	public boolean isDigestShredder() {
+		return digestShredder;
+	}
+
+	public void setDigestShredder(boolean digestShredder) {
+		this.digestShredder = digestShredder;
 	}
 }

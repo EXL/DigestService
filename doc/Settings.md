@@ -280,6 +280,8 @@ See [application.properties](../src/main/resources/application.properties) file 
   * `604800` seconds for a week.
   * `648000` seconds for a week + one day.
 
+* *bot.digest-shredder* - Enable or disable the deletion of digests after the expiration of the storage time.
+
 ### Rest Template Options
 
 * *rest.timeout-sec* - Set general connection timeouts in seconds.

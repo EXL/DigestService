@@ -63,26 +63,30 @@ public class DigestWorker {
 
 	@Scheduled(cron = "${cron.bot.digest.shredder}")
 	public void obsoleteDataShredder() {
-		log.info("=> Start drop obsolete data from database.");
+		if (config.isDigestShredder()) {
+			log.info("=> Start drop obsolete data from database.");
 
-		try {
-			service.dropObsoleteDigests(filter.getCurrentUnixTime() - config.getObsoleteDataDelay(),
-				config.getMotofanChatId());
+			try {
+				service.dropObsoleteDigests(filter.getCurrentUnixTime() - config.getObsoleteDataDelay(),
+					config.getMotofanChatId());
 
-			List<Long> usersId = service.getAllUserIds();
-			service.getAllDigestUsers().forEach(digestUserEntity -> {
-				long userId = digestUserEntity.getId();
-				if (!usersId.contains(userId)) {
-					log.info(String.format("==> Delete obsolete user '%s' with id '%d'.",
-						digestUserEntity.getUsername(), userId));
-					service.deleteDigestUser(userId);
-				}
-			});
-		} catch (DataAccessException dae) {
-			log.error("Database error while dropping obsolete data.", dae);
+				List<Long> usersId = service.getAllUserIds();
+				service.getAllDigestUsers().forEach(digestUserEntity -> {
+					long userId = digestUserEntity.getId();
+					if (!usersId.contains(userId)) {
+						log.info(String.format("==> Delete obsolete user '%s' with id '%d'.",
+							digestUserEntity.getUsername(), userId));
+						service.deleteDigestUser(userId);
+					}
+				});
+			} catch (DataAccessException dae) {
+				log.error("Database error while dropping obsolete data.", dae);
+			}
+
+			log.info("=> End drop obsolete data from database.");
+		} else {
+			log.info("=> Digests shredder disabled in properties.");
 		}
-
-		log.info("=> End drop obsolete data from database.");
 	}
 
 	public void sendDigestToSubscribers(BotSender sender, Message message, String digest) {

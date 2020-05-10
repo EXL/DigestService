@@ -27,39 +27,36 @@ package ru.exlmoto.digest.site.util;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 
 import java.math.BigDecimal;
 
+import java.util.Collections;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class SiteHelperTest {
 	@Autowired
 	private SiteHelper helper;
 
-	@Autowired
+	@SpyBean
 	private DatabaseService service;
-
-	@Value("${bot.motofan-chat-id}")
-	private long motofanChatId;
 
 	@Test
 	public void testGetUsers() {
-		if (service.getAllDigestUsers().isEmpty()) {
-			addTestDigestAndDigestUser();
-		}
+		when(service.getAllUsersByChat(anyLong())).thenReturn(Collections.singletonList(new BotDigestUserEntity()));
 
 		assertFalse(helper.getUsers(service, null, true, null).isEmpty());
 		assertFalse(helper.getUsers(service, null, false, null).isEmpty());
@@ -476,17 +473,5 @@ class SiteHelperTest {
 		String res = helper.generateAdminLink();
 		assertTrue(res.contains("<a href=\"//t.me/exlmoto\" title=\"@exlmoto\" target=\"_blank\">exlmoto</a>"));
 		System.out.println(res);
-	}
-
-	private void addTestDigestAndDigestUser() {
-		BotDigestUserEntity user = new BotDigestUserEntity(123L);
-		user.setUsername("@username");
-		BotDigestEntity digest = new BotDigestEntity();
-		digest.setChat(motofanChatId);
-		digest.setDate(10L);
-		digest.setDigest("text");
-		service.saveDigestUser(user);
-		digest.setUser(user);
-		service.saveDigest(digest);
 	}
 }

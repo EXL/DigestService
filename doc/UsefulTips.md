@@ -19,4 +19,11 @@ These commands should be run at the root of the project.
 $ find src/ doc/ util/ -type f -print0 | xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "No new line at end of $0"'
 ```
 
-These command should be run at the root of the project.
+This command should be run at the root of the project.
+
+## Find trailing spaces on files
+
+```shell script
+$ grep -r '[[:blank:]]$' src/ doc/ util/
+```
+This command should be run at the root of the project.

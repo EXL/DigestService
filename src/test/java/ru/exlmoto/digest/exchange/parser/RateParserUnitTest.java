@@ -35,10 +35,13 @@ import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.util.file.ResourceHelper;
 
+import java.math.BigDecimal;
+
 import java.nio.charset.Charset;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RateParserUnitTest {
 	private final RateParserHelper parserHelper = new RateParserHelper();
@@ -188,6 +191,27 @@ class RateParserUnitTest {
 			parserHelper.fileContent("metalOtherSite.html")));
 
 		generalTests(new MetalRuMirrorParser());
+	}
+
+	@Test
+	public void testUpdatePrevValue() {
+		assertEquals(new BankRuParser().updatePrevValue(
+			new BigDecimal("75.10"),
+			new BigDecimal("75.1"),
+			new BigDecimal("78.4")
+		).toString(), "78.4");
+
+		assertEquals(new BankRuParser().updatePrevValue(
+			new BigDecimal("75.1"),
+			new BigDecimal("75.11"),
+			new BigDecimal("78.4")
+		).toString(), "75.1");
+
+		assertEquals(new BankRuParser().updatePrevValue(
+			new BigDecimal("75.14"),
+			new BigDecimal("75.52"),
+			new BigDecimal("78.4")
+		).toString(), "75.14");
 	}
 
 	private void generalTests(RateParser parser) {

@@ -42,10 +42,10 @@ public abstract class MetalParser extends RateParser {
 	@Override
 	protected void setPrevGeneralValues(ExchangeRateEntity entity, BigDecimal prevValue) {
 		if (prevValue != null) {
-			entity.setPrevGold(entity.getGold());
-			entity.setPrevSilver(entity.getSilver());
-			entity.setPrevPlatinum(entity.getPlatinum());
-			entity.setPrevPalladium(entity.getPalladium());
+			entity.setPrevGold(updatePrevValue(entity.getGold(), gold, entity.getPrevGold()));
+			entity.setPrevSilver(updatePrevValue(entity.getSilver(), silver, entity.getPrevSilver()));
+			entity.setPrevPlatinum(updatePrevValue(entity.getPlatinum(), platinum, entity.getPrevPlatinum()));
+			entity.setPrevPalladium(updatePrevValue(entity.getPalladium(), palladium, entity.getPrevPalladium()));
 		} else {
 			entity.setPrevGold(gold);
 			entity.setPrevSilver(silver);

@@ -158,4 +158,8 @@ public abstract class RateParser {
 	protected String filterSpaces(String value) {
 		return value.replaceAll(" ", "");
 	}
+
+	protected BigDecimal updatePrevValue(BigDecimal oldValue, BigDecimal newValue, BigDecimal prevValue) {
+		return (oldValue.compareTo(newValue) == 0) ? prevValue : oldValue;
+	}
 }

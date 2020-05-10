@@ -66,9 +66,9 @@ public class BankRuParser extends BankParser {
 
 	@Override
 	protected void setPrevValuesAux(ExchangeRateEntity entity) {
-		entity.setPrevUah(entity.getUah());
-		entity.setPrevByn(entity.getByn());
-		entity.setPrevKzt(entity.getKzt());
+		entity.setPrevUah(updatePrevValue(entity.getUah(), uah, entity.getPrevUah()));
+		entity.setPrevByn(updatePrevValue(entity.getByn(), byn, entity.getPrevByn()));
+		entity.setPrevKzt(updatePrevValue(entity.getKzt(), kzt, entity.getPrevKzt()));
 	}
 
 	@Override

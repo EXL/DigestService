@@ -46,10 +46,10 @@ public abstract class BankParser extends RateParser {
 	@Override
 	protected void setPrevGeneralValues(ExchangeRateEntity entity, BigDecimal prevValue) {
 		if (prevValue != null) {
-			entity.setPrevUsd(entity.getUsd());
-			entity.setPrevEur(entity.getEur());
-			entity.setPrevGbp(entity.getGbp());
-			entity.setPrevCny(entity.getCny());
+			entity.setPrevUsd(updatePrevValue(entity.getUsd(), usd, entity.getPrevUsd()));
+			entity.setPrevEur(updatePrevValue(entity.getEur(), eur, entity.getPrevEur()));
+			entity.setPrevGbp(updatePrevValue(entity.getGbp(), gbp, entity.getPrevGbp()));
+			entity.setPrevCny(updatePrevValue(entity.getCny(), cny, entity.getPrevCny()));
 			setPrevValuesAux(entity);
 		} else {
 			entity.setPrevUsd(usd);

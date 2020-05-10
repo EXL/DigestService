@@ -50,7 +50,7 @@ class FlatCianParserTest {
 	private ResourceHelper helper;
 
 	@Test
-	void testGetAvailableFlats() {
+	public void testGetAvailableFlats() {
 		parser.setDeleteXslxFile(false);
 
 		Answer<List<Flat>> res = parser.getAvailableFlats(helper.getResourceFilePath("classpath:flat/cian.xlsx"));
@@ -71,7 +71,7 @@ class FlatCianParserTest {
 	}
 
 	@Test
-	void testGetFirstChunk() {
+	public void testGetFirstChunk() {
 		assertEquals(parser.getFirstChunk("", "/"), "");
 		assertEquals(parser.getFirstChunk("string", "/"), "string");
 		assertEquals(parser.getFirstChunk("string/", "/"), "string");
@@ -97,7 +97,7 @@ class FlatCianParserTest {
 	}
 
 	@Test
-	void testParsePrice() {
+	public void testParsePrice() {
 		assertEquals(parser.parsePrice(""), "");
 		assertEquals(parser.parsePrice(" "), " ");
 		assertTrue(parser.parsePrice("a,asd").startsWith("a,asd "));
@@ -124,7 +124,7 @@ class FlatCianParserTest {
 	}
 
 	@Test
-	void testParseAddress() {
+	public void testParseAddress() {
 		assertEquals(parser.parseAddress(""), "");
 		assertEquals(parser.parseAddress("string"), "string");
 		assertEquals(parser.parseAddress("string,"), "string,");
@@ -140,7 +140,7 @@ class FlatCianParserTest {
 	}
 
 	@Test
-	void testApplyAddressPatch() {
+	public void testApplyAddressPatch() {
 		assertEquals(parser.applyAddressPatch(""), "");
 		assertEquals(parser.applyAddressPatch("string"), "string");
 		assertEquals(parser.applyAddressPatch("string,string"), "string,string");

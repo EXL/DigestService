@@ -49,6 +49,7 @@ public class MemberEntity {
 	@Column(nullable = false)
 	private Role role;
 
+	@Column(nullable = false)
 	private boolean enable;
 
 	public MemberEntity() {

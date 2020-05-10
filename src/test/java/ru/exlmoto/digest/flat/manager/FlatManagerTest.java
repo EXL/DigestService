@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.flat.model.Flat;
@@ -63,7 +62,7 @@ class FlatManagerTest {
 	private FlatCianParser parser;
 
 	@Test
-	void testGetCianFlatList() {
+	public void testGetCianFlatList() {
 		parser.setDeleteXslxFile(false);
 
 		when(rest.getRestFile(anyString()))
@@ -73,7 +72,7 @@ class FlatManagerTest {
 	}
 
 	@Test
-	void testGetCianFlatListOnError() {
+	public void testGetCianFlatListOnError() {
 		parser.setDeleteXslxFile(false);
 
 		when(rest.getRestFile(anyString()))
@@ -83,7 +82,7 @@ class FlatManagerTest {
 	}
 
 	@Test
-	void testGetCianFlatListOnEmpty() {
+	public void testGetCianFlatListOnEmpty() {
 		parser.setDeleteXslxFile(false);
 
 		when(rest.getRestFile(anyString()))
@@ -93,7 +92,7 @@ class FlatManagerTest {
 	}
 
 	@Test
-	void testGetN1FlatList() {
+	public void testGetN1FlatList() {
 		when(rest.getRestResponse(anyString()))
 			.thenReturn(Ok(helper.readFileToString("classpath:flat/n1.json")));
 
@@ -101,7 +100,7 @@ class FlatManagerTest {
 	}
 
 	@Test
-	void testGetN1FlatListOnError() {
+	public void testGetN1FlatListOnError() {
 		when(rest.getRestResponse(anyString()))
 			.thenReturn(Ok(helper.readFileToString("classpath:flat/n1-broken.json")));
 
@@ -109,7 +108,7 @@ class FlatManagerTest {
 	}
 
 	@Test
-	void testGetN1FlatListOnEmpty() {
+	public void testGetN1FlatListOnEmpty() {
 		when(rest.getRestResponse(anyString()))
 			.thenReturn(Ok(helper.readFileToString("classpath:flat/n1-empty.json")));
 

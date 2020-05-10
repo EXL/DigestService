@@ -39,7 +39,7 @@ class FlatWorkerTest {
 	private FlatWorker worker;
 
 	@Test
-	void testGetSubscriberIds() {
+	public void testGetSubscriberIds() {
 		assertThat(worker.getSubscriberIds(null)).isEmpty();
 		assertThat(worker.getSubscriberIds("")).isEmpty();
 		assertThat(worker.getSubscriberIds("null")).isEmpty();

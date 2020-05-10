@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
-public class ControllerHelper {
+class ControllerHelper {
 	public void checkPlainText(MockMvc mvc, String path, String contains) throws Exception {
 		mvc.perform(get(path).contentType(MediaType.TEXT_PLAIN))
 			.andDo(print())

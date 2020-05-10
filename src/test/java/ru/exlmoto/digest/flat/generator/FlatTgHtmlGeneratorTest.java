@@ -56,7 +56,7 @@ class FlatTgHtmlGeneratorTest {
 	private FlatCianParser parser;
 
 	@Test
-	void testGetTgHtmlReportCian() {
+	public void testGetTgHtmlReportCian() {
 		parser.setDeleteXslxFile(false);
 
 		when(rest.getRestFile(anyString()))
@@ -66,7 +66,7 @@ class FlatTgHtmlGeneratorTest {
 	}
 
 	@Test
-	void testGetTgHtmlReportCianOnError() {
+	public void testGetTgHtmlReportCianOnError() {
 		parser.setDeleteXslxFile(false);
 
 		when(rest.getRestFile(anyString()))
@@ -76,7 +76,7 @@ class FlatTgHtmlGeneratorTest {
 	}
 
 	@Test
-	void testGetTgHtmlReportCianOnEmpty() {
+	public void testGetTgHtmlReportCianOnEmpty() {
 		parser.setDeleteXslxFile(false);
 
 		when(rest.getRestFile(anyString()))
@@ -86,7 +86,7 @@ class FlatTgHtmlGeneratorTest {
 	}
 
 	@Test
-	void testGetTgHtmlReportN1() {
+	public void testGetTgHtmlReportN1() {
 		when(rest.getRestResponse(anyString()))
 			.thenReturn(Ok(helper.readFileToString("classpath:flat/n1.json")));
 
@@ -94,7 +94,7 @@ class FlatTgHtmlGeneratorTest {
 	}
 
 	@Test
-	void testGetTgHtmlReportN1OnError() {
+	public void testGetTgHtmlReportN1OnError() {
 		when(rest.getRestResponse(anyString()))
 			.thenReturn(Ok(helper.readFileToString("classpath:flat/n1-broken.json")));
 
@@ -102,7 +102,7 @@ class FlatTgHtmlGeneratorTest {
 	}
 
 	@Test
-	void testGetTgHtmlReportN1OnEmpty() {
+	public void testGetTgHtmlReportN1OnEmpty() {
 		when(rest.getRestResponse(anyString()))
 			.thenReturn(Ok(helper.readFileToString("classpath:flat/n1-empty.json")));
 

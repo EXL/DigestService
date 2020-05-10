@@ -62,7 +62,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				true,
 				true,
 				true,
-				Collections.singleton(new SimpleGrantedAuthority(member.getRole().name())));
+				Collections.singleton(new SimpleGrantedAuthority(member.getRole().name()))
+			);
 		} else {
 			return new User(
 				"Administrator",

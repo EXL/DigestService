@@ -51,7 +51,7 @@ class FlatN1ParserTest {
 	private ResourceHelper helper;
 
 	@Test
-	void testGetAvailableFlats() {
+	public void testGetAvailableFlats() {
 		Answer<List<Flat>> res = parser.getAvailableFlats(helper.readFileToString("classpath:flat/n1.json"));
 		assertTrue(res.ok());
 		assertEquals(res.answer().size(), 20);
@@ -70,7 +70,7 @@ class FlatN1ParserTest {
 	}
 
 	@Test
-	void testParseLink() {
+	public void testParseLink() {
 		assertNull(parser.parseLink(null));
 		assertEquals(parser.parseLink(""), "");
 		assertEquals(parser.parseLink("test"), "test");

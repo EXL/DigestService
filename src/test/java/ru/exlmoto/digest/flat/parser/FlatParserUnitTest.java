@@ -43,7 +43,7 @@ class FlatParserUnitTest {
 	};
 
 	@Test
-	void testAdjustPrice() {
+	public void testAdjustPrice() {
 		assertNull(parser.adjustPrice(null));
 		assertEquals(parser.adjustPrice(""), "");
 		assertEquals(parser.adjustPrice("string"), "string");
@@ -75,7 +75,7 @@ class FlatParserUnitTest {
 	}
 
 	@Test
-	void testApplyPhonePatch() {
+	public void testApplyPhonePatch() {
 		assertEquals(parser.applyPhonePatch(""), "");
 		assertEquals(parser.applyPhonePatch("+113434234"), "+113434234");
 		assertEquals(parser.applyPhonePatch("713434234"), "713434234");
@@ -83,7 +83,7 @@ class FlatParserUnitTest {
 	}
 
 	@Test
-	void testGetAvailableFlats() {
+	public void testGetAvailableFlats() {
 		assertNull(parser.getAvailableFlats("https://example.com"));
 	}
 }

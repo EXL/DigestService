@@ -74,7 +74,7 @@ class SendCommandAdditionalTest {
 		/* Wrong chat. */
 		onCmd("/send 87123336977 ad");
 		onCmd("/sticker 87123336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI");
-		onCmd("/image 87123336977 https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png");
+		onCmd("/image 87123336977 https://www.apple.com/apple-touch-icon.png");
 	}
 
 	@Test

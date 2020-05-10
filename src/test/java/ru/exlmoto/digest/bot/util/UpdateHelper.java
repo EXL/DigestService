@@ -24,9 +24,14 @@
 
 package ru.exlmoto.digest.bot.util;
 
-import com.pengrad.telegrambot.model.*;
-import com.pengrad.telegrambot.model.MessageEntity.Type;
+import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.MessageEntity;
+import com.pengrad.telegrambot.model.User;
+import com.pengrad.telegrambot.model.Chat;
+import com.pengrad.telegrambot.model.PhotoSize;
+import com.pengrad.telegrambot.model.CallbackQuery;
 
+import static com.pengrad.telegrambot.model.Chat.Type.supergroup;
 import static com.pengrad.telegrambot.model.MessageEntity.Type.bot_command;
 import static com.pengrad.telegrambot.model.MessageEntity.Type.hashtag;
 
@@ -51,7 +56,8 @@ public class UpdateHelper {
 		return message;
 	}
 
-	private MessageEntity[] getTwoEntities(Type type1, Type type2, int offset1, int length1, int offset2, int length2) {
+	private MessageEntity[] getTwoEntities(MessageEntity.Type type1, MessageEntity.Type type2,
+	                                       int offset1, int length1, int offset2, int length2) {
 		MessageEntity[] entities = new MessageEntity[2];
 
 		MessageEntity entity1 = new MessageEntity();
@@ -69,7 +75,7 @@ public class UpdateHelper {
 		return entities;
 	}
 
-	private MessageEntity[] getOneEntity(Type type, int offset, int length) {
+	private MessageEntity[] getOneEntity(MessageEntity.Type type, int offset, int length) {
 		MessageEntity[] entities = new MessageEntity[1];
 		MessageEntity entity = new MessageEntity();
 		setField(entity, "type", type);
@@ -157,7 +163,7 @@ public class UpdateHelper {
 	public Chat getChat(long chatId) {
 		Chat chat = new Chat();
 		setField(chat, "id", chatId);
-		setField(chat, "type", Chat.Type.supergroup);
+		setField(chat, "type", supergroup);
 		setField(chat, "title", "Chat Title");
 		return chat;
 	}

@@ -35,6 +35,7 @@ import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.service.DatabaseService;
 
 import java.math.BigDecimal;
+
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -112,19 +112,19 @@ class SendCommandTest {
 		/* Wrong format. */
 		onCmd("/image");
 		onCmd("/image wrong-id");
-		onCmd("/image wrong-id https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png text");
+		onCmd("/image wrong-id https://www.apple.com/apple-touch-icon.png text");
 		onCmd("/image 87336977");
-		onCmd("/image 87336977 https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png text");
-		onCmd("/image -1001148683293 https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png text");
+		onCmd("/image 87336977 https://www.apple.com/apple-touch-icon.png text");
+		onCmd("/image -1001148683293 https://www.apple.com/apple-touch-icon.png text");
 		System.out.println("===");
 
 		/* Wrong id. */
-		onCmd("/image wrong-id https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png");
+		onCmd("/image wrong-id https://www.apple.com/apple-touch-icon.png");
 		System.out.println("===");
 
 		/* Ok. */
-		onCmd("/image 87336977 https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png");
-		onCmd("/image -1001148683293 https://exlmoto.ru/wp-content/Images/PERL1987/ArchLinux_twm_Perl_1987_1.png");
+		onCmd("/image 87336977 https://www.apple.com/apple-touch-icon.png");
+		onCmd("/image -1001148683293 https://www.apple.com/apple-touch-icon.png");
 		System.out.println("===");
 	}
 

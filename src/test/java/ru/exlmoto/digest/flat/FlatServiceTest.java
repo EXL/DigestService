@@ -37,12 +37,12 @@ class FlatServiceTest {
 	private FlatService service;
 
 	@Test
-	void testTgHtmlReportCian() {
+	public void testTgHtmlReportCian() {
 		checkReport(service.tgHtmlReportCian("https://example.com", "https://example.com", 25));
 	}
 
 	@Test
-	void testTgHtmlReportN1() {
+	public void testTgHtmlReportN1() {
 		checkReport(service.tgHtmlReportN1("https://example.com", "https://example.com", 25));
 	}
 

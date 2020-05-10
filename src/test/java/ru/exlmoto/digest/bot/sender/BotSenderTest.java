@@ -27,23 +27,32 @@ package ru.exlmoto.digest.bot.sender;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@SpringBootTest(properties = "bot.silent=true")
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
 class BotSenderTest {
 	@Autowired
 	private BotSender sender;
 
-	@Autowired
+	@SpyBean
 	private BotConfiguration config;
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isSilent()).thenReturn(true);
+	}
 
 	@Test
 	public void testBotSenderMethods() {

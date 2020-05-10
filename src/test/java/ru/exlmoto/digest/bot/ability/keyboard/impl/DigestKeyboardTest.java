@@ -24,6 +24,7 @@
 
 package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest(properties = "bot.silent=true")
+@SpringBootTest
 class DigestKeyboardTest {
 	@Autowired
 	private DigestKeyboard keyboard;
@@ -60,13 +62,18 @@ class DigestKeyboardTest {
 	@Autowired
 	private BotHelper helper;
 
-	@Autowired
+	@SpyBean
 	private BotConfiguration config;
 
 	@Autowired
 	private LocaleHelper locale;
 
 	private final UpdateHelper update = new UpdateHelper();
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isSilent()).thenReturn(true);
+	}
 
 	@Test
 	public void testGetKeyboard() {

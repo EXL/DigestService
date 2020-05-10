@@ -24,10 +24,12 @@
 
 package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
@@ -38,9 +40,11 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(properties = "bot.silent=true")
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
 class GreetingKeyboardTest {
-	@Autowired
+	@SpyBean
 	private BotConfiguration config;
 
 	@Autowired
@@ -56,6 +60,11 @@ class GreetingKeyboardTest {
 	private LocaleHelper locale;
 
 	private final UpdateHelper update = new UpdateHelper();
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isSilent()).thenReturn(true);
+	}
 
 	@Test
 	public void testGetMarkup() {

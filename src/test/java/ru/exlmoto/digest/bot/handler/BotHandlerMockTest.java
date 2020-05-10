@@ -24,19 +24,22 @@
 
 package ru.exlmoto.digest.bot.handler;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.service.DatabaseService;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(properties = "bot.silent=true")
+@SpringBootTest
 public class BotHandlerMockTest {
 	@Autowired
 	private BotHandler handler;
@@ -44,7 +47,15 @@ public class BotHandlerMockTest {
 	@MockBean
 	private DatabaseService service;
 
+	@SpyBean
+	private BotConfiguration config;
+
 	private final UpdateHelper update = new UpdateHelper();
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isSilent()).thenReturn(true);
+	}
 
 	@Test
 	public void testDisableGreetingsByGroup() {

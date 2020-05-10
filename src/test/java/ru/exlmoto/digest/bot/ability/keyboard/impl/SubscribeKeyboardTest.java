@@ -28,12 +28,15 @@ import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Chat.Type;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
@@ -41,9 +44,11 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import static org.mockito.Mockito.when;
+
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
-@SpringBootTest(properties = "bot.silent=true")
+@SpringBootTest
 class SubscribeKeyboardTest {
 	@Autowired
 	private SubscribeKeyboard keyboard;
@@ -57,7 +62,15 @@ class SubscribeKeyboardTest {
 	@Autowired
 	private LocaleHelper locale;
 
+	@SpyBean
+	private BotConfiguration config;
+
 	private final UpdateHelper update = new UpdateHelper();
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isSilent()).thenReturn(true);
+	}
 
 	@Test
 	public void testGetMarkup() {

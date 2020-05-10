@@ -24,11 +24,13 @@
 
 package ru.exlmoto.digest.bot.handler;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
@@ -38,12 +40,14 @@ import ru.exlmoto.digest.repository.BotDigestUserRepository;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest(properties = "bot.silent=true")
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
 class BotHandlerTest {
 	@Autowired
 	private BotHandler handler;
 
-	@Autowired
+	@SpyBean
 	private BotConfiguration config;
 
 	@Autowired
@@ -56,6 +60,11 @@ class BotHandlerTest {
 	private BotDigestUserRepository botDigestUserRepository;
 
 	private final UpdateHelper update = new UpdateHelper();
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isSilent()).thenReturn(true);
+	}
 
 	@Test
 	public void testOnCommand() throws InterruptedException {

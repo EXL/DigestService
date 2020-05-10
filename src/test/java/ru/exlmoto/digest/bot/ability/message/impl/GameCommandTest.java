@@ -24,17 +24,22 @@
 
 package ru.exlmoto.digest.bot.ability.message.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-@SpringBootTest(properties = { "bot.silent=true", "image.download-file=false" })
+import static org.mockito.Mockito.when;
+
+@SpringBootTest(properties = "image.download-file=false")
 class GameCommandTest {
 	@Autowired
 	private GameCommand command;
@@ -48,7 +53,15 @@ class GameCommandTest {
 	@Autowired
 	private LocaleHelper locale;
 
+	@SpyBean
+	private BotConfiguration config;
+
 	private final UpdateHelper update = new UpdateHelper();
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isSilent()).thenReturn(true);
+	}
 
 	@Test
 	public void testGameCommand() {

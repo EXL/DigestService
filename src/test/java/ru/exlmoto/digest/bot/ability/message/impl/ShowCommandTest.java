@@ -24,13 +24,16 @@
 
 package ru.exlmoto.digest.bot.ability.message.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
@@ -39,8 +42,9 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest(properties = "bot.silent=true")
+@SpringBootTest
 class ShowCommandTest {
 	@Autowired
 	private ShowCommand command;
@@ -57,7 +61,15 @@ class ShowCommandTest {
 	@Autowired
 	private LocaleHelper locale;
 
+	@SpyBean
+	private BotConfiguration config;
+
 	private final UpdateHelper update = new UpdateHelper();
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isSilent()).thenReturn(true);
+	}
 
 	@Test
 	public void testShowCommand() {

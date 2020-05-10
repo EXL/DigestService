@@ -27,10 +27,12 @@ package ru.exlmoto.digest.bot.telegram;
 import com.pengrad.telegrambot.model.ChatMember;
 import com.pengrad.telegrambot.response.GetChatAdministratorsResponse;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 
@@ -43,13 +45,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(properties = "bot.silent=true")
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
 class BotTelegramTest {
 	@Autowired
 	private BotTelegram telegram;
 
-	@Autowired
+	@SpyBean
 	private BotConfiguration config;
+
+	@BeforeEach
+	public void setUpTests() {
+		when(config.isSilent()).thenReturn(true);
+	}
 
 	@Test
 	public void testGetBot() {

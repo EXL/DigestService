@@ -56,7 +56,7 @@ class RestHelperMockTest {
 	private final RestTemplate restTemplate = new RestTemplateBuilder().build();
 
 	@BeforeEach
-	public void setUp() {
+	public void setUpTests() {
 		when(rest.getRestTemplate()).thenReturn(restTemplate);
 	}
 

@@ -34,6 +34,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.File;
 import java.io.UncheckedIOException;
 
 import java.net.URL;
@@ -77,7 +78,7 @@ public class ResourceHelper {
 			if (StringUtils.hasText(resource)) {
 				URL fileUri = getClass().getClassLoader().getResource(resource);
 				if (fileUri != null) {
-					return fileUri.getFile();
+					return new File(fileUri.getFile()).getAbsolutePath();
 				}
 			}
 		}

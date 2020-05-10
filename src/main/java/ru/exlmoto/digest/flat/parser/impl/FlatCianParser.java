@@ -65,6 +65,8 @@ public class FlatCianParser extends FlatParser {
 	private final FilterHelper filter;
 	private final LocaleHelper locale;
 
+	private boolean deleteFile;
+
 	// Cell indexes format constants.
 	// See XLSX file for column indexes.
 	private final int ROOM    =  1;
@@ -78,6 +80,7 @@ public class FlatCianParser extends FlatParser {
 	public FlatCianParser(FilterHelper filter, LocaleHelper locale) {
 		this.filter = filter;
 		this.locale = locale;
+		deleteFile = true;
 	}
 
 	@Override
@@ -107,7 +110,7 @@ public class FlatCianParser extends FlatParser {
 				));
 			}
 
-			if (!xlsx.delete()) {
+			if (deleteFile && !xlsx.delete()) {
 				log.error(String.format("Cannot delete xlsx file on '%s' path.", path));
 			}
 		} catch (IOException ioe) {
@@ -124,6 +127,10 @@ public class FlatCianParser extends FlatParser {
 			return Error(error);
 		}
 		return Ok(flats);
+	}
+
+	public void setDeleteFile(boolean deleteFile) {
+		this.deleteFile = deleteFile;
 	}
 
 	private String parseCell(Row row, int index) {

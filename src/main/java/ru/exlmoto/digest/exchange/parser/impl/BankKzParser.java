@@ -32,6 +32,7 @@ import ru.exlmoto.digest.exchange.parser.BankParser;
 import ru.exlmoto.digest.service.DatabaseService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class BankKzParser extends BankParser {
 	@Override
@@ -81,7 +82,7 @@ public class BankKzParser extends BankParser {
 		Element element = document.selectFirst("title:contains(" + valueId + ")").parent();
 		BigDecimal quant = new BigDecimal(filterCommas(element.selectFirst("quant").text()));
 		BigDecimal value = new BigDecimal(filterCommas(element.selectFirst("description").text()));
-		return value.divide(quant, BigDecimal.ROUND_FLOOR);
+		return value.divide(quant, RoundingMode.FLOOR);
 	}
 
 	@Override

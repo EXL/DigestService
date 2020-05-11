@@ -28,6 +28,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class BankUaMirrorParser extends BankUaParser {
 	@Override
@@ -47,7 +48,7 @@ public class BankUaMirrorParser extends BankUaParser {
 		Element element = document.selectFirst("Valute[ID=" + valueId + "]");
 		BigDecimal nominal = new BigDecimal(filterCommas(element.selectFirst("Nominal").text()));
 		BigDecimal value = new BigDecimal(filterCommas(element.selectFirst("Value").text()));
-		return value.divide(nominal, BigDecimal.ROUND_FLOOR);
+		return value.divide(nominal, RoundingMode.FLOOR);
 	}
 
 	@Override

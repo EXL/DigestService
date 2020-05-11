@@ -32,6 +32,7 @@ import ru.exlmoto.digest.exchange.parser.BankParser;
 import ru.exlmoto.digest.service.DatabaseService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class BankByParser extends BankParser {
 	@Override
@@ -81,7 +82,7 @@ public class BankByParser extends BankParser {
 		Element element = document.selectFirst("Currency[Id=" + valueId + "]");
 		BigDecimal nominal = new BigDecimal(filterCommas(element.selectFirst("Scale").text()));
 		BigDecimal value = new BigDecimal(filterCommas(element.selectFirst("Rate").text()));
-		return value.divide(nominal, BigDecimal.ROUND_FLOOR);
+		return value.divide(nominal, RoundingMode.FLOOR);
 	}
 
 	@Override

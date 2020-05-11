@@ -12,9 +12,9 @@
 					*/--><input id="search-user" th:id="${'search-user-' + side}" type="text" th:field="*{user}" size="20" maxlength="20" placeholder="User #..." th:placeholder="#{site.search.filter.placeholder}"/><!--/*
 					*/--><input class="button" type="submit" value="Find!" th:value="#{site.search.button}"/><!--/*
 				*/--></form><!--/*
-				*/--><form th:action="@{/}"><!--/*
+				*/--><a th:href="@{/}"><!--/*
 					*/--><input class="button" id="button-reset" type="submit" value="Reset" th:value="#{site.search.reset}"/><!--/*
-				*/--></form><!--/*
+				*/--></a><!--/*
 			*/--></div>
 			</div>
 		</div>

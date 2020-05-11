@@ -184,7 +184,8 @@ public class SystemReport {
 	}
 
 	private String getCpuLoadAverage() {
-		return String.format("Load Average: %f", os.getSystemLoadAverage());
+		double averageCpuLoad = os.getSystemLoadAverage();
+		return String.format("Load Average: %s", (averageCpuLoad < 0.0f) ? "Unknown" : String.valueOf(averageCpuLoad));
 	}
 
 	private String getHostName() {

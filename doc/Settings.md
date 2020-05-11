@@ -216,7 +216,7 @@ See [application.properties](../src/main/resources/application.properties) file 
   Note: Logs will be sent to the system log which can be viewed using the following command:
 
   ```shell script
-  $ journalctl -u digest
+  journalctl -u digest
   ```
 
 * *bot.show-greetings* - Enable or disable bot greetings globally.

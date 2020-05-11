@@ -76,6 +76,9 @@ table td, table th {
 	text-align: left;
 	width: 100%;
 }
+.td-value {
+	width: 90%;
+}
 .post-form {
 	margin-top: 5px;
 	margin-bottom: 5px;

@@ -4,21 +4,19 @@
 	<body>
 		<div class="page">
 			<form th:action="@{/ds-auth-login}" method="post">
-				<div class="login-table">
-					<h1 th:text="#{site.login.head}">Login Form</h1>
-					<table>
-						<tr>
-							<td><label for="username-id" th:text="#{site.login.username}">Username:</label></td>
-							<td><input class="text-field" id="username-id" name="username" type="text" placeholder="Enter username..." th:placeholder="#{site.login.username.placeholder}"/></td>
-						</tr>
-						<tr>
-							<td><label for="password-id" th:text="#{site.login.password}">Password:</label></td>
-							<td><input class="text-field" id="password-id" name="password" type="password" placeholder="Enter password..." th:placeholder="#{site.login.password.placeholder}" minlength="6" required/></td>
-						</tr>
-					</table>
-					<div th:if="${error != null}" class="error" th:text="#{site.login.error}">Incorrect user data!</div>
-					<input class="button" type="submit" value="Login" th:value="#{site.login.button}"/>
-				</div>
+				<h1 th:text="#{site.login.head}">Login Form</h1>
+				<table class="login-table">
+					<tr>
+						<td><label for="username-id" th:text="#{site.login.username}">Username:</label></td>
+						<td><input class="text-field" id="username-id" name="username" type="text" placeholder="Enter username..." th:placeholder="#{site.login.username.placeholder}"/></td>
+					</tr>
+					<tr>
+						<td><label for="password-id" th:text="#{site.login.password}">Password:</label></td>
+						<td><input class="text-field" id="password-id" name="password" type="password" placeholder="Enter password..." th:placeholder="#{site.login.password.placeholder}" minlength="6" required/></td>
+					</tr>
+				</table>
+				<div th:if="${error != null}" class="error" th:text="#{site.login.error}">Incorrect user data!</div>
+				<input class="button" type="submit" value="Login" th:value="#{site.login.button}"/>
 			</form>
 		</div>
 	</body>

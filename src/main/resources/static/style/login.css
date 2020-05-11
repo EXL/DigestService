@@ -8,6 +8,8 @@ h1 {
 }
 .login-table {
 	text-align: right;
+	margin-left: auto;
+	margin-right: auto;
 }
 .button {
 	display: block;
@@ -20,11 +22,14 @@ h1 {
 	text-align: left;
 }
 .text-field {
+	font-size: 0.8em;
 	max-width: 200px;
 	min-width: 180px;
+	margin-bottom: 5px;
 }
 .error {
 	color: maroon;
 	font-weight: bold;
 	font-size: 0.75em;
+	text-align: center;
 }

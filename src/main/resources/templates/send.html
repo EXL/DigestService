@@ -10,24 +10,50 @@
 							<div class="post-form">
 								<h3 th:text="#{site.obey.send.title}">Send to chat</h3>
 								<form th:action="@{/obey/send/chat}" th:object="${send}" th:method="post">
-									<div class="form-block">
-										<label for="chatid-send-field" th:text="#{site.obey.content.chat}">Chat</label>
-										<input id="chatid-send-field" type="text" th:field="*{sendChatId}" size="20" th:placeholder="#{site.obey.content.chat.id}"/>
-										<textarea id="arg-send-field" class="send-text-field" rows="10" cols="80" th:field="*{sendChatArg}" th:placeholder="#{site.obey.content.text}">Text</textarea>
-										<label for="arg-send-field" th:text="#{site.obey.content.message}">Message</label>
-									</div>
-									<div class="form-block">
-										<label for="chatid-sticker-field" th:text="#{site.obey.content.chat}">Chat</label>
-										<input id="chatid-sticker-field" type="text" th:field="*{stickerChatId}" size="20" th:placeholder="#{site.obey.content.chat.id}"/>
-										<input id="arg-sticker-field" class="send-text-field" type="text" th:field="*{stickerChatArg}" size="100" th:placeholder="#{site.obey.send.sticker.id}"/>
-										<label for="arg-sticker-field" th:text="#{site.obey.send.sticker}">Sticker</label>
-									</div>
-									<div class="form-block">
-										<label for="chatid-image-field" th:text="#{site.obey.content.chat}">Chat</label>
-										<input id="chatid-image-field" type="text" th:field="*{imageChatId}" size="20" th:placeholder="#{site.obey.content.chat.id}"/>
-										<input id="arg-image-field" class="send-text-field" type="text" th:field="*{imageChatArg}" size="100" th:placeholder="#{site.obey.send.image.url}"/>
-										<label for="arg-image-field" th:text="#{site.obey.send.image}">Sticker</label>
-									</div>
+									<table class="table-without-border">
+										<tr>
+											<td class="td-top td-without-border">
+												<label for="chatid-send-field" th:text="#{site.obey.content.chat}">Chat</label>
+											</td>
+											<td class="td-top td-without-border">
+												<input id="chatid-send-field" type="text" th:field="*{sendChatId}" size="20" th:placeholder="#{site.obey.content.chat.id}"/>
+											</td>
+											<td class="td-without-border">
+												<textarea id="arg-send-field" class="send-text-field" rows="10" cols="80" th:field="*{sendChatArg}" th:placeholder="#{site.obey.content.text}">Text</textarea>
+											</td>
+											<td class="td-text td-top td-without-border">
+												<label for="arg-send-field" th:text="#{site.obey.content.message}">Message</label>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-top td-without-border">
+												<label for="chatid-sticker-field" th:text="#{site.obey.content.chat}">Chat</label>
+											</td>
+											<td class="td-without-border">
+												<input id="chatid-sticker-field" type="text" th:field="*{stickerChatId}" size="20" th:placeholder="#{site.obey.content.chat.id}"/>
+											</td>
+											<td class="td-without-border">
+												<input id="arg-sticker-field" class="send-text-field" type="text" th:field="*{stickerChatArg}" size="100" th:placeholder="#{site.obey.send.sticker.id}"/>
+											</td>
+											<td class="td-text td-without-border">
+												<label for="arg-sticker-field" th:text="#{site.obey.send.sticker}">Sticker</label>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-top td-without-border">
+												<label for="chatid-image-field" th:text="#{site.obey.content.chat}">Chat</label>
+											</td>
+											<td class="td-without-border">
+												<input id="chatid-image-field" type="text" th:field="*{imageChatId}" size="20" th:placeholder="#{site.obey.content.chat.id}"/>
+											</td>
+											<td class="td-without-border">
+												<input id="arg-image-field" class="send-text-field" type="text" th:field="*{imageChatArg}" size="100" th:placeholder="#{site.obey.send.image.url}"/>
+											</td>
+											<td class="td-text td-without-border">
+												<label for="arg-image-field" th:text="#{site.obey.send.image}">Sticker</label>
+											</td>
+										</tr>
+									</table>
 									<p><input class="button" type="submit" value="Send" th:value="#{site.obey.send}"/></p>
 								</form>
 							</div>

@@ -79,6 +79,15 @@ table td, table th {
 .td-value {
 	width: 90%;
 }
+.td-top {
+	vertical-align: top;
+}
+.td-without-border {
+	border: none;
+}
+.table-without-border {
+	border: none;
+}
 .post-form {
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -100,6 +109,7 @@ table td, table th {
 	min-height: 700px;
 }
 .send-text-field {
+	margin-top: 0;
 	width: 500px;
 }
 

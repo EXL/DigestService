@@ -69,6 +69,13 @@ table td, table th {
 .td-left {
 	text-align: left;
 }
+.td-nowrap {
+	white-space: nowrap;
+}
+.td-text {
+	text-align: left;
+	width: 100%;
+}
 .post-form {
 	margin-top: 5px;
 	margin-bottom: 5px;

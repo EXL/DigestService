@@ -11,7 +11,7 @@
 							<form th:action="@{/obey/edit}" th:object="${digestForm}" th:method="post">
 								<div class="form-block">
 									<label for="digest-field" th:text="#{site.obey.content.digest}">Digest</label>
-									<input id="digest-field" type="text" th:field="*{digest}" size="105" th:placeholder="#{site.obey.content.text}"/>
+									<input id="digest-field" type="text" th:field="*{digest}" size="110" th:placeholder="#{site.obey.content.text}"/>
 									<input class="button" type="submit" value="Add" th:value="${update ? edit : add}"/>
 								</div>
 								<div class="form-block">

@@ -102,7 +102,8 @@ public class ObeyController {
 	private final ImageHelper rest;
 	private final SiteConfiguration config;
 
-	final int LONG_TEXT = 100;
+	final int LONG_TEXT = 45;
+	final int LONG_AVATAR_URL = 100;
 
 	@Value("${general.date-format}")
 	private String dateFormat;
@@ -650,7 +651,7 @@ public class ObeyController {
 			String avatarLink = user.getAvatar();
 			userList.add(new Member(
 				user.getId(),
-				filter.activateLink(avatarLink, filter.ellipsisMiddle(avatarLink, LONG_TEXT)),
+				filter.activateLink(avatarLink, filter.ellipsisMiddle(avatarLink, LONG_AVATAR_URL)),
 				user.getUsername()
 			));
 		});

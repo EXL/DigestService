@@ -47,9 +47,9 @@
 									<td class="td-left" th:text="${post.username}">User</td>
 									<td th:text="${post.userId}">User ID</td>
 									<td th:text="${post.chat}">Chat</td>
-									<td th:text="${post.date}">Date</td>
-									<td class="td-left" th:text="${post.text}">Text</td>
-									<td>
+									<td class="td-nowrap" th:text="${post.date}">Date</td>
+									<td class="td-text" th:text="${post.text}">Text</td>
+									<td class="td-nowrap">
 										<a th:href="@{/obey/(edit=${post.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/delete/{id}(id=${post.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
 									</td>
 								</tr>
@@ -72,7 +72,7 @@
 									<td class="td-left" th:text="${user.username}">Username</td>
 									<td th:text="${user.id}">ID</td>
 									<td class="td-left" th:utext="${user.avatar}">Avatar</td>
-									<td>
+									<td class="td-nowrap">
 										<a th:href="@{/obey/user/(edit=${user.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/user/delete/{id}(id=${user.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
 									</td>
 								</tr>
@@ -138,7 +138,7 @@
 								<td class="td-left" th:text="${member.username}">Username</td>
 								<td class="td-left" th:utext="${member.role}">Role</td>
 								<td th:utext="${member.enabled}">Enabled</td>
-								<td>
+								<td class="td-nowrap">
 									<a th:href="@{/obey/member/(edit=${member.id})}" th:text="#{site.obey.content.action.edit}">Edit</a> | <a th:href="@{/obey/member/delete/{id}(id=${member.id})}" th:text="#{site.obey.content.action.delete}">Delete</a>
 								</td>
 							</tr>

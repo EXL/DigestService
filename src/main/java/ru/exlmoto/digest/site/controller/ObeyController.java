@@ -102,8 +102,8 @@ public class ObeyController {
 	private final ImageHelper rest;
 	private final SiteConfiguration config;
 
-	final int LONG_TEXT = 45;
-	final int LONG_AVATAR_URL = 100;
+	private final int LONG_TEXT = 45;
+	private final int LONG_AVATAR_URL = 100;
 
 	@Value("${general.date-format}")
 	private String dateFormat;

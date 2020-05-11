@@ -27,3 +27,11 @@ This command should be run at the root of the project.
 $ grep -r '[[:blank:]]$' src/ doc/ util/
 ```
 This command should be run at the root of the project.
+
+## Find stored file in the Nginx cache
+
+```shell script
+# grep -lr 'login.css' /var/nginx/cache/*
+```
+
+This command should be run on the server side with root user privileges.

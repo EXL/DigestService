@@ -223,7 +223,7 @@ public class SiteHelper {
 
 	public String getMotofanDescription(Locale lang) {
 		return String.format(locale.i18nW("site.content.head.description", lang),
-			motofanChatId, motofanChatUrl, config.getMotofanChatSlug());
+			motofanChatUrl, motofanChatId, config.getMotofanChatSlug());
 	}
 
 	public boolean highlightPost(String postId, long id) {

@@ -61,9 +61,14 @@ public class MotofanWorker {
 	@Scheduled(cron = "${cron.bot.motofan.receiver}")
 	public void workOnMotofanPosts() {
 		try {
-			List<String> motofanPosts = motofanService.getLastMotofanPostsInHtml();
-			if (!motofanPosts.isEmpty()) {
-				sendNewMotofanPosts(motofanPosts, databaseService.getAllMotofanSubs());
+			List<BotSubMotofanEntity> subscribers = databaseService.getAllMotofanSubs();
+			if (!subscribers.isEmpty()) {
+				List<String> motofanPosts = motofanService.getLastMotofanPostsInHtml();
+				if (!motofanPosts.isEmpty()) {
+					sendNewMotofanPosts(motofanPosts, subscribers);
+				}
+			} else {
+				log.info("Motofan subscribe list is empty.");
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Motofan subscribe object from database.", dae);

@@ -62,19 +62,24 @@ public class CovidWorker {
 	@Scheduled(cron = "${cron.bot.covid.report}")
 	public void workOnCovidReport() {
 		try {
-			String reportRu = covidService.tgHtmlRuReport();
-			if (checkCovidReport(reportRu)) {
-				sendCovidReport(reportRu, databaseService.getAllCovidSubs());
-			}
-
-			// Send Ukrainian COVID-2019 report only to MotoFan.Ru Telegram chat.
-			long motofanChatId = config.getMotofanChatId();
-			BotSubCovidEntity motofanChat = databaseService.getCovidSub(motofanChatId);
-			if (motofanChat != null) {
-				String reportUa = covidService.tgHtmlUaReport();
-				if (checkCovidReport(reportUa)) {
-					sendCovidReport(reportUa, motofanChatId);
+			List<BotSubCovidEntity> subscribers = databaseService.getAllCovidSubs();
+			if (!subscribers.isEmpty()) {
+				String reportRu = covidService.tgHtmlRuReport();
+				if (checkCovidReport(reportRu)) {
+					sendCovidReport(reportRu, subscribers);
 				}
+
+				// Send Ukrainian COVID-2019 report only to MotoFan.Ru Telegram chat.
+				long motofanChatId = config.getMotofanChatId();
+				BotSubCovidEntity motofanChat = databaseService.getCovidSub(motofanChatId);
+				if (motofanChat != null) {
+					String reportUa = covidService.tgHtmlUaReport();
+					if (checkCovidReport(reportUa)) {
+						sendCovidReport(reportUa, motofanChatId);
+					}
+				}
+			} else {
+				log.info("Covid subscriber list is empty.");
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Covid subscribe object from database.", dae);

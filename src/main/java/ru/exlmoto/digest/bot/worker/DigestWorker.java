@@ -93,26 +93,25 @@ public class DigestWorker {
 		int userId = message.from().id();
 		try {
 			List<BotSubDigestEntity> subscribers = service.getAllDigestSubs();
-			new Thread(() -> subscribers.forEach(subscriber -> {
-				try {
-					Thread.sleep(config.getMessageDelay() * 1000);
-				} catch (InterruptedException ie) {
-					throw new RuntimeException(ie);
-				}
-				long subscription = subscriber.getSubscription();
-				if (subscription != userId) {
-					log.info(String.format("=> Send Digest Message to chat '%s', id: '%d', subscribers: '%d'.",
-						subscriber.getName(), subscription, subscribers.size()));
-					sender.sendHtml(subscription, htmlGenerator.generateDigestMessageHtmlReport(message, digest));
-				} else {
-					log.info(
-						String.format(
-							"=> Ignoring Send Digest Message to chat '%s', id==userId: '%d'=='%d', subscribers: '%d'.",
-							subscriber.getName(), subscription, userId, subscribers.size()
-						)
-					);
-				}
-			})).start();
+			if (!subscribers.isEmpty()) {
+				new Thread(() -> subscribers.forEach(subscriber -> {
+					try {
+						Thread.sleep(config.getMessageDelay() * 1000);
+					} catch (InterruptedException ie) {
+						throw new RuntimeException(ie);
+					}
+					long subscription = subscriber.getSubscription();
+					if (subscription != userId) {
+						log.info(String.format("=> Send Digest Message to chat '%s', id: '%d', subscribers: '%d'.",
+								subscriber.getName(), subscription, subscribers.size()));
+						sender.sendHtml(subscription, htmlGenerator.generateDigestMessageHtmlReport(message, digest));
+					} else {
+						log.info(String.format("=> Ignoring Send Digest Message to chat '%s', " +
+							"id==userId: '%d'=='%d', subscribers: '%d'.",
+								subscriber.getName(), subscription, userId, subscribers.size()));
+					}
+				})).start();
+			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Digest subscribe object from database.", dae);
 		} catch (RuntimeException re) {

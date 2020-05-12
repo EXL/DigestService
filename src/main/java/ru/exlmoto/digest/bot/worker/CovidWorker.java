@@ -68,9 +68,13 @@ public class CovidWorker {
 			}
 
 			// Send Ukrainian COVID-2019 report only to MotoFan.Ru Telegram chat.
-			String reportUa = covidService.tgHtmlUaReport();
-			if (checkCovidReport(reportUa)) {
-				sendCovidReport(reportUa, config.getMotofanChatId());
+			long motofanChatId = config.getMotofanChatId();
+			BotSubCovidEntity motofanChat = databaseService.getCovidSub(motofanChatId);
+			if (motofanChat != null) {
+				String reportUa = covidService.tgHtmlUaReport();
+				if (checkCovidReport(reportUa)) {
+					sendCovidReport(reportUa, motofanChatId);
+				}
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Covid subscribe object from database.", dae);

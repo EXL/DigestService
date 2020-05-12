@@ -79,7 +79,7 @@ public class CovidWorker {
 					}
 				}
 			} else {
-				log.info("Covid subscriber list is empty.");
+				log.info("=> Covid subscriber list is empty, Covid reports service disabled.");
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Covid subscribe object from database.", dae);

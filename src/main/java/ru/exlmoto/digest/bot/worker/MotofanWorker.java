@@ -68,7 +68,7 @@ public class MotofanWorker {
 					sendNewMotofanPosts(motofanPosts, subscribers);
 				}
 			} else {
-				log.info("Motofan subscribe list is empty.");
+				log.info("=> Motofan subscriber list is empty, Motofan posts service disabled.");
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Motofan subscribe object from database.", dae);

@@ -76,7 +76,7 @@ public class FlatWorker {
 						log.error("Flat settings checks failed, sending reports disabled.");
 					}
 				} else {
-					log.info("=> Subscribers list is empty, Flat reports service disabled.");
+					log.info("=> Flat subscriber list is empty, Flat reports service disabled.");
 				}
 			});
 		} catch (DataAccessException dae) {

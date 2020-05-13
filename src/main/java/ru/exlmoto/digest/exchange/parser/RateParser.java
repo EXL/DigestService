@@ -39,6 +39,7 @@ import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public abstract class RateParser {
 	private final Logger log = LoggerFactory.getLogger(RateParser.class);
@@ -160,6 +161,7 @@ public abstract class RateParser {
 	}
 
 	protected BigDecimal updatePrevValue(BigDecimal oldValue, BigDecimal newValue, BigDecimal prevValue) {
-		return (oldValue.compareTo(newValue) == 0) ? prevValue : oldValue;
+		return (oldValue.setScale(2, RoundingMode.HALF_UP)
+			.compareTo(newValue.setScale(2, RoundingMode.HALF_UP)) == 0) ? prevValue : oldValue;
 	}
 }

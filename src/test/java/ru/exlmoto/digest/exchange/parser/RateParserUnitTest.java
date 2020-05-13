@@ -212,6 +212,12 @@ class RateParserUnitTest {
 			new BigDecimal("75.52"),
 			new BigDecimal("78.4")
 		).toString(), "75.14");
+
+		assertEquals(new BankRuParser().updatePrevValue(
+				new BigDecimal("75.001"),
+				new BigDecimal("75.002"),
+				new BigDecimal("78.4")
+		).toString(), "78.4");
 	}
 
 	private void generalTests(RateParser parser) {

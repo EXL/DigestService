@@ -54,9 +54,10 @@ dependencies {
 
 	runtimeOnly 'org.postgresql:postgresql'
 
-	implementation 'org.jsoup:jsoup:1.12.1'
-	implementation 'org.yaml:snakeyaml:1.25'
 	implementation 'com.github.pengrad:java-telegram-bot-api:4.6.0'
+
+	implementation 'org.yaml:snakeyaml:1.25'
+	implementation 'org.jsoup:jsoup:1.12.1'
 	implementation 'org.nibor.autolink:autolink:0.10.0'
 	implementation 'org.owasp.encoder:encoder:1.2.2'
 	implementation 'org.apache.poi:poi:4.1.2'

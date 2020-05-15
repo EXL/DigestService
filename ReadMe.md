@@ -8,11 +8,14 @@ Digest Service is a Telegram bot for group chats combined with website. The main
 The main technologies, libraries and frameworks on which Digest Service is running.
 
 1. [Java/JVM](https://www.oracle.com/java/) language and platform by Oracle Corporation.
+
 2. [Spring Boot](https://spring.io/projects/spring-boot) by Pivotal Software (now VMWare) and its frameworks.
+
     * [Spring Framework](https://spring.io/projects/spring-framework) for core features and serving web content. 
     * [Spring Data JPA](https://spring.io/projects/spring-data-jpa) as a database engine layer. 
     * [Spring Security](https://spring.io/projects/spring-security) for authorization purposes.
     * [Thymeleaf](https://www.thymeleaf.org/) as an HTML template engine.
+
 3. [Java Telegram Bot API](https://github.com/pengrad/java-telegram-bot-api) library by @pengrad for Telegram bot implementation.
 
 /// Website Screenshot

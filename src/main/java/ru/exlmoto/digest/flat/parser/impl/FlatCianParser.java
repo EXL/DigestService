@@ -75,7 +75,7 @@ public class FlatCianParser extends FlatParser {
 	private final int FLOOR   =  6;
 	private final int PRICE   =  8;
 	private final int PHONE   =  9;
-	private final int LINK    = 19;
+	private final int LINK    = 20;
 
 	public FlatCianParser(FilterHelper filter, LocaleHelper locale) {
 		this.filter = filter;

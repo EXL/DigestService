@@ -3,7 +3,7 @@ Digest Service
 
 Digest Service is a Telegram bot for group chats combined with website. The main functionality of the service is to collect messages with the **#digest** tag in Telegram chats and display them using the **/digest** command. In addition, the bot has other features e.g. it can subscribe users to various information channels and show various quotes of currencies and precious metals.
 
-/// Telegram Bot Screenshot
+![Digest Service Telegram bot](image/digest_service_telegram_bot.png)
 
 The main technologies, libraries and frameworks on which Digest Service is running.
 
@@ -11,18 +11,18 @@ The main technologies, libraries and frameworks on which Digest Service is runni
 
 2. [Spring Boot](https://spring.io/projects/spring-boot) by Pivotal Software (now VMWare) and its frameworks.
 
-    * [Spring Framework](https://spring.io/projects/spring-framework) for core features and serving web content. 
-    * [Spring Data JPA](https://spring.io/projects/spring-data-jpa) as a database engine layer. 
+    * [Spring Framework](https://spring.io/projects/spring-framework) for core features and serving web content.
+    * [Spring Data JPA](https://spring.io/projects/spring-data-jpa) as a database engine layer.
     * [Spring Security](https://spring.io/projects/spring-security) for authorization purposes.
     * [Thymeleaf](https://www.thymeleaf.org/) as an HTML template engine.
 
 3. [Java Telegram Bot API](https://github.com/pengrad/java-telegram-bot-api) library by [@pengrad](https://github.com/pengrad) for Telegram bot implementation.
 
-/// Website Screenshot
+![Digest Service web site](image/digest_service_web_site.png)
 
 The Digest Service website allows you to see all the digests left by users in the main Telegram chat. In addition, the website has a search through digests, some statistics and special APIs. An example of a website ["MotoFan.Ru news in Telegram group!"](https://digest.exlmoto.ru/) that is launched using the Digest Service.
 
-/// Admin Control Screenshot
+![Digest Service control panel](image/digest_service_control_panel.png)
 
 A special control module allows administrators to manage the Digest Service e.g. delete or fix digests, send messages on behalf of the Telegram bot, change some settings etc.
 
@@ -74,6 +74,6 @@ For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distrib
 
 ## Additional Information
 
-1. [Digest Bot](https://github.com/EXL/DigestBot) is an old JavaScript implementation of similar Telegram bot. 
+1. [Digest Bot](https://github.com/EXL/DigestBot) is an old JavaScript implementation of similar Telegram bot.
 2. Please see [Settings.md](doc/Settings.md) document for information about various Digest Service properties.
 3. Please read ["Creating Digest Service" (in Russian)](https://exlmoto.ru/digest-service) article for more information about creating Digest Service project.

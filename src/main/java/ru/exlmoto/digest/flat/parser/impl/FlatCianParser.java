@@ -69,13 +69,15 @@ public class FlatCianParser extends FlatParser {
 
 	// Cell indexes format constants.
 	// See XLSX file for column indexes.
-	private final int ROOM    =  1;
-	private final int ADDRESS =  4;
-	private final int SQUARE  =  5;
-	private final int FLOOR   =  6;
-	private final int PRICE   =  8;
-	private final int PHONE   =  9;
-	private final int LINK    = 20;
+	private final int ROOM      =  1;
+	private final int ADDRESS   =  4;
+	private final int SQUARE    =  5;
+	private final int FLOOR     =  6;
+	private final int PRICE     =  8;
+	private final int PHONE     =  9;
+	private final int LINK      = 20;
+
+	private final int ROW_OFFSET = 1;
 
 	public FlatCianParser(FilterHelper filter, LocaleHelper locale) {
 		this.filter = filter;
@@ -94,10 +96,11 @@ public class FlatCianParser extends FlatParser {
 			// Get first sheet from XLSX book.
 			Sheet sheet = workbook.getSheetAt(0);
 
+			int linkColumn = findLinkColumnIndex(sheet);
+
 			// Drop first line of table with column descriptions.
-			int start = 1;
 			int rowSize = sheet.getPhysicalNumberOfRows();
-			for (int i = start; i < rowSize; ++i) {
+			for (int i = ROW_OFFSET; i < rowSize; ++i) {
 				Row row = sheet.getRow(i);
 				flats.add(new Flat(
 					parseCell(row, ROOM),
@@ -106,7 +109,7 @@ public class FlatCianParser extends FlatParser {
 					applyAddressPatch(parseAddress(parseCell(row, ADDRESS))),
 					parsePrice(parseCell(row, PRICE)),
 					applyPhonePatch(parsePhone(parseCell(row, PHONE))),
-					parseCell(row, LINK)
+					parseCell(row, linkColumn)
 				));
 			}
 
@@ -134,13 +137,24 @@ public class FlatCianParser extends FlatParser {
 	}
 
 	private String parseCell(Row row, int index) {
-		if (row != null) {
+		if (row != null && index != -1) {
 			Cell cell = row.getCell(index);
 			if (cell != null) {
 				return cell.getStringCellValue();
 			}
 		}
 		return "???";
+	}
+
+	private int findLinkColumnIndex(Sheet sheet) {
+		Row firstRow = sheet.getRow(ROW_OFFSET);
+		int start = firstRow.getPhysicalNumberOfCells();
+		for (int i = start - 1; i >= 0; --i) {
+			if (filter.strip(parseCell(firstRow, i)).startsWith("http")) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	private String parseSquare(String squares) {

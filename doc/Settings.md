@@ -184,7 +184,7 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 * *bot.initialize* - Enable or disable bot initialization.
 
-    Note: This is a useful option for running the application without a VPN connection when Telegram blocked.
+    Note: This is a useful option for running and debugging the application without a VPN connection when Telegram blocked.
 
 * *bot.token* - Set bot token via environment variable.
 

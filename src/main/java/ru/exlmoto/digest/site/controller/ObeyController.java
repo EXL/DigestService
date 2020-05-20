@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
@@ -101,6 +102,7 @@ public class ObeyController {
 	private final BotSender sender;
 	private final ImageHelper rest;
 	private final SiteConfiguration config;
+	private final BotConfiguration botConfig;
 
 	private final int LONG_TEXT = 45;
 	private final int LONG_AVATAR_URL = 100;
@@ -122,7 +124,7 @@ public class ObeyController {
 	                      CovidWorker covidWorker,
 	                      FlatWorker flatWorker,
 	                      ExchangeService exchange,
-	                      BotSender sender, ImageHelper rest, SiteConfiguration config) {
+	                      BotSender sender, ImageHelper rest, SiteConfiguration config, BotConfiguration botConfig) {
 		this.helper = helper;
 		this.service = service;
 		this.filter = filter;
@@ -137,6 +139,7 @@ public class ObeyController {
 		this.sender = sender;
 		this.rest = rest;
 		this.config = config;
+		this.botConfig = botConfig;
 	}
 
 	@RequestMapping(path = "/obey")
@@ -266,9 +269,17 @@ public class ObeyController {
 	@PostMapping(path = "/obey/setup/edit")
 	public String obeySetupEdit(SetupForm setup) {
 		service.getSettings().ifPresent(settings -> {
-			settings.setLogUpdates(setup.isLog());
-			settings.setShowGreetings(setup.isGreeting());
-			settings.setSilentMode(setup.isSilent());
+			boolean log = setup.isLog();
+			boolean greeting = setup.isGreeting();
+			boolean silent = setup.isSilent();
+
+			botConfig.setLogUpdates(log);
+			botConfig.setShowGreetings(greeting);
+			botConfig.setSilent(silent);
+
+			settings.setLogUpdates(log);
+			settings.setShowGreetings(greeting);
+			settings.setSilentMode(silent);
 			service.saveSettings(settings);
 		});
 

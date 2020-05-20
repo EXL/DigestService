@@ -20,7 +20,7 @@ The main technologies, libraries and frameworks on which Digest Service is runni
 
 /// Website Screenshot
 
-The Digest Service website allows you to see all the digests left by users in the main Telegram chat. In addition, the website has a search through digests, some statistics and special APIs. An example of a website "[MotoFan.Ru news in Telegram group!](https://digest.exlmoto.ru/)" that is launched using the Digest Service.
+The Digest Service website allows you to see all the digests left by users in the main Telegram chat. In addition, the website has a search through digests, some statistics and special APIs. An example of a website ["MotoFan.Ru news in Telegram group!"](https://digest.exlmoto.ru/) that is launched using the Digest Service.
 
 /// Admin Control Screenshot
 
@@ -28,11 +28,11 @@ A special control module allows administrators to manage the Digest Service e.g.
 
 ## Requirements
 
-1. [Java Runtime Environment 8+](https://www.oracle.com/java/technologies/javase-jre8-downloads.html) for running or [Java Development Kit 8+](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) for building, tested with JRE 8.
+1. [Java Runtime Environment 8+](https://www.oracle.com/java/technologies/javase-jre8-downloads.html) for running or [Java Development Kit 8+](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) for building (tested with JRE 8).
 2. [PostgreSQL](https://www.postgresql.org/) database.
 3. [Nginx](https://www.nginx.com/) web server.
 
-## Build & Test
+## Build & Test & Run
 
 For example, on Linux:
 
@@ -70,8 +70,10 @@ For example, on Linux:
 
 ## Deploy
 
+For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distribution:
+
 ## Additional Information
 
-1. link to old javascript digest bot 
-2. Setting.doc
-3. exlmoto.ru link
+1. [Digest Bot](https://github.com/EXL/DigestBot) is an old JavaScript implementation of similar Telegram bot. 
+2. Please see [Settings.md](doc/Settings.md) document for information about various Digest Service properties.
+3. Please read ["Creating Digest Service" (in Russian)](https://exlmoto.ru/digest-service) article for more information about creating Digest Service project.

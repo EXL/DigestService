@@ -5,7 +5,7 @@ Digest Service is a Telegram bot for group chats combined with website. The main
 
 ![Digest Service Telegram bot](image/digest_service_telegram_bot.png)
 
-The main technologies, libraries and frameworks on which Digest Service is running.
+The main technologies, libraries and frameworks on which Digest Service is running:
 
 1. [Java/JVM](https://www.oracle.com/java/) language and platform by Oracle Corporation.
 
@@ -18,17 +18,17 @@ The main technologies, libraries and frameworks on which Digest Service is runni
 
 3. [Java Telegram Bot API](https://github.com/pengrad/java-telegram-bot-api) library by [@pengrad](https://github.com/pengrad) for Telegram bot implementation.
 
-![Digest Service web site](image/digest_service_web_site.png)
+![Digest Service website](image/digest_service_web_site.png)
 
-The Digest Service website allows you to see all the digests left by users in the main Telegram chat. In addition, the website has a search through digests, some statistics and special APIs. An example of a website ["MotoFan.Ru news in Telegram group!"](https://digest.exlmoto.ru/) that is launched using the Digest Service.
+The Digest Service website allows you to see all the digests left by users in the main Telegram chat. In addition, the website has a search through digests, some statistics and special APIs. An example of the ["MotoFan.Ru news in Telegram group!"](https://digest.exlmoto.ru/) website that was launched using the Digest Service.
 
 ![Digest Service control panel](image/digest_service_control_panel.png)
 
-A special control module allows administrators to manage the Digest Service e.g. delete or fix digests, send messages on behalf of the Telegram bot, change some settings etc.
+A special control module allows administrators to manage the Digest Service e.g. delete or fix digests, send messages on behalf of the Telegram bot, change some settings, etc.
 
 ## Requirements
 
-1. [Java Runtime Environment 8+](https://www.oracle.com/java/technologies/javase-jre8-downloads.html) for running or [Java Development Kit 8+](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) for building (tested with JRE 8).
+1. [Java Runtime Environment 8+](https://www.oracle.com/java/technologies/javase-jre8-downloads.html) for running or [Java Development Kit 8+](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) for building application (tested with JRE 8).
 2. [PostgreSQL](https://www.postgresql.org/) database.
 3. [Nginx](https://www.nginx.com/) web server (optional).
 
@@ -36,16 +36,16 @@ A special control module allows administrators to manage the Digest Service e.g.
 
 For example, on Linux:
 
-1. Install JDK 8+ via your package manager.
+1. Install JDK 8+ via your system package manager.
 
-2. Clone source code of the Digest Service via Git:
+2. Clone the Digest Service source code via Git:
 
     ```shell script
     cd ~/Deploy/
-    git clone https://github.com/EXL/DigestService DigestService
+    git clone <this repository url> DigestService
     ```
 
-3. Build standalone JAR package via Gradle:
+3. Build standalone JAR package via [Gradle Build Tool](https://gradle.org/) wrapper:
 
     ```shell script
     cd ~/Deploy/DigestService
@@ -53,7 +53,7 @@ For example, on Linux:
     ./gradlew bootJar
     ```
 
-4. Build standalone JAR package with running all tests (optional, database installation required):
+4. Build standalone JAR package and run all tests (optional, database installation required):
 
     ```shell script
     cd ~/Deploy/DigestService
@@ -70,7 +70,7 @@ For example, on Linux:
 
 ## Deploy
 
-For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distribution:
+For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Linux distribution:
 
 1. Enable [EPEL repository](https://fedoraproject.org/wiki/EPEL) for CentOS 7:
 
@@ -78,7 +78,7 @@ For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distrib
     sudo yum -y install epel-release
     ```
 
-2. Install necessary and optional packages, settings, and update system:
+2. Install necessary and optional packages, apply settings, and update system:
 
     ```shell script
     cd ~/
@@ -86,7 +86,7 @@ For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distrib
 
     sudo su
 
-    passwd root
+    passwd root # Set root superuser password.
 
     yum -y upgrade
     yum -y install vim git logrotate openssh deltarpm yum-utils p7zip p7zip-plugins
@@ -117,7 +117,7 @@ For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distrib
     exit
     ```
 
-4. Install Java Environment and test application running:
+4. Install Java Runtime Environment and test application running:
 
     ```shell script
     sudo yum -y install java-1.8.0-openjdk # Or just "java" package.
@@ -128,7 +128,7 @@ For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distrib
     DB_CONNECTION=jdbc:postgresql://localhost:5432/digest DB_USERNAME=user DB_PASSWORD=password HOST=//digest.exlmoto.ru/ TG_TOKEN=<token> TG_CHAT=<chat id> PROTECT=false java -jar /srv/digest-service-<version>.jar
     ```
 
-5. Daemonize application service via [systemd](https://github.com/systemd/systemd):
+5. Daemonize Digest Service application via [systemd](https://github.com/systemd/systemd) Service Manager:
 
     ```shell script
     cd ~/DigestService/
@@ -152,9 +152,9 @@ For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distrib
     sudo systemctl enable digest
     sudo systemctl start digest
 
-    sudo systemctl stop digest # Stop Digest Service.
+    sudo systemctl stop digest # Stop Digest Service application.
     journalctl -u digest # Show Digest Service logs.
-    journalctl -fu digest # Show Digest Service tail log.
+    journalctl -fu digest # Show Digest Service logs dynamically.
     ```
 
 6. Install Nginx server and Certbot (optional):
@@ -179,9 +179,9 @@ For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distrib
     sudo systemctl enable nginx
     ```
 
-7. Add administrator profiles (optional) and finish deploying:
+7. Add administrator profiles (optional) and finish deployment:
 
-    Go to the **/obey/** page with "password" password and any username to enter control module. Then add some administrator profiles to the **Member** table and relaunch Digest Service with `PROTECT=true` environment variable:
+    Go to the **/obey/** page with "password" password and any username to enter control module. Then add some administrator profiles to the **Member** database table and restart Digest Service with `PROTECT=true` environment variable:
 
     ```shell script
     sudo EDITOR=vim systemctl edit digest
@@ -201,10 +201,15 @@ For example, on clean [CentOS 7](https://wiki.centos.org/Download) Linux distrib
 
     *Note:* You can use the ID of your main Telegram chat as a parameter for `TG_CHAT` property and your host url for `HOST` property instead of "digest.exlmoto.ru" address.
 
-8. Restart the server after completing the Digest Service configuration.
+8. Restart the server after completing the Digest Service configuration and deployment.
+
+## Configuration Files
+
+1. [application.properties](src/main/resources/application.properties) is main configuration file for the Digest Service application. Please see [Settings.md](doc/Settings.md) document for descriptions of various Digest Service properties.
+2. [digest.service](util/digest.service) is systemd unit file for the Digest Service application.
+3. [digest.conf](util/nginx/digest.conf) is Nginx web server config file for the Digest Service website.
 
 ## Additional Information
 
-1. [Digest Bot](https://github.com/EXL/DigestBot) is an old JavaScript implementation of similar Telegram bot.
-2. Please see [Settings.md](doc/Settings.md) document for information about various Digest Service properties.
-3. Please read ["Creating Digest Service" (in Russian)](https://exlmoto.ru/digest-service) article for more information about creating Digest Service project.
+1. The [Digest Bot](https://github.com/EXL/DigestBot) project is an old JavaScript implementation of similar Telegram bot.
+2. Please read ["Creating Digest Service" (in Russian)](https://exlmoto.ru/digest-service) article for more information about creating Digest Service project.

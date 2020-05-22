@@ -148,10 +148,12 @@ public class FlatCianParser extends FlatParser {
 
 	private int findLinkColumnIndex(Sheet sheet) {
 		Row firstRow = sheet.getRow(ROW_OFFSET);
-		int start = firstRow.getPhysicalNumberOfCells();
-		for (int i = start - 1; i >= 0; --i) {
-			if (filter.strip(parseCell(firstRow, i)).startsWith("http")) {
-				return i;
+		if (firstRow != null) {
+			int start = firstRow.getPhysicalNumberOfCells();
+			for (int i = start - 1; i >= 0; --i) {
+				if (filter.strip(parseCell(firstRow, i)).startsWith("http")) {
+					return i;
+				}
 			}
 		}
 		return -1;

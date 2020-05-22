@@ -5,7 +5,7 @@ Digest Service is a Telegram bot for group chats combined with website. The main
 
 ![Digest Service Telegram bot](image/digest_service_telegram_bot.png)
 
-The main technologies, libraries and frameworks on which Digest Service is running:
+The main technologies, libraries, and frameworks on which Digest Service was created:
 
 1. [Java/JVM](https://www.oracle.com/java/) language and platform by Oracle Corporation.
 
@@ -24,11 +24,11 @@ The Digest Service website allows you to see all the digests left by users in th
 
 ![Digest Service control panel](image/digest_service_control_panel.png)
 
-A special control module allows administrators to manage the Digest Service e.g. delete or fix digests, send messages on behalf of the Telegram bot, change some settings, etc.
+A special control module allows administrators to manage the Digest Service, delete or fix digests, send messages on behalf of the Telegram bot, change some settings, etc.
 
 ## Requirements
 
-1. [Java Runtime Environment 8+](https://www.oracle.com/java/technologies/javase-jre8-downloads.html) for running or [Java Development Kit 8+](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) for building application (tested with JRE 8).
+1. [Java Runtime Environment 8+](https://www.oracle.com/java/technologies/javase-jre8-downloads.html) for running or [Java Development Kit 8+](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) for building application (tested with JRE/JDK 8).
 2. [PostgreSQL](https://www.postgresql.org/) database.
 3. [Nginx](https://www.nginx.com/) web server (optional).
 
@@ -104,16 +104,23 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 
     ```shell script
     sudo yum -y install postgresql-server postgresql-contrib
+
     sudo postgresql-setup initdb
+
     sudo systemctl start postgresql
     sudo systemctl enable postgresql
+
     sudo -i -u postgres
+
     vim data/pg_hba.conf # Replace "ident" to "md5".
+
     createdb digest
     createuser --interactive # user, n, n, n.
+
     psql
     ALTER USER user WITH PASSWORD 'password';
     \q
+
     exit
     ```
 
@@ -181,7 +188,7 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 
 7. Add administrator profiles (optional) and finish deployment:
 
-    Go to the **/obey/** page with "password" password and any username to enter control module. Then add some administrator profiles to the **Member** database table and restart Digest Service with `PROTECT=true` environment variable:
+    Go to the **/obey/** page with "*password*" password and any username to enter control module. Then add some administrator profiles to the **Member** database table and restart Digest Service with `PROTECT=true` environment variable:
 
     ```shell script
     sudo EDITOR=vim systemctl edit digest
@@ -199,7 +206,7 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 
     Now you can sign in to the control module only with an administrator profiles information.
 
-    *Note:* You can use the ID of your main Telegram chat as a parameter for `TG_CHAT` property and your host url for `HOST` property instead of "digest.exlmoto.ru" address.
+    *Note:* You can use the ID of your main Telegram chat as a parameter for `TG_CHAT` property and your host url for `HOST` property instead of "digest.exlmoto.ru" address. Please use the **/subscribe** command to get ID of the Telegram chat.
 
 8. Restart the server after completing the Digest Service configuration and deployment.
 
@@ -211,5 +218,6 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 
 ## Additional Information
 
-1. The [Digest Bot](https://github.com/EXL/DigestBot) project is an old JavaScript implementation of similar Telegram bot.
-2. Please read ["Creating Digest Service" (in Russian)](https://exlmoto.ru/digest-service) article for more information about creating Digest Service project.
+1. The [Digest Bot](https://github.com/EXL/DigestBot) project is old JavaScript implementation of the similar Telegram bot.
+2. Please read ["Digest Service and Telegram Bot Commands Cheat Sheet" (in Russian and English)](https://digest.exlmoto.ru/help) manual for more information about Telegram bot commands and Digest Service features.
+3. Please read ["Creating Digest Service" (in Russian)](https://exlmoto.ru/digest-service) article for more information about creating the Digest Service project.

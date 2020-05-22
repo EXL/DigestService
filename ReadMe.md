@@ -93,10 +93,6 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 
     timedatectl set-timezone "Europe/Moscow"
 
-    firewall-cmd --zone=public --permanent --add-service=http
-    firewall-cmd --zone=public --permanent --add-service=https
-    firewall-cmd --reload
-
     exit
     ```
 
@@ -167,6 +163,10 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 6. Install Nginx server and Certbot (optional):
 
     ```shell script
+    firewall-cmd --zone=public --permanent --add-service=http
+    firewall-cmd --zone=public --permanent --add-service=https
+    firewall-cmd --reload
+
     sudo yum -y install nginx certbot python2-certbot-nginx
 
     sudo setsebool -P httpd_can_network_connect 1

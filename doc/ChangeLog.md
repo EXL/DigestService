@@ -1,12 +1,12 @@
-Release v1.0.0, 22-May-2020:
+v1.0.0, 22-May-2020, First Public Release:
 
-- Now Digest Service source code is available on GitHub, GitLab, and Bitbucket.
+- Now Digest Service source code is available on GitHub, GitLab, and Bitbucket resources.
 
     - https://github.com/EXL/DigestService
     - https://gitlab.com/EXL/DigestService
     - https://bitbucket.org/exlmotodev/digestservice
 
-- Added Control module for Telegram bot administrators.
+- Added Control Module for Telegram bot administrators.
 
 - Added "Digest Service and Telegram Bot Commands Cheat Sheet" help manual in Russian and English.
 

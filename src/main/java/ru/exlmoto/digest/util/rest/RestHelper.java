@@ -63,7 +63,7 @@ public class RestHelper {
 	@Value("${rest.max-body-size}")
 	private long maxBodySize;
 
-	@Value("${rest.use-simple-http-client}")
+	@Value("${rest.simple-http-client}")
 	private boolean simpleHttpClient;
 
 	private RestTemplate restTemplate;

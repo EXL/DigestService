@@ -285,6 +285,7 @@ See [application.properties](../src/main/resources/application.properties) file 
 ### Rest Template Options
 
 * *rest.timeout-sec* - Set general connection timeouts in seconds.
+
 * *rest.max-body-size* - Set maximum file size for downloading in bytes.
 
     Example:
@@ -294,6 +295,8 @@ See [application.properties](../src/main/resources/application.properties) file 
     ```
 
     Note: 5242880 bytes is 5 MiB.
+
+* *rest.simple-http-client* - Enable or disable using Simple HTTP Client instead of OkHttp or Apache.
 
 ### Image Downloader Options
 

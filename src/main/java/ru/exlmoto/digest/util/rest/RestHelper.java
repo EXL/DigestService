@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
@@ -57,19 +58,29 @@ public class RestHelper {
 	private final Logger log = LoggerFactory.getLogger(RestHelper.class);
 
 	@Value("${rest.timeout-sec}")
-	private long timeoutSec;
+	private int timeoutSec;
 
 	@Value("${rest.max-body-size}")
 	private long maxBodySize;
+
+	@Value("${rest.use-simple-http-client}")
+	private boolean simpleHttpClient;
 
 	private RestTemplate restTemplate;
 
 	@PostConstruct
 	private void setUp() {
-		restTemplate = new RestTemplateBuilder()
-			.setConnectTimeout(Duration.ofSeconds(timeoutSec))
-			.setReadTimeout(Duration.ofSeconds(timeoutSec))
-			.build();
+		if (simpleHttpClient) {
+			SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+			simpleClientHttpRequestFactory.setConnectTimeout(timeoutSec * 1000);
+			simpleClientHttpRequestFactory.setReadTimeout(timeoutSec * 1000);
+			restTemplate = new RestTemplate(simpleClientHttpRequestFactory);
+		} else {
+			restTemplate = new RestTemplateBuilder()
+				.setConnectTimeout(Duration.ofSeconds(timeoutSec))
+				.setReadTimeout(Duration.ofSeconds(timeoutSec))
+				.build();
+		}
 	}
 
 	public Answer<String> getRestResponse(String url) {

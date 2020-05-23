@@ -101,6 +101,22 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 ## Application Parameters
 
+### Logging Level
+
+* *logging.level.root* - Set global application logging level.
+
+    Example:
+
+    ```
+    logging.level.root=TRACE
+    logging.level.root=DEBUG
+    logging.level.root=INFO
+    logging.level.root=WARN
+    logging.level.root=ERROR
+    logging.level.root=FATAL
+    logging.level.root=OFF
+    ```
+
 ### General Options
 
 * *general.lang* - Set the default language for the application.

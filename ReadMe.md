@@ -117,6 +117,9 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
     ALTER USER user WITH PASSWORD 'password';
     \q
 
+    pg_dump digest > /tmp/digest-service.sql # Optional. BackUp database.
+    psql digest < /tmp/digest-service.sql # Optional. Restore database.
+
     exit
     ```
 
@@ -163,9 +166,9 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 6. Install Nginx server and Certbot (optional):
 
     ```shell script
-    firewall-cmd --zone=public --permanent --add-service=http
-    firewall-cmd --zone=public --permanent --add-service=https
-    firewall-cmd --reload
+    sudo firewall-cmd --zone=public --permanent --add-service=http
+    sudo firewall-cmd --zone=public --permanent --add-service=https
+    sudo firewall-cmd --reload
 
     sudo yum -y install nginx certbot python2-certbot-nginx
 

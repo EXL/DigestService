@@ -81,9 +81,6 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 2. Install necessary and optional packages, apply settings, and update system:
 
     ```shell script
-    cd ~/
-    git clone <this repository url> DigestService
-
     sudo su
 
     passwd root # Set root superuser password.
@@ -94,6 +91,9 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
     timedatectl set-timezone "Europe/Moscow"
 
     exit
+
+    cd ~/
+    git clone <this repository url> DigestService
     ```
 
 3. Install and create PostgreSQL database:

@@ -198,7 +198,6 @@ class SiteHelperTest {
 		System.out.println(helper.filterDigestOrder("Test @exlmoto https://exlmoto.ru", null));
 		System.out.println(helper.filterDigestOrder("Test @exlmoto https://exlmoto.ru", ""));
 
-		System.out.println(helper.filterDigestOrder("Test @exlmoto https://exlmoto.ru", ""));
 		System.out.println(helper.filterDigestOrder("Test @exlmoto https://exlmoto.ru", "st"));
 		System.out.println("=== END testFilterDigestOrder() ===");
 	}

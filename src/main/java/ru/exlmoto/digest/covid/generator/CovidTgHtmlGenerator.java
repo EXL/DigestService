@@ -113,7 +113,7 @@ public class CovidTgHtmlGenerator {
 
 		final int CHOP_REGION = 10;
 		final int CHOP_CASES = 13;
-		final int CHOP_RECOV = 12;
+		final int CHOP_RECOV = 13;
 		final int CHOP_DEATH = 10;
 
 		StringBuilder builder = new StringBuilder("\n\n<pre>");

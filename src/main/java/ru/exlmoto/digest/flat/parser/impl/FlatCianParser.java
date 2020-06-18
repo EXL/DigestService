@@ -69,13 +69,13 @@ public class FlatCianParser extends FlatParser {
 
 	// Cell indexes format constants.
 	// See XLSX file for column indexes.
-	private final int ROOM      =  1;
-	private final int ADDRESS   =  4;
-	private final int SQUARE    =  5;
-	private final int FLOOR     =  6;
-	private final int PRICE     =  8;
-	private final int PHONE     =  9;
-	private final int LINK      = 20;
+	private final int ROOM      =  1; // A
+	private final int ADDRESS   =  4; // E
+	private final int SQUARE    =  5; // F
+	private final int FLOOR     =  6; // G
+	private final int PRICE     =  7; // H
+	private final int PHONE     =  8; // I
+	private final int LINK      = 19; // T
 
 	private final int ROW_OFFSET = 1;
 

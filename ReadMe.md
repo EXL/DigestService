@@ -101,7 +101,7 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
     ```shell script
     sudo yum -y install postgresql-server postgresql-contrib
 
-    sudo postgresql-setup initdb
+    sudo postgresql-setup initdb # CentOS 8 command: postgresql-setup --initdb --unit postgresql
 
     sudo systemctl start postgresql
     sudo systemctl enable postgresql
@@ -121,6 +121,8 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
     psql digest < /tmp/digest-service.sql # Optional. Restore database.
 
     exit
+
+    sudo systemctl restart postgresql
     ```
 
 4. Install Java Runtime Environment and test application running:

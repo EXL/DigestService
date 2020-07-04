@@ -57,19 +57,27 @@ import static ru.exlmoto.digest.util.Answer.Error;
 public class FlatCianParser extends FlatParser {
 	private final Logger log = LoggerFactory.getLogger(FlatCianParser.class);
 
-	private final String patchAddress0 = "ул.";
-	private final String patchAddress1 = "улица";
-	private final String patchAddress2 = "Владимира";
-	private final String patchAddress3 = "В.";
-
 	private final FilterHelper filter;
 	private final LocaleHelper locale;
 
 	private boolean deleteXlsxFile;
 
+	private final String patchAddress0 = "ул.";
+	private final String patchAddress1 = "улица";
+	private final String patchAddress2 = "Владимира";
+	private final String patchAddress3 = "В.";
+
+	private final String findWordRoom    = "количество комнат";
+	private final String findWordAddress = "адрес";
+	private final String findWordSquare  = "площадь, м2";
+	private final String findWordFloor   = "дом";
+	private final String findWordPrice   = "цена";
+	private final String findWordPhone   = "телефоны";
+	private final String findWordLink    = "ссылка";
+
 	// Cell indexes format constants.
 	// See XLSX file for column indexes.
-	private final int ROOM      =  1; // A
+	private final int ROOM      =  1; // B
 	private final int ADDRESS   =  4; // E
 	private final int SQUARE    =  5; // F
 	private final int FLOOR     =  6; // G
@@ -77,7 +85,8 @@ public class FlatCianParser extends FlatParser {
 	private final int PHONE     =  8; // I
 	private final int LINK      = 19; // T
 
-	private final int ROW_OFFSET = 1;
+	private final int ROW_START_OFFSET = 0;
+	private final int ROW_DATA_OFFSET  = 1;
 
 	public FlatCianParser(FilterHelper filter, LocaleHelper locale) {
 		this.filter = filter;
@@ -100,15 +109,15 @@ public class FlatCianParser extends FlatParser {
 
 			// Drop first line of table with column descriptions.
 			int rowSize = sheet.getPhysicalNumberOfRows();
-			for (int i = ROW_OFFSET; i < rowSize; ++i) {
+			for (int i = ROW_DATA_OFFSET; i < rowSize; ++i) {
 				Row row = sheet.getRow(i);
 				flats.add(new Flat(
-					parseCell(row, ROOM),
-					parseSquare(parseCell(row, SQUARE)),
-					parseFloor(parseCell(row, FLOOR)),
-					applyAddressPatch(parseAddress(parseCell(row, ADDRESS))),
-					parsePrice(parseCell(row, PRICE)),
-					applyPhonePatch(parsePhone(parseCell(row, PHONE))),
+					parseCell(row, findColumnIndex(sheet, ROOM)),
+					parseSquare(parseCell(row, findColumnIndex(sheet, SQUARE))),
+					parseFloor(parseCell(row, findColumnIndex(sheet, FLOOR))),
+					applyAddressPatch(parseAddress(parseCell(row, findColumnIndex(sheet, ADDRESS)))),
+					parsePrice(parseCell(row, findColumnIndex(sheet, PRICE))),
+					applyPhonePatch(parsePhone(parseCell(row, findColumnIndex(sheet, PHONE)))),
 					parseCell(row, linkColumn)
 				));
 			}
@@ -147,11 +156,38 @@ public class FlatCianParser extends FlatParser {
 	}
 
 	private int findLinkColumnIndex(Sheet sheet) {
-		Row firstRow = sheet.getRow(ROW_OFFSET);
+		Row firstRow = sheet.getRow(ROW_DATA_OFFSET);
 		if (firstRow != null) {
 			int start = firstRow.getPhysicalNumberOfCells();
 			for (int i = start - 1; i >= 0; --i) {
 				if (filter.strip(parseCell(firstRow, i)).startsWith("http")) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	private String getFindWord(int columnId) {
+		switch (columnId) {
+			default: return null;
+			case ROOM: return findWordRoom;
+			case ADDRESS: return findWordAddress;
+			case SQUARE: return findWordSquare;
+			case FLOOR: return findWordFloor;
+			case PRICE: return findWordPrice;
+			case PHONE: return findWordPhone;
+			case LINK: return findWordLink;
+		}
+	}
+
+	protected int findColumnIndex(Sheet sheet, int columnId) {
+		Row startRow = sheet.getRow(ROW_START_OFFSET);
+		String findWord = getFindWord(columnId);
+		if (startRow != null && findWord != null) {
+			int start = startRow.getPhysicalNumberOfCells();
+			for (int i = start - 1; i >= 0; --i) {
+				if (filter.strip(parseCell(startRow, i)).toLowerCase().contains(findWord)) {
 					return i;
 				}
 			}

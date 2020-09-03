@@ -34,12 +34,12 @@ import ru.exlmoto.digest.util.system.SystemReport;
 @RestController
 public class ApiController {
 	private final SystemReport report;
-	private final ExchangeService service;
+	private final ExchangeService exchange;
 	private final CovidService covid;
 
-	public ApiController(SystemReport report, ExchangeService service, CovidService covid) {
+	public ApiController(SystemReport report, ExchangeService exchange, CovidService covid) {
 		this.report = report;
-		this.service = service;
+		this.exchange = exchange;
 		this.covid = covid;
 	}
 
@@ -50,7 +50,7 @@ public class ApiController {
 
 	@GetMapping(value = "/api/rate", produces = "application/json")
 	public String rate() {
-		return service.jsonReport();
+		return exchange.jsonReport();
 	}
 
 	@GetMapping(value = "/api/covid/ru", produces = "application/json;charset=UTF-8")

@@ -54,7 +54,7 @@ class ExchangeServiceTest {
 
 	@Test
 	public void testJsonReport() {
-		assertThat(service.jsonReport()).isNotBlank();
+		assertThat(service.jsonReport("all")).isNotBlank();
 	}
 
 	@Test

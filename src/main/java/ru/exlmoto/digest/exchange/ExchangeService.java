@@ -59,8 +59,8 @@ public class ExchangeService {
 		return markdownGenerator.rateReportByKey(key);
 	}
 
-	public String jsonReport() {
-		return jsonGenerator.getJsonReport();
+	public String jsonReport(String key) {
+		return jsonGenerator.getJsonReport(key);
 	}
 
 	public String buttonLabel(String key) {

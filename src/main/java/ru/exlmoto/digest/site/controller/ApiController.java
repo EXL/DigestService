@@ -50,7 +50,7 @@ public class ApiController {
 
 	@GetMapping(value = "/api/rate", produces = "application/json")
 	public String rate() {
-		return exchange.jsonReport();
+		return exchange.jsonReport("all");
 	}
 
 	@GetMapping(value = "/api/covid/ru", produces = "application/json;charset=UTF-8")

@@ -35,6 +35,7 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
+import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -54,14 +55,25 @@ public class RateJsonGenerator {
 		this.locale = locale;
 	}
 
-	public String getJsonReport() {
+	public String getJsonReport(String key) {
 		try {
 			JsonObject report = new JsonObject();
-			addBankRuToReport(report);
-			addBankUaToReport(report);
-			addBankByToReport(report);
-			addBankKzToReport(report);
-			addMetalRuToReport(report);
+			switch (ExchangeKey.checkExchangeKey(key)) {
+				default:
+				case all: {
+					addBankRuToReport(report);
+					addBankUaToReport(report);
+					addBankByToReport(report);
+					addBankKzToReport(report);
+					addMetalRuToReport(report);
+					break;
+				}
+				case bank_ru: { addBankRuToReport(report); break; }
+				case bank_ua: { addBankUaToReport(report); break; }
+				case bank_by: { addBankByToReport(report); break; }
+				case bank_kz: { addBankKzToReport(report); break; }
+				case metal_ru: { addMetalRuToReport(report); break; }
+			}
 			return new GsonBuilder().setPrettyPrinting().create().toJson(report);
 		} catch (DataAccessException dae) {
 			log.error("Cannot get object from database.", dae);

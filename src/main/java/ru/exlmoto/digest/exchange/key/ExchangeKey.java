@@ -32,7 +32,8 @@ public enum ExchangeKey {
 	bank_ua,
 	bank_by,
 	bank_kz,
-	metal_ru;
+	metal_ru,
+	all;
 
 	private static final Logger log = LoggerFactory.getLogger(ExchangeKey.class);
 

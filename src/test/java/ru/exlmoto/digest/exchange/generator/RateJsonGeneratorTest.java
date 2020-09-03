@@ -51,7 +51,7 @@ class RateJsonGeneratorTest {
 	public void testGetJsonReport() {
 		System.out.println("=== START testGetJsonReport() ===");
 		when(service.getBankRu()).thenReturn(Optional.ofNullable(null));
-		String report = generator.getJsonReport();
+		String report = generator.getJsonReport("all");
 		assertThat(report).isNotBlank();
 		System.out.println(report);
 		System.out.println("=== END testGetJsonReport() ===");
@@ -61,7 +61,7 @@ class RateJsonGeneratorTest {
 	public void testGetJsonReportDatabaseError() {
 		System.out.println("=== START testGetJsonReportDatabaseError() ===");
 		when(service.getBankRu()).thenThrow(new InvalidDataAccessResourceUsageException("Test exception."));
-		String report = generator.getJsonReport();
+		String report = generator.getJsonReport("all");
 		assertThat(report).isNotBlank();
 		System.out.println(report);
 		System.out.println("=== END testGetJsonReportDatabaseError() ===");

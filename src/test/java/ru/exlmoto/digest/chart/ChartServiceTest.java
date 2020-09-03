@@ -57,7 +57,7 @@ class ChartServiceTest {
 	@Test
 	public void testGetTitle() {
 		System.out.println("=== START testGetTitle() ===");
-		String title = chartService.getTitle("usd_rub");
+		String title = chartService.getTitle("mmbv");
 		assertThat(title).isNotEmpty();
 		assertThat(title).isInstanceOf(String.class);
 		System.out.println(title);
@@ -80,7 +80,7 @@ class ChartServiceTest {
 	@Test
 	public void testGetButtonLabel() {
 		System.out.println("=== START testGetButtonLabel() ===");
-		String label = chartService.getButtonLabel("usd_rub");
+		String label = chartService.getButtonLabel("mmbv");
 		assertThat(label).isNotEmpty();
 		assertThat(label).isInstanceOf(String.class);
 		System.out.println(label);
@@ -97,7 +97,7 @@ class ChartServiceTest {
 		assertFalse(res.ok());
 		System.out.println(res.error());
 
-		Chart chart = chartService.getChart("usd_rub").answer();
+		Chart chart = chartService.getChart("mmbv").answer();
 		assertNotNull(chart);
 		System.out.println(chart.getTitle());
 		System.out.println(chart.getDesc());

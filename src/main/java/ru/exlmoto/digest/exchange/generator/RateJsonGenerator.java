@@ -58,21 +58,20 @@ public class RateJsonGenerator {
 	public String getJsonReport(String key) {
 		try {
 			JsonObject report = new JsonObject();
-			switch (ExchangeKey.checkExchangeKey(key)) {
-				default:
-				case all: {
-					addBankRuToReport(report);
-					addBankUaToReport(report);
-					addBankByToReport(report);
-					addBankKzToReport(report);
-					addMetalRuToReport(report);
-					break;
+			if (key.startsWith("all")) {
+				addBankRuToReport(report);
+				addBankUaToReport(report);
+				addBankByToReport(report);
+				addBankKzToReport(report);
+				addMetalRuToReport(report);
+			} else {
+				switch (ExchangeKey.checkExchangeKey(key)) {
+					case bank_ru: { addBankRuToReport(report); break; }
+					case bank_ua: { addBankUaToReport(report); break; }
+					case bank_by: { addBankByToReport(report); break; }
+					case bank_kz: { addBankKzToReport(report); break; }
+					case metal_ru: { addMetalRuToReport(report); break; }
 				}
-				case bank_ru: { addBankRuToReport(report); break; }
-				case bank_ua: { addBankUaToReport(report); break; }
-				case bank_by: { addBankByToReport(report); break; }
-				case bank_kz: { addBankKzToReport(report); break; }
-				case metal_ru: { addMetalRuToReport(report); break; }
 			}
 			return new GsonBuilder().setPrettyPrinting().create().toJson(report);
 		} catch (DataAccessException dae) {

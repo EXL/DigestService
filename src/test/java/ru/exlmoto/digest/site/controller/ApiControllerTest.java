@@ -47,8 +47,8 @@ class ApiControllerTest {
 	@Test
 	public void testRate() throws Exception {
 		helper.validateJson(mvc, "/api/rate");
-		helper.validateJson(mvc, "/api/rate/bank_ru");
-		helper.validateJson(mvc, "/api/rate/metal_ru");
+		helper.validateJson(mvc, "/api/rate?key=bank_ru");
+		helper.validateJson(mvc, "/api/rate?key=metal_ru");
 	}
 
 	@Test

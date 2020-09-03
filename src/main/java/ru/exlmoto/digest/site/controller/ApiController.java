@@ -26,6 +26,7 @@ package ru.exlmoto.digest.site.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.thymeleaf.util.StringUtils;
@@ -50,9 +51,9 @@ public class ApiController {
 		return report.getSystemReportMarkdown();
 	}
 
-	@GetMapping(value = "/api/rate/{rate}", produces = "application/json")
-	public String rate(@PathVariable("rate") String rate) {
-		return StringUtils.isEmpty(rate) ? exchange.jsonReport("all") : exchange.jsonReport(rate);
+	@GetMapping(value = "/api/rate", produces = "application/json")
+	public String rate(@RequestParam(name = "key", required = false) String key) {
+		return StringUtils.isEmpty(key) ? exchange.jsonReport("all") : exchange.jsonReport(key);
 	}
 
 	@GetMapping(value = "/api/covid/ru", produces = "application/json;charset=UTF-8")

@@ -316,13 +316,13 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 * *rest.fake-user-agent* - Set fake user agent for Rest Template queries.
 
-    Example:
+    Example for typical Firefox ESR user agent on Fedora Linux distro:
 
     ```
-    rest.fake-user-agent=Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:80.0) Gecko/20100101 Firefox/80.0
+    rest.fake-user-agent=Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
     ```
 
-    Note: This is typical Firefox user agent on Fedora Linux distro.
+    Note: This is applies for header request as well.
 
 ### Image Downloader Options
 

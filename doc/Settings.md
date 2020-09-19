@@ -314,6 +314,16 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 * *rest.simple-http-client* - Enable or disable using Simple HTTP Client instead of OkHttp or Apache.
 
+* *rest.fake-user-agent* - Set fake user agent for Rest Template queries.
+
+    Example:
+
+    ```
+    rest.fake-user-agent=Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:80.0) Gecko/20100101 Firefox/80.0
+    ```
+
+    Note: This is typical Firefox user agent on Fedora Linux distro.
+
 ### Image Downloader Options
 
 * *image.download-file* - Enable or disable images downloading.

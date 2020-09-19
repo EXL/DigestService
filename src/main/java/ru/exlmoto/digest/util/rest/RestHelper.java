@@ -39,6 +39,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import org.thymeleaf.util.StringUtils;
+
 import ru.exlmoto.digest.util.Answer;
 
 import javax.annotation.PostConstruct;
@@ -66,6 +68,9 @@ public class RestHelper {
 	@Value("${rest.simple-http-client}")
 	private boolean simpleHttpClient;
 
+	@Value("${rest.fake-user-agent}")
+	private String fakeUserAgent;
+
 	private RestTemplate restTemplate;
 
 	@PostConstruct
@@ -80,6 +85,12 @@ public class RestHelper {
 				.setConnectTimeout(Duration.ofSeconds(timeoutSec))
 				.setReadTimeout(Duration.ofSeconds(timeoutSec))
 				.build();
+		}
+		if (!StringUtils.isEmpty(fakeUserAgent)) {
+			restTemplate.getInterceptors().add((request, body, execution) -> {
+				request.getHeaders().set("User-Agent", fakeUserAgent);
+				return execution.execute(request, body);
+			});
 		}
 	}
 

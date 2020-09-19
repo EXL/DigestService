@@ -142,15 +142,22 @@ public class RestHelper {
 			 * Some servers (i.e. Telegram servers) send error "501 Not Implemented" on head request.
 			 * Ignore this exception here for such cases.
 			 */
-			if (hsee.getStatusCode() != HttpStatus.NOT_IMPLEMENTED) {
+			if (hsee.getStatusCode() == HttpStatus.NOT_IMPLEMENTED) {
+				log.warn("RestTemplate, checkForLength(), HttpServerErrorException: '501 Not Implemented'.");
+			} else {
 				throw hsee;
 			}
 		} catch (HttpClientErrorException hcee) {
 			/*
 			 * Ignore "405 Method Not Allowed" error on head request.
+			 * Ignore "403 Forbidden: [no body]" error on head request.
 			 */
-
-			if (hcee.getStatusCode() != HttpStatus.METHOD_NOT_ALLOWED) {
+			HttpStatus statusCode = hcee.getStatusCode();
+			if (statusCode == HttpStatus.METHOD_NOT_ALLOWED) {
+				log.warn("RestTemplate, checkForLength(), HttpClientErrorException: '405 Method Not Allowed'.");
+			} else if (statusCode == HttpStatus.FORBIDDEN) {
+				log.warn("RestTemplate, checkForLength(), HttpClientErrorException: '403 Forbidden: [no body]'.");
+			} else {
 				throw hcee;
 			}
 		}

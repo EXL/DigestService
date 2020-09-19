@@ -37,6 +37,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import org.thymeleaf.util.StringUtils;
@@ -167,10 +168,12 @@ public class RestHelper {
 			if (statusCode == HttpStatus.METHOD_NOT_ALLOWED) {
 				log.warn("RestTemplate, checkForLength(), HttpClientErrorException: '405 Method Not Allowed'.");
 			} else if (statusCode == HttpStatus.FORBIDDEN) {
-				log.warn("RestTemplate, checkForLength(), HttpClientErrorException: '403 Forbidden: [no body]'.");
+				log.warn("RestTemplate, checkForLength(), HttpClientErrorException: '403 Forbidden.'.");
 			} else {
 				throw hcee;
 			}
+		} catch (ResourceAccessException rae) {
+			log.warn("RestTemplate, checkForLength(), ResourceAccessException.", rae);
 		}
 	}
 

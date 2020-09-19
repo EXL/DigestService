@@ -155,7 +155,10 @@ public class RestHelper {
 			 * Ignore this exception here for such cases.
 			 */
 			if (hsee.getStatusCode() == HttpStatus.NOT_IMPLEMENTED) {
-				log.warn("RestTemplate, checkForLength(), HttpServerErrorException: '501 Not Implemented'.");
+				log.info(
+					String.format("HEAD, HttpServerErrorException: '501 Not Implemented', Url: '%s'.", url),
+					hsee
+				);
 			} else {
 				throw hsee;
 			}
@@ -166,14 +169,17 @@ public class RestHelper {
 			 */
 			HttpStatus statusCode = hcee.getStatusCode();
 			if (statusCode == HttpStatus.METHOD_NOT_ALLOWED) {
-				log.warn("RestTemplate, checkForLength(), HttpClientErrorException: '405 Method Not Allowed'.");
+				log.info(
+					String.format("HEAD, HttpClientErrorException: '405 Method Not Allowed', Url: '%s'.", url),
+					hcee
+				);
 			} else if (statusCode == HttpStatus.FORBIDDEN) {
-				log.warn("RestTemplate, checkForLength(), HttpClientErrorException: '403 Forbidden.'.");
+				log.info(String.format("HEAD, HttpClientErrorException: '403 Forbidden', Url: '%s'.", url), hcee);
 			} else {
 				throw hcee;
 			}
 		} catch (ResourceAccessException rae) {
-			log.warn("RestTemplate, checkForLength(), ResourceAccessException.", rae);
+			log.info(String.format("HEAD, ResourceAccessException, Url: '%s'", url), rae);
 		}
 	}
 

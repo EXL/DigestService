@@ -62,22 +62,24 @@ public class FlatTgHtmlGenerator {
 	}
 
 	public String getTgHtmlReportCian(String apiUrl, String viewUrl, int maxVariants) {
-		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getCianFlatList(apiUrl), "CIAN",
+		final String labelCian = "CIAN";
+		logFlatReport(labelCian, apiUrl, true);
+		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getCianFlatList(apiUrl), labelCian,
 			locale.i18n("flat.header.cian"), locale.i18n("flat.link.cian"));
 	}
 
 	public String getTgHtmlReportN1(String apiUrl, String viewUrl, int maxVariants) {
-		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getN1FlatList(apiUrl), "N1",
+		final String labelN1 = "N1";
+		logFlatReport(labelN1, apiUrl, true);
+		return getTgHtmlReportAux(apiUrl, viewUrl, maxVariants, manager.getN1FlatList(apiUrl), labelN1,
 			locale.i18n("flat.header.n1"), locale.i18n("flat.link.n1"));
 	}
 
 	private String getTgHtmlReportAux(String apiUrl, String viewUrl, int maxVariants,
 	                                  Answer<List<Flat>> flatAnswer,
 	                                  String label, String header, String footer) {
-		String link = filter.ellipsisMiddle(apiUrl, LONG_URL_WIDTH);
-		log.info(String.format("=> Start receive %s Flat report on '%s' link.", label, link));
 		Answer<String> res = getTgHtmlReport(flatAnswer, maxVariants);
-		log.info(String.format("=> End receive %s Flat report on '%s' link.", label, link));
+		logFlatReport(label, apiUrl, false);
 		if (res.ok()) {
 			return "<strong>" + header + res.answer() + addSuggestionsLink(viewUrl, footer);
 		} else {
@@ -158,5 +160,10 @@ public class FlatTgHtmlGenerator {
 
 	private int determineFlatCount(int size, int max) {
 		return Math.min(size, max);
+	}
+
+	private void logFlatReport(String label, String apiUrl, boolean startOrEnd) {
+		log.info(String.format("=> %s receive %s Flat report on '%s' link.",
+			((startOrEnd) ? "Start" : "End"), label, filter.ellipsisMiddle(apiUrl, LONG_URL_WIDTH)));
 	}
 }

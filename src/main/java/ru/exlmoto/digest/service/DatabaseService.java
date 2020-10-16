@@ -98,6 +98,10 @@ public class DatabaseService {
 		return digestRepository.findById(id);
 	}
 
+	public Optional<BotDigestEntity> getDigest(long chatId, long messageId) {
+		return digestRepository.findBotDigestEntityByChatAndMessageId(chatId, messageId);
+	}
+
 	public Page<BotDigestEntity> getAllDigests(int page, int size) {
 		return digestRepository.findAll(PageRequest.of(page - 1, size, Sort.by(Sort.Order.desc("id"))));
 	}

@@ -36,8 +36,11 @@ import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BotDigestRepository extends JpaRepository<BotDigestEntity, Long> {
+	Optional<BotDigestEntity> findBotDigestEntityByChatAndMessageId(long chatId, long messageId);
+
 	default void dropObsoleteDigests(long date, long chatId) {
 		deleteBotDigestEntitiesByDateIsLessThanAndChatIsNot(date, chatId);
 	}

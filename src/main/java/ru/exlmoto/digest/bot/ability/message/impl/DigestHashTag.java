@@ -45,6 +45,8 @@ import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
+import java.util.Optional;
+
 @Component
 public class DigestHashTag extends MessageAbility {
 	private final Logger log = LoggerFactory.getLogger(DigestHashTag.class);
@@ -77,9 +79,6 @@ public class DigestHashTag extends MessageAbility {
 		String messageText = isolateMessageText(message.text());
 		if (!messageText.isEmpty()) {
 			if (messageText.length() <= config.getMaxDigestLength()) {
-				sender.replySimple(chatId, messageId,
-					locale.i18nRU("bot.hashtag.digest.ok", helper.getValidUsername(user)));
-
 				try {
 					BotDigestUserEntity digestUserEntity =
 						service.getDigestUser(userId).orElseGet(() -> new BotDigestUserEntity(userId));
@@ -87,14 +86,25 @@ public class DigestHashTag extends MessageAbility {
 					digestUserEntity.setUsername(helper.getValidUsername(user));
 					service.saveDigestUser(digestUserEntity);
 
-					service.saveDigest(new BotDigestEntity(chatId,
-						message.date(), (long) messageId, messageText, digestUserEntity));
+					Optional<BotDigestEntity> digestEntityOptional = service.getDigest(chatId, messageId);
+					if (digestEntityOptional.isPresent()) {
+						BotDigestEntity digestEntity = digestEntityOptional.get();
+						digestEntity.setDigest(messageText);
+						service.saveDigest(digestEntity);
+						sender.replySimple(chatId, messageId, locale.i18nR("bot.hashtag.digest.changed"));
+					} else {
+						service.saveDigest(new BotDigestEntity(chatId,
+							message.date(), (long) messageId, messageText, digestUserEntity));
+						sender.replySimple(chatId, messageId,
+							locale.i18nRU("bot.hashtag.digest.ok", helper.getValidUsername(user)));
+						if (chatId == config.getMotofanChatId()) {
+							digestWorker.sendDigestToSubscribers(sender, message, messageText);
+						}
+					}
 				} catch (DataAccessException dae) {
 					log.error("Cannot save digest entity to database.", dae);
-				}
-
-				if (chatId == config.getMotofanChatId()) {
-					digestWorker.sendDigestToSubscribers(sender, message, messageText);
+					sender.replyMarkdown(chatId, messageId,
+						String.format(locale.i18n("bot.error.database"), dae.getLocalizedMessage()));
 				}
 			} else {
 				sender.replySimple(chatId, messageId, locale.i18n("bot.hashtag.digest.error.length"));

@@ -39,6 +39,7 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.KeyboardSimpleAbility;
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
@@ -69,15 +70,18 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 	private final BotHelper helper;
 	private final LocaleHelper locale;
 	private final DatabaseService service;
+	private final BotConfiguration config;
 
 	private InlineKeyboardMarkup markup = null;
 
 	public SubscribeKeyboard(BotHelper helper,
 	                         LocaleHelper locale,
-	                         DatabaseService service) {
+	                         DatabaseService service,
+	                         BotConfiguration config) {
 		this.helper = helper;
 		this.locale = locale;
 		this.service = service;
+		this.config = config;
 	}
 
 	@PostConstruct
@@ -232,12 +236,16 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 
 	private void digestSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
 		long chatId = chat.id();
-		if (service.getDigestSub(chatId) != null) {
-			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
+		if (chatId != config.getMotofanChatId()) {
+			if (service.getDigestSub(chatId) != null) {
+				sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
+			} else {
+				service.saveDigestSub(new BotSubDigestEntity(chatId, helper.getValidChatName(chat)));
+				sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
+				processSubscribeStatusMessage(messageId, chat, true, sender);
+			}
 		} else {
-			service.saveDigestSub(new BotSubDigestEntity(chatId, helper.getValidChatName(chat)));
-			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
-			processSubscribeStatusMessage(messageId, chat, true, sender);
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.same"));
 		}
 	}
 

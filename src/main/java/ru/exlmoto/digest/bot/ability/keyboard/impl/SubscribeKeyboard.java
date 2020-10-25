@@ -168,7 +168,7 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					getSubscribeStatus(service.getMotofanSub(chatId) != null),
 					getSubscribeStatus(service.getDigestSub(chatId) != null),
 					getSubscribeStatus(service.getCovidSub(chatId) != null),
-					getSubscribeStatus(service.getCovidUaSub(chatId) != null) // TODO: Implement this.
+					getSubscribeStatus(service.getCovidUaSub(chatId) != null)
 				)
 			);
 		} catch (DataAccessException dae) {
@@ -295,9 +295,7 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					break;
 				}
 				case ua: {
-					// TODO: Implement this.
-					// service.saveCovidUaSub(new BotSubCovidUaEntity(chatId, helper.getValidChatName(chat)));
-					log.warn("UA SUB");
+					service.saveCovidUaSub(new BotSubCovidUaEntity(chatId, helper.getValidChatName(chat)));
 					break;
 				}
 			}
@@ -318,9 +316,7 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					break;
 				}
 				case ua: {
-					// TODO: Implement this.
-					// service.deleteCovidUaSub(chatId);
-					log.warn("UA UNSUB");
+					service.deleteCovidUaSub(chatId);
 					break;
 				}
 			}

@@ -31,12 +31,12 @@ eur_rub:
   button_en: "EUR/RUB"
   api_url: "https://api.z-lab.me/charts/rub_eur_forex.png"
 eur_usd:
-  title_ru: "Курс EUR/UAH по Forex."
-  title_en: "EUR/UAH rate from Forex."
-  desc_ru: "EUR/UAH     — Текущий курс EUR/USD по Forex."
-  desc_en: "EUR/UAH   — Current EUR/USD rate from Forex."
-  button_ru: "EUR/UAH"
-  button_en: "EUR/UAH"
+  title_ru: "Курс EUR/USD по Forex."
+  title_en: "EUR/USD rate from Forex."
+  desc_ru: "EUR/USD     — Текущий курс EUR/USD по Forex."
+  desc_en: "EUR/USD   — Current EUR/USD rate from Forex."
+  button_ru: "EUR/USD"
+  button_en: "EUR/USD"
   api_url: "https://api.z-lab.me/charts/eur_usd_forex.png"
 gold:
   title_ru: "Золото по Nasdaq."

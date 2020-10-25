@@ -99,6 +99,8 @@ public class DatabaseService {
 		this.flatSetupRepository = flatSetupRepository;
 	}
 
+	/* Start: BotDigestEntity */
+
 	public Optional<BotDigestEntity> getDigest(long id) {
 		return digestRepository.findById(id);
 	}
@@ -184,6 +186,10 @@ public class DatabaseService {
 			.indexOf(new BotDigestEntity(postId));
 	}
 
+	/* End: BotDigestEntity */
+
+	/* Start: BotDigestUserEntity */
+
 	public List<BotDigestUserEntity> getAllDigestUsers() {
 		return digestUserRepository.findAll();
 	}
@@ -212,6 +218,10 @@ public class DatabaseService {
 		return digestUserRepository.getBotDigestUserEntityByUsername(usernameWithAt);
 	}
 
+	/* End: BotDigestUserEntity */
+
+	/* Start: BotSubMotofanEntity */
+
 	public List<BotSubMotofanEntity> getAllMotofanSubs() {
 		return subMotofanRepository.findAll();
 	}
@@ -227,6 +237,10 @@ public class DatabaseService {
 	public void saveMotofanSub(BotSubMotofanEntity motofanSub) {
 		subMotofanRepository.save(motofanSub);
 	}
+
+	/* End: BotSubMotofanEntity */
+
+	/* Start: BotSubDigestEntity */
 
 	public List<BotSubDigestEntity> getAllDigestSubs() {
 		return subDigestRepository.findAll();
@@ -244,6 +258,10 @@ public class DatabaseService {
 		subDigestRepository.save(digestSub);
 	}
 
+	/* End: BotSubDigestEntity */
+
+	/* Start: BotSubGreetingEntity */
+
 	public List<BotSubGreetingEntity> getAllGreetingSubs() {
 		return subGreetingRepository.findAll();
 	}
@@ -259,6 +277,10 @@ public class DatabaseService {
 	public void addChatToGreetingIgnores(long chatId) {
 		subGreetingRepository.save(new BotSubGreetingEntity(chatId));
 	}
+
+	/* End: BotSubGreetingEntity */
+
+	/* Start: BotSubCovidEntity */
 
 	public List<BotSubCovidEntity> getAllCovidSubs() {
 		return subCovidRepository.findAll();
@@ -276,6 +298,10 @@ public class DatabaseService {
 		subCovidRepository.save(covidSub);
 	}
 
+	/* End: BotSubCovidEntity */
+
+	/* Start: BotSubCovidUaEntity */
+
 	public List<BotSubCovidUaEntity> getAllCovidUaSubs() {
 		return subCovidUaRepository.findAll();
 	}
@@ -292,6 +318,10 @@ public class DatabaseService {
 		subCovidUaRepository.save(covidUaSub);
 	}
 
+	/* End: BotSubCovidUaEntity */
+
+	/* Start: BotSetupEntity */
+
 	public Optional<BotSetupEntity> getSettings() {
 		return setupRepository.getSetupBot();
 	}
@@ -299,6 +329,10 @@ public class DatabaseService {
 	public void saveSettings(BotSetupEntity settings) {
 		setupRepository.save(settings);
 	}
+
+	/* End: BotSetupEntity */
+
+	/* Start: ExchangeRateEntity */
 
 	public Optional<ExchangeRateEntity> getBankRu() {
 		return exchangeRateRepository.getBankRu();
@@ -328,6 +362,10 @@ public class DatabaseService {
 		}
 	}
 
+	/* End: ExchangeRateEntity */
+
+	/* Start: MemberEntity */
+
 	public List<MemberEntity> getAllMembers() {
 		return memberRepository.findAll();
 	}
@@ -348,6 +386,10 @@ public class DatabaseService {
 		memberRepository.save(member);
 	}
 
+	/* End: MemberEntity */
+
+	/* Start: FlatSetupEntity */
+
 	public Optional<FlatSetupEntity> getFlatSettings() {
 		return flatSetupRepository.getSetupFlat();
 	}
@@ -361,4 +403,6 @@ public class DatabaseService {
 		boolean n1 = StringUtils.hasText(settings.getApiN1Url()) && StringUtils.hasText(settings.getViewN1Url());
 		return (settings.getMaxVariants() > 0) && (cian || n1);
 	}
+
+	/* End: FlatSetupEntity */
 }

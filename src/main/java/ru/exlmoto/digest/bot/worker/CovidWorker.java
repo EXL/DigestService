@@ -35,8 +35,11 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.covid.CovidService;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
+import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.service.DatabaseService;
+import ru.exlmoto.digest.util.Covid;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,24 +65,25 @@ public class CovidWorker {
 	@Scheduled(cron = "${cron.bot.covid.report}")
 	public void workOnCovidReport() {
 		try {
-			List<BotSubCovidEntity> subscribers = databaseService.getAllCovidSubs();
-			if (!subscribers.isEmpty()) {
-				String reportRu = covidService.tgHtmlRuReport();
-				if (checkCovidReport(reportRu)) {
-					sendCovidReport(reportRu, subscribers);
+			List<Long> subscribersRu = convertCovidSubToListOfLongs(databaseService.getAllCovidSubs());
+			List<Long> subscribersUa = convertCovidUaSubToListOfLongs(databaseService.getAllCovidUaSubs());
+			boolean subscribersRuNotEmpty = !subscribersRu.isEmpty();
+			boolean subscribersUaNotEmpty = !subscribersUa.isEmpty();
+			if (subscribersRuNotEmpty || subscribersUaNotEmpty) {
+				if (subscribersRuNotEmpty) {
+					String reportRu = covidService.tgHtmlRuReport();
+					if (checkCovidReport(reportRu)) {
+						sendCovidReport(reportRu, subscribersRu, Covid.ru.name());
+					}
 				}
-
-				// Send Ukrainian COVID-2019 report only to MotoFan.Ru Telegram chat.
-				long motofanChatId = config.getMotofanChatId();
-				BotSubCovidEntity motofanChat = databaseService.getCovidSub(motofanChatId);
-				if (motofanChat != null) {
+				if (subscribersUaNotEmpty) {
 					String reportUa = covidService.tgHtmlUaReport();
 					if (checkCovidReport(reportUa)) {
-						sendCovidReport(reportUa, motofanChatId);
+						sendCovidReport(reportUa, subscribersUa, Covid.ua.name());
 					}
 				}
 			} else {
-				log.info("=> Covid subscriber list is empty, Covid reports service disabled.");
+				log.info("=> Covid subscribers lists are empty, Covid reports service disabled.");
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get Covid subscribe object from database.", dae);
@@ -93,14 +97,13 @@ public class CovidWorker {
 	}
 
 	private void sendCovidReport(String report, long chatId) {
-		sendCovidReport(report, Collections.singletonList(new BotSubCovidEntity(chatId, "MotoFan.Ru")));
+		sendCovidReport(report, Collections.singletonList(chatId), "single");
 	}
 
-	private void sendCovidReport(String report, List<BotSubCovidEntity> subscribers) {
-		subscribers.forEach(subscriber -> {
-			long chatId = subscriber.getSubscription();
-			log.info(String.format("=> Send COVID-2019 report to chat '%d', subscribers: '%d'.",
-				chatId, subscribers.size()));
+	private void sendCovidReport(String report, List<Long> subscribers, String id) {
+		subscribers.forEach(chatId -> {
+			log.info(String.format("=> Send COVID-2019 (%s) report to chat '%d', subscribers: '%d'.",
+				id, chatId, subscribers.size()));
 			sender.sendHtml(chatId, report);
 			try {
 				Thread.sleep(config.getMessageDelay() * 1000);
@@ -108,5 +111,17 @@ public class CovidWorker {
 				throw new RuntimeException(ie);
 			}
 		});
+	}
+
+	private List<Long> convertCovidSubToListOfLongs(List<BotSubCovidEntity> subCovidEntities) {
+		List<Long> listOfLongs = new ArrayList<>();
+		subCovidEntities.forEach(sub -> listOfLongs.add(sub.getSubscription()));
+		return listOfLongs;
+	}
+
+	private List<Long> convertCovidUaSubToListOfLongs(List<BotSubCovidUaEntity> subCovidUaEntities) {
+		List<Long> listOfLongs = new ArrayList<>();
+		subCovidUaEntities.forEach(sub -> listOfLongs.add(sub.getSubscription()));
+		return listOfLongs;
 	}
 }

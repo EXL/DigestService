@@ -48,6 +48,7 @@ import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.Answer;
+import ru.exlmoto.digest.util.Covid;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import javax.annotation.PostConstruct;
@@ -68,11 +69,6 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		covid_unsubscribe,
 		covid_ua_subscribe,
 		covid_ua_unsubscribe
-	}
-
-	private enum Covid {
-		ru,
-		ua
 	}
 
 	private final BotHelper helper;

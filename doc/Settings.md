@@ -103,19 +103,16 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 ### Logging Level
 
-* *logging.level.root* - Set global application logging level.
+* *logging.level.root* - Set global application logging level via environment variable.
 
     Example:
 
     ```
-    logging.level.root=TRACE
-    logging.level.root=DEBUG
-    logging.level.root=INFO
-    logging.level.root=WARN
-    logging.level.root=ERROR
-    logging.level.root=FATAL
-    logging.level.root=OFF
+    LOGGING=DEBUG
+    logging.level.root=${LOGGING:#{INFO}}
     ```
+
+    If there is no environment variable then default `INFO` value will be used.
 
 ### General Options
 

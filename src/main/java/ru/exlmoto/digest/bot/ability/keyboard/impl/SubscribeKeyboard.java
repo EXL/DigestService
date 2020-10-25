@@ -42,6 +42,7 @@ import ru.exlmoto.digest.bot.ability.keyboard.KeyboardSimpleAbility;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
@@ -64,7 +65,14 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		motofan_subscribe,
 		motofan_unsubscribe,
 		covid_subscribe,
-		covid_unsubscribe
+		covid_unsubscribe,
+		covid_ua_subscribe,
+		covid_ua_unsubscribe
+	}
+
+	private enum Covid {
+		ru,
+		ua
 	}
 
 	private final BotHelper helper;
@@ -104,6 +112,12 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_subscribe),
 				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.unsubscribe.covid"))
 					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_unsubscribe)
+			},
+			new InlineKeyboardButton[] {
+				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.subscribe.covid.ua"))
+					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_ua_subscribe),
+				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.unsubscribe.covid.ua"))
+					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_ua_unsubscribe)
 			}
 		);
 	}
@@ -153,7 +167,8 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					locale.i18n("bot.command.subscribe"), chatTitle, chatId,
 					getSubscribeStatus(service.getMotofanSub(chatId) != null),
 					getSubscribeStatus(service.getDigestSub(chatId) != null),
-					getSubscribeStatus(service.getCovidSub(chatId) != null)
+					getSubscribeStatus(service.getCovidSub(chatId) != null),
+					getSubscribeStatus(service.getCovidUaSub(chatId) != null) // TODO: Implement this.
 				)
 			);
 		} catch (DataAccessException dae) {
@@ -198,11 +213,19 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					break;
 				}
 				case covid_subscribe: {
-					covidSubscribe(messageId, chat, callbackId, sender);
+					covidSubscribe(messageId, chat, callbackId, sender, Covid.ru);
 					break;
 				}
 				case covid_unsubscribe: {
-					covidUnsubscribe(messageId, chat, callbackId, sender);
+					covidUnsubscribe(messageId, chat, callbackId, sender, Covid.ru);
+					break;
+				}
+				case covid_ua_subscribe: {
+					covidSubscribe(messageId, chat, callbackId, sender, Covid.ua);
+					break;
+				}
+				case covid_ua_unsubscribe: {
+					covidUnsubscribe(messageId, chat, callbackId, sender, Covid.ua);
 					break;
 				}
 			}
@@ -260,25 +283,61 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		}
 	}
 
-	private void covidSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+	private void covidSubscribe(int messageId, Chat chat, String callbackId, BotSender sender, Covid stat) {
 		long chatId = chat.id();
-		if (service.getCovidSub(chatId) != null) {
+		if (checkCovidSubscribe(chatId, stat)) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
 		} else {
-			service.saveCovidSub(new BotSubCovidEntity(chatId, helper.getValidChatName(chat)));
+			switch (stat) {
+				default:
+				case ru: {
+					service.saveCovidSub(new BotSubCovidEntity(chatId, helper.getValidChatName(chat)));
+					break;
+				}
+				case ua: {
+					// TODO: Implement this.
+					// service.saveCovidUaSub(new BotSubCovidUaEntity(chatId, helper.getValidChatName(chat)));
+					log.warn("UA SUB");
+					break;
+				}
+			}
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
 			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}
 	}
 
-	private void covidUnsubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+	private void covidUnsubscribe(int messageId, Chat chat, String callbackId, BotSender sender, Covid stat) {
 		long chatId = chat.id();
-		if (service.getCovidSub(chatId) == null) {
+		if (!checkCovidSubscribe(chatId, stat)) {
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
 		} else {
-			service.deleteCovidSub(chatId);
+			switch (stat) {
+				default:
+				case ru: {
+					service.deleteCovidSub(chatId);
+					break;
+				}
+				case ua: {
+					// TODO: Implement this.
+					// service.deleteCovidUaSub(chatId);
+					log.warn("UA UNSUB");
+					break;
+				}
+			}
 			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
 			processSubscribeStatusMessage(messageId, chat, true, sender);
+		}
+	}
+
+	private boolean checkCovidSubscribe(long chatId, Covid stat) {
+		switch (stat) {
+			default:
+			case ru: {
+				return service.getCovidSub(chatId) != null;
+			}
+			case ua: {
+				return service.getCovidUaSub(chatId) != null;
+			}
 		}
 	}
 }

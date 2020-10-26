@@ -46,6 +46,8 @@ import static org.mockito.Mockito.when;
 
 import static ru.exlmoto.digest.covid.helper.CovidConstants.CASES_RU_PATH;
 import static ru.exlmoto.digest.covid.helper.CovidConstants.HISTORY_RU_PATH;
+import static ru.exlmoto.digest.covid.helper.CovidConstants.CASES_UA_PATH;
+import static ru.exlmoto.digest.covid.helper.CovidConstants.HISTORY_UA_PATH;
 import static ru.exlmoto.digest.covid.helper.CovidConstants.CASES_RU_PATH_BROKEN;
 import static ru.exlmoto.digest.covid.helper.CovidConstants.HISTORY_RU_PATH_BROKEN;
 import static ru.exlmoto.digest.util.Answer.Ok;
@@ -114,6 +116,19 @@ class CovidTgHtmlGeneratorTest {
 
 	@Test
 	public void testGetTgHtmlImageTitle() {
-		assertThat(generator.getTgHtmlImageTitle(Locale.forLanguageTag("en"))).contains("\n");
+		assertThat(generator.getTgHtmlImageTitle(Locale.forLanguageTag("en"))).contains("\n\n");
+	}
+
+	@Test
+	public void testPatchHtmlForRenderedImage() {
+		System.out.println("=== START testPatchHtmlForRenderedImage() ===");
+		when(rest.getRestResponse(filter.checkLink(covidUrl) + CASES_UA_PATH))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/" + CASES_UA_PATH)));
+		when(rest.getRestResponse(filter.checkLink(covidUrl) + HISTORY_UA_PATH))
+			.thenReturn(Ok(helper.readFileToString("classpath:covid/" + HISTORY_UA_PATH)));
+
+		System.out.println(generator.patchHtmlForRenderedImage(generator.getTgHtmlReport(covidUrl,
+			CASES_UA_PATH, HISTORY_UA_PATH)));
+		System.out.println("=== END testPatchHtmlForRenderedImage() ===");
 	}
 }

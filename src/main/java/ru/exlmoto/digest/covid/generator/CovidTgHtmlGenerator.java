@@ -59,6 +59,7 @@ public class CovidTgHtmlGenerator {
 	private boolean covidTextToImage;
 
 	private final String JSON_DATE_FORMAT = "yyyy-MM-dd";
+	private final String FONT_SIZE        = "15";
 
 	public CovidTgHtmlGenerator(Covid2GisApiParser parser, LocaleHelper locale, FilterHelper filter) {
 		this.parser = parser;
@@ -82,6 +83,15 @@ public class CovidTgHtmlGenerator {
 
 	public String getTgHtmlImageTitle(Locale lang) {
 		return locale.i18nW("covid.head", lang) + "\n\n" + locale.i18nW("covid.source", lang);
+	}
+
+	public String patchHtmlForRenderedImage(String html) {
+		String body = html.replaceAll("\n", "<br>");
+		body = body.replaceAll("<em>", "").replaceAll("</em>", "");
+		body = body.replaceAll("<strong>", "").replaceAll("</strong>", "");
+		body = body.replace("<pre>", "</strong></font><pre><font size\"" + FONT_SIZE + "\"><strong>");
+		body = body.replace("</pre>", "</strong></font></pre>");
+		return "<font size=\"" + FONT_SIZE + "\"><strong>" + body;
 	}
 
 	private Locale getLocale(String casesPath) {

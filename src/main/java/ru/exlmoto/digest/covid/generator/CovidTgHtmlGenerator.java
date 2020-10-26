@@ -88,7 +88,6 @@ public class CovidTgHtmlGenerator {
 	public String patchHtmlForRenderedImage(String html) {
 		String body = html.replaceAll("\n", "<br>");
 		body = body.replaceAll("<em>", "").replaceAll("</em>", "");
-		body = body.replaceAll("<strong>", "").replaceAll("</strong>", "");
 		body = body.replace("<pre>", "</strong></font><pre><font size\"" + FONT_SIZE + "\"><strong>");
 		body = body.replace("</pre>", "</strong></font></pre>");
 		return "<font size=\"" + FONT_SIZE + "\"><strong>" + body;
@@ -111,7 +110,7 @@ public class CovidTgHtmlGenerator {
 	}
 
 	private String generateHeader(Map<String, String> history, Locale lang) {
-		String head = locale.i18nW("covid.head", lang);
+		String head = (covidTextToImage) ? locale.i18nW("covid.head.simple", lang) : locale.i18nW("covid.head", lang);
 		head += "\n\n<em>";
 		head += String.format(locale.i18nW("covid.head.cases", lang), history.get("cases")) +
 			getDiff(history.get("cases_diff"), false, lang) + "\n";

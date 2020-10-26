@@ -36,6 +36,8 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 
+import java.io.File;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -85,8 +87,9 @@ class BotSenderTest {
 		sender.sendSimpleToChat(0L, "Fake text");
 		sender.sendStickerToChat(0L, "Fake stickerId");
 		sender.sendPhotoToChat(0L, "Fake uri");
-		// TODO: Test
-		// TODO: Test
+		System.out.println("---");
+		sender.sendLocalPhotoToChat(0L, new File("FakeFile"));
+		sender.sendLocalPhotoToChat(0L, new File("FakeFile"), "Title");
 		System.out.println("=== END testBotSenderMethods() ===");
 	}
 

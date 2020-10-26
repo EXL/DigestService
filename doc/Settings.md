@@ -345,6 +345,8 @@ This section contains API links for obtaining exchange rates data.
 
 * *covid.date-format* - Set date format for output reports.
 
+* *covid.text.to.image* - Use images instead of text for Telegram bot reports.
+
 ### Cron Options
 
 This section contains cron time strings for various services and workers.

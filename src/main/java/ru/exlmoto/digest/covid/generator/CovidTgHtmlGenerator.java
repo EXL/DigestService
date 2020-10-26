@@ -55,6 +55,9 @@ public class CovidTgHtmlGenerator {
 	@Value("${covid.date-format}")
 	private String dateFormat;
 
+	@Value("${covid.text.to.image}")
+	private boolean covidTextToImage;
+
 	private final String JSON_DATE_FORMAT = "yyyy-MM-dd";
 
 	public CovidTgHtmlGenerator(Covid2GisApiParser parser, LocaleHelper locale, FilterHelper filter) {
@@ -75,6 +78,10 @@ public class CovidTgHtmlGenerator {
 			log.error(String.format(locale.i18n("covid.error"), res.error()));
 		}
 		return null;
+	}
+
+	public String getTgHtmlImageTitle(Locale lang) {
+		return locale.i18nW("covid.head", lang) + "\n" + locale.i18nW("covid.source", lang);
 	}
 
 	private Locale getLocale(String casesPath) {
@@ -111,7 +118,7 @@ public class CovidTgHtmlGenerator {
 	private String generateTable(List<RegionFull> cases, Locale lang) {
 		final int MAX_REGIONS = 65;
 
-		final int CHOP_REGION = 10;
+		int CHOP_REGION = (covidTextToImage) ? 26 : 10;
 		final int CHOP_CASES = 13;
 		final int CHOP_RECOV = 13;
 		final int CHOP_DEATH = 10;
@@ -143,7 +150,9 @@ public class CovidTgHtmlGenerator {
 			row++;
 		}
 		builder.append("</pre>").append("\n");
-		builder.append(locale.i18nW("covid.source", lang));
+		if (!covidTextToImage) {
+			builder.append(locale.i18nW("covid.source", lang));
+		}
 
 		return builder.toString();
 	}

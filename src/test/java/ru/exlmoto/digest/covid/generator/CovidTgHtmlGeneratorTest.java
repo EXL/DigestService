@@ -35,6 +35,10 @@ import ru.exlmoto.digest.util.file.ResourceHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
+import java.util.Locale;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -106,5 +110,10 @@ class CovidTgHtmlGeneratorTest {
 		String report = generator.getTgHtmlReport(covidUrl, CASES_RU_PATH, HISTORY_RU_PATH);
 		assertNull(report);
 		System.out.println("=== END testGetTgHtmlReportOnError() ===");
+	}
+
+	@Test
+	public void testGetTgHtmlImageTitle() {
+		assertThat(generator.getTgHtmlImageTitle(Locale.forLanguageTag("en"))).contains("\n");
 	}
 }

@@ -88,7 +88,7 @@ public class CovidTgHtmlGenerator {
 	public String patchHtmlForRenderedImage(String html) {
 		String body = html.replaceAll("\n", "<br>");
 		body = body.replaceAll("<em>", "").replaceAll("</em>", "");
-		body = body.replace("<pre>", "</strong></font><pre><font size\"" + FONT_SIZE + "\"><strong>");
+		body = body.replace("<pre>", "</strong></font><pre><font size=\"" + FONT_SIZE + "\"><strong>");
 		body = body.replace("</pre>", "</strong></font></pre>");
 		return "<font size=\"" + FONT_SIZE + "\"><strong>" + body;
 	}

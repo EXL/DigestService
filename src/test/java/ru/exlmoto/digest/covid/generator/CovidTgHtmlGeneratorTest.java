@@ -95,9 +95,8 @@ class CovidTgHtmlGeneratorTest {
 			.thenReturn(Ok(helper.readFileToString("classpath:covid/" + HISTORY_RU_PATH)));
 
 		String report = generator.getTgHtmlReport(covidUrl, CASES_RU_PATH, HISTORY_RU_PATH);
-		assertTrue(report.startsWith("<"));
-
 		System.out.println(report);
+		assertTrue(report.startsWith("<"));
 		System.out.println("=== END testGetTgHtmlReport() ===");
 	}
 

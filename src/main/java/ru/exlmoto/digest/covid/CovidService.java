@@ -27,13 +27,19 @@ package ru.exlmoto.digest.covid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import ru.exlmoto.digest.covid.generator.CovidImageGenerator;
 import ru.exlmoto.digest.covid.generator.CovidJsonGenerator;
 import ru.exlmoto.digest.covid.generator.CovidTgHtmlGenerator;
+import ru.exlmoto.digest.util.Covid;
+
+import java.io.File;
+import java.util.Locale;
 
 @Service
 public class CovidService {
 	private final CovidJsonGenerator jsonGenerator;
 	private final CovidTgHtmlGenerator htmlGenerator;
+	private final CovidImageGenerator imageGenerator;
 
 	@Value("${covid.url}")
 	private String covidUrl;
@@ -43,9 +49,12 @@ public class CovidService {
 	private final String CASES_UA_PATH = "covid19-ua-by-territory.json";
 	private final String HISTORY_UA_PATH = "covid19-ua-history.json";
 
-	public CovidService(CovidJsonGenerator jsonGenerator, CovidTgHtmlGenerator htmlGenerator) {
+	public CovidService(CovidJsonGenerator jsonGenerator,
+	                    CovidTgHtmlGenerator htmlGenerator,
+	                    CovidImageGenerator imageGenerator) {
 		this.jsonGenerator = jsonGenerator;
 		this.htmlGenerator = htmlGenerator;
+		this.imageGenerator = imageGenerator;
 	}
 
 	public String jsonRuReport() {
@@ -62,5 +71,13 @@ public class CovidService {
 
 	public String tgHtmlUaReport() {
 		return htmlGenerator.getTgHtmlReport(covidUrl, CASES_UA_PATH, HISTORY_UA_PATH);
+	}
+
+	public File imageRenderedReport(String basicHtml, Covid stat) {
+		return imageGenerator.generateImageOfHtmlReport(basicHtml, stat);
+	}
+
+	public String imageRenderedReportTitle(Covid stat) {
+		return htmlGenerator.getTgHtmlImageTitle(Locale.forLanguageTag(stat.name()));
 	}
 }

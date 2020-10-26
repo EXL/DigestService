@@ -38,6 +38,7 @@ import ru.exlmoto.digest.covid.CovidService;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.service.DatabaseService;
+import ru.exlmoto.digest.service.TextImageService;
 import ru.exlmoto.digest.util.Covid;
 
 import java.io.File;
@@ -54,15 +55,18 @@ public class CovidWorker {
 
 	private final CovidService covidService;
 	private final DatabaseService databaseService;
+	private final TextImageService textImageService;
 	private final BotSender sender;
 	private final BotConfiguration config;
 
 	public CovidWorker(CovidService covidService,
 	                   DatabaseService databaseService,
+	                   TextImageService textImageService,
 	                   BotSender sender,
 	                   BotConfiguration config) {
 		this.covidService = covidService;
 		this.databaseService = databaseService;
+		this.textImageService = textImageService;
 		this.sender = sender;
 		this.config = config;
 	}
@@ -94,7 +98,8 @@ public class CovidWorker {
 	private void processCovidReport(List<Long> subscribers, String report, Covid stat) {
 		if (checkCovidReport(report)) {
 			if (covidTextToImage) {
-				File image = covidService.imageRenderedReport(report, stat);
+				File image =
+					textImageService.renderSimpleHtmlToPngImage(covidService.tgHtmlImageRenderedHtmlReport(report));
 				if (image != null) {
 					sendCovidReport(image, subscribers, stat);
 					if (!image.delete()) {
@@ -121,7 +126,8 @@ public class CovidWorker {
 			log.info(String.format("=> Send COVID-2019 (%s) report to chat '%d', subscribers: '%d'.",
 				stat.name(), chatId, subscribers.size()));
 			if (covidTextToImage) {
-				sender.sendLocalPhotoToChat(chatId, (File)report, covidService.imageRenderedReportTitle(stat));
+				sender.sendLocalPhotoToChat(chatId, (File)report,
+					covidService.tgHtmlImageRenderedHtmlReportTitle(stat));
 			} else {
 				sender.sendHtml(chatId, (String)report);
 			}

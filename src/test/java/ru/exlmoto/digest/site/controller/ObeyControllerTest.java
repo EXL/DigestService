@@ -370,6 +370,38 @@ class ObeyControllerTest {
 	}
 
 	@Test
+	public void testObeySubCovidUa() throws Exception {
+		helper.checkRedirect(mvc, "/obey/sub-covid-ua", "**/ds-auth-login");
+	}
+
+	@Test
+	@WithMockUser
+	public void testObeySubCovidUaAuthorized() throws Exception {
+		helper.validateHtmlUtf8(mvc, "/obey/sub-covid-ua", "!DOCTYPE");
+	}
+
+	@Test
+	public void testObeySubCovidUaEdit() throws Exception {
+		doNothing().when(databaseService).saveCovidUaSub(any());
+
+		helper.checkUnauthorized(mvc, "/obey/sub-covid-ua/edit");
+		helper.checkAuthorizedWithoutCsrf(mvc, "/obey/sub-covid-ua/edit");
+		helper.checkAuthorizedWithCsrfRedirectParam(mvc,
+			"/obey/sub-covid-ua/edit", "/**/obey/sub-covid-ua",
+			"chatId", "100", "chatName", "unknown");
+	}
+
+	@Test
+	public void testObeySubCovidUaDelete() throws Exception {
+		doNothing().when(databaseService).deleteCovidUaSub(anyLong());
+
+		helper.checkUnauthorized(mvc, "/obey/sub-covid-ua/delete/100");
+		helper.checkAuthorizedWithoutCsrf(mvc, "/obey/sub-covid-ua/delete/100");
+		helper.checkAuthorizedWithCsrfRedirect(mvc,
+			"/obey/sub-covid-ua/delete/100", "/**/obey/sub-covid-ua");
+	}
+
+	@Test
 	public void testObeyExchange() throws Exception {
 		helper.checkRedirect(mvc, "/obey/exchange", "**/ds-auth-login");
 	}

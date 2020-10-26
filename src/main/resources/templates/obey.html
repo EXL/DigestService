@@ -115,11 +115,11 @@
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.greeting},'sub-greeting')}"></div>
 					</div>
 					<div th:if="${sub_covid != null}">
-						<p><a href="/obey/covid/send" th:text="#{site.obey.covid.send}">Send COVID-2019 Reports</a></p>
+						<p><a href="/obey/covid/send" th:text="#{site.obey.covid.send}">Send COVID-19 Reports</a></p>
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.covid},'sub-covid')}"></div>
 					</div>
 					<div th:if="${sub_covid_ua != null}">
-						<p><a href="/obey/covid/send" th:text="#{site.obey.covid.send}">Send COVID-2019 Reports</a></p>
+						<p><a href="/obey/covid/send" th:text="#{site.obey.covid.send}">Send COVID-19 Reports</a></p>
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.covid.ua},'sub-covid-ua')}"></div>
 					</div>
 					<div th:if="${exchange != null}">

@@ -68,10 +68,10 @@ public class CovidTgHtmlGenerator {
 	}
 
 	public String getTgHtmlReport(String covidUrl, String casesPath, String historyPath) {
-		log.info(String.format("=> Start receive last COVID-2019 report on '%s' path.", casesPath));
+		log.info(String.format("=> Start receive last COVID-19 report on '%s' path.", casesPath));
 		Answer<Pair<List<RegionFull>, Map<String, String>>> res =
 			parser.parse2GisApiData(covidUrl, casesPath, historyPath);
-		log.info(String.format("=> End receive last COVID-2019 report on '%s' path.", casesPath));
+		log.info(String.format("=> End receive last COVID-19 report on '%s' path.", casesPath));
 		if (res.ok()) {
 			Pair<List<RegionFull>, Map<String, String>> answer = res.answer();
 			return generateTgHtmlReport(answer.getFirst(), answer.getSecond(), getLocale(casesPath));

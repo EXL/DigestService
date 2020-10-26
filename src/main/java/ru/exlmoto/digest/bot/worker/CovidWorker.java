@@ -123,7 +123,7 @@ public class CovidWorker {
 
 	private void sendCovidReport(Object report, List<Long> subscribers, Covid stat) {
 		subscribers.forEach(chatId -> {
-			log.info(String.format("=> Send COVID-2019 (%s) report to chat '%d', subscribers: '%d'.",
+			log.info(String.format("=> Send COVID-19 (%s) report to chat '%d', subscribers: '%d'.",
 				stat.name(), chatId, subscribers.size()));
 			if (covidTextToImage) {
 				sender.sendLocalPhotoToChat(chatId, (File)report,

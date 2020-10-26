@@ -10,7 +10,7 @@
 
 - Added "Digest Service and Telegram Bot Commands Cheat Sheet" help manual in Russian and English.
 
-- Added COVID-2019 statistics report for Ukraine (suggestion by @mbv06).
+- Added COVID-19 statistics report for Ukraine (suggestion by @mbv06).
 
 - Added a difference for each of the currencies in quotes for the **/rate** command (suggestion by @baaaaat).
 

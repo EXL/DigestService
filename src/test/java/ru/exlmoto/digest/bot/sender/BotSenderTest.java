@@ -85,6 +85,8 @@ class BotSenderTest {
 		sender.sendSimpleToChat(0L, "Fake text");
 		sender.sendStickerToChat(0L, "Fake stickerId");
 		sender.sendPhotoToChat(0L, "Fake uri");
+		// TODO: Test
+		// TODO: Test
 		System.out.println("=== END testBotSenderMethods() ===");
 	}
 

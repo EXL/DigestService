@@ -162,6 +162,26 @@ public class BotSender {
 		sendPhoto(chatId, null, uri, null, null, null);
 	}
 
+	public void sendLocalPhotoToChat(long chatId, File photo) {
+		sendLocalPhotoToChat(chatId, photo, null);
+	}
+
+	public File sendLocalPhotoToChat(long chatId, File photo, String title) {
+		SendPhoto sendPhoto = new SendPhoto(chatId, photo);
+		if (title != null) {
+			sendPhoto.parseMode(HTML);
+			sendPhoto.caption(title);
+		}
+		Answer<String> res = executeRequestLog(sendPhoto);
+		if (!res.ok()) {
+			log.error(String.format("Cannot execute sendPhoto() request from sendLocalPhotoToChat() method, error: %s.",
+				res.error()));
+			return null;
+		} else {
+			return photo;
+		}
+	}
+
 	public void sendPhotoToChat(long chatId, String uri, long origChatId, int origReplyId) {
 		sendPhoto(chatId, null, uri, null, origChatId, origReplyId);
 	}

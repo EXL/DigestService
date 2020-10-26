@@ -1,3 +1,25 @@
+## v1.0.1, Upcoming Release:
+
+- Added prerended COVID-19 reports (suggestion by @ZorgeR).
+
+- Added useful for fixing typos digest editing feature.
+
+- Changed determining external IP service to AWS.
+
+- Disabled proxying due RKN unblocking.
+
+- Separated exchange rate API (suggestion by @baaaaat).
+
+- Separated COVID-19 reports (suggestion by @mbv06).
+
+- Fixed same chat digest subscribing.
+
+- Fixed some errors on various external requests.
+
+- Fixed some errors in parsers and generators.
+
+- Fixed some typos in text resources and code.
+
 ## v1.0.0, 25-May-2020, First Public Release:
 
 - Now Digest Service source code is available on GitHub, GitLab, and Bitbucket resources.

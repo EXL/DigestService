@@ -81,7 +81,7 @@ public class CovidTgHtmlGenerator {
 	}
 
 	public String getTgHtmlImageTitle(Locale lang) {
-		return locale.i18nW("covid.head", lang) + "\n" + locale.i18nW("covid.source", lang);
+		return locale.i18nW("covid.head", lang) + "\n\n" + locale.i18nW("covid.source", lang);
 	}
 
 	private Locale getLocale(String casesPath) {

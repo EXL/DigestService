@@ -131,6 +131,7 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 
     ```shell script
     sudo yum -y install java-1.8.0-openjdk # Or just "java" package.
+    sudo yum -y install dejavu-sans-mono-fonts # Optional fonts for proper text/html to image rendering.
 
     scp ~/Deploy/DigestService/build/libs/digest-service-<version>.jar <username>@<host-address>:/home/<username> # Run this command on build host.
     sudo mv ~/digest-service-<version>.jar /srv/

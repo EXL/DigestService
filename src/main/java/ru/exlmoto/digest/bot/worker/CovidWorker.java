@@ -27,6 +27,7 @@ package ru.exlmoto.digest.bot.worker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,7 @@ import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.Covid;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +48,9 @@ import java.util.List;
 @Component
 public class CovidWorker {
 	private final Logger log = LoggerFactory.getLogger(CovidWorker.class);
+
+	@Value("${covid.text.to.image}")
+	private boolean covidTextToImage;
 
 	private final CovidService covidService;
 	private final DatabaseService databaseService;
@@ -71,16 +76,10 @@ public class CovidWorker {
 			boolean subscribersUaNotEmpty = !subscribersUa.isEmpty();
 			if (subscribersRuNotEmpty || subscribersUaNotEmpty) {
 				if (subscribersRuNotEmpty) {
-					String reportRu = covidService.tgHtmlRuReport();
-					if (checkCovidReport(reportRu)) {
-						sendCovidReport(reportRu, subscribersRu, Covid.ru.name());
-					}
+					processCovidReport(subscribersRu, covidService.tgHtmlRuReport(), Covid.ru);
 				}
 				if (subscribersUaNotEmpty) {
-					String reportUa = covidService.tgHtmlUaReport();
-					if (checkCovidReport(reportUa)) {
-						sendCovidReport(reportUa, subscribersUa, Covid.ua.name());
-					}
+					processCovidReport(subscribersUa, covidService.tgHtmlUaReport(), Covid.ua);
 				}
 			} else {
 				log.info("=> Covid subscribers lists are empty, Covid reports service disabled.");
@@ -92,19 +91,40 @@ public class CovidWorker {
 		}
 	}
 
+	private void processCovidReport(List<Long> subscribers, String report, Covid stat) {
+		if (checkCovidReport(report)) {
+			if (covidTextToImage) {
+				File image = covidService.imageRenderedReport(report, stat);
+				if (image != null) {
+					sendCovidReport(image, subscribers, stat);
+					if (!image.delete()) {
+						log.warn(String.format("Cannot delete image file report (%s): '%s'.",
+							stat.name(), image.getAbsolutePath()));
+					}
+				}
+			} else {
+				sendCovidReport(report, subscribers, stat);
+			}
+		}
+	}
+
 	private boolean checkCovidReport(String report) {
 		return report != null && !report.isEmpty();
 	}
 
-	private void sendCovidReport(String report, long chatId) {
-		sendCovidReport(report, Collections.singletonList(chatId), "single");
+	private void sendCovidReport(String report, long chatId, Covid stat) {
+		sendCovidReport(report, Collections.singletonList(chatId), stat);
 	}
 
-	private void sendCovidReport(String report, List<Long> subscribers, String id) {
+	private void sendCovidReport(Object report, List<Long> subscribers, Covid stat) {
 		subscribers.forEach(chatId -> {
 			log.info(String.format("=> Send COVID-2019 (%s) report to chat '%d', subscribers: '%d'.",
-				id, chatId, subscribers.size()));
-			sender.sendHtml(chatId, report);
+				stat.name(), chatId, subscribers.size()));
+			if (covidTextToImage) {
+				sender.sendLocalPhotoToChat(chatId, (File)report, covidService.imageRenderedReportTitle(stat));
+			} else {
+				sender.sendHtml(chatId, (String)report);
+			}
 			try {
 				Thread.sleep(config.getMessageDelay() * 1000);
 			} catch (InterruptedException ie) {

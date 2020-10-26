@@ -14,6 +14,7 @@
 					<p><a href="/obey/sub-motofan">Digest Sub MotoFan</a></p>
 					<p><a href="/obey/sub-greeting">Digest Sub Greeting</a></p>
 					<p><a href="/obey/sub-covid">Digest Sub Covid</a></p>
+					<p><a href="/obey/sub-covid-ua">Digest Sub Covid Ua</a></p>
 					<p><a href="/obey/exchange">Exchange Rate</a></p>
 					<p><a href="/obey/member">Member</a></p>
 					<h3 th:text="#{site.obey.frame.links}">Links</h3>
@@ -114,8 +115,12 @@
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.greeting},'sub-greeting')}"></div>
 					</div>
 					<div th:if="${sub_covid != null}">
-						<p><a href="/obey/covid/send" th:text="#{site.obey.covid.send}">Send COVID-2019 Report</a></p>
+						<p><a href="/obey/covid/send" th:text="#{site.obey.covid.send}">Send COVID-2019 Reports</a></p>
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.covid},'sub-covid')}"></div>
+					</div>
+					<div th:if="${sub_covid_ua != null}">
+						<p><a href="/obey/covid/send" th:text="#{site.obey.covid.send}">Send COVID-2019 Reports</a></p>
+						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.covid.ua},'sub-covid-ua')}"></div>
 					</div>
 					<div th:if="${exchange != null}">
 						<div th:replace="~{exchange :: exchange-form}"></div>

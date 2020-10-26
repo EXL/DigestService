@@ -53,6 +53,7 @@ import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
+import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.entity.MemberEntity;
 import ru.exlmoto.digest.entity.FlatSetupEntity;
 import ru.exlmoto.digest.exchange.ExchangeService;
@@ -411,6 +412,34 @@ public class ObeyController {
 		return "redirect:/obey/sub-covid";
 	}
 
+	@RequestMapping(path = "/obey/sub-covid-ua")
+	public String obeySubCovidUa(SubscriberForm subscriberForm, Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		subscriberForm.setShowName(true);
+
+		model.addAttribute("sub_covid_ua", "true");
+		model.addAttribute("chatList", fillSubCovidUaList());
+		model.addAttribute("subscriberForm", subscriberForm);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/sub-covid-ua/edit")
+	public String obeySubCovidUaEdit(SubscriberForm subscriberForm) {
+		Optional.of(subscriberForm.getChatId()).ifPresent(chatId ->
+			service.saveCovidUaSub(new BotSubCovidUaEntity(chatId, subscriberForm.getChatName())));
+
+		return "redirect:/obey/sub-covid-ua";
+	}
+
+	@RequestMapping(path = "/obey/sub-covid-ua/delete/{id}")
+	public String obeySubCovidUaDelete(@PathVariable(name = "id") String id) {
+		Optional.of(helper.getLong(id)).ifPresent(service::deleteCovidUaSub);
+
+		return "redirect:/obey/sub-covid-ua";
+	}
+
 	@RequestMapping(path = "/obey/exchange")
 	public String obeyExchange(Model model, ExchangeForm exchange) {
 		model.addAttribute("time", System.currentTimeMillis());
@@ -705,6 +734,12 @@ public class ObeyController {
 	private List<Chat> fillSubCovidList() {
 		List<Chat> chatList = new ArrayList<>();
 		service.getAllCovidSubs().forEach(sub -> chatList.add(new Chat(sub.getSubscription(), sub.getName())));
+		return chatList;
+	}
+
+	private List<Chat> fillSubCovidUaList() {
+		List<Chat> chatList = new ArrayList<>();
+		service.getAllCovidUaSubs().forEach(sub -> chatList.add(new Chat(sub.getSubscription(), sub.getName())));
 		return chatList;
 	}
 

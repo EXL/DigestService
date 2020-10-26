@@ -29,6 +29,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import ru.exlmoto.digest.util.Covid;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -46,5 +50,16 @@ class CovidServiceTest {
 	public void testTgHtmlReport() {
 		assertTrue(service.tgHtmlRuReport().startsWith("<"));
 		assertTrue(service.tgHtmlUaReport().startsWith("<"));
+	}
+
+	@Test
+	public void testTgHtmlImageRenderedHtmlReport() {
+		assertTrue(service.tgHtmlImageRenderedHtmlReport(service.tgHtmlRuReport()).startsWith("<"));
+		assertTrue(service.tgHtmlImageRenderedHtmlReport(service.tgHtmlUaReport()).startsWith("<"));
+	}
+
+	@Test
+	public void testTgHtmlImageRenderedHtmlReportTitle() {
+		assertThat(service.tgHtmlImageRenderedHtmlReportTitle(Covid.ru)).isNotBlank();
 	}
 }

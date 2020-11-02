@@ -69,4 +69,25 @@ class GameCommandTest {
 		command.execute(helper, sender, locale, update.getSimpleMessage("/game", "anyone"));
 		System.out.println("=== END testGameCommand() ===");
 	}
+
+	@Test
+	public void testParseInfoQuake2() {
+		System.out.println("=== START testParseInfoQuake2() ===");
+		String answer = "����info\n   q2.exlmoto.ru    base1  0/ 4";
+		System.out.println(command.parseInfoQuake2(locale, answer));
+		System.out.println("=== END testParseInfoQuake2() ===");
+	}
+
+	@Test
+	public void testGenerateTable() {
+		System.out.println("=== START testGenerateTable() ===");
+
+		String[] tokens = new String[] { "q2.exlmoto.ru", "base1", "0/4" };
+		System.out.println(command.generateTable(locale, tokens));
+
+		tokens = new String[] { "q2.exlmoto.ru", "aaaaaaaaabase1", "0/128" };
+		System.out.println(command.generateTable(locale, tokens));
+
+		System.out.println("=== END testGenerateTable() ===");
+	}
 }

@@ -85,7 +85,7 @@ public class GameCommand extends MessageAbility {
 		}
 	}
 
-	private String parseInfoQuake2(LocaleHelper locale, String answer) {
+	protected String parseInfoQuake2(LocaleHelper locale, String answer) {
 		String res = answer.substring(answer.indexOf('\n') + 1); // Drop first line.
 		res = res.replace("/ ", "/"); // Drop space after slash character.
 		res = filter.strip(res); // Strip string from spaces.
@@ -93,7 +93,7 @@ public class GameCommand extends MessageAbility {
 		return generateTable(locale, tokens);
 	}
 
-	private String generateTable(LocaleHelper locale, String[] tokens) {
+	protected String generateTable(LocaleHelper locale, String[] tokens) {
 		Map<String, String> map = new LinkedHashMap<>();
 		Map<String, String> formattedMap = new LinkedHashMap<>();
 		map.put(locale.i18n("bot.command.game.host"), tokens[0]);

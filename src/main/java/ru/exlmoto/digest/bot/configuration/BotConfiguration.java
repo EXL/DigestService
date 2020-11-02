@@ -31,6 +31,7 @@ public class BotConfiguration {
 	private boolean initialize;
 	private String token;
 	private String stickerCoffee;
+	private boolean urlGameImage;
 	private String urlGame;
 	private String[] admins;
 	private int maxUpdates;
@@ -74,6 +75,14 @@ public class BotConfiguration {
 
 	public void setStickerCoffee(String stickerCoffee) {
 		this.stickerCoffee = stickerCoffee;
+	}
+
+	public boolean isUrlGameImage() {
+		return urlGameImage;
+	}
+
+	public void setUrlGameImage(boolean urlGameImage) {
+		this.urlGameImage = urlGameImage;
 	}
 
 	public String getUrlGame() {

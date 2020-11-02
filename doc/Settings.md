@@ -254,7 +254,11 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 * *bot.sticker-coffee* - Set Sticker ID for `/coffee` command.
 
-* *bot.url-game* - Set URL to Game Servers image API service.
+* *bot.url-game-image* - Enable or disable representing `url-game` as image API link.
+
+    Note: If this option disabled the `url-game` link will be interpreted as raw game servers service.
+
+* *bot.url-game* - Set URL to raw game servers or image API service.
 
 * *bot.motofan-chat-id* - Set main chat ID via environment variable.
 

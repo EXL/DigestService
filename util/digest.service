@@ -1,11 +1,11 @@
 [Unit]
 Description=Digest Service
 Wants=network-online.target
-After=network.target network-online.target postgres.service
+After=network.target network-online.target postgresql.service
 
 [Service]
-WorkingDirectory=/srv/
 User=opc
+WorkingDirectory=/srv/
 ExecStart=/usr/bin/java -jar /srv/digest-service-1.0.0.jar
 StandardOutput=journal
 StandardError=journal

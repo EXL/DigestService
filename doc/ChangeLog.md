@@ -1,6 +1,6 @@
 ## v1.0.1, Upcoming Release:
 
-- Integration with Quake II Dedicated Server.
+- Added integration with Quake II Dedicated Server.
 
 - Added prerended COVID-19 reports (suggestion by @ZorgeR).
 

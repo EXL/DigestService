@@ -1,16 +1,16 @@
 Setup Quake II Server on CentOS 7
 =================================
 
-## Open 27910 port
+## Open 27910 Port
 
 Oracle Cloud admin panel:
 
 1. Go to "Primary VNIC" on "Instance Details" and choose selected "Subnet:".
 2. Choose default "Security List" and push "Add Ingress Rules" button.
-3. Set "Source CIDR" to `0.0.0.0/0`, "IP Protocol" to `UDP` and "Destination port range" to `27910`.
+3. Set "Source CIDR" to `0.0.0.0/0`, "IP Protocol" to `UDP` and "Destination Port Range" to `27910`.
 4. Click "Add Ingress Rules" button in that pop-up window.
 
-CentOS 7 host:
+CentOS 7 Host:
 
 ```bash
 sudo firewall-cmd --zone=public --permanent --add-port=27910/udp
@@ -20,7 +20,7 @@ sudo firewall-cmd --zone=public --list-all
 
 ## Deploy Quake II Server
 
-Unpack server distrib and enable systemd servers:
+Unpack server distro and enable systemd servers:
 
 ```
 7za e q2ded.tar.7z
@@ -50,7 +50,7 @@ Set correct time (optionally):
 sudo timedatectl set-timezone "Europe/Moscow"
 ```
 
-## Building Quake II Server
+## Build Quake II Server
 
 ```bash
 sudo yum -y install epel-release
@@ -64,7 +64,7 @@ cd build/
 cmake3 -DCMAKE_BUILD_TYPE=Release ../yquake2/
 make VERBOSE=1 -j2
 
-# Create distrib
+# Create distro
 sudo mv release/ /srv/quake2
 sudo mv ~/yquake2/stuff/yq2.cfg /srv/quake2/baseq2/
 sudo mv ~/quake2/baseq2/pak* /srv/quake2/baseq2/
@@ -80,3 +80,7 @@ cd ~/
 7za a -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on q2ded.tar.7z q2ded.tar
 rm q2ded.tar
 ```
+
+## Quake II Server Configuration
+
+See [q2ded.cfg](../util/q2ded/q2ded.cfg) configuration file.

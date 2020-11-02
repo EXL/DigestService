@@ -1,0 +1,6 @@
+[Unit]
+Description=Service that restart Quake II Dedicated Service due this reason: https://github.com/yquake2/yquake2/blob/master/doc/060_multiplayer.md
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl try-restart q2ded

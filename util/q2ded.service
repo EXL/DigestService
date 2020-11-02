@@ -1,0 +1,17 @@
+[Unit]
+Description=Quake II Dedicated Server
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+User=opc
+WorkingDirectory=/srv/quake2
+ExecStart=/usr/bin/stdbuf -i0 -o0 -e0 /srv/quake2/q2ded
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=q2ded
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

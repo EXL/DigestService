@@ -1,0 +1,9 @@
+[Unit]
+Description=Timer that restart Quake II Dedicated Service monthly.
+
+[Timer]
+OnCalendar=monthly
+Unit=q2ded-restart.service
+
+[Install]
+WantedBy=timers.target

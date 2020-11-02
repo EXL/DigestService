@@ -34,27 +34,84 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.file.ImageHelper;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
+import ru.exlmoto.digest.util.udp.UdpSender;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Component
 public class GameCommand extends MessageAbility {
+	private final int QUAKE_2_SERVER_PORT = 27910;
+	private final String QUAKE_2_INFO_COMMAND = "info 34";
+
 	private final BotConfiguration config;
 	private final ImageHelper rest;
+	private final UdpSender udp;
+	private final FilterHelper filter;
 
-	public GameCommand(BotConfiguration config, ImageHelper rest) {
+	public GameCommand(BotConfiguration config, ImageHelper rest, UdpSender udp, FilterHelper filter) {
 		this.config = config;
 		this.rest = rest;
+		this.udp = udp;
+		this.filter = filter;
 	}
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, Message message) {
-		Answer<String> res = rest.getImageByLink(config.getUrlGame());
-		if (res.ok()) {
-			sender.replyPhoto(message.chat().id(), message.messageId(), res.answer(),
-				locale.i18n("bot.command.game"));
+		final String urlGame = config.getUrlGame();
+		if (config.isUrlGameImage()) {
+			Answer<String> res = rest.getImageByLink(urlGame);
+			if (res.ok()) {
+				sender.replyPhoto(message.chat().id(), message.messageId(), res.answer(),
+					locale.i18n("bot.command.game"));
+			} else {
+				sender.replyMarkdown(message.chat().id(), message.messageId(),
+					String.format(locale.i18n("bot.error.game"), res.error()));
+			}
 		} else {
-			sender.replyMarkdown(message.chat().id(), message.messageId(),
-				String.format(locale.i18n("bot.error.game"), res.error()));
+			Answer<String> res = udp.sendCommandAndGetAnswer(urlGame, QUAKE_2_SERVER_PORT, QUAKE_2_INFO_COMMAND);
+			if (res.ok()) {
+				sender.replyMarkdown(message.chat().id(), message.messageId(),
+					String.format(locale.i18n("bot.command.game.quake2"),
+						locale.i18n("bot.command.game.online"), parseInfoQuake2(locale, res.answer())) + "\n" +
+					String.format(locale.i18n("bot.command.game.quake2.info"), urlGame));
+			} else {
+				sender.replyMarkdown(message.chat().id(), message.messageId(),
+					String.format(locale.i18n("bot.command.game.quake2"),
+						locale.i18n("bot.command.game.offline"), res.error()));
+			}
 		}
+	}
+
+	private String parseInfoQuake2(LocaleHelper locale, String answer) {
+		String res = answer.substring(answer.indexOf('\n') + 1); // Drop first line.
+		res = res.replace("/ ", "/"); // Drop space after slash character.
+		res = filter.strip(res); // Strip string from spaces.
+		String[] tokens = res.split("\\s+");
+		return generateTable(locale, tokens);
+	}
+
+	private String generateTable(LocaleHelper locale, String[] tokens) {
+		Map<String, String> map = new LinkedHashMap<>();
+		Map<String, String> formattedMap = new LinkedHashMap<>();
+		map.put(locale.i18n("bot.command.game.host"), tokens[0]);
+		map.put(locale.i18n("bot.command.game.map"), tokens[1]);
+		map.put(locale.i18n("bot.command.game.players"), tokens[2]);
+		StringBuilder stringBuilder = new StringBuilder();
+		map.forEach((k, v) -> {
+			int kLength = k.length();
+			int vLength = v.length();
+			if (kLength <= vLength) {
+				formattedMap.put(filter.arrangeString(k, vLength + 1), v + " ");
+			} else {
+				formattedMap.put(k + " ", filter.arrangeString(" ", kLength - vLength) + v);
+			}
+		});
+		formattedMap.keySet().forEach(stringBuilder::append);
+		stringBuilder.append("\n");
+		formattedMap.values().forEach(stringBuilder::append);
+		return stringBuilder.toString();
 	}
 }

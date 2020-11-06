@@ -52,7 +52,7 @@ public class CovidTgHtmlGenerator {
 	private final LocaleHelper locale;
 	private final FilterHelper filter;
 
-	@Value("${covid.date-format}")
+	@Value("${general.date-short-format}")
 	private String dateFormat;
 
 	@Value("${covid.text.to.image}")

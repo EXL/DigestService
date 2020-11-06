@@ -122,6 +122,8 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 * *general.date-format* - Set default date and time format.
 
+* *general.date-short-format* - Set default date and time short format.
+
 * *general.url-host-ip* - Set URL for getting public IP address in plain text format.
 
 ### Site Options
@@ -346,8 +348,6 @@ This section contains API links for obtaining exchange rates data.
 ### COVID Service Options
 
 * *covid.url* - Set the main URL for the COVID API service.
-
-* *covid.date-format* - Set date format for output reports.
 
 * *covid.text.to.image* - Use images instead of text for Telegram bot reports.
 

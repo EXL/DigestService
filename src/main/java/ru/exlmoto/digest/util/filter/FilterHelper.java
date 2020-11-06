@@ -26,6 +26,9 @@ package ru.exlmoto.digest.util.filter;
 
 import org.jsoup.Jsoup;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 
 import org.thymeleaf.util.StringUtils;
@@ -34,12 +37,16 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import javax.annotation.PostConstruct;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 @Component
 public class FilterHelper {
+	private final Logger log = LoggerFactory.getLogger(FilterHelper.class);
+
 	private final LocaleHelper locale;
 
 	private String ellipsis;
@@ -151,5 +158,18 @@ public class FilterHelper {
 			(title != null) ?
 				"<a href=\"" + link + "\" target=\"_blank\" title=\"" + title + "\">" + text + "</a>" :
 				"<a href=\"" + link + "\" target=\"_blank\">" + text + "</a>";
+	}
+
+	public String getSiteUrlFromLink(String link) {
+		try {
+			URL url = new URL(link);
+			int port = url.getPort();
+			return (port == -1) ?
+				String.format("%s://%s", url.getProtocol(), url.getHost()) :
+				String.format("%s://%s:%d", url.getProtocol(), url.getHost(), port);
+		} catch (MalformedURLException mue) {
+			log.warn(String.format("Wrong URL link: '%s'.", link), mue);
+			return link;
+		}
 	}
 }

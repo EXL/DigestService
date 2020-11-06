@@ -227,4 +227,18 @@ class FilterHelperTest {
 		assertEquals(linkWoTitle, filter.activateLink("https://exlmoto.ru", "www.exlmoto.ru"));
 		assertEquals(linkWTitle, filter.activateLink("https://exlmoto.ru", "www.exlmoto.ru", "exlmoto"));
 	}
+
+	@Test
+	public void testGetSiteUrlFromLink() {
+		assertNull(filter.getSiteUrlFromLink(null));
+		assertThat(filter.getSiteUrlFromLink("")).isBlank();
+		assertThat(filter.getSiteUrlFromLink(" ")).isBlank();
+
+		assertEquals("https://forum.motofan.ru",
+			filter.getSiteUrlFromLink("https://forum.motofan.ru/lastpost_json.php"));
+		assertEquals("https://www.forum.motofan.ru",
+			filter.getSiteUrlFromLink("https://www.forum.motofan.ru/lastpost_json.php"));
+
+		assertEquals("Malfunction URL", filter.getSiteUrlFromLink("Malfunction URL"));
+	}
 }

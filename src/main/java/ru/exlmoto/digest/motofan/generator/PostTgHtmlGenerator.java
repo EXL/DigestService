@@ -24,7 +24,16 @@
 
 package ru.exlmoto.digest.motofan.generator;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import org.thymeleaf.util.StringUtils;
 
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
@@ -32,8 +41,15 @@ import ru.exlmoto.digest.util.filter.FilterHelper;
 
 @Component
 public class PostTgHtmlGenerator {
+	private final Logger log = LoggerFactory.getLogger(PostTgHtmlGenerator.class);
+
 	private final LocaleHelper locale;
 	private final FilterHelper filter;
+
+	@Value("${general.date-short-format}")
+	private String dateFormat;
+
+	private final int MOTOFAN_BIRTHDAY_TABLE_INDEX = 1;
 
 	public PostTgHtmlGenerator(LocaleHelper locale, FilterHelper filter) {
 		this.locale = locale;
@@ -50,5 +66,25 @@ public class PostTgHtmlGenerator {
 
 	public String filterMotofanPost(String text) {
 		return filter.removeBbCodes(filter.removeHtmlTags(text));
+	}
+
+	public String generateMotofanBirthdaysReport(String rawHtml) {
+		if (!StringUtils.isEmptyOrWhitespace(rawHtml)) {
+			try {
+				Element table = Jsoup.parse(rawHtml).getElementsByClass("formsubtitle")
+					.get(MOTOFAN_BIRTHDAY_TABLE_INDEX).parent().parent();
+				Element cell = table.getElementsByClass("row2").get(MOTOFAN_BIRTHDAY_TABLE_INDEX);
+				int count = Integer.parseInt(cell.getElementsByTag("b").first().text());
+				String cellString = cell.toString();
+				String rawString = filter.removeHtmlTags(cellString.substring(cellString.indexOf("<a href")));
+				String birthdays = "• " + filter.strip(rawString.replaceAll("\\(", " (")).replaceAll("•", "\n•");
+				return String.format(locale.i18n("motofan.birthday"),
+					filter.getDateFromTimeStamp(dateFormat, filter.getCurrentUnixTime()),
+						"<pre>\n" + birthdays + "\n</pre>", count);
+			} catch (RuntimeException re) {
+				log.error("Cannot parse MotoFan.Ru page.", re);
+			}
+		}
+		return null;
 	}
 }

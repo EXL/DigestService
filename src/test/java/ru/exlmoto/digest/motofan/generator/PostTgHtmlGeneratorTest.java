@@ -33,8 +33,9 @@ import ru.exlmoto.digest.motofan.json.MotofanPostHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 class PostTgHtmlGeneratorTest {
@@ -66,6 +67,15 @@ class PostTgHtmlGeneratorTest {
 		assertEquals("test text test bl", htmlGenerator.filterMotofanPost("test [b]text[/b] test [\\bl"));
 		assertEquals("test text test", htmlGenerator.filterMotofanPost("test <b>text</b> test"));
 		assertEquals("test text test", htmlGenerator.filterMotofanPost("test <b id=\"a\">text</b> test"));
+	}
+
+	@Test
+	public void testGenerateMotofanBirthdaysReport() {
+		assertNull(htmlGenerator.generateMotofanBirthdaysReport(null));
+		assertNull(htmlGenerator.generateMotofanBirthdaysReport(""));
+		assertNull(htmlGenerator.generateMotofanBirthdaysReport(" "));
+		assertNull(htmlGenerator.generateMotofanBirthdaysReport("test"));
+		assertNull(htmlGenerator.generateMotofanBirthdaysReport("<html>test</html>"));
 	}
 
 	private void generateHtmlReports(long timestamp) {

@@ -63,8 +63,46 @@ public class MotofanService {
 		this.filter = filter;
 	}
 
-	public MotofanPost[] getMotofanPostObjects() {
+	public List<String> getLastMotofanPostsInHtml() {
+		List<MotofanPost> motofanPosts = getLastMotofanPosts();
+		if (motofanPosts != null) {
+			List<String> motofanPostsInHtml = new ArrayList<>();
+			for (MotofanPost post : motofanPosts) {
+				motofanPostsInHtml.add(htmlGenerator.generateMotofanPostHtmlReport(post));
+			}
+			return motofanPostsInHtml;
+		}
+		return new ArrayList<>();
+	}
+
+	public String getMotofanBirthdays() {
+		log.info("=> Start receive MotoFan.Ru user birthdays.");
+		Answer<String> res = rest.getRestResponse(filter.getSiteUrlFromLink(lastPostUrl));
+		log.info("=> End receive MotoFan.Ru user birthdays.");
+		if (res.ok()) {
+			return htmlGenerator.generateMotofanBirthdaysReport(res.answer());
+		} else {
+			log.info(String.format("=> Cannot get MotoFan.Ru user birthdays, error: '%s'.", res.error()));
+		}
+		return null;
+	}
+
+	protected List<MotofanPost> getLastMotofanPosts() {
+		MotofanPost[] motofanPosts = getMotofanPostObjects();
+		if (motofanPosts != null) {
+			if (timestamp == 0L) {
+				setLastValues(motofanPosts, 0);
+			} else {
+				return getLastMotofanPostsAux(motofanPosts);
+			}
+		}
+		return null;
+	}
+
+	protected MotofanPost[] getMotofanPostObjects() {
+		log.info("=> Start receive last MotoFan.Ru posts.");
 		MotofanPost[] posts = rest.getRestResponse(lastPostUrl, MotofanPost[].class).answer();
+		log.info("=> End receive last MotoFan.Ru posts.");
 		if (posts != null && posts.length > 0) {
 			List<MotofanPost> validPosts = new ArrayList<>();
 			for (MotofanPost post : posts) {
@@ -80,44 +118,6 @@ public class MotofanService {
 				log.error(String.format("Cannot cast array of valid posts to the simple array, see data: '%s'.",
 					validPosts.toString()), cce);
 			}
-		}
-		return null;
-	}
-
-	public List<String> getLastMotofanPostsInHtml() {
-		List<MotofanPost> motofanPosts = getLastMotofanPosts();
-		if (motofanPosts != null) {
-			List<String> motofanPostsInHtml = new ArrayList<>();
-			for (MotofanPost post : motofanPosts) {
-				motofanPostsInHtml.add(htmlGenerator.generateMotofanPostHtmlReport(post));
-			}
-			return motofanPostsInHtml;
-		}
-		return new ArrayList<>();
-	}
-
-	public List<MotofanPost> getLastMotofanPosts() {
-		log.info("=> Start receive last MotoFan.Ru posts.");
-		MotofanPost[] motofanPosts = getMotofanPostObjects();
-		log.info("=> End receive last MotoFan.Ru posts.");
-		if (motofanPosts != null) {
-			if (timestamp == 0L) {
-				setLastValues(motofanPosts, 0);
-			} else {
-				return getLastMotofanPostsAux(motofanPosts);
-			}
-		}
-		return null;
-	}
-
-	public String getMotofanBirthdays() {
-		log.info("=> Start receive MotoFan.Ru user birthdays.");
-		Answer<String> res = rest.getRestResponse(filter.getSiteUrlFromLink(lastPostUrl));
-		if (res.ok()) {
-			log.info("=> End receive MotoFan.Ru user birthdays.");
-			return htmlGenerator.generateMotofanBirthdaysReport(res.answer());
-		} else {
-			log.info(String.format("=> Cannot get MotoFan.Ru user birthdays, error: '%s'.", res.error()));
 		}
 		return null;
 	}

@@ -46,3 +46,4 @@ List of tests that require some attention on their logs.
 41. [ImageHelperTest.java](../src/test/java/ru/exlmoto/digest/util/file/ImageHelperTest.java)
 42. [RestHelperTest.java](../src/test/java/ru/exlmoto/digest/util/rest/RestHelperTest.java)
 43. [RestHelperMockTest.java](../src/test/java/ru/exlmoto/digest/util/rest/RestHelperMockTest.java)
+44. [MotofanServiceTest.java](../src/test/java/ru/exlmoto/digest/motofan/MotofanServiceTest.java)

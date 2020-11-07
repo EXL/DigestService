@@ -42,6 +42,9 @@ import ru.exlmoto.digest.util.rest.RestHelper;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.file.ResourceHelper;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,9 +71,11 @@ class MotofanServiceTest {
 
 	@Test
 	public void testGetLastMotofanPosts() {
+		System.out.println("=== START testGetLastMotofanPosts() ===");
 		Answer<MotofanPost[]> res = rest.getRestResponse(lastPostUrl, MotofanPost[].class);
 		assertThat(res.answer()).isNotEmpty();
 		System.out.println(res.answer()[0].getTitle());
+		System.out.println("=== END testGetLastMotofanPosts() ===");
 	}
 
 	@Test
@@ -82,23 +87,70 @@ class MotofanServiceTest {
 
 	@Test
 	public void testIncorrectJson() {
+		System.out.println("=== START testIncorrectJson() ===");
 		when(rest.getRestTemplate()).thenReturn(restTemplate);
-		MotofanPost[] posts = fakeRestTemplateResult("classpath:motofan/posts.json");
+		MotofanPost[] posts = fakeJsonRestTemplateResult("classpath:motofan/posts.json");
 		assertThat(posts).isNotEmpty();
 		System.out.println(posts[0].getTitle());
-		assertThat(fakeRestTemplateResult("classpath:motofan/posts-null.json")).isNull();
-		assertEquals(8, fakeRestTemplateResult("classpath:motofan/posts-incorrect.json").length);
-		assertThat(fakeRestTemplateResult("classpath:motofan/posts-empty.json")).isNull();
-		assertThat(fakeRestTemplateResult("classpath:motofan/posts-another.json")).isNull();
-		assertThat(fakeRestTemplateResult("classpath:motofan/posts-wrong.json")).isNull();
-		assertThat(fakeRestTemplateResult("classpath:motofan/posts-chunk.json")).isNull();
+		assertThat(fakeJsonRestTemplateResult("classpath:motofan/posts-null.json")).isNull();
+		assertEquals(8, fakeJsonRestTemplateResult("classpath:motofan/posts-incorrect.json").length);
+		assertThat(fakeJsonRestTemplateResult("classpath:motofan/posts-empty.json")).isNull();
+		assertThat(fakeJsonRestTemplateResult("classpath:motofan/posts-another.json")).isNull();
+		assertThat(fakeJsonRestTemplateResult("classpath:motofan/posts-wrong.json")).isNull();
+		assertThat(fakeJsonRestTemplateResult("classpath:motofan/posts-chunk.json")).isNull();
+		System.out.println("=== END testIncorrectJson() ===");
 	}
 
-	private MotofanPost[] fakeRestTemplateResult(String filename) {
+	@Test
+	public void testGetMotofanBirthdays() {
+		System.out.println("=== START testGetMotofanBirthdays() ===");
+		String res = service.getMotofanBirthdays();
+		assertThat(res).isNotBlank();
+		System.out.println(res);
+		System.out.println("=== END testGetMotofanBirthdays() ===");
+	}
+
+	@Test
+	public void testIncorrectHtml() {
+		System.out.println("=== START testIncorrectHtml() ===");
+		when(rest.getRestTemplate()).thenReturn(restTemplate);
+		String res = fakeHtmlRestTemplateResult("classpath:motofan/motofanNull.html", "Windows-1251");
+		System.out.println(res);
+		System.out.println("---");
+		res = fakeHtmlRestTemplateResult("classpath:motofan/motofanEmpty.html", "Windows-1251");
+		System.out.println(res);
+		System.out.println("---");
+		res = fakeHtmlRestTemplateResult("classpath:motofan/motofanOther.html", "Windows-1251");
+		System.out.println(res);
+		System.out.println("---");
+		res = fakeHtmlRestTemplateResult("classpath:motofan/motofanWrong.html", StandardCharsets.UTF_8.name());
+		System.out.println(res);
+		System.out.println("---");
+		res = fakeHtmlRestTemplateResult("classpath:motofan/motofanWrong.html", "Windows-1251");
+		System.out.println(res);
+		System.out.println("---");
+		res = fakeHtmlRestTemplateResult("classpath:motofan/motofan.html", StandardCharsets.UTF_8.name());
+		System.out.println(res);
+		System.out.println("---");
+		res = fakeHtmlRestTemplateResult("classpath:motofan/motofan.html", "Windows-1251");
+		System.out.println(res);
+		System.out.println("=== END testIncorrectHtml() ===");
+	}
+
+	private MotofanPost[] fakeJsonRestTemplateResult(String filename) {
 		MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
 		mockServer.expect(manyTimes(), MockRestRequestMatchers.anything()).andRespond(
 			MockRestResponseCreators.withSuccess(resourceHelper.readFileToString(filename), MediaType.APPLICATION_JSON)
 		);
 		return service.getMotofanPostObjects();
+	}
+
+	private String fakeHtmlRestTemplateResult(String filename, String charset) {
+		MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
+		mockServer.expect(manyTimes(), MockRestRequestMatchers.anything()).andRespond(
+			MockRestResponseCreators.withSuccess(resourceHelper.readFileToString(filename, Charset.forName(charset)),
+				MediaType.valueOf("text/html; charset=utf-8"))
+		);
+		return service.getMotofanBirthdays();
 	}
 }

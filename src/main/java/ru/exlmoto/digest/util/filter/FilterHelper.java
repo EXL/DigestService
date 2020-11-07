@@ -42,6 +42,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Component
 public class FilterHelper {
@@ -83,6 +84,11 @@ public class FilterHelper {
 	public String getDateFromTimeStamp(String dateFormat, long timestamp) {
 		return DateTimeFormatter.ofPattern(dateFormat)
 			.withZone(ZoneId.systemDefault()).format(Instant.ofEpochSecond(timestamp));
+	}
+
+	public String getDateFromTimeStamp(String dateFormat, Locale dateLocale, long timestamp) {
+		return DateTimeFormatter.ofPattern(dateFormat)
+			.withLocale(dateLocale).withZone(ZoneId.systemDefault()).format(Instant.ofEpochSecond(timestamp));
 	}
 
 	public long getCurrentUnixTime() {

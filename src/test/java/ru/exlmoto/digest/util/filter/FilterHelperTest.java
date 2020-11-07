@@ -29,6 +29,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Locale;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -71,6 +73,11 @@ class FilterHelperTest {
 		System.out.println(filter.getDateFromTimeStamp("dd.MMM.yyyy HH:mm", 1580520624L));
 		System.out.println(filter.getDateFromTimeStamp("dd-MM-yyyy HH:mm", 1580585762L));
 		System.out.println(filter.getDateFromTimeStamp("dd-MMM-yyyy HH:mm", 1580585762L));
+
+		System.out.println(filter.getDateFromTimeStamp("dd.MM.yyyy EEEE", 1580520624L));
+		System.out.println(filter.getDateFromTimeStamp("dd-MM-yyyy EEEE", Locale.forLanguageTag("en"), 1580585762L));
+		System.out.println(filter.getDateFromTimeStamp("dd-MM-yyyy EEEE", Locale.forLanguageTag("fr"), 1580585762L));
+		System.out.println(filter.getDateFromTimeStamp("dd.MMM.yyyy EEEE", Locale.forLanguageTag("ru"), 1580520624L));
 	}
 
 	@Test

@@ -39,6 +39,8 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
+import java.util.Locale;
+
 @Component
 public class PostTgHtmlGenerator {
 	private final Logger log = LoggerFactory.getLogger(PostTgHtmlGenerator.class);
@@ -46,7 +48,10 @@ public class PostTgHtmlGenerator {
 	private final LocaleHelper locale;
 	private final FilterHelper filter;
 
-	@Value("${general.date-short-format}")
+	@Value("${general.lang}")
+	private String lang;
+
+	@Value("${general.date-day-format}")
 	private String dateFormat;
 
 	private final int MOTOFAN_BIRTHDAY_TABLE_INDEX = 1;
@@ -79,7 +84,7 @@ public class PostTgHtmlGenerator {
 				String rawString = filter.removeHtmlTags(cellString.substring(cellString.indexOf("<a href")));
 				String birthdays = "• " + filter.strip(rawString.replaceAll("\\(", " (")).replaceAll("•", "\n•");
 				return String.format(locale.i18n("motofan.birthday"),
-					filter.getDateFromTimeStamp(dateFormat, filter.getCurrentUnixTime()),
+					filter.getDateFromTimeStamp(dateFormat, Locale.forLanguageTag(lang), filter.getCurrentUnixTime()),
 						"<pre>\n" + birthdays + "\n</pre>", count);
 			} catch (RuntimeException re) {
 				log.error("Cannot parse MotoFan.Ru page.", re);

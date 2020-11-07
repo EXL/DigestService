@@ -82,7 +82,7 @@ public class MotofanService {
 		if (res.ok()) {
 			return htmlGenerator.generateMotofanBirthdaysReport(res.answer());
 		} else {
-			log.info(String.format("=> Cannot get MotoFan.Ru user birthdays, error: '%s'.", res.error()));
+			log.error(String.format("=> Cannot get MotoFan.Ru user birthdays, error: '%s'.", res.error()));
 		}
 		return null;
 	}

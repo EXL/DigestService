@@ -31,11 +31,14 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import org.thymeleaf.util.StringUtils;
+
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.motofan.MotofanService;
 import ru.exlmoto.digest.service.DatabaseService;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.util.List;
 
@@ -47,15 +50,18 @@ public class MotofanWorker {
 	private final DatabaseService databaseService;
 	private final BotSender sender;
 	private final BotConfiguration config;
+	private final LocaleHelper locale;
 
 	public MotofanWorker(MotofanService motofanService,
 	                     DatabaseService databaseService,
 	                     BotSender sender,
-	                     BotConfiguration config) {
+	                     BotConfiguration config,
+	                     LocaleHelper locale) {
 		this.motofanService = motofanService;
 		this.databaseService = databaseService;
 		this.sender = sender;
 		this.config = config;
+		this.locale = locale;
 	}
 
 	@Scheduled(cron = "${cron.bot.motofan.receiver}")
@@ -75,6 +81,27 @@ public class MotofanWorker {
 		} catch (RuntimeException re) {
 			log.error("Runtime exception on Motofan Posts sender thread.", re);
 		}
+	}
+
+	@Scheduled(cron = "${cron.bot.motofan.birthdays}")
+	public void sendGoodMorningWithBirthdays() {
+		try {
+			long motofanChatId = config.getMotofanChatId();
+			if (databaseService.checkGreeting(motofanChatId)) {
+				sender.sendHtml(motofanChatId, generateGoodMorningBirthdayReport());
+			}
+		} catch (DataAccessException dae) {
+			log.error("Cannot check Greeting subscribe chat from database.", dae);
+		}
+	}
+
+	protected String generateGoodMorningBirthdayReport() {
+		String answer = locale.i18nR("bot.morning");
+		String res = motofanService.getMotofanBirthdays();
+		if (!StringUtils.isEmptyOrWhitespace(res)) {
+			answer += "\n\n" + res;
+		}
+		return answer;
 	}
 
 	private void sendNewMotofanPosts(List<String> motofanPosts, List<BotSubMotofanEntity> subscribers) {

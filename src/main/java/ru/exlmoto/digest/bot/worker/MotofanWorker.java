@@ -83,7 +83,7 @@ public class MotofanWorker {
 		}
 	}
 
-	@Scheduled(cron = "${cron.bot.motofan.birthdays}")
+	@Scheduled(cron = "${cron.bot.motofan.birthday}")
 	public void sendGoodMorningWithBirthdays() {
 		try {
 			long motofanChatId = config.getMotofanChatId();

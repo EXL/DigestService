@@ -38,7 +38,6 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
-import ru.exlmoto.digest.bot.worker.MorningWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.bot.worker.FlatWorker;
@@ -60,9 +59,6 @@ class ObeyControllerTest {
 
 	@MockBean
 	private DigestWorker digestWorker;
-
-	@MockBean
-	private MorningWorker morningWorker;
 
 	@MockBean
 	private CallbackQueriesWorker callbackQueriesWorker;
@@ -138,14 +134,14 @@ class ObeyControllerTest {
 	}
 
 	@Test
-	public void testObeyMorning() throws Exception {
-		helper.checkRedirect(mvc, "/obey/morning", "**/ds-auth-login");
+	public void testObeyBirthday() throws Exception {
+		helper.checkRedirect(mvc, "/obey/birthday", "**/ds-auth-login");
 	}
 
 	@Test
 	@WithMockUser
-	public void testObeyMorningAuthorized() throws Exception {
-		helper.checkRedirect(mvc, "/obey/morning", "/**/obey");
+	public void testObeyBirthdayAuthorized() throws Exception {
+		helper.checkRedirect(mvc, "/obey/birthday", "/**/obey");
 	}
 
 	@Test

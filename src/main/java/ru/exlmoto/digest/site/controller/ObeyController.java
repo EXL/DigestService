@@ -43,7 +43,6 @@ import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
-import ru.exlmoto.digest.bot.worker.MorningWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
@@ -96,7 +95,6 @@ public class ObeyController {
 	private final AvatarWorker avatarWorker;
 	private final MotofanWorker motofanWorker;
 	private final CallbackQueriesWorker callbackQueriesWorker;
-	private final MorningWorker morningWorker;
 	private final CovidWorker covidWorker;
 	private final FlatWorker flatWorker;
 	private final ExchangeService exchange;
@@ -121,7 +119,6 @@ public class ObeyController {
 	                      AvatarWorker avatarWorker,
 	                      MotofanWorker motofanWorker,
 	                      CallbackQueriesWorker callbackQueriesWorker,
-	                      MorningWorker morningWorker,
 	                      CovidWorker covidWorker,
 	                      FlatWorker flatWorker,
 	                      ExchangeService exchange,
@@ -133,7 +130,6 @@ public class ObeyController {
 		this.avatarWorker = avatarWorker;
 		this.motofanWorker = motofanWorker;
 		this.callbackQueriesWorker = callbackQueriesWorker;
-		this.morningWorker = morningWorker;
 		this.covidWorker = covidWorker;
 		this.flatWorker = flatWorker;
 		this.exchange = exchange;
@@ -200,9 +196,9 @@ public class ObeyController {
 		return "redirect:/obey";
 	}
 
-	@RequestMapping(path = "/obey/morning")
-	public String obeyMorning() {
-		morningWorker.sendGoodMorning();
+	@RequestMapping(path = "/obey/birthday")
+	public String obeyBirthday() {
+		motofanWorker.sendGoodMorningWithBirthdays();
 
 		return "redirect:/obey";
 	}

@@ -24,6 +24,8 @@
 
 - Fixed some typos in text resources and code.
 
+- Moved to new hosting by Oracle Cloud.
+
 ## v1.0.0, 25-May-2020, First Public Release:
 
 - Now Digest Service source code is available on GitHub, GitLab, and Bitbucket resources.

@@ -1,5 +1,7 @@
 ## v1.0.1, Upcoming Release:
 
+- Added birthdays of MotoFan.Ru forum users to the morning report.
+
 - Added integration with Quake II Dedicated Server.
 
 - Added prerended COVID-19 reports (suggestion by @ZorgeR).

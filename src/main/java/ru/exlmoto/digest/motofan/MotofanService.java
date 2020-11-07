@@ -34,6 +34,8 @@ import org.thymeleaf.util.ArrayUtils;
 
 import ru.exlmoto.digest.motofan.generator.PostTgHtmlGenerator;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
+import ru.exlmoto.digest.util.Answer;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.util.ArrayList;
@@ -48,15 +50,17 @@ public class MotofanService {
 
 	private final RestHelper rest;
 	private final PostTgHtmlGenerator htmlGenerator;
+	private final FilterHelper filter;
 
 	private Long timestamp = 0L;
 	private Long topic = 0L;
 	private String author = null;
 	private String text = null;
 
-	public MotofanService(RestHelper rest, PostTgHtmlGenerator htmlGenerator) {
+	public MotofanService(RestHelper rest, PostTgHtmlGenerator htmlGenerator, FilterHelper filter) {
 		this.rest = rest;
 		this.htmlGenerator = htmlGenerator;
+		this.filter = filter;
 	}
 
 	public MotofanPost[] getMotofanPostObjects() {
@@ -102,6 +106,18 @@ public class MotofanService {
 			} else {
 				return getLastMotofanPostsAux(motofanPosts);
 			}
+		}
+		return null;
+	}
+
+	public String getMotofanBirthdays() {
+		log.info("=> Start receive MotoFan.Ru user birthdays.");
+		Answer<String> res = rest.getRestResponse(filter.getSiteUrlFromLink(lastPostUrl));
+		if (res.ok()) {
+			log.info("=> End receive MotoFan.Ru user birthdays.");
+			return htmlGenerator.generateMotofanBirthdaysReport(res.answer());
+		} else {
+			log.info(String.format("=> Cannot get MotoFan.Ru user birthdays, error: '%s'.", res.error()));
 		}
 		return null;
 	}

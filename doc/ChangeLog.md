@@ -2,7 +2,7 @@
 
 - Added birthdays of MotoFan.Ru forum users to the morning report.
 
-- Added integration with Quake II Dedicated Server.
+- Added integration with some Game Servers like Quake II.
 
 - Added prerended COVID-19 reports (suggestion by @ZorgeR).
 

@@ -32,7 +32,10 @@ public class BotConfiguration {
 	private String token;
 	private String stickerCoffee;
 	private boolean urlGameImage;
+	private boolean urlGameUseOwnName;
 	private String urlGame;
+	private String urlGameQuake2;
+	private String urlGameQuake3;
 	private String[] admins;
 	private int maxUpdates;
 	private int maxSendLength;
@@ -85,12 +88,36 @@ public class BotConfiguration {
 		this.urlGameImage = urlGameImage;
 	}
 
+	public boolean isUrlGameUseOwnName() {
+		return urlGameUseOwnName;
+	}
+
+	public void setUrlGameUseOwnName(boolean urlGameUseOwnName) {
+		this.urlGameUseOwnName = urlGameUseOwnName;
+	}
+
 	public String getUrlGame() {
 		return urlGame;
 	}
 
 	public void setUrlGame(String urlGame) {
 		this.urlGame = urlGame;
+	}
+
+	public String getUrlGameQuake2() {
+		return urlGameQuake2;
+	}
+
+	public void setUrlGameQuake2(String urlGameQuake2) {
+		this.urlGameQuake2 = urlGameQuake2;
+	}
+
+	public String getUrlGameQuake3() {
+		return urlGameQuake3;
+	}
+
+	public void setUrlGameQuake3(String urlGameQuake3) {
+		this.urlGameQuake3 = urlGameQuake3;
 	}
 
 	public String[] getAdmins() {

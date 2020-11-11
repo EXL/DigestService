@@ -258,9 +258,17 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 * *bot.url-game-image* - Enable or disable representing `url-game` as image API link.
 
-    Note: If this option disabled the `url-game` link will be interpreted as raw game servers service.
+    Note: If this option disabled the `url-game` link will be ignoring for real game server addresses below.
 
-* *bot.url-game* - Set URL to raw game servers or image API service.
+* *bot.url-game-use-own-name* - Enable or disable representing game server hostnames as their public names instead of host addresses.
+
+    Note: Option `bot.url-game-image` must be disabled for using this setting.
+
+* *bot.url-game* - Set URL to image API service.
+
+* *bot.url-game-quake2* - Set Quake II game server host link.
+
+* *bot.url-game-quake3* - Set Quake III game server host link.
 
 * *bot.motofan-chat-id* - Set main chat ID via environment variable.
 

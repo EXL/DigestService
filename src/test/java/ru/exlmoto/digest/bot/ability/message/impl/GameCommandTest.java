@@ -74,8 +74,17 @@ class GameCommandTest {
 	public void testParseInfoQuake2() {
 		System.out.println("=== START testParseInfoQuake2() ===");
 		String answer = "����info\n   q2.exlmoto.ru    base1  0/ 4";
-		System.out.println(command.parseInfoQuake2(locale, answer));
+		System.out.println(command.parseInfoQuake2(config.getUrlGameQuake2(), answer, locale));
 		System.out.println("=== END testParseInfoQuake2() ===");
+	}
+
+	@Test
+	public void testParseInfoQuake3() {
+		System.out.println("=== START testParseInfoQuake3() ===");
+		String answer = "����infoResponse\n\\game\\osp\\punkbuster\\0\\pure\\0\\gametype\\0\\sv_maxclients\\6" +
+			"\\clients\\0\\mapname\\q3dm17\\hostname\\Quake 3 OSP\\protocol\\68\\challenge\\68";
+		System.out.println(command.parseInfoQuake3(config.getUrlGameQuake3(), answer, locale));
+		System.out.println("=== END testParseInfoQuake3() ===");
 	}
 
 	@Test
@@ -86,6 +95,9 @@ class GameCommandTest {
 		System.out.println(command.generateTable(locale, tokens));
 
 		tokens = new String[] { "q2.exlmoto.ru", "aaaaaaaaabase1", "0/128" };
+		System.out.println(command.generateTable(locale, tokens));
+
+		tokens = new String[] { "Quake II Super Server 4", "aaaaaaaaabase1", "0/128" };
 		System.out.println(command.generateTable(locale, tokens));
 
 		System.out.println("=== END testGenerateTable() ===");

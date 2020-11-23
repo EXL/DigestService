@@ -110,7 +110,7 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 
     sudo -i -u postgres
 
-    vim data/pg_hba.conf # Replace "ident" to "md5".
+    vim data/pg_hba.conf # Replace "ident" to "md5" or "scram-sha-256" on modern (=>10.x) PostgreSQL versions.
 
     createdb digest
     createuser --interactive # user, n, n, n.

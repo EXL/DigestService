@@ -64,14 +64,14 @@ public class MotofanPost {
 	public boolean isValid() {
 		return
 			timestamp != null &&
-			!StringUtils.isEmpty(time) &&
+			StringUtils.hasLength(time) &&
 			topic != null &&
 			post != null &&
-			!StringUtils.isEmpty(topic_link) &&
-			!StringUtils.isEmpty(post_link) &&
-			!StringUtils.isEmpty(author) &&
-			!StringUtils.isEmpty(title) &&
-			!StringUtils.isEmpty(text);
+			StringUtils.hasLength(topic_link) &&
+			StringUtils.hasLength(post_link) &&
+			StringUtils.hasLength(author) &&
+			StringUtils.hasLength(title) &&
+			StringUtils.hasLength(text);
 	}
 
 	public Long getTimestamp() {

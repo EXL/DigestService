@@ -37,10 +37,10 @@ public class Chart {
 
 	public boolean isValid() {
 		return
-			!StringUtils.isEmpty(title) &&
-			!StringUtils.isEmpty(desc) &&
-			!StringUtils.isEmpty(button) &&
-			!StringUtils.isEmpty(url);
+			StringUtils.hasLength(title) &&
+			StringUtils.hasLength(desc) &&
+			StringUtils.hasLength(button) &&
+			StringUtils.hasLength(url);
 	}
 
 	public Chart() {

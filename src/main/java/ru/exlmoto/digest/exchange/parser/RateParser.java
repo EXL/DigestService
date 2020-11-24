@@ -48,7 +48,7 @@ public abstract class RateParser {
 	protected boolean mirror = false;
 
 	public boolean parse(String content) {
-		if (!StringUtils.isEmpty(content)) {
+		if (StringUtils.hasLength(content)) {
 			try {
 				return parseDocument(Jsoup.parse(content));
 			} catch (Exception e) {

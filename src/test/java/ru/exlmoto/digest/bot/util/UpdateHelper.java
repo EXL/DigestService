@@ -60,16 +60,16 @@ public class UpdateHelper {
 	                                       int offset1, int length1, int offset2, int length2) {
 		MessageEntity[] entities = new MessageEntity[2];
 
-		MessageEntity entity1 = new MessageEntity();
-		setField(entity1, "type", type1);
-		setField(entity1, "offset", offset1);
-		setField(entity1, "length", length1);
+		MessageEntity entity1 = new MessageEntity(type1, offset1, length1);
+//		setField(entity1, "type", type1);
+//		setField(entity1, "offset", offset1);
+//		setField(entity1, "length", length1);
 		entities[0] = entity1;
 
-		MessageEntity entity2 = new MessageEntity();
-		setField(entity2, "type", type2);
-		setField(entity2, "offset", offset2);
-		setField(entity2, "length", length2);
+		MessageEntity entity2 = new MessageEntity(type2, offset2, length2);
+//		setField(entity2, "type", type2);
+//		setField(entity2, "offset", offset2);
+//		setField(entity2, "length", length2);
 		entities[1] = entity2;
 
 		return entities;
@@ -77,10 +77,10 @@ public class UpdateHelper {
 
 	private MessageEntity[] getOneEntity(MessageEntity.Type type, int offset, int length) {
 		MessageEntity[] entities = new MessageEntity[1];
-		MessageEntity entity = new MessageEntity();
-		setField(entity, "type", type);
-		setField(entity, "offset", offset);
-		setField(entity, "length", length);
+		MessageEntity entity = new MessageEntity(type, offset, length);
+//		setField(entity, "type", type);
+//		setField(entity, "offset", offset);
+//		setField(entity, "length", length);
 		entities[0] = entity;
 		return entities;
 	}
@@ -143,15 +143,15 @@ public class UpdateHelper {
 	}
 
 	public User getUser(String username) {
-		User user = new User();
-		setField(user, "id", 100);
+		User user = new User(100);
+//		setField(user, "id", 100);
 		setField(user, "username", username);
 		return user;
 	}
 
 	public User getAdmin(String username) {
-		User user = new User();
-		setField(user, "id", 87336977);
+		User user = new User(87336977);
+//		setField(user, "id", 87336977);
 		setField(user, "username", username);
 		return user;
 	}
@@ -188,13 +188,13 @@ public class UpdateHelper {
 		}
 		setField(callbackQuery, "data", data);
 
-		User user = new User();
+		User user = new User((userId != null) ? userId : 42);
+//		if (userId != null) {
+//			setField(user, "id", userId);
+//		} else {
+//			setField(user, "id", 42);
+//		}
 		setField(user, "username", username);
-		if (userId != null) {
-			setField(user, "id", userId);
-		} else {
-			setField(user, "id", 42);
-		}
 		setField(callbackQuery, "from", user);
 
 		return callbackQuery;

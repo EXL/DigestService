@@ -52,7 +52,7 @@ public class SiteConfiguration {
 	private String obeyDebugPassword;
 	private String obeyDebugRole;
 
-	@Bean
+	@Bean("localeResolverCookies")
 	public LocaleResolver localeResolver() {
 		final CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
 		cookieLocaleResolver.setDefaultLocale(Locale.forLanguageTag("ru"));

@@ -26,6 +26,7 @@ package ru.exlmoto.digest.site.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -45,9 +46,11 @@ import ru.exlmoto.digest.site.util.SiteHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.Locale;
+import java.util.Optional;
 
 @Controller
 public class SiteController {
@@ -166,10 +169,15 @@ public class SiteController {
 	}
 
 	@RequestMapping(path = "/language")
-	public String language(@RequestParam(name = "tag", defaultValue = "ru") String tag, HttpServletResponse response) {
-		response.addCookie(new Cookie("lang", tag));
+	public String language(@RequestParam(name = "tag", defaultValue = "ru") String tag,
+	                       HttpServletRequest request, HttpServletResponse response) {
+		Cookie langCookie = new Cookie("lang", tag);
+		langCookie.setPath("/");
+		response.addCookie(langCookie);
 
-		return "redirect:/";
+		return "redirect:" + Optional.ofNullable(request.getHeader(HttpHeaders.HOST)).map((host) ->
+			Optional.ofNullable(request.getHeader(HttpHeaders.REFERER)).map((referer) ->
+				referer.substring(referer.lastIndexOf(host) + host.length()))).map(Optional::get).orElse("/");
 	}
 
 	@RequestMapping(path = "/users")

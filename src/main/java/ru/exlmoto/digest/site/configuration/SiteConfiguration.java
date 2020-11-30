@@ -25,11 +25,6 @@
 package ru.exlmoto.digest.site.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-
-import java.util.Locale;
 
 @ConfigurationProperties(prefix = "site")
 public class SiteConfiguration {
@@ -51,14 +46,6 @@ public class SiteConfiguration {
 	private boolean obeyProtection;
 	private String obeyDebugPassword;
 	private String obeyDebugRole;
-
-	@Bean("localeResolverCookies")
-	public LocaleResolver localeResolver() {
-		final CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-		cookieLocaleResolver.setDefaultLocale(Locale.forLanguageTag("ru"));
-		cookieLocaleResolver.setCookieName("lang");
-		return cookieLocaleResolver;
-	}
 
 	public String getAddress() {
 		return address;

@@ -26,6 +26,14 @@
 
 - Moved to new hosting by Oracle Cloud.
 
+- Updated libraries and frameworks:
+    - Java 1.8.0_252 => 1.8.0_272
+    - Gradle 6.3 => 6.6.3
+    - Spring Boot 2.3.0 => 2.4.0
+    - com.github.pengrad:java-telegram-bot-api 4.8.0 => 5.0.0
+    - org.yaml:snakeyaml 1.26 => 1.27
+    - org.owasp.encoder:encoder 1.2.2 => 1.2.3
+
 ## v1.0.0, 25-May-2020, First Public Release:
 
 - Now Digest Service source code is available on GitHub, GitLab, and Bitbucket resources.
@@ -43,3 +51,27 @@
 - Added a difference for each of the currencies in quotes for the **/rate** command (suggestion by @baaaaat).
 
 - Added a real estate reports for CIAN and N1 resources.
+
+### Technical Notes:
+
+```bash
+git log --pretty=oneline --abbrev-commit | wc -l
+921
+
+cloc src/main/
+     166 text files.
+     166 unique files.
+       5 files ignored.
+
+github.com/AlDanial/cloc v 1.82  T=1.76 s (91.5 files/s, 9596.9 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Java                           138           2303           3252           9530
+HTML                            19              0             62           1021
+CSS                              3              7              9            538
+YAML                             1              0              0            160
+-------------------------------------------------------------------------------
+SUM:                           161           2310           3323          11249
+-------------------------------------------------------------------------------
+```

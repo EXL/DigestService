@@ -175,9 +175,7 @@ public class SiteController {
 		langCookie.setPath("/");
 		response.addCookie(langCookie);
 
-		return "redirect:" + Optional.ofNullable(request.getHeader(HttpHeaders.HOST)).map((host) ->
-			Optional.ofNullable(request.getHeader(HttpHeaders.REFERER)).map((referer) ->
-				referer.substring(referer.lastIndexOf(host) + host.length()))).map(Optional::get).orElse("/");
+		return "redirect:" + Optional.ofNullable(request.getHeader(HttpHeaders.REFERER)).orElse("/");
 	}
 
 	@RequestMapping(path = "/users")

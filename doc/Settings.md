@@ -137,7 +137,7 @@ See [application.properties](../src/main/resources/application.properties) file 
     site.address=${HOST}
     ```
 
-* *site.page-posts* - Set digest count per page.
+* *site.page-posts* - Set digest count per one page.
 
 * *site.page-deep* - Set digest pager width for.
 
@@ -290,9 +290,9 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 * *bot.max-digest-length* - Set maximum length of digest sent by user.
 
-* *bot.show-page-posts* - Set digest count per page for `/show` command.
+* *bot.show-page-posts* - Set digest count per one page for `/show` command.
 
-* *bot.digest-page-posts* - Set digest count per page for `/digest` command.
+* *bot.digest-page-posts* - Set digest count per one page for `/digest` command.
 
 * *bot.digest-page-deep* - Set digest pager width for `/show` and `/digest` commands.
 
@@ -300,7 +300,7 @@ See [application.properties](../src/main/resources/application.properties) file 
 
     Note: This setting used for digests of other chats. Digests in the main chat stored permanently.
 
-    * `45` seconds for debug.
+    * `45` seconds for a debug.
     * `43200` seconds for 12-hours.
     * `86400` seconds for 24-hours.
     * `172800` seconds for 48-hours.
@@ -353,9 +353,9 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 This section contains API links for obtaining exchange rates data.
 
-### COVID Service Options
+### COVID-19 Service Options
 
-* *covid.url* - Set the main URL for the COVID API service.
+* *covid.url* - Set the main URL for the COVID-19 API service.
 
 * *covid.text.to.image* - Use images instead of text for Telegram bot reports.
 

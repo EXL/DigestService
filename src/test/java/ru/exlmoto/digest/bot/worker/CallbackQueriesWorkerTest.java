@@ -52,7 +52,7 @@ class CallbackQueriesWorkerTest {
 		assertEquals(0L, worker.getDelayForChat(1L));
 		assertEquals(config.getCooldown(), worker.getDelayForChat(0L));
 		assertEquals(config.getCooldown(), worker.getDelayForChat(1L));
-		Thread.sleep((config.getCooldown() + 1) * 1000);
+		Thread.sleep((config.getCooldown() + 1) * 1000L);
 		assertEquals(0L, worker.getDelayForChat(0L));
 		assertEquals(0L, worker.getDelayForChat(1L));
 	}
@@ -62,7 +62,7 @@ class CallbackQueriesWorkerTest {
 		assertEquals(0, worker.getDelay());
 		worker.delayCooldown();
 		assertEquals(config.getCooldown(), worker.getDelay());
-		Thread.sleep((config.getCooldown() + 1) * 1000);
+		Thread.sleep((config.getCooldown() + 1) * 1000L);
 		assertEquals(0, worker.getDelay());
 	}
 

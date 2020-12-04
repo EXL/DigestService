@@ -96,7 +96,7 @@ public class DigestWorker {
 			if (!subscribers.isEmpty()) {
 				new Thread(() -> subscribers.forEach(subscriber -> {
 					try {
-						Thread.sleep(config.getMessageDelay() * 1000);
+						Thread.sleep(config.getMessageDelay() * 1000L);
 					} catch (InterruptedException ie) {
 						throw new RuntimeException(ie);
 					}

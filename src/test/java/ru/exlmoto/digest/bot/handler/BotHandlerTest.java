@@ -187,9 +187,9 @@ class BotHandlerTest {
 	public void testOnCallbackQuery() throws InterruptedException {
 		System.out.println("=== START testOnCallbackQuery() ===");
 		handler.onCallbackQuery(update.getCallbackQueryUsername("show_page_1", "anyone"));
-		Thread.sleep(config.getCooldown() * 1000);
+		Thread.sleep(config.getCooldown() * 1000L);
 		handler.onCallbackQuery(update.getCallbackQueryUsername("show_page_2", "exlmoto"));
-		Thread.sleep(config.getCooldown() * 1000);
+		Thread.sleep(config.getCooldown() * 1000L);
 		System.out.println("=== END testOnCallbackQuery() ===");
 	}
 
@@ -197,14 +197,14 @@ class BotHandlerTest {
 	public void testOnKeyboard() throws InterruptedException {
 		System.out.println("=== START testOnKeyboard() ===");
 		handler.onKeyboard(update.getCallbackQueryUsername("unknown", "anyone"));
-		Thread.sleep(config.getCooldown() * 1000);
+		Thread.sleep(config.getCooldown() * 1000L);
 		handler.onKeyboard(update.getCallbackQueryUsername("digest", "anyone"));
-		Thread.sleep(config.getCooldown() * 1000);
+		Thread.sleep(config.getCooldown() * 1000L);
 
 		handler.onKeyboard(update.getCallbackQueryUsername("digest_1", "anyone"));
-		Thread.sleep(config.getCooldown() * 1000);
+		Thread.sleep(config.getCooldown() * 1000L);
 		handler.onKeyboard(update.getCallbackQueryUsername("chart_usd_rub", "anyone"));
-		Thread.sleep(config.getCooldown() * 1000);
+		Thread.sleep(config.getCooldown() * 1000L);
 		System.out.println("=== END testOnKeyboard() ===");
 	}
 

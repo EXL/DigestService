@@ -62,17 +62,11 @@ public class GreetingKeyboard extends KeyboardAbility {
 	public InlineKeyboardMarkup getMarkup(boolean status) {
 		return (status) ?
 			new InlineKeyboardMarkup(
-				new InlineKeyboardButton[] {
-					new InlineKeyboardButton(locale.i18n("bot.command.greeting.button.on"))
-						.callbackData(Keyboard.greeting.withName() + Greeting.on)
-				}
-			) :
+				new InlineKeyboardButton(locale.i18n("bot.command.greeting.button.on"))
+					.callbackData(Keyboard.greeting.withName() + Greeting.on)) :
 			new InlineKeyboardMarkup(
-				new InlineKeyboardButton[] {
-					new InlineKeyboardButton(locale.i18n("bot.command.greeting.button.off"))
-						.callbackData(Keyboard.greeting.withName() + Greeting.off)
-				}
-			);
+				new InlineKeyboardButton(locale.i18n("bot.command.greeting.button.off"))
+					.callbackData(Keyboard.greeting.withName() + Greeting.off));
 	}
 
 	@Override

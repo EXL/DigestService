@@ -111,7 +111,7 @@ public class MotofanWorker {
 				chatId, motofanPosts.size(), subscribers.size()));
 			sender.sendHtml(chatId, post);
 			try {
-				Thread.sleep(config.getMessageDelay() * 1000);
+				Thread.sleep(config.getMessageDelay() * 1000L);
 			} catch (InterruptedException ie) {
 				throw new RuntimeException(ie);
 			}

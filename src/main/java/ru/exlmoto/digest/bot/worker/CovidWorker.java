@@ -132,7 +132,7 @@ public class CovidWorker {
 				sender.sendHtml(chatId, (String)report);
 			}
 			try {
-				Thread.sleep(config.getMessageDelay() * 1000);
+				Thread.sleep(config.getMessageDelay() * 1000L);
 			} catch (InterruptedException ie) {
 				throw new RuntimeException(ie);
 			}

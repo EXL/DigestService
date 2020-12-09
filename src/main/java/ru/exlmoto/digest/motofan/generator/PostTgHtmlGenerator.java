@@ -39,6 +39,9 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.Locale;
 
 @Component
@@ -82,12 +85,20 @@ public class PostTgHtmlGenerator {
 				int count = Integer.parseInt(cell.getElementsByTag("b").first().text());
 				String cellString = cell.toString();
 				String rawString = filter.removeHtmlTags(cellString.substring(cellString.indexOf("<a href")));
-				String birthdays = "• " + filter.strip(rawString.replaceAll("\\(", " (")).replaceAll("•", "\n•");
+				StringBuilder birthdays = new StringBuilder();
+				String birthdaysString = "• " + filter.strip(rawString).replaceAll("•", "\n•");
+				BufferedReader reader = new BufferedReader(new StringReader(birthdaysString));
+				String line = reader.readLine();
+				while (line != null) {
+					birthdays.append(filter.replaceLast(line, "(", " ("));
+					birthdays.append("\n");
+					line = reader.readLine();
+				}
 				return String.format(locale.i18n("motofan.birthday"),
 					filter.getDateFromTimeStamp(dateFormat, Locale.forLanguageTag(lang), filter.getCurrentUnixTime()),
-						"<pre>\n" + birthdays + "\n</pre>", count);
-			} catch (RuntimeException re) {
-				log.error("Cannot parse MotoFan.Ru page.", re);
+						"<pre>\n" + birthdays.toString().trim() + "\n</pre>", count);
+			} catch (RuntimeException | IOException re_and_ioe) {
+				log.error("Cannot parse MotoFan.Ru page.", re_and_ioe);
 			}
 		}
 		return null;

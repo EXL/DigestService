@@ -178,4 +178,14 @@ public class FilterHelper {
 			return link;
 		}
 	}
+
+	public String replaceLast(String original, String what, String replacement) {
+		if (!StringUtils.isEmptyOrWhitespace(original) && what != null && replacement != null) {
+			final int pos = original.lastIndexOf(what);
+			if (pos != -1) {
+				return original.substring(0, pos) + replacement + original.substring(pos + what.length());
+			}
+		}
+		return original;
+	}
 }

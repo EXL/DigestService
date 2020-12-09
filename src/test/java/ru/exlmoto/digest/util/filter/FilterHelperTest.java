@@ -248,4 +248,17 @@ class FilterHelperTest {
 
 		assertEquals("Malfunction URL", filter.getSiteUrlFromLink("Malfunction URL"));
 	}
+
+	@Test
+	public void testReplaceLast() {
+		assertNull(filter.replaceLast(null, null, null));
+		assertEquals(" ", filter.replaceLast(" ", null, null));
+		assertNull(filter.replaceLast(null, "(", " ("));
+		assertEquals("", filter.replaceLast("", "(", " ("));
+		assertEquals(" ", filter.replaceLast(" ", "(", " ("));
+		assertEquals("test", filter.replaceLast("test", "(", " ("));
+		assertEquals("test (", filter.replaceLast("test(", "(", " ("));
+		assertEquals("J()KER (28)", filter.replaceLast("J()KER(28)", "(", " ("));
+		assertEquals("* J()KER (28)", filter.replaceLast("* J()KER(28)", "(", " ("));
+	}
 }

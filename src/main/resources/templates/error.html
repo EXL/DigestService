@@ -19,7 +19,7 @@
 					<span th:text="${status}"></span>
 					<span th:text="${error}"></span>
 				</p>
-				<p>
+				<p th:if="${T(org.springframework.util.StringUtils).hasText(message)}">
 					<span th:text="#{site.error.message}">Message:</span>
 					<span th:text="${message}"></span>
 				</p>

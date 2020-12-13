@@ -3,6 +3,10 @@
 	<head th:fragment="data(title,page)">
 		<title th:text="${title}">Digest Service Title</title>
 		<meta charset="UTF-8"/>
+		<meta property="og:title" th:content="#{site.og.title}"/>
+		<meta property="og:image" content="icon/apple-touch-icon.png"/>
+		<meta property="og:site_name" th:content="#{site.og.title}"/>
+		<meta property="og:description" th:content="#{site.og.description}"/>
 		<link rel="apple-touch-icon" sizes="180x180" href="../static/icon/apple-touch-icon.png" th:href="@{/icon/apple-touch-icon.png}">
 		<link rel="icon" type="image/png" sizes="32x32" href="../static/icon/favicon-32x32.png" th:href="@{/icon/favicon-32x32.png}">
 		<link rel="icon" type="image/png" sizes="16x16" href="../static/icon/favicon-16x16.png" th:href="@{/icon/favicon-16x16.png}">

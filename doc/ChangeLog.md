@@ -28,9 +28,9 @@
 
 - Updated libraries and frameworks:
     - Java 1.8.0_252 => 1.8.0_272
-    - Gradle 6.3 => 6.6.3
-    - Spring Boot 2.3.0 => 2.4.0
-    - com.github.pengrad:java-telegram-bot-api 4.8.0 => 5.0.0
+    - Gradle 6.3 => 6.7.1
+    - Spring Boot 2.3.0 => 2.4.1
+    - com.github.pengrad:java-telegram-bot-api 4.8.0 => 5.0.1
     - org.yaml:snakeyaml 1.26 => 1.27
     - org.owasp.encoder:encoder 1.2.2 => 1.2.3
 

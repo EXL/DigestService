@@ -1,4 +1,4 @@
-## v1.0.1, Upcoming Release:
+## v1.0.1, 27-Dec-2020, Patch Release:
 
 - Added birthdays of MotoFan.Ru forum users to the morning report.
 
@@ -33,6 +33,30 @@
     - com.github.pengrad:java-telegram-bot-api 4.8.0 => 5.0.1
     - org.yaml:snakeyaml 1.26 => 1.27
     - org.owasp.encoder:encoder 1.2.2 => 1.2.3
+
+### Technical Notes:
+
+```bash
+git log --pretty=oneline --abbrev-commit | wc -l
+1023
+
+cloc src/main/
+     171 text files.
+     171 unique files.
+       5 files ignored.
+
+github.com/AlDanial/cloc v 1.82  T=0.51 s (327.1 files/s, 34986.6 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Java                           143           2426           3390          10132
+HTML                            19              0             62           1030
+CSS                              3              7              9            538
+YAML                             1              0              0            160
+-------------------------------------------------------------------------------
+SUM:                           166           2433           3461          11860
+-------------------------------------------------------------------------------
+```
 
 ## v1.0.0, 25-May-2020, First Public Release:
 

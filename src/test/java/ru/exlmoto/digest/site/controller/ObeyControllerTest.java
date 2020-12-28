@@ -41,6 +41,7 @@ import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.bot.worker.FlatWorker;
+import ru.exlmoto.digest.bot.worker.RateWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.service.DatabaseService;
 
@@ -74,6 +75,9 @@ class ObeyControllerTest {
 
 	@MockBean
 	private FlatWorker flatWorker;
+
+	@MockBean
+	private RateWorker rateWorker;
 
 	@MockBean
 	private ExchangeService exchangeService;
@@ -403,6 +407,7 @@ class ObeyControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	public void testObeySubRateAuthorized() throws Exception {
 		helper.validateHtmlUtf8(mvc, "/obey/sub-rate", "!DOCTYPE");
 	}

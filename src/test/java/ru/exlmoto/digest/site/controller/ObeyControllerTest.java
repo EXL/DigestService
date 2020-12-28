@@ -460,6 +460,17 @@ class ObeyControllerTest {
 	}
 
 	@Test
+	public void testObeyExchangeSend() throws Exception {
+		helper.checkRedirect(mvc, "/obey/exchange/send", "**/ds-auth-login");
+	}
+
+	@Test
+	@WithMockUser
+	public void testObeyExchangeSendAuthorized() throws Exception {
+		helper.checkRedirect(mvc, "/obey/exchange/send", "/**/obey/sub-rate");
+	}
+
+	@Test
 	public void testObeySend() throws Exception {
 		helper.checkRedirect(mvc, "/obey/send", "**/ds-auth-login");
 	}

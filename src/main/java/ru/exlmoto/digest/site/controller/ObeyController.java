@@ -47,6 +47,7 @@ import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.bot.worker.FlatWorker;
+import ru.exlmoto.digest.bot.worker.RateWorker;
 import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
@@ -98,6 +99,7 @@ public class ObeyController {
 	private final CallbackQueriesWorker callbackQueriesWorker;
 	private final CovidWorker covidWorker;
 	private final FlatWorker flatWorker;
+	private final RateWorker rateWorker;
 	private final ExchangeService exchange;
 	private final BotSender sender;
 	private final ImageHelper rest;
@@ -122,6 +124,7 @@ public class ObeyController {
 	                      CallbackQueriesWorker callbackQueriesWorker,
 	                      CovidWorker covidWorker,
 	                      FlatWorker flatWorker,
+	                      RateWorker rateWorker,
 	                      ExchangeService exchange,
 	                      BotSender sender, ImageHelper rest, SiteConfiguration config, BotConfiguration botConfig) {
 		this.helper = helper;
@@ -133,6 +136,7 @@ public class ObeyController {
 		this.callbackQueriesWorker = callbackQueriesWorker;
 		this.covidWorker = covidWorker;
 		this.flatWorker = flatWorker;
+		this.rateWorker = rateWorker;
 		this.exchange = exchange;
 		this.sender = sender;
 		this.rest = rest;
@@ -496,6 +500,13 @@ public class ObeyController {
 		exchange.updateAllRates();
 
 		return "redirect:/obey/exchange";
+	}
+
+	@RequestMapping(path = "/obey/exchange/send")
+	public String obeyExchangeSend() {
+		rateWorker.sendExchangeRatesToSubs();
+
+		return "redirect:/obey/sub-rate";
 	}
 
 	@RequestMapping(path = "/obey/send")

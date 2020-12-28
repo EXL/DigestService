@@ -43,6 +43,7 @@ import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
 import ru.exlmoto.digest.bot.worker.FlatWorker;
+import ru.exlmoto.digest.bot.worker.RateWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -59,6 +60,7 @@ public class DebugCommand extends MessageAdminAbility {
 	private final CovidWorker covidWorker;
 	private final CallbackQueriesWorker callbackQueriesWorker;
 	private final FlatWorker flatWorker;
+	private final RateWorker rateWorker;
 
 	public DebugCommand(BotTelegram telegram,
 	                    BotConfiguration config,
@@ -68,7 +70,8 @@ public class DebugCommand extends MessageAdminAbility {
 	                    DigestWorker digestWorker,
 	                    CovidWorker covidWorker,
 	                    CallbackQueriesWorker callbackQueriesWorker,
-	                    FlatWorker flatWorker) {
+	                    FlatWorker flatWorker,
+	                    RateWorker rateWorker) {
 		this.telegram = telegram;
 		this.config = config;
 		this.exchangeService = exchangeService;
@@ -78,10 +81,12 @@ public class DebugCommand extends MessageAdminAbility {
 		this.covidWorker = covidWorker;
 		this.callbackQueriesWorker = callbackQueriesWorker;
 		this.flatWorker = flatWorker;
+		this.rateWorker = rateWorker;
 	}
 
 	private enum Option {
 		VRates,
+		VRatesSub,
 		VPosts,
 		VShredder,
 		VAvatars,
@@ -102,6 +107,7 @@ public class DebugCommand extends MessageAdminAbility {
 		if (arguments.length == 2) {
 			switch (checkOption(arguments[1])) {
 				case VRates: { text = processRates(locale); break; }
+				case VRatesSub: { text = processSubRates(locale); break; }
 				case VPosts: { text = processPosts(locale); break; }
 				case VShredder: { text = processShredder(locale); break; }
 				case VAvatars: { text = processAvatars(locale); break; }
@@ -162,6 +168,11 @@ public class DebugCommand extends MessageAdminAbility {
 
 	private String processFlat(LocaleHelper locale) {
 		flatWorker.workOnFlatReport();
+		return locale.i18n("bot.command.debug.data");
+	}
+
+	private String processSubRates(LocaleHelper locale) {
+		rateWorker.sendExchangeRatesToSubs();
 		return locale.i18n("bot.command.debug.data");
 	}
 

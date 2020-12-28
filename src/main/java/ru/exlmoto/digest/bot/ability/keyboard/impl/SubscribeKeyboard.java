@@ -42,10 +42,11 @@ import ru.exlmoto.digest.bot.ability.keyboard.KeyboardSimpleAbility;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
-import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
+import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
+import ru.exlmoto.digest.entity.BotSubRateEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.Covid;
@@ -68,7 +69,9 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		covid_subscribe,
 		covid_unsubscribe,
 		covid_ua_subscribe,
-		covid_ua_unsubscribe
+		covid_ua_unsubscribe,
+		exchange_rate_subscribe,
+		exchange_rate_unsubscribe
 	}
 
 	private final BotHelper helper;
@@ -114,6 +117,12 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_ua_subscribe),
 				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.unsubscribe.covid.ua"))
 					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_ua_unsubscribe)
+			},
+			new InlineKeyboardButton[] {
+				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.subscribe.rate"))
+					.callbackData(Keyboard.subscribe.withName() + Subscription.exchange_rate_subscribe),
+				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.unsubscribe.rate"))
+					.callbackData(Keyboard.subscribe.withName() + Subscription.exchange_rate_unsubscribe)
 			}
 		);
 	}
@@ -164,7 +173,8 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					getSubscribeStatus(service.getMotofanSub(chatId) != null),
 					getSubscribeStatus(service.getDigestSub(chatId) != null),
 					getSubscribeStatus(service.getCovidSub(chatId) != null),
-					getSubscribeStatus(service.getCovidUaSub(chatId) != null)
+					getSubscribeStatus(service.getCovidUaSub(chatId) != null),
+					getSubscribeStatus(service.getRateSub(chatId) != null)
 				)
 			);
 		} catch (DataAccessException dae) {
@@ -222,6 +232,14 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 				}
 				case covid_ua_unsubscribe: {
 					covidUnsubscribe(messageId, chat, callbackId, sender, Covid.ua);
+					break;
+				}
+				case exchange_rate_subscribe: {
+					exchangeRateSubscribe(messageId, chat, callbackId, sender);
+					break;
+				}
+				case exchange_rate_unsubscribe: {
+					exchangeRateUnsubscribe(messageId, chat, callbackId, sender);
 					break;
 				}
 			}
@@ -330,6 +348,28 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 			case ua: {
 				return service.getCovidUaSub(chatId) != null;
 			}
+		}
+	}
+
+	private void exchangeRateSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
+		if (service.getRateSub(chatId) != null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
+		} else {
+			service.saveRateSub(new BotSubRateEntity(chatId, helper.getValidChatName(chat)));
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
+			processSubscribeStatusMessage(messageId, chat, true, sender);
+		}
+	}
+
+	private void exchangeRateUnsubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
+		if (service.getRateSub(chatId) == null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
+		} else {
+			service.deleteRateSub(chatId);
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
+			processSubscribeStatusMessage(messageId, chat, true, sender);
 		}
 	}
 }

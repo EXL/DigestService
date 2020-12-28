@@ -27,6 +27,7 @@ package ru.exlmoto.digest.bot.worker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.keyboard.impl.RateKeyboard;
@@ -54,6 +55,7 @@ public class RateWorker {
 		this.databaseService = databaseService;
 	}
 
+	@Scheduled(cron = "${cron.exchange.rates.send}")
 	public void sendExchangeRatesToSubs() {
 		databaseService.getAllRateSubs().forEach(sub -> {
 			log.info(String.format("=> Send Exchange Rates to chat '%s' with '%d' id.",

@@ -1,3 +1,7 @@
+## Upcoming Release:
+
+- Added sending daily exchange rates report.
+
 ## v1.0.1, 27-Dec-2020, Patch Release:
 
 - Added birthdays of MotoFan.Ru forum users to the morning report.

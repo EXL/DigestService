@@ -94,6 +94,10 @@ public class BotSender {
 		sendMessage(chatId, null, text, HTML, null);
 	}
 
+	public void sendMarkdown(long chatId, String text, InlineKeyboardMarkup keyboard) {
+		sendMessage(chatId, null, text, Markdown, keyboard);
+	}
+
 	public void sendSimpleToChat(long chatId, String text) {
 		sendSimpleToChat(chatId, text, null, null);
 	}

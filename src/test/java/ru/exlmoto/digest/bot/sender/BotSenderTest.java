@@ -77,6 +77,7 @@ class BotSenderTest {
 		buttons[1][1] = new InlineKeyboardButton("Button 3");
 		InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(buttons);
 		sender.replyMarkdown(0L, 0, "*Fake text*", inlineKeyboardMarkup);
+		sender.sendMarkdown(0L, "*Fake text*", inlineKeyboardMarkup);
 		sender.editMarkdown(0L, 0, "*Fake text*", inlineKeyboardMarkup);
 		sender.editMarkdown(0L, 0, "*Fake text*", null);
 		System.out.println("---");

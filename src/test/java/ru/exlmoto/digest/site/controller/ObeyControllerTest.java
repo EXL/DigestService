@@ -398,6 +398,37 @@ class ObeyControllerTest {
 	}
 
 	@Test
+	public void testObeySubRate() throws Exception {
+		helper.checkRedirect(mvc, "/obey/sub-rate", "**/ds-auth-login");
+	}
+
+	@Test
+	public void testObeySubRateAuthorized() throws Exception {
+		helper.validateHtmlUtf8(mvc, "/obey/sub-rate", "!DOCTYPE");
+	}
+
+	@Test
+	public void testObeySubRateEdit() throws Exception {
+		doNothing().when(databaseService).saveRateSub(any());
+
+		helper.checkUnauthorized(mvc, "/obey/sub-rate/edit");
+		helper.checkAuthorizedWithoutCsrf(mvc, "/obey/sub-rate/edit");
+		helper.checkAuthorizedWithCsrfRedirectParam(mvc,
+			"/obey/sub-rate/edit", "/**/obey/sub-rate",
+			"chatId", "100", "chatName", "unknown");
+	}
+
+	@Test
+	public void testObeySubRateDelete() throws Exception {
+		doNothing().when(databaseService).deleteRateSub(anyLong());
+
+		helper.checkUnauthorized(mvc, "/obey/sub-rate/delete/100");
+		helper.checkAuthorizedWithoutCsrf(mvc, "/obey/sub-rate/delete/100");
+		helper.checkAuthorizedWithCsrfRedirect(mvc,
+			"/obey/sub-rate/delete/100", "/**/obey/sub-rate");
+	}
+
+	@Test
 	public void testObeyExchange() throws Exception {
 		helper.checkRedirect(mvc, "/obey/exchange", "**/ds-auth-login");
 	}

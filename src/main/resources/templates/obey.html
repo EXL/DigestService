@@ -15,6 +15,7 @@
 					<p><a href="/obey/sub-greeting">Digest Sub Greeting</a></p>
 					<p><a href="/obey/sub-covid">Digest Sub Covid</a></p>
 					<p><a href="/obey/sub-covid-ua">Digest Sub Covid Ua</a></p>
+					<p><a href="/obey/sub-rate">Digest Sub Rate</a></p>
 					<p><a href="/obey/exchange">Exchange Rate</a></p>
 					<p><a href="/obey/member">Member</a></p>
 					<h3 th:text="#{site.obey.frame.links}">Links</h3>
@@ -121,6 +122,10 @@
 					<div th:if="${sub_covid_ua != null}">
 						<p><a href="/obey/covid/send" th:text="#{site.obey.covid.send}">Send COVID-19 Reports</a></p>
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.covid.ua},'sub-covid-ua')}"></div>
+					</div>
+					<div th:if="${sub_rate != null}">
+						<p><a href="/obey/exchange/send" th:text="#{site.obey.exchange.send}">Send Exchange Rates</a></p>
+						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.rate},'sub-rate')}"></div>
 					</div>
 					<div th:if="${exchange != null}">
 						<div th:replace="~{exchange :: exchange-form}"></div>

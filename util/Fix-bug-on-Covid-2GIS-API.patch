@@ -1,0 +1,27 @@
+From d9c126afc4f5e005ecf480d6002289be8b91c0fa Mon Sep 17 00:00:00 2001
+From: EXL <exlmotodev@gmail.com>
+Date: Sun, 3 Jan 2021 18:07:48 +0700
+Subject: [PATCH] Fix bug on Covid 2GIS API
+
+---
+ .../java/ru/exlmoto/digest/covid/parser/Covid2GisParser.java  | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/java/ru/exlmoto/digest/covid/parser/Covid2GisParser.java b/src/main/java/ru/exlmoto/digest/covid/parser/Covid2GisParser.java
+index 258e8e9..8cf50bd 100644
+--- a/src/main/java/ru/exlmoto/digest/covid/parser/Covid2GisParser.java
++++ b/src/main/java/ru/exlmoto/digest/covid/parser/Covid2GisParser.java
+@@ -178,8 +178,8 @@ public class Covid2GisParser {
+ 		Map<String, String> history = new HashMap<>();
+ 
+ 		JsonArray array = JsonParser.parseString(json).getAsJsonArray();
+-		JsonObject previous = array.get(array.size() - 2).getAsJsonObject();
+-		JsonObject last = array.get(array.size() - 1).getAsJsonObject();
++		JsonObject previous = array.get(array.size() - 3).getAsJsonObject();
++		JsonObject last = array.get(array.size() - 2).getAsJsonObject();
+ 
+ 		String last_cases = last.getAsJsonPrimitive("cases").getAsString();
+ 		String prev_cases = previous.getAsJsonPrimitive("cases").getAsString();
+-- 
+2.29.2
+

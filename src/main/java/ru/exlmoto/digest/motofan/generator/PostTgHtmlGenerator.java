@@ -86,7 +86,7 @@ public class PostTgHtmlGenerator {
 				String cellString = cell.toString();
 				String rawString = filter.removeHtmlTags(cellString.substring(cellString.indexOf("<a href")));
 				StringBuilder birthdays = new StringBuilder();
-				String birthdaysString = "• " + filter.strip(rawString).replaceAll("•", "\n•");
+				String birthdaysString = "• " + filter.strip(rawString).replaceAll(" • ", "\n• ");
 				BufferedReader reader = new BufferedReader(new StringReader(birthdaysString));
 				String line = reader.readLine();
 				while (line != null) {

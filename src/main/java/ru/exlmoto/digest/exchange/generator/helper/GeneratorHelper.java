@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ public class GeneratorHelper {
 		if (prev.compareTo(current) == 0) {
 			return null;
 		}
-		BigDecimal difference = new BigDecimal(String.format("%.2f", current.subtract(prev)));
+		BigDecimal difference = new BigDecimal(String.format("%.4f", current.subtract(prev)));
 		if (difference.signum() == 0) {
 			return null;
 		}
@@ -65,7 +65,7 @@ public class GeneratorHelper {
 	}
 
 	public String normalizeValue(BigDecimal value) {
-		final int MAX_NUMBER_SIZE = 6;
+		final int MAX_NUMBER_SIZE = 8;
 		int integers = value.precision() - value.scale();
 		if (integers <= 0) {
 			integers = 1;

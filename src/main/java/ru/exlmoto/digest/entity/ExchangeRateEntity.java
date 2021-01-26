@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,76 +46,76 @@ public class ExchangeRateEntity {
 	@Column(nullable = false)
 	private String date;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal usd;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal eur;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal byn;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal kzt;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal uah;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal rub;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal cny;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal gbp;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal gold;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal silver;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal platinum;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal palladium;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevUsd;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevEur;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevByn;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevKzt;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevUah;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevRub;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevCny;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevGbp;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevGold;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevSilver;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevPlatinum;
 
-	@Column
+	@Column(precision = 10, scale = 4)
 	private BigDecimal prevPalladium;
 
 	public int getId() {

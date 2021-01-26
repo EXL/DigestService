@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -161,7 +161,7 @@ public abstract class RateParser {
 	}
 
 	protected BigDecimal updatePrevValue(BigDecimal oldValue, BigDecimal newValue, BigDecimal prevValue) {
-		return (oldValue.setScale(2, RoundingMode.HALF_UP)
-			.compareTo(newValue.setScale(2, RoundingMode.HALF_UP)) == 0) ? prevValue : oldValue;
+		return (oldValue.setScale(4, RoundingMode.HALF_UP)
+			.compareTo(newValue.setScale(4, RoundingMode.HALF_UP)) == 0) ? prevValue : oldValue;
 	}
 }

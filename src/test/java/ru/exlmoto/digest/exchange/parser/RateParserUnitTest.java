@@ -223,6 +223,30 @@ class RateParserUnitTest {
 			new BigDecimal("75.00001"),
 			new BigDecimal("75.00002"),
 			new BigDecimal("78.4")
+		).toString(), "75.00001");
+
+		assertEquals(new BankRuParser().updatePrevValue(
+			new BigDecimal("75.000001"),
+			new BigDecimal("75.000002"),
+			new BigDecimal("78.4")
+		).toString(), "75.000001");
+
+		assertEquals(new BankRuParser().updatePrevValue(
+			new BigDecimal("75.0000001"),
+			new BigDecimal("75.0000002"),
+			new BigDecimal("78.4")
+		).toString(), "75.0000001");
+
+		assertEquals(new BankRuParser().updatePrevValue(
+			new BigDecimal("75.00000001"),
+			new BigDecimal("75.00000002"),
+			new BigDecimal("78.4")
+		).toString(), "75.00000001");
+
+		assertEquals(new BankRuParser().updatePrevValue(
+			new BigDecimal("75.000000001"),
+			new BigDecimal("75.000000002"),
+			new BigDecimal("78.4")
 		).toString(), "78.4");
 	}
 

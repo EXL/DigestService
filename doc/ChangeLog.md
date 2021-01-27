@@ -6,6 +6,8 @@
 
 - Fixed COVID-19 pre-rendered report column length.
 
+- Fixed non-string fields in JSON generators.
+
 ## v1.0.1, 27-Dec-2020, Patch Release:
 
 - Added birthdays of MotoFan.Ru forum users to the morning report.

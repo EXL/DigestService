@@ -2,13 +2,17 @@
 
 - Added sending daily exchange rates report.
 
+- Fixed and increased exchange rates precision (suggestion by @baaaaat).
+
+- Fixed COVID-19 pre-rendered report column length.
+
 ## v1.0.1, 27-Dec-2020, Patch Release:
 
 - Added birthdays of MotoFan.Ru forum users to the morning report.
 
 - Added integration with some Game Servers like Quake II.
 
-- Added prerended COVID-19 reports (suggestion by @ZorgeR).
+- Added pre-rendered COVID-19 reports (suggestion by @ZorgeR).
 
 - Added useful for fixing typos digest editing feature.
 

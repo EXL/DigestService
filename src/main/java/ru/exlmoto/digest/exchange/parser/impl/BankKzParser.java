@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -82,7 +82,7 @@ public class BankKzParser extends BankParser {
 		Element element = document.selectFirst("title:contains(" + valueId + ")").parent();
 		BigDecimal quant = new BigDecimal(filterCommas(element.selectFirst("quant").text()));
 		BigDecimal value = new BigDecimal(filterCommas(element.selectFirst("description").text()));
-		return value.divide(quant, RoundingMode.FLOOR);
+		return value.divide(quant, 8, RoundingMode.HALF_UP);
 	}
 
 	@Override

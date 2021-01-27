@@ -161,7 +161,7 @@ public abstract class RateParser {
 	}
 
 	protected BigDecimal updatePrevValue(BigDecimal oldValue, BigDecimal newValue, BigDecimal prevValue) {
-		return (oldValue.setScale(4, RoundingMode.HALF_UP)
-			.compareTo(newValue.setScale(4, RoundingMode.HALF_UP)) == 0) ? prevValue : oldValue;
+		return (oldValue.setScale(8, RoundingMode.HALF_UP)
+			.compareTo(newValue.setScale(8, RoundingMode.HALF_UP)) == 0) ? prevValue : oldValue;
 	}
 }

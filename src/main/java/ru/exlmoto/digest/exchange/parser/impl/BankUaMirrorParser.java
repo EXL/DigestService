@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ public class BankUaMirrorParser extends BankUaParser {
 		Element element = document.selectFirst("Valute[ID=" + valueId + "]");
 		BigDecimal nominal = new BigDecimal(filterCommas(element.selectFirst("Nominal").text()));
 		BigDecimal value = new BigDecimal(filterCommas(element.selectFirst("Value").text()));
-		return value.divide(nominal, RoundingMode.FLOOR);
+		return value.divide(nominal, 8, RoundingMode.HALF_UP);
 	}
 
 	@Override

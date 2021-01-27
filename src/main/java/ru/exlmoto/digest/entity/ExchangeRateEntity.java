@@ -46,76 +46,76 @@ public class ExchangeRateEntity {
 	@Column(nullable = false)
 	private String date;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal usd;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal eur;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal byn;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal kzt;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal uah;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal rub;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal cny;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal gbp;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal gold;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal silver;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal platinum;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal palladium;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevUsd;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevEur;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevByn;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevKzt;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevUah;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevRub;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevCny;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevGbp;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevGold;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevSilver;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevPlatinum;
 
-	@Column(precision = 10, scale = 4)
+	@Column(precision = 20, scale = 8)
 	private BigDecimal prevPalladium;
 
 	public int getId() {

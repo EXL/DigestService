@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -129,9 +129,9 @@ public class CovidTgHtmlGenerator {
 		final int MAX_REGIONS = 65;
 
 		int CHOP_REGION = (covidTextToImage) ? 26 : 10;
-		final int CHOP_CASES = 13;
-		final int CHOP_RECOV = 13;
-		final int CHOP_DEATH = 10;
+		final int CHOP_CASES = (covidTextToImage) ? 15 : 13;
+		final int CHOP_RECOV = (covidTextToImage) ? 15 : 13;
+		final int CHOP_DEATH = (covidTextToImage) ? 12 : 10;
 
 		StringBuilder builder = new StringBuilder("\n\n<pre>");
 		builder.append(filter.arrangeString(locale.i18nW("covid.table.region", lang), CHOP_REGION)).append(" ");

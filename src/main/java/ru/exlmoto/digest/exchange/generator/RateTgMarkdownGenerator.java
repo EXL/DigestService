@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -80,11 +80,11 @@ public class RateTgMarkdownGenerator {
 		BigDecimal byn = bankRuEntity.getByn();
 		BigDecimal kzt = bankRuEntity.getKzt();
 
-		report += String.format("1 UAH = %s RUB%s\n", filterValue(uah),
+		report += String.format("1 UAH: %s%s\n", filterValue(uah),
 			filterDifference(bankRuEntity.getPrevUah(), uah));
-		report += String.format("1 BYN = %s RUB%s\n", filterValue(byn),
+		report += String.format("1 BYN: %s%s\n", filterValue(byn),
 			filterDifference(bankRuEntity.getPrevByn(), byn));
-		report += String.format("1 KZT = %s RUB%s\n", filterValue(kzt),
+		report += String.format("1 KZT: %s%s\n", filterValue(kzt),
 			filterDifference(bankRuEntity.getPrevKzt(), kzt));
 		return report + "```";
 	}
@@ -96,11 +96,11 @@ public class RateTgMarkdownGenerator {
 		BigDecimal byn = bankUaEntity.getByn();
 		BigDecimal kzt = bankUaEntity.getKzt();
 
-		report += String.format("1 RUB = %s UAH%s\n", filterValue(rub),
+		report += String.format("1 RUB: %s%s\n", filterValue(rub),
 			filterDifference(bankUaEntity.getPrevRub(), rub));
-		report += String.format("1 BYN = %s UAH%s\n", filterValue(byn),
+		report += String.format("1 BYN: %s%s\n", filterValue(byn),
 			filterDifference(bankUaEntity.getPrevByn(), byn));
-		report += String.format("1 KZT = %s UAH%s\n", filterValue(kzt),
+		report += String.format("1 KZT: %s%s\n", filterValue(kzt),
 			filterDifference(bankUaEntity.getPrevKzt(), kzt));
 		return report + "```";
 	}
@@ -112,11 +112,11 @@ public class RateTgMarkdownGenerator {
 		BigDecimal uah = bankByEntity.getUah();
 		BigDecimal kzt = bankByEntity.getKzt();
 
-		report += String.format("1 RUB = %s BYN%s\n", filterValue(rub),
+		report += String.format("1 RUB: %s%s\n", filterValue(rub),
 			filterDifference(bankByEntity.getPrevRub(), rub));
-		report += String.format("1 UAH = %s BYN%s\n", filterValue(uah),
+		report += String.format("1 UAH: %s%s\n", filterValue(uah),
 			filterDifference(bankByEntity.getPrevUah(), uah));
-		report += String.format("1 KZT = %s BYN%s\n", filterValue(kzt),
+		report += String.format("1 KZT: %s%s\n", filterValue(kzt),
 			filterDifference(bankByEntity.getPrevKzt(), kzt));
 		return report + "```";
 	}
@@ -128,17 +128,17 @@ public class RateTgMarkdownGenerator {
 		BigDecimal uah = bankKzEntity.getUah();
 		BigDecimal byn = bankKzEntity.getByn();
 
-		report += String.format("1 RUB = %s KZT%s\n", filterValue(rub),
+		report += String.format("1 RUB: %s%s\n", filterValue(rub),
 			filterDifference(bankKzEntity.getPrevRub(), rub));
-		report += String.format("1 UAH = %s KZT%s\n", filterValue(uah),
+		report += String.format("1 UAH: %s%s\n", filterValue(uah),
 			filterDifference(bankKzEntity.getPrevUah(), uah));
-		report += String.format("1 BYN = %s KZT%s\n", filterValue(byn),
+		report += String.format("1 BYN: %s%s\n", filterValue(byn),
 			filterDifference(bankKzEntity.getPrevByn(), byn));
 		return report + "```";
 	}
 
 	private String generalData(String header, String currency, ExchangeRateEntity entity) {
-		String general = header;
+		String general = String.format(header, currency);
 
 		BigDecimal usd = entity.getUsd();
 		BigDecimal eur = entity.getEur();
@@ -147,19 +147,19 @@ public class RateTgMarkdownGenerator {
 
 		general += "\n" + String.format(locale.i18n("exchange.bank.header"), filterDate(entity.getDate()));
 		general += "\n```\n";
-		general += String.format("1 USD = %s %s%s\n", filterValue(usd), currency,
+		general += String.format("1 USD: %s%s\n", filterValue(usd),
 			filterDifference(entity.getPrevUsd(), usd));
-		general += String.format("1 EUR = %s %s%s\n", filterValue(eur), currency,
+		general += String.format("1 EUR: %s%s\n", filterValue(eur),
 			filterDifference(entity.getPrevEur(), eur));
-		general += String.format("1 CNY = %s %s%s\n", filterValue(cny), currency,
+		general += String.format("1 CNY: %s%s\n", filterValue(cny),
 			filterDifference(entity.getPrevCny(), cny));
-		general += String.format("1 GBP = %s %s%s\n", filterValue(gbp), currency,
+		general += String.format("1 GBP: %s%s\n", filterValue(gbp),
 			filterDifference(entity.getPrevGbp(), gbp));
 		return general;
 	}
 
 	private String metalRuReport(ExchangeRateEntity metalRuEntity) {
-		String report = locale.i18n("exchange.bank.ru");
+		String report = String.format(locale.i18n("exchange.bank.ru"), "RUB");
 
 		BigDecimal gold = metalRuEntity.getGold();
 		BigDecimal silver = metalRuEntity.getSilver();
@@ -169,13 +169,13 @@ public class RateTgMarkdownGenerator {
 		report += "\n" + String.format(locale.i18n("exchange.metal.ru.header"),
 			filterDate(metalRuEntity.getDate()));
 		report += "\n```\n";
-		report += String.format("%s %s RUB%s\n", filterMetalName(locale.i18n("exchange.metal.ru.gold")),
+		report += String.format("%s %s%s\n", filterMetalName(locale.i18n("exchange.metal.ru.gold")),
 			filterValue(gold), filterDifferenceMetal(metalRuEntity.getPrevGold(), gold));
-		report += String.format("%s %s RUB%s\n", filterMetalName(locale.i18n("exchange.metal.ru.silver")),
+		report += String.format("%s %s%s\n", filterMetalName(locale.i18n("exchange.metal.ru.silver")),
 			filterValue(silver), filterDifferenceMetal(metalRuEntity.getPrevSilver(), silver));
-		report += String.format("%s %s RUB%s\n", filterMetalName(locale.i18n("exchange.metal.ru.platinum")),
+		report += String.format("%s %s%s\n", filterMetalName(locale.i18n("exchange.metal.ru.platinum")),
 			filterValue(platinum), filterDifferenceMetal(metalRuEntity.getPrevPlatinum(), platinum));
-		report += String.format("%s %s RUB%s\n", filterMetalName(locale.i18n("exchange.metal.ru.palladium")),
+		report += String.format("%s %s%s\n", filterMetalName(locale.i18n("exchange.metal.ru.palladium")),
 			filterValue(palladium), filterDifferenceMetal(metalRuEntity.getPrevPalladium(), palladium));
 		return report + "```";
 	}
@@ -189,7 +189,7 @@ public class RateTgMarkdownGenerator {
 	}
 
 	private String filterDifference(BigDecimal prev, BigDecimal current, boolean isLong) {
-		final int LIMIT = (isLong) ? 8 : 6;
+		final int LIMIT = (isLong) ? 10 : 8;
 		final String SPACE = " ";
 
 		String difference = helper.getDifference(prev, current);
@@ -209,7 +209,7 @@ public class RateTgMarkdownGenerator {
 	}
 
 	private String filterMetalName(String name) {
-		return helper.addTrailingSigns(name, " ", 10);
+		return helper.addTrailingSigns(name, " ", 3);
 	}
 
 	private String filterDate(String date) {

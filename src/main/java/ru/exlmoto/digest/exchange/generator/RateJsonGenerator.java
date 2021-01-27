@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -90,9 +90,9 @@ public class RateJsonGenerator {
 			BigDecimal byn = bankRu.getByn();
 			BigDecimal kzt = bankRu.getKzt();
 
-			field.addProperty("uah", uah);
-			field.addProperty("byn", byn);
-			field.addProperty("kzt", kzt);
+			field.addProperty("uah", uah.toString());
+			field.addProperty("byn", byn.toString());
+			field.addProperty("kzt", kzt.toString());
 
 			field.addProperty("diff_uah", helper.getValue(helper.getDifference(bankRu.getPrevUah(), uah)));
 			field.addProperty("diff_byn", helper.getValue(helper.getDifference(bankRu.getPrevByn(), byn)));
@@ -110,9 +110,9 @@ public class RateJsonGenerator {
 			BigDecimal byn = bankUa.getByn();
 			BigDecimal kzt = bankUa.getKzt();
 
-			field.addProperty("rub", rub);
-			field.addProperty("byn", byn);
-			field.addProperty("kzt", kzt);
+			field.addProperty("rub", rub.toString());
+			field.addProperty("byn", byn.toString());
+			field.addProperty("kzt", kzt.toString());
 
 			field.addProperty("diff_rub", helper.getValue(helper.getDifference(bankUa.getPrevRub(), rub)));
 			field.addProperty("diff_byn", helper.getValue(helper.getDifference(bankUa.getPrevByn(), byn)));
@@ -130,9 +130,9 @@ public class RateJsonGenerator {
 			BigDecimal uah = bankBy.getUah();
 			BigDecimal kzt = bankBy.getKzt();
 
-			field.addProperty("rub", rub);
-			field.addProperty("uah", uah);
-			field.addProperty("kzt", kzt);
+			field.addProperty("rub", rub.toString());
+			field.addProperty("uah", uah.toString());
+			field.addProperty("kzt", kzt.toString());
 
 			field.addProperty("diff_rub", helper.getValue(helper.getDifference(bankBy.getPrevRub(), rub)));
 			field.addProperty("diff_uah", helper.getValue(helper.getDifference(bankBy.getPrevUah(), uah)));
@@ -150,9 +150,9 @@ public class RateJsonGenerator {
 			BigDecimal uah = bankKz.getUah();
 			BigDecimal byn = bankKz.getByn();
 
-			field.addProperty("rub", bankKz.getRub());
-			field.addProperty("uah", bankKz.getUah());
-			field.addProperty("byn", bankKz.getByn());
+			field.addProperty("rub", rub.toString());
+			field.addProperty("uah", uah.toString());
+			field.addProperty("byn", byn.toString());
 
 			field.addProperty("diff_rub", helper.getValue(helper.getDifference(bankKz.getPrevRub(), rub)));
 			field.addProperty("diff_uah", helper.getValue(helper.getDifference(bankKz.getPrevUah(), uah)));
@@ -174,10 +174,10 @@ public class RateJsonGenerator {
 		BigDecimal cny = rate.getCny();
 		BigDecimal gbp = rate.getGbp();
 
-		field.addProperty("usd", usd);
-		field.addProperty("eur", eur);
-		field.addProperty("cny", cny);
-		field.addProperty("gbp", gbp);
+		field.addProperty("usd", usd.toString());
+		field.addProperty("eur", eur.toString());
+		field.addProperty("cny", cny.toString());
+		field.addProperty("gbp", gbp.toString());
 
 		field.addProperty("diff_usd", helper.getValue(helper.getDifference(rate.getPrevUsd(), usd)));
 		field.addProperty("diff_eur", helper.getValue(helper.getDifference(rate.getPrevEur(), eur)));
@@ -195,10 +195,10 @@ public class RateJsonGenerator {
 		BigDecimal platinum = rate.getPlatinum();
 		BigDecimal palladium = rate.getPalladium();
 
-		field.addProperty("gold", gold);
-		field.addProperty("silver", silver);
-		field.addProperty("platinum", platinum);
-		field.addProperty("palladium", palladium);
+		field.addProperty("gold", gold.toString());
+		field.addProperty("silver", silver.toString());
+		field.addProperty("platinum", platinum.toString());
+		field.addProperty("palladium", palladium.toString());
 
 		field.addProperty("diff_gold",
 			helper.getValue(helper.getDifference(rate.getPrevGold(), gold)));

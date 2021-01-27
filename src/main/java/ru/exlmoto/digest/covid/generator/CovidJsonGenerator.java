@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -83,7 +83,18 @@ public class CovidJsonGenerator {
 
 	private JsonArray getCaseReport(List<RegionFull> cases) {
 		JsonArray array = new JsonArray();
-		cases.forEach(value -> array.add(JsonParser.parseString(gson.toJson(value)).getAsJsonObject()));
+		// cases.forEach(value -> array.add(JsonParser.parseString(gson.toJson(value)).getAsJsonObject()));
+		cases.forEach(value -> {
+			JsonObject territory = new JsonObject();
+			territory.addProperty("territoryName", value.getTerritoryName());
+			territory.addProperty("confirmed", String.valueOf(value.getConfirmed()));
+			territory.addProperty("recovered", String.valueOf(value.getRecovered()));
+			territory.addProperty("deaths", String.valueOf(value.getDeaths()));
+			territory.addProperty("confirmedInc", String.valueOf(value.getConfirmedInc()));
+			territory.addProperty("recoveredInc", String.valueOf(value.getRecoveredInc()));
+			territory.addProperty("deathsInc", String.valueOf(value.getDeathsInc()));
+			array.add(territory);
+		});
 		return array;
 	}
 }

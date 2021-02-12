@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -81,7 +81,7 @@ public class FilterHelper {
 		return url.endsWith("/") ? url : url + "/";
 	}
 
-	public String getDateFromTimeStamp(String dateFormat, long timestamp) {
+	public static String getDateFromTimeStamp(String dateFormat, long timestamp) {
 		return DateTimeFormatter.ofPattern(dateFormat)
 			.withZone(ZoneId.systemDefault()).format(Instant.ofEpochSecond(timestamp));
 	}
@@ -91,7 +91,7 @@ public class FilterHelper {
 			.withLocale(dateLocale).withZone(ZoneId.systemDefault()).format(Instant.ofEpochSecond(timestamp));
 	}
 
-	public long getCurrentUnixTime() {
+	public static long getCurrentUnixTime() {
 		return System.currentTimeMillis() / 1000L;
 	}
 

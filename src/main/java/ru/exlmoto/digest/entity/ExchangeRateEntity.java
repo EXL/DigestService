@@ -34,11 +34,12 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "exchange_rate")
 public class ExchangeRateEntity {
-	public static final int BANK_RU_ROW = 1;
-	public static final int BANK_UA_ROW = 2;
-	public static final int BANK_BY_ROW = 3;
-	public static final int BANK_KZ_ROW = 4;
+	public static final int BANK_RU_ROW  = 1;
+	public static final int BANK_UA_ROW  = 2;
+	public static final int BANK_BY_ROW  = 3;
+	public static final int BANK_KZ_ROW  = 4;
 	public static final int METAL_RU_ROW = 5;
+	public static final int BITCOIN_ROW  = 6;
 
 	@Id
 	private int id;

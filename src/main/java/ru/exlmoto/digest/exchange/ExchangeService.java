@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,6 +70,7 @@ public class ExchangeService {
 			case bank_ua: return locale.i18n("exchange.bank.ua.button");
 			case bank_by: return locale.i18n("exchange.bank.by.button");
 			case bank_kz: return locale.i18n("exchange.bank.kz.button");
+			case bitcoin: return locale.i18n("exchange.bitcoin.button");
 			case metal_ru: return locale.i18n("exchange.metal.ru.button");
 		}
 	}

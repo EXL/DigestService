@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,6 +53,29 @@ public class RateKeyboard extends KeyboardSimpleAbility {
 
 	@PostConstruct
 	private void generateKeyboard() {
+		markup = new InlineKeyboardMarkup(
+			new InlineKeyboardButton[] {
+				new InlineKeyboardButton(service.buttonLabel(ExchangeKey.bank_ru.name()))
+					.callbackData(Keyboard.rate.withName() + ExchangeKey.bank_ru),
+				new InlineKeyboardButton(service.buttonLabel(ExchangeKey.bank_ua.name()))
+					.callbackData(Keyboard.rate.withName() + ExchangeKey.bank_ua),
+				new InlineKeyboardButton(service.buttonLabel(ExchangeKey.bank_by.name()))
+					.callbackData(Keyboard.rate.withName() + ExchangeKey.bank_by)
+			},
+			new InlineKeyboardButton[] {
+				new InlineKeyboardButton(service.buttonLabel(ExchangeKey.bank_kz.name()))
+					.callbackData(Keyboard.rate.withName() + ExchangeKey.bank_kz),
+				new InlineKeyboardButton(service.buttonLabel(ExchangeKey.bitcoin.name()))
+					.callbackData(Keyboard.rate.withName() + ExchangeKey.bitcoin),
+				new InlineKeyboardButton(service.buttonLabel(ExchangeKey.metal_ru.name()))
+					.callbackData(Keyboard.rate.withName() + ExchangeKey.metal_ru)
+			}
+		);
+	}
+
+/*
+	@PostConstruct
+	private void generateKeyboard() {
 		InlineKeyboardButton[] keyboardRow = new InlineKeyboardButton[ExchangeKey.values().length];
 		int i = 0;
 		ExchangeKey[] exchangeKeys = ExchangeKey.values();
@@ -62,6 +85,7 @@ public class RateKeyboard extends KeyboardSimpleAbility {
 		}
 		markup = new InlineKeyboardMarkup(keyboardRow);
 	}
+*/
 
 	@Override
 	public InlineKeyboardMarkup getMarkup() {

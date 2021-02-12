@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,8 @@ public enum ExchangeKey {
 	bank_ua,
 	bank_by,
 	bank_kz,
-	metal_ru;
+	metal_ru,
+	bitcoin;
 
 	private static final Logger log = LoggerFactory.getLogger(ExchangeKey.class);
 

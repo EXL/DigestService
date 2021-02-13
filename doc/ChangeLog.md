@@ -1,5 +1,7 @@
 ## Upcoming Release:
 
+- Added Bitcoin currency to the rates report (suggestion by @mbv06).
+
 - Added sending daily exchange rates report.
 
 - Fixed and increased exchange rates precision (suggestion by @baaaaat).

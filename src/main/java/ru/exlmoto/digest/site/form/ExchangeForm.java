@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ public class ExchangeForm {
 	private ExchangeRateEntity byn;
 	private ExchangeRateEntity kzt;
 	private ExchangeRateEntity metal;
+	private ExchangeRateEntity bitcoin;
 
 	public ExchangeRateEntity getRub() {
 		return rub;
@@ -71,5 +72,13 @@ public class ExchangeForm {
 
 	public void setMetal(ExchangeRateEntity metal) {
 		this.metal = metal;
+	}
+
+	public ExchangeRateEntity getBitcoin() {
+		return bitcoin;
+	}
+
+	public void setBitcoin(ExchangeRateEntity bitcoin) {
+		this.bitcoin = bitcoin;
 	}
 }

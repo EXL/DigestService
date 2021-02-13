@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -478,6 +478,7 @@ public class ObeyController {
 		service.getBankBy().ifPresent(exchange::setByn);
 		service.getBankKz().ifPresent(exchange::setKzt);
 		service.getMetalRu().ifPresent(exchange::setMetal);
+		service.getBitcoin().ifPresent(exchange::setBitcoin);
 		model.addAttribute("exchange", exchange);
 
 		return "obey";
@@ -491,6 +492,8 @@ public class ObeyController {
 		service.getBankKz().ifPresent(bankKz -> service.saveExchange(helper.copyRateValues(exchange.getKzt(), bankKz)));
 		service.getMetalRu().ifPresent(metalRu ->
 			service.saveExchange(helper.copyRateValues(exchange.getMetal(), metalRu)));
+		service.getBitcoin().ifPresent(bitcoin ->
+			service.saveExchange(helper.copyRateValues(exchange.getBitcoin(), bitcoin)));
 
 		return "redirect:/obey/exchange";
 	}

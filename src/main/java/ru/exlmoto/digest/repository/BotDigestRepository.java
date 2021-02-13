@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -96,6 +96,6 @@ public interface BotDigestRepository extends JpaRepository<BotDigestEntity, Long
 	List<Long> allUserIds();
 
 	@Query("SELECT DISTINCT bot_digest_entity.user FROM BotDigestEntity bot_digest_entity " +
-		"WHERE bot_digest_entity.chat = :chatId")
+		   "WHERE bot_digest_entity.chat = :chatId")
 	List<BotDigestUserEntity> allUsersByChat(@Param("chatId") Long chatId);
 }

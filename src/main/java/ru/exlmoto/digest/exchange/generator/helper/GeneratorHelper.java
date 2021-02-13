@@ -64,14 +64,13 @@ public class GeneratorHelper {
 		return "0.0";
 	}
 
-	public String normalizeValue(BigDecimal value) {
-		final int MAX_NUMBER_SIZE = 7;
+	public String normalizeValue(BigDecimal value, int maxNumberSize) {
 		int integers = value.precision() - value.scale();
 		if (integers <= 0) {
 			integers = 1;
 		}
-		if (integers < MAX_NUMBER_SIZE) {
-			return String.format("%." + (MAX_NUMBER_SIZE - integers) + "f", value);
+		if (integers < maxNumberSize) {
+			return String.format("%." + (maxNumberSize - integers) + "f", value);
 		}
 		return String.format("%.1f", value);
 	}

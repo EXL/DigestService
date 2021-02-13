@@ -66,6 +66,8 @@ public class RateTgMarkdownGenerator {
 					return service.getBankKz().map(this::bankKzReport).orElse(errorReport());
 				case metal_ru:
 					return service.getMetalRu().map(this::metalRuReport).orElse(errorReport());
+				case bitcoin:
+					return service.getBitcoin().map(this::bitcoinReport).orElse(errorReport());
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get object from database.", dae);
@@ -180,32 +182,77 @@ public class RateTgMarkdownGenerator {
 		return report + "```";
 	}
 
+	private String bitcoinReport(ExchangeRateEntity bitcoinEntity) {
+		String report = String.format(locale.i18n("exchange.bitcoin"), "1 BTC");
+
+		BigDecimal usd = bitcoinEntity.getUsd();
+		BigDecimal eur = bitcoinEntity.getEur();
+		BigDecimal cny = bitcoinEntity.getCny();
+		BigDecimal gbp = bitcoinEntity.getGbp();
+		BigDecimal rub = bitcoinEntity.getRub();
+		BigDecimal uah = bitcoinEntity.getUah();
+		BigDecimal byn = bitcoinEntity.getByn();
+		BigDecimal kzt = bitcoinEntity.getKzt();
+
+		report += "\n" + String.format(locale.i18n("exchange.bank.header"), filterDate(bitcoinEntity.getDate()));
+		report += "\n```\n";
+		report += String.format("USD: %s%s\n", filterBitcoin(usd),
+			filterDifferenceBitcoin(bitcoinEntity.getPrevUsd(), usd));
+		report += String.format("EUR: %s%s\n", filterBitcoin(eur),
+			filterDifferenceBitcoin(bitcoinEntity.getPrevEur(), eur));
+		report += String.format("CNY: %s%s\n", filterBitcoin(cny),
+			filterDifferenceBitcoin(bitcoinEntity.getPrevCny(), cny));
+		report += String.format("GBP: %s%s\n", filterBitcoin(gbp),
+			filterDifferenceBitcoin(bitcoinEntity.getPrevGbp(), gbp));
+		report += String.format("RUB: %s%s\n", filterBitcoin(rub),
+			filterDifferenceBitcoin(bitcoinEntity.getPrevRub(), rub));
+		report += String.format("UAH: %s%s\n", filterBitcoin(uah),
+			filterDifferenceBitcoin(bitcoinEntity.getPrevUah(), uah));
+		report += String.format("BYN: %s%s\n", filterBitcoin(byn),
+			filterDifferenceBitcoin(bitcoinEntity.getPrevByn(), byn));
+//		KZT is too long for report, drop it.
+//		report += String.format("KZT: %s%s\n", filterValue(kzt),
+//			filterDifferenceBitcoin(bitcoinEntity.getPrevKzt(), kzt));
+		return report + "```";
+	}
+
 	private String filterDifference(BigDecimal prev, BigDecimal current) {
-		return filterDifference(prev, current, false);
+		return filterDifference(prev, current, 8);
 	}
 
 	private String filterDifferenceMetal(BigDecimal prev, BigDecimal current) {
-		return filterDifference(prev, current, true);
+		return filterDifference(prev, current, 10);
 	}
 
-	private String filterDifference(BigDecimal prev, BigDecimal current, boolean isLong) {
-		final int LIMIT = (isLong) ? 10 : 8;
+	private String filterDifferenceBitcoin(BigDecimal prev, BigDecimal current) {
+		return filterDifference(prev, current, 11);
+	}
+
+	private String filterDifference(BigDecimal prev, BigDecimal current, int limit) {
 		final String SPACE = " ";
 
 		String difference = helper.getDifference(prev, current);
 		if (difference != null) {
 			return ", " + (difference.startsWith("-") ?
-				helper.addTrailingSigns(difference, SPACE, LIMIT) +
+				helper.addTrailingSigns(difference, SPACE, limit) +
 					" " + locale.i18n("exchange.change.down") :
-				helper.addTrailingSigns("+" + difference, SPACE, LIMIT) +
+				helper.addTrailingSigns("+" + difference, SPACE, limit) +
 					" " + locale.i18n("exchange.change.up"));
 		}
 		return ".";
 	}
 
 	private String filterValue(BigDecimal value) {
+		return filterValueAux(value, 7);
+	}
+
+	private String filterBitcoin(BigDecimal value) {
+		return filterValueAux(value, 9);
+	}
+
+	private String filterValueAux(BigDecimal value, int maxNumberSize) {
 		return (value != null && value.signum() != -1) ?
-			helper.normalizeValue(value) : locale.i18n("exchange.error.value");
+			helper.normalizeValue(value, maxNumberSize) : locale.i18n("exchange.error.value");
 	}
 
 	private String filterMetalName(String name) {

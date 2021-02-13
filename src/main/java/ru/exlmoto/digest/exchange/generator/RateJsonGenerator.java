@@ -64,6 +64,7 @@ public class RateJsonGenerator {
 				addBankByToReport(report);
 				addBankKzToReport(report);
 				addMetalRuToReport(report);
+				addBitcoinToReport(report);
 			} else {
 				switch (ExchangeKey.checkExchangeKey(key)) {
 					case bank_ru: { addBankRuToReport(report); break; }
@@ -71,6 +72,7 @@ public class RateJsonGenerator {
 					case bank_by: { addBankByToReport(report); break; }
 					case bank_kz: { addBankKzToReport(report); break; }
 					case metal_ru: { addMetalRuToReport(report); break; }
+					case bitcoin: { addBitcoinToReport(report); break; }
 				}
 			}
 			return new GsonBuilder().setPrettyPrinting().create().toJson(report);
@@ -163,7 +165,7 @@ public class RateJsonGenerator {
 	}
 
 	private void addMetalRuToReport(JsonObject report) {
-		service.getMetalRu().ifPresent(metalRu -> report.add("metal_ru", addMetalProperties(metalRu)));
+		service.getMetalRu().ifPresent(metalRu -> report.add("metal_ru", addMetalRuProperties(metalRu)));
 	}
 
 	private JsonObject addBankProperties(ExchangeRateEntity rate) {
@@ -187,7 +189,7 @@ public class RateJsonGenerator {
 		return field;
 	}
 
-	private JsonObject addMetalProperties(ExchangeRateEntity rate) {
+	private JsonObject addMetalRuProperties(ExchangeRateEntity rate) {
 		JsonObject field = createJsonObjectAndAddDate(rate);
 
 		BigDecimal gold = rate.getGold();
@@ -210,6 +212,29 @@ public class RateJsonGenerator {
 			helper.getValue(helper.getDifference(rate.getPrevPalladium(), palladium)));
 
 		return field;
+	}
+
+	private void addBitcoinToReport(JsonObject report) {
+		service.getBitcoin().ifPresent(bitcoin -> {
+			JsonObject field = addBankProperties(bitcoin);
+
+			BigDecimal uah = bitcoin.getUah();
+			BigDecimal byn = bitcoin.getByn();
+			BigDecimal kzt = bitcoin.getKzt();
+			BigDecimal rub = bitcoin.getRub();
+
+			field.addProperty("rub", rub.toString());
+			field.addProperty("uah", uah.toString());
+			field.addProperty("byn", byn.toString());
+			field.addProperty("kzt", kzt.toString());
+
+			field.addProperty("diff_rub", helper.getValue(helper.getDifference(bitcoin.getPrevRub(), rub)));
+			field.addProperty("diff_uah", helper.getValue(helper.getDifference(bitcoin.getPrevUah(), uah)));
+			field.addProperty("diff_byn", helper.getValue(helper.getDifference(bitcoin.getPrevByn(), byn)));
+			field.addProperty("diff_kzt", helper.getValue(helper.getDifference(bitcoin.getPrevKzt(), kzt)));
+
+			report.add("bitcoin", field);
+		});
 	}
 
 	private JsonObject createJsonObjectAndAddDate(ExchangeRateEntity rate) {

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
+import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.service.DatabaseService;
 
 import java.util.Optional;
@@ -55,6 +56,15 @@ class RateJsonGeneratorTest {
 		assertThat(report).isNotBlank();
 		System.out.println(report);
 		System.out.println("=== END testGetJsonReport() ===");
+	}
+
+	@Test
+	public void testGetJsonReportPartial() {
+		System.out.println("=== START testGetJsonReportPartial() ===");
+		String report = generator.getJsonReport(ExchangeKey.bitcoin.name());
+		assertThat(report).isNotBlank();
+		System.out.println(report);
+		System.out.println("=== END testGetJsonReportPartial() ===");
 	}
 
 	@Test

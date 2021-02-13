@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -150,5 +150,32 @@ class RateTgMarkdownGeneratorTest {
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
 		System.out.println("=== END testMetalRuMarkdownReport() ===");
+	}
+
+	@Test
+	public void testBitcoinMarkdownReport() {
+		System.out.println("=== START testBitcoinMarkdownReport() ===");
+		ExchangeRateEntity bitcoinEntity = new ExchangeRateEntity();
+		bitcoinEntity.setDate("13.02.2021");
+		bitcoinEntity.setUsd(new BigDecimal("44444.44"));
+		bitcoinEntity.setEur(new BigDecimal("444444.4444"));
+		bitcoinEntity.setKzt(new BigDecimal("333333333"));
+		bitcoinEntity.setRub(new BigDecimal("10.123123111"));
+		bitcoinEntity.setUah(null);
+		bitcoinEntity.setCny(new BigDecimal("15"));
+		bitcoinEntity.setGbp(new BigDecimal("3"));
+		bitcoinEntity.setPrevUsd(new BigDecimal("45555.0001"));
+		bitcoinEntity.setPrevEur(new BigDecimal("023113"));
+		bitcoinEntity.setPrevKzt(new BigDecimal("-11.12"));
+		bitcoinEntity.setPrevRub(new BigDecimal("0.11111111134"));
+		bitcoinEntity.setPrevUah(null);
+		bitcoinEntity.setPrevCny(new BigDecimal("111111112222"));
+		bitcoinEntity.setPrevGbp(new BigDecimal("3333.1"));
+
+		when(service.getBitcoin()).thenReturn(Optional.of(bitcoinEntity));
+		String report = generator.rateReportByKey(ExchangeKey.bitcoin.name());
+		assertThat(report).isNotEmpty();
+		System.out.println(report);
+		System.out.println("=== END testBitcoinMarkdownReport() ===");
 	}
 }

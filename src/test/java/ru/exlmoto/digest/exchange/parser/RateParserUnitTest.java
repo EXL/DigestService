@@ -33,6 +33,7 @@ import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
+import ru.exlmoto.digest.exchange.parser.impl.BitcoinParser;
 import ru.exlmoto.digest.util.file.ResourceHelper;
 
 import java.math.BigDecimal;
@@ -191,6 +192,14 @@ class RateParserUnitTest {
 			parserHelper.fileContent("metalOtherSite.html")));
 
 		generalTests(new MetalRuMirrorParser());
+	}
+
+	@Test
+	public void testBitcoinParser() {
+		assertTrue(parserHelper.process(new BitcoinParser(), parserHelper.fileContent("bitcoinRates.json")));
+		assertFalse(parserHelper.process(new BitcoinParser(), parserHelper.fileContent("bitcoinRatesError.json")));
+
+		generalTests(new BitcoinParser());
 	}
 
 	@Test

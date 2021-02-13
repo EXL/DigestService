@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,6 +49,7 @@ class ExchangeServiceTest {
 		assertThat(service.markdownReport(ExchangeKey.bank_ua.name())).isNotBlank();
 		assertThat(service.markdownReport(ExchangeKey.bank_by.name())).isNotBlank();
 		assertThat(service.markdownReport(ExchangeKey.bank_kz.name())).isNotBlank();
+		assertThat(service.markdownReport(ExchangeKey.bitcoin.name())).isNotBlank();
 		assertThat(service.markdownReport(ExchangeKey.metal_ru.name())).isNotBlank();
 	}
 
@@ -63,6 +64,7 @@ class ExchangeServiceTest {
 		assertThat(service.buttonLabel(ExchangeKey.bank_ua.name())).isNotBlank();
 		assertThat(service.buttonLabel(ExchangeKey.bank_by.name())).isNotBlank();
 		assertThat(service.buttonLabel(ExchangeKey.bank_kz.name())).isNotBlank();
+		assertThat(service.buttonLabel(ExchangeKey.bitcoin.name())).isNotBlank();
 		assertThat(service.buttonLabel(ExchangeKey.metal_ru.name())).isNotBlank();
 	}
 }

@@ -67,36 +67,36 @@ class GeneratorHelperTest {
 
 	@Test
 	public void testNormalizeValue() {
-		assertEquals("-12.00000", helper.normalizeValue(new BigDecimal("-12")));
-		assertEquals("-1.000000", helper.normalizeValue(new BigDecimal("-1")));
-		assertEquals("-0.000100", helper.normalizeValue(new BigDecimal("-0.0001")));
-		assertEquals("0.000000", helper.normalizeValue(new BigDecimal("-0.0000")));
-		assertEquals("0.000000", helper.normalizeValue(new BigDecimal("0")));
-		assertEquals("0.000000", helper.normalizeValue(new BigDecimal("0.0")));
-		assertEquals("0.000000", helper.normalizeValue(new BigDecimal("0.0000")));
-		assertEquals("0.000100", helper.normalizeValue(new BigDecimal("0.0001")));
-		assertEquals("1.000000", helper.normalizeValue(new BigDecimal("1")));
-		assertEquals("1.000000", helper.normalizeValue(new BigDecimal("1.0")));
-		assertEquals("1.000100", helper.normalizeValue(new BigDecimal("1.0001")));
-		assertEquals("5.000000", helper.normalizeValue(new BigDecimal("5")));
-		assertEquals("12.00000", helper.normalizeValue(new BigDecimal("12")));
-		assertEquals("123.0000", helper.normalizeValue(new BigDecimal("123")));
-		assertEquals("1234.000", helper.normalizeValue(new BigDecimal("1234")));
-		assertEquals("12345.00", helper.normalizeValue(new BigDecimal("12345")));
-		assertEquals("12345.00", helper.normalizeValue(new BigDecimal("12345.0")));
-		assertEquals("12345.10", helper.normalizeValue(new BigDecimal("12345.1")));
-		assertEquals("12345.10", helper.normalizeValue(new BigDecimal("12345.10")));
-		assertEquals("12345.11", helper.normalizeValue(new BigDecimal("12345.11")));
-		assertEquals("12345.11", helper.normalizeValue(new BigDecimal("12345.110")));
-		assertEquals("12345.12", helper.normalizeValue(new BigDecimal("12345.119")));
-		assertEquals("12345.19", helper.normalizeValue(new BigDecimal("12345.19")));
-		assertEquals("12345.15", helper.normalizeValue(new BigDecimal("12345.149")));
-		assertEquals("12345.16", helper.normalizeValue(new BigDecimal("12345.161")));
-		assertEquals("123456.1", helper.normalizeValue(new BigDecimal("123456.1111")));
-		assertEquals("1234567.1", helper.normalizeValue(new BigDecimal("1234567.1111")));
-		assertEquals("12345678.1", helper.normalizeValue(new BigDecimal("12345678.1111")));
+		assertEquals("-12.00000", helper.normalizeValue(new BigDecimal("-12"), 7));
+		assertEquals("-1.000000", helper.normalizeValue(new BigDecimal("-1"), 7));
+		assertEquals("-0.000100", helper.normalizeValue(new BigDecimal("-0.0001"), 7));
+		assertEquals("0.000000", helper.normalizeValue(new BigDecimal("-0.0000"), 7));
+		assertEquals("0.000000", helper.normalizeValue(new BigDecimal("0"), 7));
+		assertEquals("0.000000", helper.normalizeValue(new BigDecimal("0.0"), 7));
+		assertEquals("0.000000", helper.normalizeValue(new BigDecimal("0.0000"), 7));
+		assertEquals("0.000100", helper.normalizeValue(new BigDecimal("0.0001"), 7));
+		assertEquals("1.000000", helper.normalizeValue(new BigDecimal("1"), 7));
+		assertEquals("1.000000", helper.normalizeValue(new BigDecimal("1.0"), 7));
+		assertEquals("1.000100", helper.normalizeValue(new BigDecimal("1.0001"), 7));
+		assertEquals("5.000000", helper.normalizeValue(new BigDecimal("5"), 7));
+		assertEquals("12.00000", helper.normalizeValue(new BigDecimal("12"), 7));
+		assertEquals("123.0000", helper.normalizeValue(new BigDecimal("123"), 7));
+		assertEquals("1234.000", helper.normalizeValue(new BigDecimal("1234"), 7));
+		assertEquals("12345.00", helper.normalizeValue(new BigDecimal("12345"), 7));
+		assertEquals("12345.00", helper.normalizeValue(new BigDecimal("12345.0"), 7));
+		assertEquals("12345.10", helper.normalizeValue(new BigDecimal("12345.1"), 7));
+		assertEquals("12345.10", helper.normalizeValue(new BigDecimal("12345.10"), 7));
+		assertEquals("12345.11", helper.normalizeValue(new BigDecimal("12345.11"), 7));
+		assertEquals("12345.11", helper.normalizeValue(new BigDecimal("12345.110"), 7));
+		assertEquals("12345.12", helper.normalizeValue(new BigDecimal("12345.119"), 7));
+		assertEquals("12345.19", helper.normalizeValue(new BigDecimal("12345.19"), 7));
+		assertEquals("12345.15", helper.normalizeValue(new BigDecimal("12345.149"), 7));
+		assertEquals("12345.16", helper.normalizeValue(new BigDecimal("12345.161"), 7));
+		assertEquals("123456.1", helper.normalizeValue(new BigDecimal("123456.1111"), 7));
+		assertEquals("1234567.1", helper.normalizeValue(new BigDecimal("1234567.1111"), 7));
+		assertEquals("12345678.1", helper.normalizeValue(new BigDecimal("12345678.1111"), 7));
 		assertEquals("-1.000000",
-			helper.normalizeValue(new BigDecimal("-1.00000000000000000000000000000000000000000000000000001")));
+			helper.normalizeValue(new BigDecimal("-1.00000000000000000000000000000000000000000000000000001"), 7));
 	}
 
 	@Test

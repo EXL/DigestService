@@ -27,6 +27,8 @@ package ru.exlmoto.digest.motofan.generator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
+import org.owasp.encoder.Encode;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,7 +98,7 @@ public class PostTgHtmlGenerator {
 				}
 				return String.format(locale.i18n("motofan.birthday"),
 					filter.getDateFromTimeStamp(dateFormat, Locale.forLanguageTag(lang), filter.getCurrentUnixTime()),
-						"<pre>\n" + birthdays.toString().trim() + "\n</pre>", count);
+						"<pre>\n" + Encode.forHtml(birthdays.toString().trim()) + "\n</pre>", count);
 			} catch (RuntimeException | IOException re_and_ioe) {
 				log.error("Cannot parse MotoFan.Ru page.", re_and_ioe);
 			}

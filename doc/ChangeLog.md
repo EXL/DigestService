@@ -4,6 +4,8 @@
 
 - Added sending daily exchange rates report.
 
+- Fixed birthdays of MotoFan.Ru forum users report.
+
 - Fixed and increased exchange rates precision (suggestion by @baaaaat).
 
 - Fixed COVID-19 pre-rendered report column length.

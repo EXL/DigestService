@@ -42,13 +42,13 @@ public class BankByParser extends BankParser {
 
 	@Override
 	protected void parseDocumentAux(Document document) {
-		usd = parseValue(document, "145");
-		eur = parseValue(document, "292");
-		kzt = parseValue(document, "301");
-		rub = parseValue(document, "298");
-		uah = parseValue(document, "290");
-		cny = parseValue(document, "304");
-		gbp = parseValue(document, "143");
+		usd = parseValue(document, "431");
+		eur = parseValue(document, "451");
+		kzt = parseValue(document, "459");
+		rub = parseValue(document, "456");
+		uah = parseValue(document, "449");
+		cny = parseValue(document, "462");
+		gbp = parseValue(document, "429");
 	}
 
 	@Override

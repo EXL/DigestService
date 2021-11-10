@@ -26,6 +26,8 @@ package ru.exlmoto.digest.util.filter;
 
 import org.jsoup.Jsoup;
 
+import org.owasp.encoder.Encode;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +68,7 @@ public class FilterHelper {
 	 * See: https://stackoverflow.com/questions/14445386/how-to-remove-text-in-brackets-from-the-start-of-a-string
 	 */
 	public String removeHtmlTags(String html) {
-		return Jsoup.parse(html).text();
+		return Encode.forHtmlContent(Jsoup.parse(html).text());
 	}
 
 	public String removeBbCodes(String str) {

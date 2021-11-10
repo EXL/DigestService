@@ -34,6 +34,7 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -45,6 +46,9 @@ class FilterHelperTest {
 	@Test
 	public void testRemoveHtmlTags() {
 		assertThrows(NullPointerException.class, () -> filter.removeHtmlTags(null));
+
+		assertEquals("test &lt;&lt; test", filter.removeHtmlTags("test &#60;&#60; test"));
+		assertNotEquals("test << test", filter.removeHtmlTags("test &#60;&#60; test"));
 
 		assertEquals("test text test", filter.removeHtmlTags("test <b>text</b> test"));
 		assertEquals("test text test", filter.removeHtmlTags("test <b id=\"a\">text</b> test"));

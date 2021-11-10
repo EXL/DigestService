@@ -58,7 +58,7 @@ class ImageHelperTest {
 		System.out.println("Get: " + res.answer());
 
 		// Another good image without url-extension.
-		res = imageHelper.getImageByLink("https://forum.motofan.ru/index.php?act=Attach&type=post&id=274426");
+		res = imageHelper.getImageByLink("https://forum.motofan.ru/index.php?act=Attach&type=post&id=277255");
 		assertTrue(res.ok());
 		System.out.println("Get: " + res.answer());
 		System.out.println("=== END testGetImageByLink() ===");

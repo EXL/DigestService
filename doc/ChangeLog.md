@@ -4,13 +4,30 @@
 
 - Added sending daily exchange rates report.
 
+- Moved from Integer to Long type for user id fields (see [this issue](https://github.com/pengrad/java-telegram-bot-api/issues/230)).
+
 - Fixed birthdays of MotoFan.Ru forum users report.
 
 - Fixed and increased exchange rates precision (suggestion by @baaaaat).
 
+- Fixed BYN exchange rates (reported by @baaaaat).
+
 - Fixed COVID-19 pre-rendered report column length.
 
 - Fixed non-string fields in JSON generators.
+
+- Fixed HTML escaping in MotoFan.Ru posts.
+
+- Updated libraries and frameworks:
+    - Java 1.8.0_275 => 1.8.0_312
+    - Gradle 6.7.1 => 7.3
+    - Spring Boot 2.4.1 => 2.5.6
+    - Spring Boot Dependency Management 1.0.10.RELEASE => 1.0.11.RELEASE
+    - com.github.pengrad:java-telegram-bot-api 5.0.1 => 5.3.0
+    - org.yaml:snakeyaml 1.27 => 1.29
+    - org.jsoup:jsoup 1.13.1 => 1.14.3
+    - org.apache.poi:poi 4.1.2 => 5.1.0
+    - org.apache.poi:poi-ooxml 4.1.2 => 5.1.0
 
 ## v1.0.1, 27-Dec-2020, Patch Release:
 
@@ -44,6 +61,7 @@
     - Java 1.8.0_252 => 1.8.0_275
     - Gradle 6.3 => 6.7.1
     - Spring Boot 2.3.0 => 2.4.1
+    - Spring Boot Dependency Management 1.0.9.RELEASE => 1.0.10.RELEASE
     - com.github.pengrad:java-telegram-bot-api 4.8.0 => 5.0.1
     - org.yaml:snakeyaml 1.26 => 1.27
     - org.owasp.encoder:encoder 1.2.2 => 1.2.3

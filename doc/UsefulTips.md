@@ -35,3 +35,9 @@ find . -name \*.py -exec sh -c "mv '{}' tmp && cp util/template/license_header_o
 * [license_header_other](../util/template/license_header_other) template applies to the Python and other source files.
 
 These commands should be run at the root of the project.
+
+## Show all changed files from date
+
+```shell script
+git log --since="01-Jan-2021" --name-only --pretty=format: | sort | uniq
+```

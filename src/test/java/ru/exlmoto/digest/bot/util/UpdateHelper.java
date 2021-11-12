@@ -143,15 +143,15 @@ public class UpdateHelper {
 	}
 
 	public User getUser(String username) {
-		User user = new User(100);
-//		setField(user, "id", 100);
+		User user = new User(100L);
+//		setField(user, "id", 100L);
 		setField(user, "username", username);
 		return user;
 	}
 
 	public User getAdmin(String username) {
-		User user = new User(87336977);
-//		setField(user, "id", 87336977);
+		User user = new User(87336977L);
+//		setField(user, "id", 87336977L);
 		setField(user, "username", username);
 		return user;
 	}
@@ -179,7 +179,7 @@ public class UpdateHelper {
 		return getCallbackQueryUsername(data, username, null, null);
 	}
 
-	public CallbackQuery getCallbackQueryUsername(String data, String username, Integer userId, Long chatId) {
+	public CallbackQuery getCallbackQueryUsername(String data, String username, Long userId, Long chatId) {
 		CallbackQuery callbackQuery = new CallbackQuery();
 		if (chatId != null) {
 			setField(callbackQuery, "message", getSimpleMessageAdmin("test", "anyone", chatId));
@@ -188,11 +188,11 @@ public class UpdateHelper {
 		}
 		setField(callbackQuery, "data", data);
 
-		User user = new User((userId != null) ? userId : 42);
+		User user = new User((userId != null) ? userId : 42L);
 //		if (userId != null) {
 //			setField(user, "id", userId);
 //		} else {
-//			setField(user, "id", 42);
+//			setField(user, "id", 42L);
 //		}
 		setField(user, "username", username);
 		setField(callbackQuery, "from", user);

@@ -46,7 +46,7 @@ class BotHelperTest {
 
 	@Test
 	public void testGetValidUsername() {
-		User user = new User(42);
+		User user = new User(42L);
 		setField(user, "first_name", "First");
 		assertEquals("First", helper.getValidUsername(user));
 

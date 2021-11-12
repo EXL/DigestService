@@ -78,7 +78,7 @@ class BotTelegramTest {
 		System.out.println("=== START testBotParameters() ===");
 		String name = telegram.getFirstName();
 		String username = telegram.getUsername();
-		int id = telegram.getId();
+		long id = telegram.getId();
 		String token = config.getToken();
 
 		assertThat(name).isNotEmpty();

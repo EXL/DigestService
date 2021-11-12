@@ -92,15 +92,15 @@ class GreetingKeyboardTest {
 		System.out.println("=== START testHandleAdmin() ===");
 		/* All ok. */
 		keyboard.execute(helper, sender, locale,
-			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "on", "exlmoto", 87336977,
+			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "on", "exlmoto", 87336977L,
 				config.getMotofanChatId()));
 		System.out.println("---");
 		keyboard.execute(helper, sender, locale,
-			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "off", "exlmoto", 87336977,
+			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "off", "exlmoto", 87336977L,
 				config.getMotofanChatId()));
 		System.out.println("---");
 		keyboard.execute(helper, sender, locale,
-			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "wtf", "exlmoto", 87336977,
+			update.getCallbackQueryUsername(Keyboard.greeting.withName() + "wtf", "exlmoto", 87336977L,
 				config.getMotofanChatId()));
 		System.out.println("=== END testHandleAdmin() ===");
 	}

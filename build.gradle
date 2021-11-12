@@ -65,14 +65,14 @@ dependencies {
 
 	runtimeOnly 'org.postgresql:postgresql'
 
-	implementation 'com.github.pengrad:java-telegram-bot-api:5.0.1'
+	implementation 'com.github.pengrad:java-telegram-bot-api:5.3.0'
 
-	implementation 'org.yaml:snakeyaml:1.27'
-	implementation 'org.jsoup:jsoup:1.13.1'
+	implementation 'org.yaml:snakeyaml:1.29'
+	implementation 'org.jsoup:jsoup:1.14.3'
 	implementation 'org.nibor.autolink:autolink:0.10.0'
 	implementation 'org.owasp.encoder:encoder:1.2.3'
-	implementation 'org.apache.poi:poi:4.1.2'
-	implementation 'org.apache.poi:poi-ooxml:4.1.2'
+	implementation 'org.apache.poi:poi:5.1.0'
+	implementation 'org.apache.poi:poi-ooxml:5.1.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

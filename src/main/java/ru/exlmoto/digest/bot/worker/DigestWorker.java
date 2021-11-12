@@ -90,7 +90,7 @@ public class DigestWorker {
 	}
 
 	public void sendDigestToSubscribers(BotSender sender, Message message, String digest) {
-		int userId = message.from().id();
+		long userId = message.from().id();
 		try {
 			List<BotSubDigestEntity> subscribers = service.getAllDigestSubs();
 			if (!subscribers.isEmpty()) {

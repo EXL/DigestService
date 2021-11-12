@@ -62,7 +62,7 @@ public class BotTelegram {
 	private TelegramBot bot;
 	private String username;
 	private String firstName;
-	private int id;
+	private long id;
 
 	public BotTelegram(BotConfiguration config, DatabaseService service, BotHelper helper) {
 		this.config = config;
@@ -192,7 +192,7 @@ public class BotTelegram {
 		return firstName;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 }

@@ -41,3 +41,9 @@ These commands should be run at the root of the project.
 ```shell script
 git log --since="01-Jan-2021" --name-only --pretty=format: | sort | uniq
 ```
+
+## Add additional field to the Bot Setup table
+
+```sql
+alter table bot_setup add column send_motofan_birthdays boolean not null default true;
+```

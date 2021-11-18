@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,6 +44,9 @@ public class BotSetupEntity {
 	private boolean showGreetings;
 
 	@Column(nullable = false)
+	private boolean sendMotofanBirthdays;
+
+	@Column(nullable = false)
 	private boolean silentMode;
 
 	public int getId() {
@@ -70,6 +73,14 @@ public class BotSetupEntity {
 		this.showGreetings = showGreetings;
 	}
 
+	public boolean isSendMotofanBirthdays() {
+		return sendMotofanBirthdays;
+	}
+
+	public void setSendMotofanBirthdays(boolean sendMotofanBirthdays) {
+		this.sendMotofanBirthdays = sendMotofanBirthdays;
+	}
+
 	public boolean isSilentMode() {
 		return silentMode;
 	}
@@ -84,6 +95,7 @@ public class BotSetupEntity {
 			"SetupBotEntity{id=" + id +
 			", logUpdates=" + logUpdates +
 			", showGreetings=" + showGreetings +
+			", sendMotofanBirthdays=" + sendMotofanBirthdays +
 			", silentMode=" + silentMode +
 			"}";
 	}

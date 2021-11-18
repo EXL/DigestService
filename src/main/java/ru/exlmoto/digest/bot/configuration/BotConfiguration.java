@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,7 @@ public class BotConfiguration {
 	private boolean silent;
 	private boolean useStack;
 	private boolean showGreetings;
+	private boolean sendMotofanBirhdays;
 	private long motofanChatId;
 	private String motofanChatUrl;
 	private String telegramShortUrl;
@@ -198,6 +199,14 @@ public class BotConfiguration {
 
 	public void setShowGreetings(boolean showGreetings) {
 		this.showGreetings = showGreetings;
+	}
+
+	public boolean isSendMotofanBirthdays() {
+		return sendMotofanBirhdays;
+	}
+
+	public void setSendMotofanBirthdays(boolean sendMotofanBirhdays) {
+		this.sendMotofanBirhdays = sendMotofanBirhdays;
 	}
 
 	public long getMotofanChatId() {

@@ -261,6 +261,7 @@ public class ObeyController {
 		service.getSettings().ifPresent(settings -> {
 			setup.setLog(settings.isLogUpdates());
 			setup.setGreeting(settings.isShowGreetings());
+			setup.setBirthday(settings.isSendMotofanBirthdays());
 			setup.setSilent(settings.isSilentMode());
 		});
 		model.addAttribute("setup", setup);
@@ -273,14 +274,17 @@ public class ObeyController {
 		service.getSettings().ifPresent(settings -> {
 			boolean log = setup.isLog();
 			boolean greeting = setup.isGreeting();
+			boolean birthday = setup.isBirthday();
 			boolean silent = setup.isSilent();
 
 			botConfig.setLogUpdates(log);
 			botConfig.setShowGreetings(greeting);
+			botConfig.setSendMotofanBirthdays(birthday);
 			botConfig.setSilent(silent);
 
 			settings.setLogUpdates(log);
 			settings.setShowGreetings(greeting);
+			settings.setSendMotofanBirthdays(birthday);
 			settings.setSilentMode(silent);
 			service.saveSettings(settings);
 		});

@@ -242,6 +242,8 @@ See [application.properties](../src/main/resources/application.properties) file 
     * Left User Event.
     * Change Group Photo Event.
 
+* *bot.send-motofan-birthdays* - Enable or disable sending birthdays of MotoFan.Ru users to the `TG_CHAT`, globally.
+
 * *bot.silent* - Enable or disable sending all bot messages to all chats.
 
 * *bot.use-stack* - Use stack for detecting and avoid mass buttons clicking.

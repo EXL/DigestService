@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -96,6 +96,7 @@ public class DebugCommand extends MessageAdminAbility {
 		VFlat,
 		BLogUpdates,
 		BGreetings,
+		BBirthday,
 		BSilent,
 		UNHANDLED_DEFAULT
 	}
@@ -117,6 +118,7 @@ public class DebugCommand extends MessageAdminAbility {
 				case VFlat: { text = processFlat(locale); break; }
 				case BLogUpdates: { text = toggleUpdates(locale); break; }
 				case BGreetings: { text = toggleGreetings(locale); break; }
+				case BBirthday: { text = toggleBirthday(locale); break; }
 				case BSilent: { text = toggleSilent(locale); break; }
 			}
 		}
@@ -181,6 +183,7 @@ public class DebugCommand extends MessageAdminAbility {
 			"\n\n" + locale.i18n("bot.command.debug.values") + "\n```\n" +
 			Option.BLogUpdates + ": " + config.isLogUpdates() + "\n" +
 			Option.BGreetings + ": " + config.isShowGreetings() + "\n" +
+			Option.BBirthday + ": " + config.isSendMotofanBirthdays() + "\n" +
 			Option.BSilent + ": " + config.isSilent() + "\n```";
 	}
 
@@ -194,6 +197,12 @@ public class DebugCommand extends MessageAdminAbility {
 		boolean value = !config.isShowGreetings();
 		config.setShowGreetings(value);
 		return saveSettingsToDataBase(locale, Option.BGreetings, value);
+	}
+
+	private String toggleBirthday(LocaleHelper locale) {
+		boolean value = !config.isSendMotofanBirthdays();
+		config.setSendMotofanBirthdays(value);
+		return saveSettingsToDataBase(locale, Option.BBirthday, value);
 	}
 
 	private String toggleSilent(LocaleHelper locale) {

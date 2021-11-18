@@ -126,6 +126,11 @@ public class BotTelegram {
 				showGreetings, config.isShowGreetings()));
 			config.setShowGreetings(showGreetings);
 
+			boolean sendMotofanBirthdays = setup.isSendMotofanBirthdays();
+			log.info(String.format("====> Set 'bot.send-motofan-birthdays': '%b', default: '%b'.",
+				sendMotofanBirthdays, config.isSendMotofanBirthdays()));
+			config.setSendMotofanBirthdays(sendMotofanBirthdays);
+
 			boolean silentMod = setup.isSilentMode();
 			log.info(String.format("====> Set 'bot.silent': '%b', default: '%b'.",
 				silentMod, config.isSilent()));
@@ -164,6 +169,7 @@ public class BotTelegram {
 	private void updateTelegramBotSettingsAux(BotSetupEntity setup) {
 		setup.setLogUpdates(config.isLogUpdates());
 		setup.setShowGreetings(config.isShowGreetings());
+		setup.setSendMotofanBirthdays(config.isSendMotofanBirthdays());
 		setup.setSilentMode(config.isSilent());
 
 		log.info(String.format("====> Start save settings: '%s'.", setup.toString()));

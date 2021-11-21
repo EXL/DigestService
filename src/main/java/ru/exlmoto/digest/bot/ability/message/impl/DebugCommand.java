@@ -97,6 +97,7 @@ public class DebugCommand extends MessageAdminAbility {
 		BLogUpdates,
 		BGreetings,
 		BBirthday,
+		BCaptcha,
 		BSilent,
 		UNHANDLED_DEFAULT
 	}
@@ -119,6 +120,7 @@ public class DebugCommand extends MessageAdminAbility {
 				case BLogUpdates: { text = toggleUpdates(locale); break; }
 				case BGreetings: { text = toggleGreetings(locale); break; }
 				case BBirthday: { text = toggleBirthday(locale); break; }
+				case BCaptcha: { text = toggleCaptcha(locale); break; }
 				case BSilent: { text = toggleSilent(locale); break; }
 			}
 		}
@@ -184,6 +186,7 @@ public class DebugCommand extends MessageAdminAbility {
 			Option.BLogUpdates + ": " + config.isLogUpdates() + "\n" +
 			Option.BGreetings + ": " + config.isShowGreetings() + "\n" +
 			Option.BBirthday + ": " + config.isSendMotofanBirthdays() + "\n" +
+			Option.BCaptcha + ": " + config.isUseButtonCaptcha() + "\n" +
 			Option.BSilent + ": " + config.isSilent() + "\n```";
 	}
 
@@ -203,6 +206,12 @@ public class DebugCommand extends MessageAdminAbility {
 		boolean value = !config.isSendMotofanBirthdays();
 		config.setSendMotofanBirthdays(value);
 		return saveSettingsToDataBase(locale, Option.BBirthday, value);
+	}
+
+	private String toggleCaptcha(LocaleHelper locale) {
+		boolean value = !config.isUseButtonCaptcha();
+		config.setUseButtonCaptcha(value);
+		return saveSettingsToDataBase(locale, Option.BCaptcha, value);
 	}
 
 	private String toggleSilent(LocaleHelper locale) {

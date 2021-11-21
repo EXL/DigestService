@@ -244,6 +244,8 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 * *bot.send-motofan-birthdays* - Enable or disable sending birthdays of MotoFan.Ru users to the `TG_CHAT`, globally.
 
+* *bot.use-button-captcha* - Enable or disable [CAPTCHA](https://en.wikipedia.org/wiki/CAPTCHA) system in `TG_CHAT` for new users.
+
 * *bot.silent* - Enable or disable sending all bot messages to all chats.
 
 * *bot.use-stack* - Use stack for detecting and avoid mass buttons clicking.

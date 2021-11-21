@@ -47,6 +47,7 @@ public class BotConfiguration {
 	private boolean useStack;
 	private boolean showGreetings;
 	private boolean sendMotofanBirhdays;
+	private boolean useButtonCaptcha;
 	private long motofanChatId;
 	private String motofanChatUrl;
 	private String telegramShortUrl;
@@ -207,6 +208,14 @@ public class BotConfiguration {
 
 	public void setSendMotofanBirthdays(boolean sendMotofanBirhdays) {
 		this.sendMotofanBirhdays = sendMotofanBirhdays;
+	}
+
+	public boolean isUseButtonCaptcha() {
+		return useButtonCaptcha;
+	}
+
+	public void setUseButtonCaptcha(boolean useButtonCaptcha) {
+		this.useButtonCaptcha = useButtonCaptcha;
 	}
 
 	public long getMotofanChatId() {

@@ -262,6 +262,7 @@ public class ObeyController {
 			setup.setLog(settings.isLogUpdates());
 			setup.setGreeting(settings.isShowGreetings());
 			setup.setBirthday(settings.isSendMotofanBirthdays());
+			setup.setCaptcha(settings.isUseButtonCaptcha());
 			setup.setSilent(settings.isSilentMode());
 		});
 		model.addAttribute("setup", setup);
@@ -275,16 +276,19 @@ public class ObeyController {
 			boolean log = setup.isLog();
 			boolean greeting = setup.isGreeting();
 			boolean birthday = setup.isBirthday();
+			boolean captcha = setup.isCaptcha();
 			boolean silent = setup.isSilent();
 
 			botConfig.setLogUpdates(log);
 			botConfig.setShowGreetings(greeting);
 			botConfig.setSendMotofanBirthdays(birthday);
+			botConfig.setUseButtonCaptcha(captcha);
 			botConfig.setSilent(silent);
 
 			settings.setLogUpdates(log);
 			settings.setShowGreetings(greeting);
 			settings.setSendMotofanBirthdays(birthday);
+			settings.setUseButtonCaptcha(captcha);
 			settings.setSilentMode(silent);
 			service.saveSettings(settings);
 		});

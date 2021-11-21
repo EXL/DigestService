@@ -131,6 +131,11 @@ public class BotTelegram {
 				sendMotofanBirthdays, config.isSendMotofanBirthdays()));
 			config.setSendMotofanBirthdays(sendMotofanBirthdays);
 
+			boolean useButtonCaptcha = setup.isUseButtonCaptcha();
+			log.info(String.format("====> Set 'bot.use-button-captcha': '%b', default: '%b'.",
+				useButtonCaptcha, config.isUseButtonCaptcha()));
+			config.setUseButtonCaptcha(useButtonCaptcha);
+
 			boolean silentMod = setup.isSilentMode();
 			log.info(String.format("====> Set 'bot.silent': '%b', default: '%b'.",
 				silentMod, config.isSilent()));
@@ -170,6 +175,7 @@ public class BotTelegram {
 		setup.setLogUpdates(config.isLogUpdates());
 		setup.setShowGreetings(config.isShowGreetings());
 		setup.setSendMotofanBirthdays(config.isSendMotofanBirthdays());
+		setup.setUseButtonCaptcha(config.isUseButtonCaptcha());
 		setup.setSilentMode(config.isSilent());
 
 		log.info(String.format("====> Start save settings: '%s'.", setup.toString()));

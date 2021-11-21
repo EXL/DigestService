@@ -28,6 +28,7 @@ public class SetupForm {
 	private boolean log;
 	private boolean greeting;
 	private boolean birthday;
+	private boolean captcha;
 	private boolean silent;
 
 	public boolean isLog() {
@@ -52,6 +53,14 @@ public class SetupForm {
 
 	public void setBirthday(boolean birthday) {
 		this.birthday = birthday;
+	}
+
+	public boolean isCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(boolean captcha) {
+		this.captcha = captcha;
 	}
 
 	public boolean isSilent() {

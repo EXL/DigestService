@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -147,19 +147,40 @@ public class BotHandler {
 		long chatId = message.chat().id();
 		if (config.isShowGreetings() && service.checkGreeting(chatId)) {
 			List<User> users = Arrays.asList(message.newChatMembers());
-			String usernames;
-			if (users.size() == 1) {
-				usernames = helper.getValidUsername(users.get(0));
-			} else {
-				StringJoiner joiner = new StringJoiner(", ");
-				users.forEach(user -> joiner.add(helper.getValidUsername(user)));
-				usernames = joiner.toString();
+
+			User from = message.from();
+			boolean addedItself = false;
+			boolean isBotHere = false;
+			for (User user : users) {
+				if (user.id().equals(from.id())) {
+					addedItself = true;
+				}
+				if (user.id().equals(telegram.getId())) {
+					isBotHere = true;
+				}
 			}
-			boolean isBotHere = usernames.contains(telegram.getUsername());
-			String botAnswer = (isBotHere) ?
-				locale.i18n("bot.event.added") :
-				locale.i18nRU("bot.event.user.new", usernames);
-			sender.replySimple(chatId, message.messageId(), botAnswer);
+
+			log.error("" + addedItself + " " + isBotHere);
+
+			// 1. Adding the bot itself and another bots (don't show CAPTCHA).
+			// 2. Adding user by another user (don't show CAPTCHA).
+			// 3. By invite link or Telegram inner (show CAPTCHA).
+			if (config.isUseButtonCaptcha() && addedItself) {
+				log.error("TRIGGER CAPTCHA BUTTON!");
+			} else {
+				String usernames;
+				if (users.size() == 1) {
+					usernames = helper.getValidUsername(users.get(0));
+				} else {
+					StringJoiner joiner = new StringJoiner(", ");
+					users.forEach(user -> joiner.add(helper.getValidUsername(user)));
+					usernames = joiner.toString();
+				}
+				String botAnswer = (isBotHere) ?
+					locale.i18n("bot.event.added") :
+					locale.i18nRU("bot.event.user.new", usernames);
+				sender.replySimple(chatId, message.messageId(), botAnswer);
+			}
 		}
 	}
 

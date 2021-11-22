@@ -45,5 +45,14 @@ git log --since="01-Jan-2021" --name-only --pretty=format: | sort | uniq
 ## Add additional field to the Bot Setup table
 
 ```sql
-alter table bot_setup add column send_motofan_birthdays boolean not null default false;
+ALTER TABLE bot_setup ADD COLUMN send_motofan_birthdays BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE bot_setup ADD COLUMN use_button_captcha BOOLEAN NOT NULL DEFAULT FALSE;
+
+SELECT * FROM bot_setup;
+```
+
+## Execute only one test class via Gradle
+
+```shell script
+./gradlew test --tests ru.exlmoto.digest.bot.handler.BotHandlerMockTest
 ```

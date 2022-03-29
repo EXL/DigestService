@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,9 +39,8 @@ import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
-public abstract class RateParser {
+public abstract class RateParser extends GeneralParser {
 	private final Logger log = LoggerFactory.getLogger(RateParser.class);
 
 	protected String date = null;
@@ -145,23 +144,4 @@ public abstract class RateParser {
 	protected abstract BigDecimal parseValueAux(Document document, String valueId);
 
 	protected abstract String parseDate(Document document);
-
-	public abstract void logParsedValues();
-
-	private String filterLines(String value) {
-		return value.replaceAll("[\\t\\n\\r]+"," ").trim();
-	}
-
-	protected String filterCommas(String value) {
-		return value.replaceAll(",", ".");
-	}
-
-	protected String filterSpaces(String value) {
-		return value.replaceAll(" ", "");
-	}
-
-	protected BigDecimal updatePrevValue(BigDecimal oldValue, BigDecimal newValue, BigDecimal prevValue) {
-		return (oldValue.setScale(8, RoundingMode.HALF_UP)
-			.compareTo(newValue.setScale(8, RoundingMode.HALF_UP)) == 0) ? prevValue : oldValue;
-	}
 }

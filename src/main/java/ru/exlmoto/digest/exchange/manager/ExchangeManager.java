@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,7 @@ import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.exchange.parser.impl.BitcoinParser;
+import ru.exlmoto.digest.exchange.parser.RateRbcParser;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
@@ -63,6 +64,7 @@ public class ExchangeManager {
 		commitBankKz(config.getBankKz());
 		commitMetalRu(config.getMetalRu(), config.getMetalRuMirror());
 		commitBitcoin(config.getBitcoin());
+		commitRbc(config.getRbc());
 		log.info("=> End update exchanging rates.");
 	}
 
@@ -94,5 +96,9 @@ public class ExchangeManager {
 
 	public void commitBitcoin(String url) {
 		new BitcoinParser().commitRates(url, service, rest);
+	}
+
+	public void commitRbc(String url) {
+		new RateRbcParser().commitRates(url, service, rest);
 	}
 }

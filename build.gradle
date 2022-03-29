@@ -85,8 +85,9 @@ test {
 def getShortGitRevision() {
 	def commit = 'git rev-parse --short HEAD'
 	def count = 'git rev-list --count HEAD'
+	def branch = 'git rev-parse --abbrev-ref HEAD'
 	try {
-		return [commit.execute().text.trim(), count.execute().text.trim()].join('_')
+		return [branch.execute().text.trim(), commit.execute().text.trim(), count.execute().text.trim()].join('_')
 	} catch (IOException ignored) {
 		logger.warn('Cannot get information from Git commands. Is Git installed?')
 		return 'unknown'

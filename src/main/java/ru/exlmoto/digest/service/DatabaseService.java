@@ -405,9 +405,8 @@ public class DatabaseService {
 
 	/* Start: ExchangeRateAliEntity */
 
-	public Optional<ExchangeRateAliEntity> getLastRow(int row) {
-		final int MAX_ROW = 10;
-		if (row <= 10) {
+	public Optional<ExchangeRateAliEntity> getLastAliRow(int row) {
+		if (row <= ExchangeRateAliEntity.MAX_LAST_ROWS) {
 			return exchangeRateAliRepository.getLastRow(row);
 		}
 		return Optional.empty();
@@ -425,35 +424,35 @@ public class DatabaseService {
 
 	/* Start: ExchangeRateRbcEntity */
 
-	public Optional<ExchangeRateRbcEntity> getUsdCash() {
+	public Optional<ExchangeRateRbcEntity> getRbcUsdCash() {
 		return exchangeRateRbcRepository.getUsdCash();
 	}
 
-	public Optional<ExchangeRateRbcEntity> getEurCash() {
+	public Optional<ExchangeRateRbcEntity> getRbcEurCash() {
 		return exchangeRateRbcRepository.getEurCash();
 	}
 
-	public Optional<ExchangeRateRbcEntity> getUsdExchange() {
+	public Optional<ExchangeRateRbcEntity> getRbcUsdExchange() {
 		return exchangeRateRbcRepository.getUsdExchange();
 	}
 
-	public Optional<ExchangeRateRbcEntity> getEurExchange() {
+	public Optional<ExchangeRateRbcEntity> getRbcEurExchange() {
 		return exchangeRateRbcRepository.getEurExchange();
 	}
 
-	public Optional<ExchangeRateRbcEntity> getUsdCbrf() {
+	public Optional<ExchangeRateRbcEntity> getRbcUsdCbrf() {
 		return exchangeRateRbcRepository.getUsdCbrf();
 	}
 
-	public Optional<ExchangeRateRbcEntity> getEurCbrf() {
+	public Optional<ExchangeRateRbcEntity> getRbcEurCbrf() {
 		return exchangeRateRbcRepository.getEurCbrf();
 	}
 
-	public Optional<ExchangeRateRbcEntity> getEurUsd() {
+	public Optional<ExchangeRateRbcEntity> getRbcEurUsd() {
 		return exchangeRateRbcRepository.getEurUsd();
 	}
 
-	public Optional<ExchangeRateRbcEntity> getBtcUsd() {
+	public Optional<ExchangeRateRbcEntity> getRbcBtcUsd() {
 		return exchangeRateRbcRepository.getBtcUsd();
 	}
 

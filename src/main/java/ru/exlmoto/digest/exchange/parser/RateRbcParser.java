@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.util.StringUtils;
 
+import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
@@ -168,8 +169,62 @@ public class RateRbcParser extends GeneralParser {
 		return false;
 	}
 
+	private void updateEntity(ExchangeRateRbcEntity entity, DatabaseService service,
+		                      int id, String date, String purchase, String sale, String difference) {
+		if (entity == null) {
+			entity = new ExchangeRateRbcEntity();
+			entity.setId(id);
+			log.warn("Will create new rows in the 'exchange_rate_rbc' table with id: " + id + ".");
+		}
+		entity.setDate(date);
+		entity.setPurchase(purchase);
+		entity.setSale(sale);
+		entity.setDifference(difference);
+		service.saveRbcExchange(entity);
+	}
+
 	private void commit(DatabaseService service) {
 		logParsedValues();
+		updateEntity(
+			service.getRbcUsdCash().orElse(null), service,
+			ExchangeRateRbcEntity.RBC_ROW_USD_CASH,
+			usdCashDate, usdCashPurc, usdCashSell, usdCashDiff
+		);
+		updateEntity(
+			service.getRbcEurCash().orElse(null), service,
+			ExchangeRateRbcEntity.RBC_ROW_EUR_CASH,
+			eurCashDate, eurCashPurc, eurCashSell, eurCashDiff
+		);
+		updateEntity(
+			service.getRbcUsdExchange().orElse(null), service,
+			ExchangeRateRbcEntity.RBC_ROW_USD_EXCH,
+			usdExchDate, usdExchPurc, usdExchSell, usdExchDiff
+		);
+		updateEntity(
+			service.getRbcEurExchange().orElse(null), service,
+			ExchangeRateRbcEntity.RBC_ROW_EUR_EXCH,
+			eurExchDate, eurExchPurc, eurExchSell, eurExchDiff
+		);
+		updateEntity(
+			service.getRbcUsdCbrf().orElse(null), service,
+			ExchangeRateRbcEntity.RBC_ROW_USD_CBRF,
+			usdCbrfDate, usdCbrfPurc, usdCbrfSell, usdCbrfDiff
+		);
+		updateEntity(
+			service.getRbcEurCbrf().orElse(null), service,
+			ExchangeRateRbcEntity.RBC_ROW_EUR_CBRF,
+			eurCbrfDate, eurCbrfPurc, eurCbrfSell, eurCbrfDiff
+		);
+		updateEntity(
+			service.getRbcEurUsd().orElse(null), service,
+			ExchangeRateRbcEntity.RBC_ROW_EUR_USD,
+			eurUsdDate, eurUsdPurc, eurUsdSell, eurUsdDiff
+		);
+		updateEntity(
+			service.getRbcBtcUsd().orElse(null), service,
+			ExchangeRateRbcEntity.RBC_ROW_BTC_USD,
+			btcUsdDate, btcUsdPurc, btcUsdSell, btcUsdDiff
+		);
 	}
 
 	public boolean commitRates(String url, DatabaseService service, RestHelper rest) {

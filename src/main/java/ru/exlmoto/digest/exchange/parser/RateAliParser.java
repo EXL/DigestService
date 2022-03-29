@@ -54,7 +54,7 @@ public class RateAliParser extends GeneralParser {
 
 	private boolean parseArrays(JsonArray labels, JsonArray stockexchange, JsonArray aliexpress) {
 		if (!labels.isEmpty() && !stockexchange.isEmpty() && !aliexpress.isEmpty()) {
-			int size = labels.size();
+			final int size = labels.size();
 			for (int i = size - 1; i >= size - ExchangeRateAliEntity.MAX_LAST_ROWS; --i) {
 				lastRowsArray.add(
 					new ExchangeAliKey(
@@ -90,6 +90,20 @@ public class RateAliParser extends GeneralParser {
 
 	private void commit(DatabaseService service) {
 		logParsedValues();
+		final int size = lastRowsArray.size();
+		for (int i = 0; i < size; ++i) {
+			ExchangeRateAliEntity entity = service.getLastAliRow(i + 1).orElse(null);
+			if (entity == null) {
+				entity = new ExchangeRateAliEntity();
+				entity.setId(i + 1);
+				log.warn("Will create new rows in the 'exchange_rate_aliexpress' table with id: " + (i + 1) + ".");
+			}
+			entity.setDate(lastRowsArray.get(i).getDate());
+			entity.setValue(lastRowsArray.get(i).getAliexpress());
+			entity.setExchange(lastRowsArray.get(i).getExchange());
+			entity.setDifference("-");
+			service.saveAliExchange(entity);
+		}
 	}
 
 	public boolean commitRates(String url, DatabaseService service, RestHelper rest) {

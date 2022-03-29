@@ -25,11 +25,8 @@
 package ru.exlmoto.digest.exchange.parser;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,59 +90,59 @@ public class RateRbcParser extends GeneralParser {
 	private String btcUsdDiff;
 
 	private void setUsdCash(JsonObject object) {
-		usdCashDate = object.getAsJsonPrimitive("maxDealDate").getAsString();
-		usdCashSell = object.getAsJsonPrimitive("value1").getAsString();
-		usdCashPurc = object.getAsJsonPrimitive("value2").getAsString();
-		usdCashDiff = object.getAsJsonPrimitive("change").getAsString();
+		usdCashDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
+		usdCashSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("value1").getAsString()));
+		usdCashPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
+		usdCashDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
 	}
 
 	private void setEurCash(JsonObject object) {
-		eurCashDate = object.getAsJsonPrimitive("maxDealDate").getAsString();
-		eurCashSell = object.getAsJsonPrimitive("value1").getAsString();
-		eurCashPurc = object.getAsJsonPrimitive("value2").getAsString();
-		eurCashDiff = object.getAsJsonPrimitive("change").getAsString();
+		eurCashDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
+		eurCashSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("value1").getAsString()));
+		eurCashPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
+		eurCashDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
 	}
 
 	private void setUsdExch(JsonObject object) {
-		usdExchDate = object.getAsJsonPrimitive("maxDealDate").getAsString();
-		usdExchSell = object.getAsJsonPrimitive("closevalue").getAsString();
-		usdExchPurc = object.getAsJsonPrimitive("value2").getAsString();
-		usdExchDiff = object.getAsJsonPrimitive("change").getAsString();
+		usdExchDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
+		usdExchSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
+		usdExchPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
+		usdExchDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
 	}
 
 	private void setEurExch(JsonObject object) {
-		eurExchDate = object.getAsJsonPrimitive("maxDealDate").getAsString();
-		eurExchSell = object.getAsJsonPrimitive("closevalue").getAsString();
-		eurExchPurc = object.getAsJsonPrimitive("value2").getAsString();
-		eurExchDiff = object.getAsJsonPrimitive("change").getAsString();
+		eurExchDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
+		eurExchSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
+		eurExchPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
+		eurExchDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
 	}
 
 	private void setUsdCbrf(JsonObject object) {
-		usdCbrfDate = object.getAsJsonPrimitive("maxDealDate").getAsString();
-		usdCbrfSell = object.getAsJsonPrimitive("closevalue").getAsString();
-		usdCbrfPurc = object.getAsJsonPrimitive("value2").getAsString();
-		usdCbrfDiff = object.getAsJsonPrimitive("change").getAsString();
+		usdCbrfDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
+		usdCbrfSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
+		usdCbrfPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
+		usdCbrfDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
 	}
 
 	private void setEurCbrf(JsonObject object) {
-		eurCbrfDate = object.getAsJsonPrimitive("maxDealDate").getAsString();
-		eurCbrfSell = object.getAsJsonPrimitive("closevalue").getAsString();
-		eurCbrfPurc = object.getAsJsonPrimitive("value2").getAsString();
-		eurCbrfDiff = object.getAsJsonPrimitive("change").getAsString();
+		eurCbrfDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
+		eurCbrfSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
+		eurCbrfPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
+		eurCbrfDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
 	}
 
 	private void setEurUsd(JsonObject object) {
-		eurUsdDate = object.getAsJsonPrimitive("maxDealDate").getAsString();
-		eurUsdSell = object.getAsJsonPrimitive("closevalue").getAsString();
-		eurUsdPurc = object.getAsJsonPrimitive("value2").getAsString();
-		eurUsdDiff = object.getAsJsonPrimitive("change").getAsString();
+		eurUsdDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
+		eurUsdSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
+		eurUsdPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
+		eurUsdDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
 	}
 
 	private void setBtcUsd(JsonObject object) {
-		btcUsdDate = object.getAsJsonPrimitive("maxDealDate").getAsString();
-		btcUsdSell = object.getAsJsonPrimitive("closevalue").getAsString();
-		btcUsdPurc = object.getAsJsonPrimitive("value2").getAsString();
-		btcUsdDiff = object.getAsJsonPrimitive("change").getAsString();
+		btcUsdDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
+		btcUsdSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
+		btcUsdPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
+		btcUsdDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
 	}
 
 	public boolean parse(String content) {

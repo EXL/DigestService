@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +82,16 @@ public class GeneratorHelper {
 			builder.append(sign);
 		}
 		return builder.toString();
+	}
+
+	/* TODO: Test this function */
+	public String addLeadingSigns(String value, String sign, int limit) {
+		StringBuilder builder = new StringBuilder();
+		int start = value.length();
+		for (int i = start; i < limit; i++) {
+			builder.append(sign);
+		}
+		return builder.toString() + value;
 	}
 
 	public boolean isDateNotEmpty(String date) {

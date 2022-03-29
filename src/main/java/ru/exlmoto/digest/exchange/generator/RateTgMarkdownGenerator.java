@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
+import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
+import ru.exlmoto.digest.entity.ExchangeRateAliEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.service.DatabaseService;
@@ -88,7 +90,62 @@ public class RateTgMarkdownGenerator {
 			filterDifference(bankRuEntity.getPrevByn(), byn));
 		report += String.format("1 KZT: %s%s\n", filterValue(kzt),
 			filterDifference(bankRuEntity.getPrevKzt(), kzt));
-		return report + "```";
+		report += "```" + "\n";
+
+		report += bankRuRbcReport() + "\n";
+		report += bankRuAliReport() + "\n";
+
+		return report;
+	}
+
+	private String bankRuRbcReport() {
+		String report = "";
+		ExchangeRateRbcEntity usdCashEntity = service.getRbcUsdCash().orElse(null);
+		if (usdCashEntity != null) {
+			report += String.format(locale.i18n("exchange.rbc.header"), usdCashEntity.getDate()) + "\n";
+			report += "```\n";
+			report += bankRuRbcReportAux(usdCashEntity,
+				locale.i18n("exchange.rbc.usd.cash"), false);
+			report += bankRuRbcReportAux(service.getRbcEurCash().orElse(null),
+				locale.i18n("exchange.rbc.eur.cash"), false);
+			report += bankRuRbcReportAux(service.getRbcUsdExchange().orElse(null),
+				locale.i18n("exchange.rbc.usd.exch"), true);
+			report += bankRuRbcReportAux(service.getRbcEurExchange().orElse(null),
+				locale.i18n("exchange.rbc.eur.exch"), true);
+			report += bankRuRbcReportAux(service.getRbcEurUsd().orElse(null),
+				locale.i18n("exchange.rbc.usd.eur"), true);
+			report += bankRuRbcReportAux(service.getRbcBtcUsd().orElse(null),
+				locale.i18n("exchange.rbc.usd.btc"), true);
+			report += "```";
+		}
+		return report;
+	}
+
+	private String bankRuRbcReportAux(ExchangeRateRbcEntity entity, String label, boolean diff) {
+		String report = "";
+		if (entity != null) {
+			report += label + " " + helper.addLeadingSigns(entity.getSale(), " ", 8) +
+				((diff) ? filterStringDifference(entity.getDifference(), 7) : ",  " + entity.getPurchase()) + "\n";
+		}
+		return report;
+	}
+
+	private String bankRuAliReport() {
+		final int MAX_ROW_SIZE = 5;
+		String report = locale.i18n("exchange.aliexpress.header") + "\n";
+
+		report += "```\n";
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < MAX_ROW_SIZE; ++i) {
+			ExchangeRateAliEntity entity = service.getLastAliRow(i + 1).orElse(null);
+			if (entity != null) {
+				sb.append(entity.getDate()).append(": ").append(entity.getValue()).append(" RUB.\n");
+			}
+		}
+		report += sb.toString();
+		report += "```";
+
+		return report;
 	}
 
 	private String bankUaReport(ExchangeRateEntity bankUaEntity) {
@@ -229,14 +286,16 @@ public class RateTgMarkdownGenerator {
 	}
 
 	private String filterDifference(BigDecimal prev, BigDecimal current, int limit) {
-		final String SPACE = " ";
+		return filterStringDifference(helper.getDifference(prev, current), limit);
+	}
 
-		String difference = helper.getDifference(prev, current);
+	private String filterStringDifference(String difference, int limit) {
+		final String SPACE = " ";
 		if (difference != null) {
 			return ", " + (difference.startsWith("-") ?
 				helper.addTrailingSigns(difference, SPACE, limit) +
 					" " + locale.i18n("exchange.change.down") :
-				helper.addTrailingSigns("+" + difference, SPACE, limit) +
+				helper.addTrailingSigns((difference.startsWith("+") ? difference : "+" + difference), SPACE, limit) +
 					" " + locale.i18n("exchange.change.up"));
 		}
 		return ".";

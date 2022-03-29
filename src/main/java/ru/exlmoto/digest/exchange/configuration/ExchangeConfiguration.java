@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,8 @@ public class ExchangeConfiguration {
 	private String metalRu;
 	private String metalRuMirror;
 	private String bitcoin;
+	private String rbc;
+	private String aliexpress;
 
 	public String getBankRu() {
 		return bankRu;
@@ -108,5 +110,21 @@ public class ExchangeConfiguration {
 
 	public void setBitcoin(String bitcoin) {
 		this.bitcoin = bitcoin;
+	}
+
+	public String getRbc() {
+		return rbc;
+	}
+
+	public void setRbc(String rbc) {
+		this.rbc = rbc;
+	}
+
+	public String getAliexpress() {
+		return aliexpress;
+	}
+
+	public void setAliexpress(String aliexpress) {
+		this.aliexpress = aliexpress;
 	}
 }

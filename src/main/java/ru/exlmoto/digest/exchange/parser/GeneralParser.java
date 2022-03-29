@@ -32,6 +32,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public abstract class GeneralParser {
+	protected String formatDate(String original) {
+		final String[] parts = original.substring(5).replaceAll("-", ".").split("\\.");
+		return parts[1] + "." + parts[0];
+	}
+
+	protected String removeLastCharacters(String original, int n) {
+		return original.substring(0, original.length() - n);
+	}
+
 	protected String filterLines(String value) {
 		return value.replaceAll("[\\t\\n\\r]+"," ").trim();
 	}

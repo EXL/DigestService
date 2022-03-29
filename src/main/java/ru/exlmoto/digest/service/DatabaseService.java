@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,6 +43,8 @@ import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.entity.BotSubRateEntity;
 import ru.exlmoto.digest.entity.BotSetupEntity;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
+import ru.exlmoto.digest.entity.ExchangeRateAliEntity;
+import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
 import ru.exlmoto.digest.entity.MemberEntity;
 import ru.exlmoto.digest.entity.FlatSetupEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
@@ -55,6 +57,8 @@ import ru.exlmoto.digest.repository.BotSubCovidUaRepository;
 import ru.exlmoto.digest.repository.BotSubRateRepository;
 import ru.exlmoto.digest.repository.BotSetupRepository;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
+import ru.exlmoto.digest.repository.ExchangeRateAliRepository;
+import ru.exlmoto.digest.repository.ExchangeRateRbcRepository;
 import ru.exlmoto.digest.repository.MemberRepository;
 import ru.exlmoto.digest.repository.FlatSetupRepository;
 
@@ -75,6 +79,8 @@ public class DatabaseService {
 	private final BotSubRateRepository subRateRepository;
 	private final BotSetupRepository setupRepository;
 	private final ExchangeRateRepository exchangeRateRepository;
+	private final ExchangeRateAliRepository exchangeRateAliRepository;
+	private final ExchangeRateRbcRepository exchangeRateRbcRepository;
 	private final MemberRepository memberRepository;
 	private final FlatSetupRepository flatSetupRepository;
 
@@ -88,6 +94,8 @@ public class DatabaseService {
 	                       BotSubRateRepository subRateRepository,
 	                       BotSetupRepository setupRepository,
 	                       ExchangeRateRepository exchangeRateRepository,
+	                       ExchangeRateAliRepository exchangeRateAliRepository,
+	                       ExchangeRateRbcRepository exchangeRateRbcRepository,
 	                       MemberRepository memberRepository,
 	                       FlatSetupRepository flatSetupRepository) {
 		this.digestRepository = digestRepository;
@@ -100,6 +108,8 @@ public class DatabaseService {
 		this.subRateRepository = subRateRepository;
 		this.setupRepository = setupRepository;
 		this.exchangeRateRepository = exchangeRateRepository;
+		this.exchangeRateAliRepository = exchangeRateAliRepository;
+		this.exchangeRateRbcRepository = exchangeRateRbcRepository;
 		this.memberRepository = memberRepository;
 		this.flatSetupRepository = flatSetupRepository;
 	}
@@ -392,6 +402,74 @@ public class DatabaseService {
 	}
 
 	/* End: ExchangeRateEntity */
+
+	/* Start: ExchangeRateAliEntity */
+
+	public Optional<ExchangeRateAliEntity> getLastRowOne() {
+		return exchangeRateAliRepository.getLastRowOne();
+	}
+
+	public Optional<ExchangeRateAliEntity> getLastRowTwo() {
+		return exchangeRateAliRepository.getLastRowTwo();
+	}
+
+	public Optional<ExchangeRateAliEntity> getLastRowThree() {
+		return exchangeRateAliRepository.getLastRowThree();
+	}
+
+	public Optional<ExchangeRateAliEntity> getLastRowFour() {
+		return exchangeRateAliRepository.getLastRowFour();
+	}
+
+	public Optional<ExchangeRateAliEntity> getLastRowFive() {
+		return exchangeRateAliRepository.getLastRowFive();
+	}
+
+	public void saveAliExchange(ExchangeRateAliEntity rate) {
+		if (rate != null) {
+			exchangeRateAliRepository.save(rate);
+		} else {
+			log.error("Cannot save ExchangeRateAliEntity, because rate is null.");
+		}
+	}
+
+	/* End: ExchangeRateAliEntity */
+
+	/* Start: ExchangeRateRbcEntity */
+
+	public Optional<ExchangeRateRbcEntity> getUsdCash() {
+		return exchangeRateRbcRepository.getUsdCash();
+	}
+
+	public Optional<ExchangeRateRbcEntity> getEurCash() {
+		return exchangeRateRbcRepository.getEurCash();
+	}
+
+	public Optional<ExchangeRateRbcEntity> getUsdExchange() {
+		return exchangeRateRbcRepository.getUsdExchange();
+	}
+
+	public Optional<ExchangeRateRbcEntity> getEurExchange() {
+		return exchangeRateRbcRepository.getEurExchange();
+	}
+
+	public Optional<ExchangeRateRbcEntity> getUsdCbrf() {
+		return exchangeRateRbcRepository.getUsdCbrf();
+	}
+
+	public Optional<ExchangeRateRbcEntity> getEurCbrf() {
+		return exchangeRateRbcRepository.getEurCbrf();
+	}
+
+	public void saveRbcExchange(ExchangeRateRbcEntity rate) {
+		if (rate != null) {
+			exchangeRateRbcRepository.save(rate);
+		} else {
+			log.error("Cannot save ExchangeRateRbcEntity, because rate is null.");
+		}
+	}
+
+	/* End: ExchangeRateRbcEntity */
 
 	/* Start: MemberEntity */
 

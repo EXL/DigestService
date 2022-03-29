@@ -54,4 +54,12 @@ public interface ExchangeRateRbcRepository extends CrudRepository<ExchangeRateRb
 	default Optional<ExchangeRateRbcEntity> getEurCbrf() {
 		return findById(ExchangeRateRbcEntity.RBC_ROW_EUR_CBRF);
 	}
+
+	default Optional<ExchangeRateRbcEntity> getEurUsd() {
+		return findById(ExchangeRateRbcEntity.RBC_ROW_EUR_USD);
+	}
+
+	default Optional<ExchangeRateRbcEntity> getBtcUsd() {
+		return findById(ExchangeRateRbcEntity.RBC_ROW_BTC_USD);
+	}
 }

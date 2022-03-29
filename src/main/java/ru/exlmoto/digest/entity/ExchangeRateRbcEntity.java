@@ -38,6 +38,8 @@ public class ExchangeRateRbcEntity {
 	public static final int RBC_ROW_EUR_EXCH = 4;
 	public static final int RBC_ROW_USD_CBRF = 5;
 	public static final int RBC_ROW_EUR_CBRF = 6;
+	public static final int RBC_ROW_EUR_USD  = 7;
+	public static final int RBC_ROW_BTC_USD  = 8;
 
 	@Id
 	private int id;
@@ -45,7 +47,7 @@ public class ExchangeRateRbcEntity {
 	@Column(nullable = false)
 	private String date;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String purchase;
 
 	@Column(nullable = false)

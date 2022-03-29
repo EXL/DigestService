@@ -31,23 +31,7 @@ import ru.exlmoto.digest.entity.ExchangeRateAliEntity;
 import java.util.Optional;
 
 public interface ExchangeRateAliRepository extends CrudRepository<ExchangeRateAliEntity, Integer> {
-	default Optional<ExchangeRateAliEntity> getLastRowOne() {
-		return findById(ExchangeRateAliEntity.ALI_LAST_ROW_1);
-	}
-
-	default Optional<ExchangeRateAliEntity> getLastRowTwo() {
-		return findById(ExchangeRateAliEntity.ALI_LAST_ROW_2);
-	}
-
-	default Optional<ExchangeRateAliEntity> getLastRowThree() {
-		return findById(ExchangeRateAliEntity.ALI_LAST_ROW_3);
-	}
-
-	default Optional<ExchangeRateAliEntity> getLastRowFour() {
-		return findById(ExchangeRateAliEntity.ALI_LAST_ROW_4);
-	}
-
-	default Optional<ExchangeRateAliEntity> getLastRowFive() {
-		return findById(ExchangeRateAliEntity.ALI_LAST_ROW_5);
+	default Optional<ExchangeRateAliEntity> getLastRow(int row) {
+		return findById(row);
 	}
 }

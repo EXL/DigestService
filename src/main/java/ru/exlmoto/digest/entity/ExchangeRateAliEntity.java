@@ -32,11 +32,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "exchange_rate_aliexpress")
 public class ExchangeRateAliEntity {
-	public static final int ALI_LAST_ROW_1 = 1;
-	public static final int ALI_LAST_ROW_2 = 2;
-	public static final int ALI_LAST_ROW_3 = 3;
-	public static final int ALI_LAST_ROW_4 = 4;
-	public static final int ALI_LAST_ROW_5 = 5;
+	public static final int MAX_LAST_ROWS = 10;
 
 	@Id
 	private int id;
@@ -46,6 +42,9 @@ public class ExchangeRateAliEntity {
 
 	@Column(nullable = false)
 	private String value;
+
+	@Column(nullable = false)
+	private String exchange;
 
 	@Column(nullable = false)
 	private String difference;
@@ -74,6 +73,14 @@ public class ExchangeRateAliEntity {
 		this.value = value;
 	}
 
+	public String getExchange() {
+		return exchange;
+	}
+
+	public void setExchange(String exchange) {
+		this.exchange = exchange;
+	}
+
 	public String getDifference() {
 		return difference;
 	}
@@ -88,6 +95,7 @@ public class ExchangeRateAliEntity {
 			"ExchangeRateAliEntity{id=" + id +
 			", date=" + date +
 			", value=" + value +
+			", exchange=" + exchange +
 			", difference=" + difference +
 			"}";
 	}

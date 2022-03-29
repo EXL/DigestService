@@ -405,24 +405,12 @@ public class DatabaseService {
 
 	/* Start: ExchangeRateAliEntity */
 
-	public Optional<ExchangeRateAliEntity> getLastRowOne() {
-		return exchangeRateAliRepository.getLastRowOne();
-	}
-
-	public Optional<ExchangeRateAliEntity> getLastRowTwo() {
-		return exchangeRateAliRepository.getLastRowTwo();
-	}
-
-	public Optional<ExchangeRateAliEntity> getLastRowThree() {
-		return exchangeRateAliRepository.getLastRowThree();
-	}
-
-	public Optional<ExchangeRateAliEntity> getLastRowFour() {
-		return exchangeRateAliRepository.getLastRowFour();
-	}
-
-	public Optional<ExchangeRateAliEntity> getLastRowFive() {
-		return exchangeRateAliRepository.getLastRowFive();
+	public Optional<ExchangeRateAliEntity> getLastRow(int row) {
+		final int MAX_ROW = 10;
+		if (row <= 10) {
+			return exchangeRateAliRepository.getLastRow(row);
+		}
+		return Optional.empty();
 	}
 
 	public void saveAliExchange(ExchangeRateAliEntity rate) {
@@ -459,6 +447,14 @@ public class DatabaseService {
 
 	public Optional<ExchangeRateRbcEntity> getEurCbrf() {
 		return exchangeRateRbcRepository.getEurCbrf();
+	}
+
+	public Optional<ExchangeRateRbcEntity> getEurUsd() {
+		return exchangeRateRbcRepository.getEurUsd();
+	}
+
+	public Optional<ExchangeRateRbcEntity> getBtcUsd() {
+		return exchangeRateRbcRepository.getBtcUsd();
 	}
 
 	public void saveRbcExchange(ExchangeRateRbcEntity rate) {

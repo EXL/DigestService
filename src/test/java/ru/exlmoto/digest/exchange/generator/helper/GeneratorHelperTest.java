@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -107,6 +107,16 @@ class GeneratorHelperTest {
 		assertEquals("value_long", helper.addTrailingSigns("value_long", " ", 10));
 		assertEquals("value_long1", helper.addTrailingSigns("value_long1", " ", 10));
 		assertEquals("value_long_long", helper.addTrailingSigns("value_long_long", " ", 10));
+	}
+
+	@Test
+	public void testAddLeadingSigns() {
+		assertEquals("          ", helper.addLeadingSigns("", " ", 10));
+		assertEquals("         v", helper.addLeadingSigns("v", " ", 10));
+		assertEquals("     value", helper.addLeadingSigns("value", " ", 10));
+		assertEquals("value_long", helper.addLeadingSigns("value_long", " ", 10));
+		assertEquals("value_long1", helper.addLeadingSigns("value_long1", " ", 10));
+		assertEquals("value_long_long", helper.addLeadingSigns("value_long_long", " ", 10));
 	}
 
 	@Test

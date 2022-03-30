@@ -289,7 +289,7 @@ public class RateTgMarkdownGenerator {
 		return filterStringDifference(helper.getDifference(prev, current), limit);
 	}
 
-	private String filterStringDifference(String difference, int limit) {
+	protected String filterStringDifference(String difference, int limit) {
 		final String SPACE = " ";
 		if (difference != null) {
 			return ", " + (difference.startsWith("-") ?

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -177,5 +177,15 @@ class RateTgMarkdownGeneratorTest {
 		assertThat(report).isNotEmpty();
 		System.out.println(report);
 		System.out.println("=== END testBitcoinMarkdownReport() ===");
+	}
+
+	@Test
+	public void testFilterStringDifference() {
+		assertThat(generator.filterStringDifference("0.134", 7)).startsWith(", +");
+		assertThat(generator.filterStringDifference("+0.134", 7)).startsWith(", +");
+		assertThat(generator.filterStringDifference("+0.134", 7)).doesNotStartWith(", ++");
+
+		assertThat(generator.filterStringDifference("-0.134", 7)).startsWith(", -");
+		assertThat(generator.filterStringDifference("-0.134", 7)).doesNotStartWith(", --");
 	}
 }

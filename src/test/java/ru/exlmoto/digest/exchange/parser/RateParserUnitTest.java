@@ -34,7 +34,6 @@ import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.exchange.parser.impl.BitcoinParser;
-import ru.exlmoto.digest.exchange.parser.GeneralParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
 import ru.exlmoto.digest.util.file.ResourceHelper;
@@ -219,6 +218,31 @@ class RateParserUnitTest {
 		assertFalse(parserHelper.process(new RateRbcParser(), parserHelper.fileContent("currencyRbcError.json")));
 
 		generalTests(new RateRbcParser());
+	}
+
+	@Test
+	public void testFormatDate() {
+		assertEquals(new BankRuParser().formatDate("2022-11-19"), "19.11");
+	}
+
+	@Test
+	public void testRemoveLastCharacters() {
+		assertEquals(new BankRuParser().removeLastCharacters("malfunction", 3), "malfunct");
+	}
+
+	@Test
+	public void testFilterLines() {
+		assertEquals(new BankRuParser().filterLines("test\ntest\ntest\n"), "test test test");
+	}
+
+	@Test
+	public void testFilterCommas() {
+		assertEquals(new BankRuParser().filterCommas("45 000,45"), "45 000.45");
+	}
+
+	@Test
+	public void testFilterSpaces() {
+		assertEquals(new BankRuParser().filterSpaces("45 000,45"), "45000,45");
 	}
 
 	@Test

@@ -84,14 +84,13 @@ public class GeneratorHelper {
 		return builder.toString();
 	}
 
-	/* TODO: Test this function */
 	public String addLeadingSigns(String value, String sign, int limit) {
 		StringBuilder builder = new StringBuilder();
 		int start = value.length();
 		for (int i = start; i < limit; i++) {
 			builder.append(sign);
 		}
-		return builder.toString() + value;
+		return builder + value;
 	}
 
 	public boolean isDateNotEmpty(String date) {

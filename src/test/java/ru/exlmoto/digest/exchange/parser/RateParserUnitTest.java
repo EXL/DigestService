@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,9 @@ import ru.exlmoto.digest.exchange.parser.impl.BankKzParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.exchange.parser.impl.BitcoinParser;
+import ru.exlmoto.digest.exchange.parser.GeneralParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateAliParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
 import ru.exlmoto.digest.util.file.ResourceHelper;
 
 import java.math.BigDecimal;
@@ -50,7 +53,7 @@ class RateParserUnitTest {
 	private static class RateParserHelper {
 		private final ResourceHelper resourceHelper = new ResourceHelper();
 
-		public boolean process(RateParser parser, String content) {
+		public boolean process(GeneralParser parser, String content) {
 			boolean result = parser.parse(content);
 			parser.logParsedValues();
 			return result;
@@ -203,6 +206,22 @@ class RateParserUnitTest {
 	}
 
 	@Test
+	public void testAliexpressParser() {
+		assertTrue(parserHelper.process(new RateAliParser(), parserHelper.fileContent("currencyAli.json")));
+		assertFalse(parserHelper.process(new RateAliParser(), parserHelper.fileContent("currencyAliError.json")));
+
+		generalTests(new RateAliParser());
+	}
+
+	@Test
+	public void testRbcParser() {
+		assertTrue(parserHelper.process(new RateRbcParser(), parserHelper.fileContent("currencyRbc.json")));
+		assertFalse(parserHelper.process(new RateRbcParser(), parserHelper.fileContent("currencyRbcError.json")));
+
+		generalTests(new RateRbcParser());
+	}
+
+	@Test
 	public void testUpdatePrevValue() {
 		assertEquals(new BankRuParser().updatePrevValue(
 			new BigDecimal("75.10"),
@@ -259,7 +278,7 @@ class RateParserUnitTest {
 		).toString(), "78.4");
 	}
 
-	private void generalTests(RateParser parser) {
+	private void generalTests(GeneralParser parser) {
 		assertFalse(parserHelper.process(parser, "malfunction data"));
 		assertFalse(parserHelper.process(parser, "malfunction\ndata"));
 		assertFalse(parserHelper.process(parser, "malfunction\t\ndata"));

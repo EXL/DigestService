@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package ru.exlmoto.digest.exchange.parser;
+package ru.exlmoto.digest.exchange.parser.additional;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -37,6 +37,7 @@ import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.entity.ExchangeRateAliEntity;
 import ru.exlmoto.digest.exchange.key.ExchangeAliKey;
+import ru.exlmoto.digest.exchange.parser.GeneralParser;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
@@ -72,11 +73,11 @@ public class RateAliParser extends GeneralParser {
 	public boolean parse(String content) {
 		if (StringUtils.hasLength(content)) {
 			try {
-				JsonObject document = JsonParser.parseString​(content).getAsJsonObject();
+				JsonObject document = JsonParser.parseString(content).getAsJsonObject();
 				JsonObject data = document.getAsJsonObject("data");
-				JsonArray labels = data.getAsJsonArray​("labels");
-				JsonArray stockexchange = data.getAsJsonArray​("stockexchange");
-				JsonArray aliexpress = data.getAsJsonArray​("aliexpress");
+				JsonArray labels = data.getAsJsonArray("labels");
+				JsonArray stockexchange = data.getAsJsonArray("stockexchange");
+				JsonArray aliexpress = data.getAsJsonArray("aliexpress");
 
 				lastRowsArray.clear();
 

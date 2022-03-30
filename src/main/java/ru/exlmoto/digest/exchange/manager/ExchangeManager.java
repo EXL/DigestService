@@ -30,8 +30,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
-import ru.exlmoto.digest.exchange.parser.RateRbcParser;
-import ru.exlmoto.digest.exchange.parser.RateAliParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateAliParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankUaMirrorParser;

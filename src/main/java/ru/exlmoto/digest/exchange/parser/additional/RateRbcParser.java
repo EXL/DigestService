@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package ru.exlmoto.digest.exchange.parser;
+package ru.exlmoto.digest.exchange.parser.additional;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -35,6 +35,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.util.StringUtils;
 
 import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
+import ru.exlmoto.digest.exchange.parser.GeneralParser;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 
@@ -149,8 +150,8 @@ public class RateRbcParser extends GeneralParser {
 	public boolean parse(String content) {
 		if (StringUtils.hasLength(content)) {
 			try {
-				JsonObject document = JsonParser.parseString​(content).getAsJsonObject();
-				JsonArray arr = document.getAsJsonArray​("shared_key_indicators");
+				JsonObject document = JsonParser.parseString(content).getAsJsonObject();
+				JsonArray arr = document.getAsJsonArray("shared_key_indicators");
 				if (!arr.isEmpty()) {
 					setUsdCash(arr.get(USD_CASH).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
 					setEurCash(arr.get(EUR_CASH).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));

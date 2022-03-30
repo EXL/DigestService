@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
-import ru.exlmoto.digest.entity.ExchangeRateAliEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.service.DatabaseService;
@@ -137,10 +136,9 @@ public class RateTgMarkdownGenerator {
 		report += "```\n";
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < MAX_ROW_SIZE; ++i) {
-			ExchangeRateAliEntity entity = service.getLastAliRow(i + 1).orElse(null);
-			if (entity != null) {
-				sb.append(entity.getDate()).append(": ").append(entity.getValue()).append(" RUB.\n");
-			}
+			service.getLastAliRow(i + 1).ifPresent(
+				entity -> sb.append(entity.getDate()).append(": ").append(entity.getValue()).append(" RUB.\n")
+			);
 		}
 		report += sb.toString();
 		report += "```";

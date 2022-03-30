@@ -25,7 +25,6 @@
 package ru.exlmoto.digest.exchange.parser.additional;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -47,10 +46,10 @@ import java.util.List;
 public class RateAliParser extends GeneralParser {
 	private final Logger log = LoggerFactory.getLogger(RateAliParser.class);
 
-	private List<ExchangeAliKey> lastRowsArray;
+	private final List<ExchangeAliKey> lastRowsArray;
 
 	public RateAliParser() {
-		lastRowsArray = new ArrayList<ExchangeAliKey>();
+		lastRowsArray = new ArrayList<>();
 	}
 
 	private boolean parseArrays(JsonArray labels, JsonArray stockexchange, JsonArray aliexpress) {

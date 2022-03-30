@@ -24,7 +24,6 @@
 
 package ru.exlmoto.digest.exchange.parser;
 
-import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.rest.RestHelper;
 

@@ -25,6 +25,7 @@
 package ru.exlmoto.digest.bot.sender;
 
 import com.pengrad.telegrambot.model.ChatMember;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.BaseRequest;
@@ -34,6 +35,7 @@ import com.pengrad.telegrambot.request.SendPhoto;
 import com.pengrad.telegrambot.request.SendSticker;
 import com.pengrad.telegrambot.request.AnswerCallbackQuery;
 import com.pengrad.telegrambot.response.BaseResponse;
+import com.pengrad.telegrambot.response.SendResponse;
 import com.pengrad.telegrambot.response.GetChatAdministratorsResponse;
 
 import org.slf4j.Logger;
@@ -82,8 +84,8 @@ public class BotSender {
 		sendMessage(chatId, replyId, text, Markdown, null);
 	}
 
-	public void replyMarkdown(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
-		sendMessage(chatId, replyId, text, Markdown, keyboard);
+	public Answer<String> replyMarkdown(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
+		return sendMessage(chatId, replyId, text, Markdown, keyboard);
 	}
 
 	public void replyHtml(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
@@ -110,7 +112,8 @@ public class BotSender {
 		}
 	}
 
-	private void sendMessage(long chatId, Integer replyId, String text, ParseMode mode, InlineKeyboardMarkup keyboard) {
+	private Answer<String> sendMessage(long chatId, Integer replyId, String text, ParseMode mode,
+	                                   InlineKeyboardMarkup keyboard) {
 		SendMessage sendMessage = new SendMessage(chatId, shrinkText(text)).disableWebPagePreview(downloadFile)
 			.disableNotification(config.isDisableNotifications());
 		if (mode != null) {
@@ -122,7 +125,7 @@ public class BotSender {
 		if (keyboard != null) {
 			sendMessage.replyMarkup(keyboard);
 		}
-		executeRequestLog(sendMessage);
+		return executeRequestLog(sendMessage);
 	}
 
 	public void editMarkdown(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
@@ -256,6 +259,11 @@ public class BotSender {
 	private Answer<String> getResponse(BaseResponse response) {
 		if (!response.isOk()) {
 			return Error(String.format("Response error: '%d, %s'.", response.errorCode(), response.description()));
+		}
+		if (response instanceof SendResponse) {
+			SendResponse sendResponse = (SendResponse) response;
+			Message message = sendResponse.message();
+			return Ok(String.valueOf(message.messageId()));
 		}
 		return Ok("Ok!");
 	}

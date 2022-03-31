@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,8 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.BotAbility;
 import ru.exlmoto.digest.bot.ability.BotAbilityFactory;
+import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
+import ru.exlmoto.digest.bot.ability.keyboard.impl.CaptchaKeyboard;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.telegram.BotTelegram;
@@ -116,20 +118,25 @@ public class BotHandler {
 	}
 
 	public void onCallbackQuery(CallbackQuery callbackQuery) {
-		if (config.isUseStack()) {
-			long delay = callbackQueriesWorker.getDelayForChat(callbackQuery.message().chat().id());
-			if (delay == 0L) {
-				onKeyboard(callbackQuery);
+		// Disable delay for CAPTCHA requests.
+		if (!callbackQuery.data().startsWith(Keyboard.captcha.withName())) {
+			if (config.isUseStack()) {
+				long delay = callbackQueriesWorker.getDelayForChat(callbackQuery.message().chat().id());
+				if (delay == 0L) {
+					onKeyboard(callbackQuery);
+				} else {
+					sendCooldownAnswer(callbackQuery.id(), delay);
+				}
 			} else {
-				sendCooldownAnswer(callbackQuery.id(), delay);
+				if (callbackQueriesWorker.getDelay() == 0) {
+					callbackQueriesWorker.delayCooldown();
+					onKeyboard(callbackQuery);
+				} else {
+					sendCooldownAnswer(callbackQuery.id(), callbackQueriesWorker.getDelay());
+				}
 			}
 		} else {
-			if (callbackQueriesWorker.getDelay() == 0) {
-				callbackQueriesWorker.delayCooldown();
-				onKeyboard(callbackQuery);
-			} else {
-				sendCooldownAnswer(callbackQuery.id(), callbackQueriesWorker.getDelay());
-			}
+			onKeyboard(callbackQuery);
 		}
 	}
 
@@ -167,6 +174,12 @@ public class BotHandler {
 			// 3. By invite link or Telegram inner (show CAPTCHA).
 			if (config.isUseButtonCaptcha() && addedItself) {
 				log.error("TRIGGER CAPTCHA BUTTON!");
+				abilityFactory.getKeyboardAbility(Keyboard.captcha.withName()).ifPresent(keyboard -> {
+					if (keyboard instanceof CaptchaKeyboard) {
+						CaptchaKeyboard captchaKeyboard = (CaptchaKeyboard) keyboard;
+						captchaKeyboard.sendCaptchaQuestion(chatId, message);
+					}
+				});
 			} else {
 				String usernames;
 				if (users.size() == 1) {

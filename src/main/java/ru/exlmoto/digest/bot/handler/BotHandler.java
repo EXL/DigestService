@@ -119,7 +119,9 @@ public class BotHandler {
 
 	public void onCallbackQuery(CallbackQuery callbackQuery) {
 		// Disable delay for CAPTCHA requests.
-		if (!callbackQuery.data().startsWith(Keyboard.captcha.withName())) {
+		if (callbackQuery.data().startsWith(Keyboard.captcha.withName())) {
+			onKeyboard(callbackQuery);
+		} else {
 			if (config.isUseStack()) {
 				long delay = callbackQueriesWorker.getDelayForChat(callbackQuery.message().chat().id());
 				if (delay == 0L) {
@@ -135,8 +137,6 @@ public class BotHandler {
 					sendCooldownAnswer(callbackQuery.id(), callbackQueriesWorker.getDelay());
 				}
 			}
-		} else {
-			onKeyboard(callbackQuery);
 		}
 	}
 
@@ -177,7 +177,7 @@ public class BotHandler {
 				abilityFactory.getKeyboardAbility(Keyboard.captcha.withName()).ifPresent(keyboard -> {
 					if (keyboard instanceof CaptchaKeyboard) {
 						CaptchaKeyboard captchaKeyboard = (CaptchaKeyboard) keyboard;
-						captchaKeyboard.sendCaptchaQuestion(chatId, message);
+						captchaKeyboard.processCaptchaForUser(chatId, message);
 					}
 				});
 			} else {

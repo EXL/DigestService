@@ -28,17 +28,22 @@ import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.request.BanChatMember;
+import com.pengrad.telegrambot.request.RestrictChatMember;
 
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.KeyboardSimpleAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
+import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
+import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
 public class CaptchaKeyboard extends KeyboardSimpleAbility {
+	private final BotTelegram telegram;
 	private final BotSender sender;
 	private final LocaleHelper locale;
 
@@ -48,7 +53,8 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		V500
 	}
 
-	public CaptchaKeyboard(BotSender sender, LocaleHelper locale) {
+	public CaptchaKeyboard(BotTelegram telegram, BotSender sender, LocaleHelper locale) {
+		this.telegram = telegram;
 		this.sender = sender;
 		this.locale = locale;
 	}
@@ -65,9 +71,12 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		);
 	}
 
-	public String sendCaptchaQuestion(long chatId, Message message) {
+	public void processCaptchaForUser(long chatId, Message message) {
+		// First step: restrict user.
+		RestrictChatMember restrictChatMember = new RestrictChatMember(chatId, message.from().id());
+		telegram.getBot().execute(restrictChatMember);
+
 		sender.replyMarkdown(chatId, message.messageId(), locale.i18n("bot.captcha.question"), getMarkup());
-		return "Ok!";
 	}
 
 	@Override
@@ -80,8 +89,18 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 		if (key.equals(Button.E398.name())) {
 			sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.solved"));
+
+			RestrictChatMember restrictChatMember = new RestrictChatMember(chatId, callback.from().id())
+				.canSendMessages(true).canSendMediaMessages(true).canAddWebPagePreviews(true).canSendOtherMessages(true);
+			telegram.getBot().execute(restrictChatMember);
+
+			// Reply.
 		} else {
 			sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.failed"));
+
+			BanChatMember banChatMember = new BanChatMember(chatId, callback.from().id())
+				.untilDate((int) FilterHelper.getCurrentUnixTime() + 86400); // 1 day.
+			telegram.getBot().execute(banChatMember);
 		}
 //		sender.editMarkdown(chatId, messageId, service.markdownReport(key), markup);
 	}

@@ -38,6 +38,11 @@ public class CaptchaTask implements Runnable {
 	private final String key;
 	private final Pair<Long, Long> messageIds;
 
+	public static final int CAPTCHA_CHAT_ID    = 0;
+	public static final int CAPTCHA_USER_ID    = 1;
+	public static final int CAPTCHA_MESSAGE_ID = 2;
+	public static final int JOINED_MESSAGE_ID  = 3;
+
 	public CaptchaTask(CaptchaKeyboard keyboard, String key, Pair<Long, Long> messageIds) {
 		this.keyboard = keyboard;
 		this.key = key;
@@ -46,13 +51,13 @@ public class CaptchaTask implements Runnable {
 
 	@Override
 	public void run() {
-		log.info("Run task!!!");
-		keyboard.processWrongAnswer(
-			getIdFromKey(key, 0),
-			getIdFromKey(key, 1),
-			Math.toIntExact(getIdFromKey(key, 2)),
-			Math.toIntExact(messageIds.getFirst())
-		);
+		long chatId = getIdFromKey(key, CAPTCHA_CHAT_ID);
+		long userId = getIdFromKey(key, CAPTCHA_USER_ID);
+		int captchaMessageId = Math.toIntExact(getIdFromKey(key, CAPTCHA_MESSAGE_ID));
+		int joinedMessageId = Math.toIntExact(messageIds.getFirst()); // JOINED_MESSAGE_ID
+		log.info(String.format("===> Run CAPTCHA Task: { chatId=%d, userId=%d, " +
+			"captchaMessageId=%d, joinedMessageId=%d }.", chatId, userId, captchaMessageId, joinedMessageId));
+		keyboard.processWrongAnswer(chatId, userId, captchaMessageId, joinedMessageId);
 	}
 
 	protected long getIdFromKey(String key, int id) {
@@ -61,12 +66,8 @@ public class CaptchaTask implements Runnable {
 			if (id < tokens.length)
 				return Long.parseLong(tokens[id]);
 		} catch (Exception e) {
-			log.error("Cannot get chatId from key!", e);
+			log.error(String.format("Cannot get id from key '%s'!", key), e);
 		}
 		return 0L;
-	}
-
-	public String getKey() {
-		return key;
 	}
 }

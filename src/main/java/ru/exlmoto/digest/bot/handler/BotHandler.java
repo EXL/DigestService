@@ -167,10 +167,14 @@ public class BotHandler {
 				}
 			}
 
+			log.debug("On new users variables: addedItself=" + addedItself + ", isBotHere=" + isBotHere + ".");
+
 			// 1. Adding the bot itself and another bots (don't show CAPTCHA).
 			// 2. Adding user by another user (don't show CAPTCHA).
 			// 3. By invite link or Telegram inner (show CAPTCHA).
 			if (config.isUseButtonCaptcha() && addedItself) {
+				log.info(String.format("=> Trigger CAPTCHA for chat '%s' (%d) and user '%s' (%d).",
+					helper.getValidChatName(message.chat()), chatId, helper.getValidUsername(from), from.id()));
 				abilityFactory.getKeyboardAbility(Keyboard.captcha.withName()).ifPresent(keyboard -> {
 					if (keyboard instanceof CaptchaKeyboard) {
 						CaptchaKeyboard captchaKeyboard = (CaptchaKeyboard) keyboard;

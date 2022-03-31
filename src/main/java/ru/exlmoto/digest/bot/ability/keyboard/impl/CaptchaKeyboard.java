@@ -28,9 +28,9 @@ import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.request.BanChatMember;
-import com.pengrad.telegrambot.request.DeleteMessage;
-import com.pengrad.telegrambot.request.RestrictChatMember;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.data.util.Pair;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -41,7 +41,6 @@ import ru.exlmoto.digest.bot.ability.keyboard.KeyboardSimpleAbility;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.task.CaptchaTask;
 import ru.exlmoto.digest.bot.task.data.CaptchaData;
-import ru.exlmoto.digest.bot.telegram.BotTelegram;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.Answer;
 import ru.exlmoto.digest.util.filter.FilterHelper;
@@ -54,7 +53,8 @@ import java.util.concurrent.ScheduledFuture;
 
 @Component
 public class CaptchaKeyboard extends KeyboardSimpleAbility {
-	private final BotTelegram telegram;
+	private final Logger log = LoggerFactory.getLogger(CaptchaKeyboard.class);
+
 	private final BotSender sender;
 	private final LocaleHelper locale;
 	private final ThreadPoolTaskScheduler scheduler;
@@ -67,9 +67,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		V500
 	}
 
-	public CaptchaKeyboard(BotTelegram telegram, BotSender sender, LocaleHelper locale,
-	                       ThreadPoolTaskScheduler scheduler) {
-		this.telegram = telegram;
+	public CaptchaKeyboard(BotSender sender, LocaleHelper locale, ThreadPoolTaskScheduler scheduler) {
 		this.sender = sender;
 		this.locale = locale;
 		this.scheduler = scheduler;
@@ -89,34 +87,34 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 	public void processCaptchaForUser(long chatId, Message message) {
 		long userId = message.from().id();
-		long joinedMessageId = message.messageId();
+		int joinedMessageId = message.messageId();
 
 		// 1. Restrict user rights.
-		RestrictChatMember restrictChatMember = new RestrictChatMember(chatId, userId);
-		telegram.getBot().execute(restrictChatMember);
+		log.info(String.format("==> Restrict user with id '%d' in the '%d' chat.", chatId, userId));
+		sender.restrictUserInChat(chatId, userId);
 
 		// 2. Send CAPTCHA message with buttons and fill HashMap.
-		Answer<String> res =
-			sender.replyMarkdown(chatId, message.messageId(), locale.i18n("bot.captcha.question"), getMarkup());
+		Answer<String> res = sender.replyMarkdown(chatId, joinedMessageId,
+			locale.i18n("bot.captcha.question"), getMarkup());
+
 		if (res.ok()) {
 			String key = generateKey(chatId, userId, res.answer());
-			Pair<Long, Long> messageIds = Pair.of(joinedMessageId, 0L);
+			Pair<Long, Long> messageIds = Pair.of((long) joinedMessageId, 0L);
 
 			// 3. Create timer with a key.
+			final int delayMs = 10000;
+			log.info(String.format("==> Schedule CAPTHA deletion and ban task for '%d' sec.", delayMs / 100));
 			ScheduledFuture<?> timerHandle =
 				scheduler.schedule(new CaptchaTask(this, key, messageIds),
-					new Date(System.currentTimeMillis() + 10000));
+					new Date(System.currentTimeMillis() + delayMs));
 
-			// 4. Put data to HashMap.
+			// 4. Put data and timer handle to a HashMap.
 			captchaChecksMap.put(key, new CaptchaData(messageIds, timerHandle));
-		} else {
-			// TODO: Log error?!
 		}
 	}
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
-		System.out.println("SIZE: " + captchaChecksMap.size());
 		Message message = callback.message();
 		long chatId = message.chat().id();
 		long userId = callback.from().id();
@@ -124,10 +122,13 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		String keyButton = Keyboard.chopKeyboardNameLeft(callback.data());
 		String keyCaptcha = generateKey(chatId, userId, String.valueOf(messageId));
 
+		log.debug(String.format("captchaChecksMap size: '%d'.", captchaChecksMap.size()));
+
 		if (captchaChecksMap.containsKey(keyCaptcha)) {
 			CaptchaData data = captchaChecksMap.get(keyCaptcha);
 			int joinMessageId = Math.toIntExact(data.getMessageIds().getFirst());
 			if (keyButton.equals(Button.E398.name())) {
+				log.info(String.format("==> Ok CAPTCHA User: '%s'.", helper.getValidUsername(callback.from())));
 				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.solved"));
 
 				processCorrectAnswer(chatId, userId, messageId);
@@ -136,39 +137,30 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 					locale.i18nRU("bot.event.user.new", helper.getValidUsername(callback.from())));
 			} else {
 				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.failed"));
+				log.info(String.format("==> Fail CAPTCHA User: '%s'.", helper.getValidUsername(callback.from())));
 
 				processWrongAnswer(chatId, userId, messageId, joinMessageId);
 			}
+			log.info("==> Cancel CAPTCHA timer and remove key from HashMap.");
 			data.getTimerHandle().cancel(true);
 			captchaChecksMap.remove(keyCaptcha);
 		} else {
+			log.info(String.format("==> Wrong CAPTCHA User: '%s'.", helper.getValidUsername(callback.from())));
 			sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.wrong"));
 		}
-		System.out.println("SIZE: " + captchaChecksMap.size());
+
+		log.debug(String.format("captchaChecksMap size: '%d'.", captchaChecksMap.size()));
 	}
 
 	private void processCorrectAnswer(long chatId, long userId, int messageId) {
-		RestrictChatMember restrictChatMember = new RestrictChatMember(chatId, userId)
-			.canSendMessages(true)
-			.canSendMediaMessages(true)
-			.canAddWebPagePreviews(true)
-			.canSendOtherMessages(true);
-		telegram.getBot().execute(restrictChatMember);
-
-		DeleteMessage deleteMessage = new DeleteMessage(chatId, messageId);
-		telegram.getBot().execute(deleteMessage);
+		sender.allowUserInChat(chatId, userId);
+		sender.deleteMessageInChat(chatId, messageId);
 	}
 
 	public void processWrongAnswer(long chatId, long userId, int messageId, int joinMessageId) {
-		BanChatMember banChatMember = new BanChatMember(chatId, userId)
-			.untilDate(Math.toIntExact(FilterHelper.getCurrentUnixTime() + 86400)); // 1 day.
-		telegram.getBot().execute(banChatMember);
-
-		DeleteMessage deleteMessageJoin = new DeleteMessage(chatId, joinMessageId);
-		telegram.getBot().execute(deleteMessageJoin);
-
-		DeleteMessage deleteMessageCaptcha = new DeleteMessage(chatId, messageId);
-		telegram.getBot().execute(deleteMessageCaptcha);
+		sender.banUserInChat(chatId, userId, FilterHelper.getCurrentUnixTime() + 86400); // 1 day.
+		sender.deleteMessageInChat(chatId, joinMessageId);
+		sender.deleteMessageInChat(chatId, messageId);
 	}
 
 	private String generateKey(long chatId, long userId, String captchaMessageId) {

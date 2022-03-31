@@ -172,7 +172,8 @@ public class BotHandler {
 			// 1. Adding the bot itself and another bots (don't show CAPTCHA).
 			// 2. Adding user by another user (don't show CAPTCHA).
 			// 3. By invite link or Telegram inner (show CAPTCHA).
-			if (config.isUseButtonCaptcha() && addedItself) {
+			// 4. Activate only for MotoFan.Ru chat now.
+			if (config.isUseButtonCaptcha() && (config.getMotofanChatId() == chatId) && addedItself) {
 				log.info(String.format("=> Trigger CAPTCHA for chat '%s' (%d) and user '%s' (%d).",
 					helper.getValidChatName(message.chat()), chatId, helper.getValidUsername(from), from.id()));
 				abilityFactory.getKeyboardAbility(Keyboard.captcha.withName()).ifPresent(keyboard -> {

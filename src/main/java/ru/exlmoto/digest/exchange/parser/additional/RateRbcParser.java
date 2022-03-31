@@ -171,7 +171,7 @@ public class RateRbcParser extends GeneralParser {
 	}
 
 	private void updateEntity(ExchangeRateRbcEntity entity, DatabaseService service,
-		                      int id, String date, String purchase, String sale, String difference) {
+	                          int id, String date, String purchase, String sale, String difference) {
 		if (entity == null) {
 			entity = new ExchangeRateRbcEntity();
 			entity.setId(id);

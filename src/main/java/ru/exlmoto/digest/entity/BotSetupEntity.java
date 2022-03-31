@@ -47,6 +47,9 @@ public class BotSetupEntity {
 	private boolean sendMotofanBirthdays;
 
 	@Column(nullable = false)
+	private boolean useButtonCaptcha;
+
+	@Column(nullable = false)
 	private boolean silentMode;
 
 	public int getId() {
@@ -81,6 +84,14 @@ public class BotSetupEntity {
 		this.sendMotofanBirthdays = sendMotofanBirthdays;
 	}
 
+	public boolean isUseButtonCaptcha() {
+		return useButtonCaptcha;
+	}
+
+	public void setUseButtonCaptcha(boolean useButtonCaptcha) {
+		this.useButtonCaptcha = useButtonCaptcha;
+	}
+
 	public boolean isSilentMode() {
 		return silentMode;
 	}
@@ -96,6 +107,7 @@ public class BotSetupEntity {
 			", logUpdates=" + logUpdates +
 			", showGreetings=" + showGreetings +
 			", sendMotofanBirthdays=" + sendMotofanBirthdays +
+			", useButtonCaptcha=" + useButtonCaptcha +
 			", silentMode=" + silentMode +
 			"}";
 	}

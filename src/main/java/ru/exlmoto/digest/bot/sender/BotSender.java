@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 package ru.exlmoto.digest.bot.sender;
 
 import com.pengrad.telegrambot.model.ChatMember;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.BaseRequest;
@@ -33,7 +34,11 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import com.pengrad.telegrambot.request.SendSticker;
 import com.pengrad.telegrambot.request.AnswerCallbackQuery;
+import com.pengrad.telegrambot.request.RestrictChatMember;
+import com.pengrad.telegrambot.request.BanChatMember;
+import com.pengrad.telegrambot.request.DeleteMessage;
 import com.pengrad.telegrambot.response.BaseResponse;
+import com.pengrad.telegrambot.response.SendResponse;
 import com.pengrad.telegrambot.response.GetChatAdministratorsResponse;
 
 import org.slf4j.Logger;
@@ -86,8 +91,8 @@ public class BotSender {
 		sendMessage(chatId, replyId, text, Markdown, keyboard);
 	}
 
-	public void replyHtml(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
-		sendMessage(chatId, replyId, text, HTML, keyboard);
+	public Answer<String> replyHtml(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
+		return sendMessage(chatId, replyId, text, HTML, keyboard);
 	}
 
 	public void sendHtml(long chatId, String text) {
@@ -110,7 +115,8 @@ public class BotSender {
 		}
 	}
 
-	private void sendMessage(long chatId, Integer replyId, String text, ParseMode mode, InlineKeyboardMarkup keyboard) {
+	private Answer<String> sendMessage(long chatId, Integer replyId, String text, ParseMode mode,
+	                                   InlineKeyboardMarkup keyboard) {
 		SendMessage sendMessage = new SendMessage(chatId, shrinkText(text)).disableWebPagePreview(downloadFile)
 			.disableNotification(config.isDisableNotifications());
 		if (mode != null) {
@@ -122,7 +128,7 @@ public class BotSender {
 		if (keyboard != null) {
 			sendMessage.replyMarkup(keyboard);
 		}
-		executeRequestLog(sendMessage);
+		return executeRequestLog(sendMessage);
 	}
 
 	public void editMarkdown(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
@@ -257,6 +263,11 @@ public class BotSender {
 		if (!response.isOk()) {
 			return Error(String.format("Response error: '%d, %s'.", response.errorCode(), response.description()));
 		}
+		if (response instanceof SendResponse) {
+			SendResponse sendResponse = (SendResponse) response;
+			Message message = sendResponse.message();
+			return Ok(String.valueOf(message.messageId()));
+		}
 		return Ok("Ok!");
 	}
 
@@ -276,5 +287,25 @@ public class BotSender {
 	private void sendError(long chatId, int replyId, String error) {
 		log.error(error);
 		replyMarkdown(chatId, replyId, error);
+	}
+
+	public void restrictUserInChat(long chatId, long userId) {
+		executeRequestLog(new RestrictChatMember(chatId, userId));
+	}
+
+	public void allowUserInChat(long chatId, long userId) {
+		executeRequestLog(new RestrictChatMember(chatId, userId)
+			.canSendMessages(true)
+			.canSendMediaMessages(true)
+			.canAddWebPagePreviews(true)
+			.canSendOtherMessages(true));
+	}
+
+	public void banUserInChat(long chatId, long userId, long seconds) {
+		executeRequestLog(new BanChatMember(chatId, userId).untilDate(Math.toIntExact(seconds)));
+	}
+
+	public void deleteMessageInChat(long chatId, long messageId) {
+		executeRequestLog(new DeleteMessage(chatId, Math.toIntExact(messageId)));
 	}
 }

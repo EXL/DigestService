@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,6 +41,7 @@ import ru.exlmoto.digest.bot.ability.keyboard.impl.GreetingKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.RateKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.ShowKeyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.impl.SubscribeKeyboard;
+import ru.exlmoto.digest.bot.ability.keyboard.impl.CaptchaKeyboard;
 import ru.exlmoto.digest.bot.ability.message.MessageAbility;
 import ru.exlmoto.digest.bot.ability.message.impl.CoffeeCommand;
 import ru.exlmoto.digest.bot.ability.message.impl.ChartCommand;
@@ -111,6 +112,7 @@ public class BotAbilityFactory {
 		addKeyboard(Keyboard.digest, DigestKeyboard.class);
 		addKeyboard(Keyboard.show, ShowKeyboard.class);
 		addKeyboard(Keyboard.greeting, GreetingKeyboard.class);
+		addKeyboard(Keyboard.captcha, CaptchaKeyboard.class);
 	}
 
 	/*

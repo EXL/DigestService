@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,52 +22,29 @@
  * SOFTWARE.
  */
 
-package ru.exlmoto.digest.site.form;
+package ru.exlmoto.digest.bot.task.data;
 
-public class SetupForm {
-	private boolean log;
-	private boolean greeting;
-	private boolean birthday;
-	private boolean captcha;
-	private boolean silent;
+import org.springframework.data.util.Pair;
 
-	public boolean isLog() {
-		return log;
+import java.util.concurrent.ScheduledFuture;
+
+public class CaptchaData {
+	private final ScheduledFuture<?> timerHandle;
+
+	// 1. Joined Message ID.
+	// 2. Additional Message ID;
+	private final Pair<Long, Long> messageIds;
+
+	public CaptchaData(Pair<Long, Long> messageIds, ScheduledFuture<?> timerHandle) {
+		this.messageIds = messageIds;
+		this.timerHandle = timerHandle;
 	}
 
-	public void setLog(boolean log) {
-		this.log = log;
+	public ScheduledFuture<?> getTimerHandle() {
+		return timerHandle;
 	}
 
-	public boolean isGreeting() {
-		return greeting;
-	}
-
-	public void setGreeting(boolean greeting) {
-		this.greeting = greeting;
-	}
-
-	public boolean isBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(boolean birthday) {
-		this.birthday = birthday;
-	}
-
-	public boolean isCaptcha() {
-		return captcha;
-	}
-
-	public void setCaptcha(boolean captcha) {
-		this.captcha = captcha;
-	}
-
-	public boolean isSilent() {
-		return silent;
-	}
-
-	public void setSilent(boolean silent) {
-		this.silent = silent;
+	public Pair<Long, Long> getMessageIds() {
+		return messageIds;
 	}
 }

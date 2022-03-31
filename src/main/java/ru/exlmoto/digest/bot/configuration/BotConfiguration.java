@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,7 @@ public class BotConfiguration {
 	private boolean useStack;
 	private boolean showGreetings;
 	private boolean sendMotofanBirhdays;
+	private boolean useButtonCaptcha;
 	private long motofanChatId;
 	private String motofanChatUrl;
 	private String telegramShortUrl;
@@ -56,6 +57,8 @@ public class BotConfiguration {
 	private int digestPageDeep;
 	private long obsoleteDataDelay;
 	private boolean digestShredder;
+	private int captchaDelay;
+	private int captchaBan;
 
 	public boolean isInitialize() {
 		return initialize;
@@ -209,6 +212,14 @@ public class BotConfiguration {
 		this.sendMotofanBirhdays = sendMotofanBirhdays;
 	}
 
+	public boolean isUseButtonCaptcha() {
+		return useButtonCaptcha;
+	}
+
+	public void setUseButtonCaptcha(boolean useButtonCaptcha) {
+		this.useButtonCaptcha = useButtonCaptcha;
+	}
+
 	public long getMotofanChatId() {
 		return motofanChatId;
 	}
@@ -279,5 +290,21 @@ public class BotConfiguration {
 
 	public void setDigestShredder(boolean digestShredder) {
 		this.digestShredder = digestShredder;
+	}
+
+	public int getCaptchaDelay() {
+		return captchaDelay;
+	}
+
+	public void setCaptchaDelay(int captchaDelay) {
+		this.captchaDelay = captchaDelay;
+	}
+
+	public int getCaptchaBan() {
+		return captchaBan;
+	}
+
+	public void setCaptchaBan(int captchaBan) {
+		this.captchaBan = captchaBan;
 	}
 }

@@ -58,6 +58,7 @@ public class CaptchaTask implements Runnable {
 		log.info(String.format("===> Run CAPTCHA Task: { chatId=%d, userId=%d, " +
 			"captchaMessageId=%d, joinedMessageId=%d }.", chatId, userId, captchaMessageId, joinedMessageId));
 		keyboard.processWrongAnswer(chatId, userId, captchaMessageId, joinedMessageId);
+		keyboard.cleanCaptchaChecksMap(key);
 	}
 
 	protected long getIdFromKey(String key, int id) {

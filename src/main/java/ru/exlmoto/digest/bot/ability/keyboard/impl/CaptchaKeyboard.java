@@ -107,7 +107,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			Pair<Long, Long> messageIds = Pair.of((long) joinedMessageId, 0L);
 
 			// 3. Create timer with a key.
-			log.info(String.format("==> Schedule CAPTCHA deletion and ban task for '%d' sec.", delay));
+			log.info(String.format("==> Schedule CAPTCHA deletion and ban task for '%d' sec, key '%s'.", delay, key));
 			ScheduledFuture<?> timerHandle =
 				scheduler.schedule(new CaptchaTask(this, key, messageIds),
 					new Date(System.currentTimeMillis() + (delay * 1000L)));
@@ -145,9 +145,8 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 				processWrongAnswer(chatId, userId, messageId, joinMessageId);
 			}
-			log.info("==> Cancel CAPTCHA timer and remove key from HashMap.");
 			data.getTimerHandle().cancel(true);
-			captchaChecksMap.remove(keyCaptcha);
+			cleanCaptchaChecksMap(keyCaptcha);
 		} else {
 			log.info(String.format("==> Wrong CAPTCHA User: '%s' with '%d' id.",
 				helper.getValidUsername(callback.from()), userId));
@@ -166,6 +165,11 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		sender.banUserInChat(chatId, userId, FilterHelper.getCurrentUnixTime() + config.getCaptchaBan());
 		sender.deleteMessageInChat(chatId, joinMessageId);
 		sender.deleteMessageInChat(chatId, messageId);
+	}
+
+	public void cleanCaptchaChecksMap(String key) {
+		log.info(String.format("==> Stop CAPTCHA timer and remove key '%s' from HashMap.", key));
+		captchaChecksMap.remove(key);
 	}
 
 	private String generateKey(long chatId, long userId, String captchaMessageId) {

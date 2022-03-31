@@ -87,12 +87,12 @@ public class BotSender {
 		sendMessage(chatId, replyId, text, Markdown, null);
 	}
 
-	public Answer<String> replyMarkdown(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
-		return sendMessage(chatId, replyId, text, Markdown, keyboard);
+	public void replyMarkdown(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
+		sendMessage(chatId, replyId, text, Markdown, keyboard);
 	}
 
-	public void replyHtml(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
-		sendMessage(chatId, replyId, text, HTML, keyboard);
+	public Answer<String> replyHtml(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
+		return sendMessage(chatId, replyId, text, HTML, keyboard);
 	}
 
 	public void sendHtml(long chatId, String text) {

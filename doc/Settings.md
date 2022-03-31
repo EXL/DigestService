@@ -313,6 +313,10 @@ See [application.properties](../src/main/resources/application.properties) file 
 
 * *bot.digest-shredder* - Enable or disable the deletion of digests after the expiration of the storage time.
 
+* *bot.captcha-delay* - Set CAPTCHA message delay in seconds.
+
+* *bot.captcha-ban* - Set CAPTCHA ban delay in seconds.
+
 ### Rest Template Options
 
 * *rest.timeout-sec* - Set general connection timeouts in seconds.

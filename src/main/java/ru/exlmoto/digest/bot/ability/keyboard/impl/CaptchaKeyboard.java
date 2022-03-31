@@ -38,6 +38,7 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.ability.keyboard.KeyboardSimpleAbility;
+import ru.exlmoto.digest.bot.configuration.BotConfiguration;
 import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.task.CaptchaTask;
 import ru.exlmoto.digest.bot.task.data.CaptchaData;
@@ -55,6 +56,7 @@ import java.util.concurrent.ScheduledFuture;
 public class CaptchaKeyboard extends KeyboardSimpleAbility {
 	private final Logger log = LoggerFactory.getLogger(CaptchaKeyboard.class);
 
+	private final BotConfiguration config;
 	private final BotSender sender;
 	private final LocaleHelper locale;
 	private final ThreadPoolTaskScheduler scheduler;
@@ -67,7 +69,9 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		V500
 	}
 
-	public CaptchaKeyboard(BotSender sender, LocaleHelper locale, ThreadPoolTaskScheduler scheduler) {
+	public CaptchaKeyboard(BotConfiguration config, BotSender sender, LocaleHelper locale,
+	                       ThreadPoolTaskScheduler scheduler) {
+		this.config = config;
 		this.sender = sender;
 		this.locale = locale;
 		this.scheduler = scheduler;
@@ -88,25 +92,25 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 	public void processCaptchaForUser(long chatId, Message message) {
 		long userId = message.from().id();
 		int joinedMessageId = message.messageId();
+		int delay = config.getCaptchaDelay();
 
 		// 1. Restrict user rights.
-		log.info(String.format("==> Restrict user with id '%d' in the '%d' chat.", chatId, userId));
+		log.info(String.format("==> Restrict user with id '%d' in the '%d' chat.", userId, chatId));
 		sender.restrictUserInChat(chatId, userId);
 
 		// 2. Send CAPTCHA message with buttons and fill HashMap.
-		Answer<String> res = sender.replyMarkdown(chatId, joinedMessageId,
-			locale.i18n("bot.captcha.question"), getMarkup());
+		Answer<String> res = sender.replyHtml(chatId, joinedMessageId,
+			String.format(locale.i18n("bot.captcha.question"), delay), getMarkup());
 
 		if (res.ok()) {
 			String key = generateKey(chatId, userId, res.answer());
 			Pair<Long, Long> messageIds = Pair.of((long) joinedMessageId, 0L);
 
 			// 3. Create timer with a key.
-			final int delayMs = 10000;
-			log.info(String.format("==> Schedule CAPTHA deletion and ban task for '%d' sec.", delayMs / 100));
+			log.info(String.format("==> Schedule CAPTCHA deletion and ban task for '%d' sec.", delay));
 			ScheduledFuture<?> timerHandle =
 				scheduler.schedule(new CaptchaTask(this, key, messageIds),
-					new Date(System.currentTimeMillis() + delayMs));
+					new Date(System.currentTimeMillis() + (delay * 1000L)));
 
 			// 4. Put data and timer handle to a HashMap.
 			captchaChecksMap.put(key, new CaptchaData(messageIds, timerHandle));
@@ -145,7 +149,8 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			data.getTimerHandle().cancel(true);
 			captchaChecksMap.remove(keyCaptcha);
 		} else {
-			log.info(String.format("==> Wrong CAPTCHA User: '%s'.", helper.getValidUsername(callback.from())));
+			log.info(String.format("==> Wrong CAPTCHA User: '%s' with '%d' id.",
+				helper.getValidUsername(callback.from()), userId));
 			sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.wrong"));
 		}
 
@@ -158,7 +163,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 	}
 
 	public void processWrongAnswer(long chatId, long userId, int messageId, int joinMessageId) {
-		sender.banUserInChat(chatId, userId, FilterHelper.getCurrentUnixTime() + 86400); // 1 day.
+		sender.banUserInChat(chatId, userId, FilterHelper.getCurrentUnixTime() + config.getCaptchaBan());
 		sender.deleteMessageInChat(chatId, joinMessageId);
 		sender.deleteMessageInChat(chatId, messageId);
 	}

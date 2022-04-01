@@ -153,6 +153,7 @@ public class BotHandler {
 	public void onNewUsers(Message message) {
 		long chatId = message.chat().id();
 		if (config.isShowGreetings() && service.checkGreeting(chatId)) {
+			long botId = telegram.getId();
 			List<User> users = Arrays.asList(message.newChatMembers());
 
 			User from = message.from();
@@ -162,18 +163,18 @@ public class BotHandler {
 				if (user.id().equals(from.id())) {
 					addedItself = true;
 				}
-				if (user.id().equals(telegram.getId())) {
+				if (user.id().equals(botId)) {
 					isBotHere = true;
 				}
 			}
 
-			log.debug("On new users variables: addedItself=" + addedItself + ", isBotHere=" + isBotHere + ".");
-
 			// 1. Adding the bot itself and another bots (don't show CAPTCHA).
 			// 2. Adding user by another user (don't show CAPTCHA).
 			// 3. By invite link or Telegram inner (show CAPTCHA).
-			// 4. Activate only for MotoFan.Ru chat now.
-			if (config.isUseButtonCaptcha() && (config.getMotofanChatId() == chatId) && addedItself) {
+			log.debug("On new users variables: addedItself=" + addedItself + ", isBotHere=" + isBotHere + ".");
+
+			// Activate CAPTCHA only if bot is chat administrator.
+			if (config.isUseButtonCaptcha() && sender.isUserChatAdministrator(chatId, botId) && addedItself) {
 				log.info(String.format("=> Trigger CAPTCHA for chat '%s' (%d) and user '%s' (%d).",
 					helper.getValidChatName(message.chat()), chatId, helper.getValidUsername(from), from.id()));
 				abilityFactory.getKeyboardAbility(Keyboard.captcha.withName()).ifPresent(keyboard -> {

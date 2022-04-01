@@ -194,6 +194,7 @@ public class BotSender {
 	public Answer<String> replyResourcePhotoToChat(long chatId, byte[] photoRawData, Integer replyId, String title,
 	                                               InlineKeyboardMarkup keyboard) {
 		SendPhoto sendPhoto = new SendPhoto(chatId, photoRawData);
+		sendPhoto.disableNotification(config.isDisableNotifications());
 		if (replyId != null) {
 			sendPhoto.replyToMessageId(replyId);
 		}

@@ -143,7 +143,8 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			CaptchaData data = captchaChecksMap.get(keyCaptcha);
 			int joinMessageId = data.getJoinedMessageId();
 			if (keyButton.equals(Button.E398.name())) {
-				log.info(String.format("==> Ok CAPTCHA User: '%s'.", helper.getValidUsername(callback.from())));
+				log.info(String.format("==> Ok CAPTCHA User: '%s', answer: '%s'.",
+					helper.getValidUsername(callback.from()), keyButton));
 				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.solved"));
 
 				processCorrectAnswer(chatId, userId, messageId);
@@ -152,15 +153,16 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 					locale.i18nRU("bot.event.user.new", helper.getValidUsername(callback.from())));
 			} else {
 				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.failed"));
-				log.info(String.format("==> Fail CAPTCHA User: '%s'.", helper.getValidUsername(callback.from())));
+				log.info(String.format("==> Fail CAPTCHA User: '%s', answer: '%s'.",
+					helper.getValidUsername(callback.from()), keyButton));
 
 				processWrongAnswer(chatId, userId, messageId, joinMessageId);
 			}
 			data.getTimerHandle().cancel(true);
 			cleanCaptchaChecksMap(keyCaptcha);
 		} else {
-			log.info(String.format("==> Wrong CAPTCHA User: '%s' with '%d' id.",
-				helper.getValidUsername(callback.from()), userId));
+			log.info(String.format("==> Wrong CAPTCHA User: '%s' with '%d' id, answer: '%s'.",
+				helper.getValidUsername(callback.from()), userId), keyButton);
 			sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.wrong"));
 		}
 

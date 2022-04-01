@@ -424,36 +424,8 @@ public class DatabaseService {
 
 	/* Start: ExchangeRateRbcEntity */
 
-	public Optional<ExchangeRateRbcEntity> getRbcUsdCash() {
-		return exchangeRateRbcRepository.getUsdCash();
-	}
-
-	public Optional<ExchangeRateRbcEntity> getRbcEurCash() {
-		return exchangeRateRbcRepository.getEurCash();
-	}
-
-	public Optional<ExchangeRateRbcEntity> getRbcUsdExchange() {
-		return exchangeRateRbcRepository.getUsdExchange();
-	}
-
-	public Optional<ExchangeRateRbcEntity> getRbcEurExchange() {
-		return exchangeRateRbcRepository.getEurExchange();
-	}
-
-	public Optional<ExchangeRateRbcEntity> getRbcUsdCbrf() {
-		return exchangeRateRbcRepository.getUsdCbrf();
-	}
-
-	public Optional<ExchangeRateRbcEntity> getRbcEurCbrf() {
-		return exchangeRateRbcRepository.getEurCbrf();
-	}
-
-	public Optional<ExchangeRateRbcEntity> getRbcEurUsd() {
-		return exchangeRateRbcRepository.getEurUsd();
-	}
-
-	public Optional<ExchangeRateRbcEntity> getRbcBtcUsd() {
-		return exchangeRateRbcRepository.getBtcUsd();
+	public Optional<ExchangeRateRbcEntity> getRbcQuotes(int position) {
+		return exchangeRateRbcRepository.getQuotes(position);
 	}
 
 	public void saveRbcExchange(ExchangeRateRbcEntity rate) {

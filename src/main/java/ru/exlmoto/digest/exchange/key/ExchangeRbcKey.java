@@ -22,16 +22,15 @@
  * SOFTWARE.
  */
 
-package ru.exlmoto.digest.repository;
+package ru.exlmoto.digest.exchange.key;
 
-import org.springframework.data.repository.CrudRepository;
-
-import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
-
-import java.util.Optional;
-
-public interface ExchangeRateRbcRepository extends CrudRepository<ExchangeRateRbcEntity, Integer> {
-	default Optional<ExchangeRateRbcEntity> getQuotes(int index) {
-		return findById(index);
-	}
+public enum ExchangeRbcKey {
+	USD_CASH,
+	EUR_CASH,
+	USD_EXCH,
+	EUR_EXCH,
+	USD_CBRF,
+	EUR_CBRF,
+	EUR_USD,
+	BTC_USD
 }

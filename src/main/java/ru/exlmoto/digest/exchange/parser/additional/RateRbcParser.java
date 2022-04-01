@@ -25,6 +25,7 @@
 package ru.exlmoto.digest.exchange.parser.additional;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -38,129 +39,73 @@ import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
 import ru.exlmoto.digest.exchange.parser.GeneralParser;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.rest.RestHelper;
+import ru.exlmoto.digest.exchange.key.ExchangeRbcKey;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.USD_CASH;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_CASH;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.USD_EXCH;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_EXCH;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.USD_CBRF;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_CBRF;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_USD;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.BTC_USD;
 
 public class RateRbcParser extends GeneralParser {
 	private final Logger log = LoggerFactory.getLogger(RateRbcParser.class);
 
-	private final int USD_CASH = 0;
-	private final int EUR_CASH = 1;
-	private final int USD_EXCH = 2;
-	private final int EUR_EXCH = 3;
-	private final int USD_CBRF = 4;
-	private final int EUR_CBRF = 5;
-	private final int EUR_USD  = 6;
-	private final int BTC_USD  = 7;
-
-	private String usdCashDate;
-	private String usdCashSell;
-	private String usdCashPurc;
-	private String usdCashDiff;
-
-	private String eurCashDate;
-	private String eurCashSell;
-	private String eurCashPurc;
-	private String eurCashDiff;
-
-	private String usdExchDate;
-	private String usdExchSell;
-	private String usdExchPurc;
-	private String usdExchDiff;
-
-	private String eurExchDate;
-	private String eurExchSell;
-	private String eurExchPurc;
-	private String eurExchDiff;
-
-	private String usdCbrfDate;
-	private String usdCbrfSell;
-	private String usdCbrfPurc;
-	private String usdCbrfDiff;
-
-	private String eurCbrfDate;
-	private String eurCbrfSell;
-	private String eurCbrfPurc;
-	private String eurCbrfDiff;
-
-	private String eurUsdDate;
-	private String eurUsdSell;
-	private String eurUsdPurc;
-	private String eurUsdDiff;
-
-	private String btcUsdDate;
-	private String btcUsdSell;
-	private String btcUsdPurc;
-	private String btcUsdDiff;
-
-	private void setUsdCash(JsonObject object) {
-		usdCashDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
-		usdCashSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("value1").getAsString()));
-		usdCashPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
-		usdCashDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
+	private static class Quotes {
+		public String date = null;
+		public String sell = null;
+		public String purc = null;
+		public String diff = null;
 	}
 
-	private void setEurCash(JsonObject object) {
-		eurCashDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
-		eurCashSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("value1").getAsString()));
-		eurCashPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
-		eurCashDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
+	private final Map<ExchangeRbcKey, Quotes> valuesMap = new LinkedHashMap<>();
+
+	private Quotes getCashValues(JsonObject object) {
+		return getGeneralValues(object, "value1");
 	}
 
-	private void setUsdExch(JsonObject object) {
-		usdExchDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
-		usdExchSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
-		usdExchPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
-		usdExchDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
+	private Quotes getOtherValues(JsonObject object) {
+		return getGeneralValues(object, "closevalue");
 	}
 
-	private void setEurExch(JsonObject object) {
-		eurExchDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
-		eurExchSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
-		eurExchPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
-		eurExchDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
+	private Quotes getGeneralValues(JsonObject object, String sellField) {
+		Quotes quotes = new Quotes();
+		quotes.date = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
+		quotes.sell = filterCommas(filterSpaces(object.getAsJsonPrimitive(sellField).getAsString()));
+		quotes.purc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
+		quotes.diff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
+		return quotes;
 	}
 
-	private void setUsdCbrf(JsonObject object) {
-		usdCbrfDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
-		usdCbrfSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
-		usdCbrfPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
-		usdCbrfDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
-	}
-
-	private void setEurCbrf(JsonObject object) {
-		eurCbrfDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
-		eurCbrfSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
-		eurCbrfPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
-		eurCbrfDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
-	}
-
-	private void setEurUsd(JsonObject object) {
-		eurUsdDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
-		eurUsdSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
-		eurUsdPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
-		eurUsdDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
-	}
-
-	private void setBtcUsd(JsonObject object) {
-		btcUsdDate = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
-		btcUsdSell = filterCommas(filterSpaces(object.getAsJsonPrimitive("closevalue").getAsString()));
-		btcUsdPurc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
-		btcUsdDiff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
+	public Optional<JsonObject> getElementByPosition(JsonArray array, ExchangeRbcKey position) {
+		for (JsonElement element : array) {
+			if (element.getAsJsonObject().getAsJsonPrimitive("position").getAsInt() == position.ordinal()) {
+				return Optional.of(element.getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
+			}
+		}
+		return Optional.empty();
 	}
 
 	public boolean parse(String content) {
-		if (StringUtils.hasLength(content)) {
+		if (StringUtils.hasText(content)) {
 			try {
 				JsonObject document = JsonParser.parseString(content).getAsJsonObject();
 				JsonArray arr = document.getAsJsonArray("shared_key_indicators");
 				if (!arr.isEmpty()) {
-					setUsdCash(arr.get(USD_CASH).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
-					setEurCash(arr.get(EUR_CASH).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
-					setUsdExch(arr.get(USD_EXCH).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
-					setEurExch(arr.get(EUR_EXCH).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
-					setUsdCbrf(arr.get(USD_CBRF).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
-					setEurCbrf(arr.get(EUR_CBRF).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
-					setEurUsd(arr.get(EUR_USD).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
-					setBtcUsd(arr.get(BTC_USD).getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
+					getElementByPosition(arr, USD_CASH).ifPresent(e -> valuesMap.put(USD_CASH, getCashValues(e)));
+					getElementByPosition(arr, EUR_CASH).ifPresent(e -> valuesMap.put(EUR_CASH, getCashValues(e)));
+					getElementByPosition(arr, USD_EXCH).ifPresent(e -> valuesMap.put(USD_EXCH, getOtherValues(e)));
+					getElementByPosition(arr, EUR_EXCH).ifPresent(e -> valuesMap.put(EUR_EXCH, getOtherValues(e)));
+					getElementByPosition(arr, USD_CBRF).ifPresent(e -> valuesMap.put(USD_CBRF, getOtherValues(e)));
+					getElementByPosition(arr, EUR_CBRF).ifPresent(e -> valuesMap.put(EUR_CBRF, getOtherValues(e)));
+					getElementByPosition(arr, EUR_USD).ifPresent(e -> valuesMap.put(EUR_USD, getOtherValues(e)));
+					getElementByPosition(arr, BTC_USD).ifPresent(e -> valuesMap.put(BTC_USD, getOtherValues(e)));
 					return true;
 				}
 			} catch (Exception e) {
@@ -170,62 +115,32 @@ public class RateRbcParser extends GeneralParser {
 		return false;
 	}
 
-	private void updateEntity(ExchangeRateRbcEntity entity, DatabaseService service,
-	                          int id, String date, String purchase, String sale, String difference) {
+	private void updateEntity(DatabaseService service, ExchangeRbcKey key, Quotes quotes) {
+		int id = key.ordinal() + 1;
+		ExchangeRateRbcEntity entity = service.getRbcQuotes(id).orElse(null);
 		if (entity == null) {
 			entity = new ExchangeRateRbcEntity();
 			entity.setId(id);
 			log.warn("Will create new rows in the 'exchange_rate_rbc' table with id: " + id + ".");
 		}
-		entity.setDate(date);
-		entity.setPurchase(purchase);
-		entity.setSale(sale);
-		entity.setDifference(difference);
+		if (StringUtils.hasText(quotes.date)) {
+			entity.setDate(quotes.date);
+		}
+		if (StringUtils.hasText(quotes.purc)) {
+			entity.setPurchase(quotes.purc);
+		}
+		if (StringUtils.hasText(quotes.sell)) {
+			entity.setSale(quotes.sell);
+		}
+		if (StringUtils.hasText(quotes.diff)) {
+			entity.setDifference(quotes.diff);
+		}
 		service.saveRbcExchange(entity);
 	}
 
 	private void commit(DatabaseService service) {
 		logParsedValues();
-		updateEntity(
-			service.getRbcUsdCash().orElse(null), service,
-			ExchangeRateRbcEntity.RBC_ROW_USD_CASH,
-			usdCashDate, usdCashPurc, usdCashSell, usdCashDiff
-		);
-		updateEntity(
-			service.getRbcEurCash().orElse(null), service,
-			ExchangeRateRbcEntity.RBC_ROW_EUR_CASH,
-			eurCashDate, eurCashPurc, eurCashSell, eurCashDiff
-		);
-		updateEntity(
-			service.getRbcUsdExchange().orElse(null), service,
-			ExchangeRateRbcEntity.RBC_ROW_USD_EXCH,
-			usdExchDate, usdExchPurc, usdExchSell, usdExchDiff
-		);
-		updateEntity(
-			service.getRbcEurExchange().orElse(null), service,
-			ExchangeRateRbcEntity.RBC_ROW_EUR_EXCH,
-			eurExchDate, eurExchPurc, eurExchSell, eurExchDiff
-		);
-		updateEntity(
-			service.getRbcUsdCbrf().orElse(null), service,
-			ExchangeRateRbcEntity.RBC_ROW_USD_CBRF,
-			usdCbrfDate, usdCbrfPurc, usdCbrfSell, usdCbrfDiff
-		);
-		updateEntity(
-			service.getRbcEurCbrf().orElse(null), service,
-			ExchangeRateRbcEntity.RBC_ROW_EUR_CBRF,
-			eurCbrfDate, eurCbrfPurc, eurCbrfSell, eurCbrfDiff
-		);
-		updateEntity(
-			service.getRbcEurUsd().orElse(null), service,
-			ExchangeRateRbcEntity.RBC_ROW_EUR_USD,
-			eurUsdDate, eurUsdPurc, eurUsdSell, eurUsdDiff
-		);
-		updateEntity(
-			service.getRbcBtcUsd().orElse(null), service,
-			ExchangeRateRbcEntity.RBC_ROW_BTC_USD,
-			btcUsdDate, btcUsdPurc, btcUsdSell, btcUsdDiff
-		);
+		valuesMap.forEach((k, v) -> updateEntity(service, k, v));
 	}
 
 	public boolean commitRates(String url, DatabaseService service, RestHelper rest) {
@@ -242,17 +157,10 @@ public class RateRbcParser extends GeneralParser {
 
 	public void logParsedValues() {
 		log.info("==> Using RBC");
-		log.info(logHelper(usdCashDate, usdCashSell, usdCashPurc, usdCashDiff));
-		log.info(logHelper(eurCashDate, eurCashSell, eurCashPurc, eurCashDiff));
-		log.info(logHelper(usdExchDate, usdExchSell, usdExchPurc, usdExchDiff));
-		log.info(logHelper(eurExchDate, eurExchSell, eurExchPurc, eurExchDiff));
-		log.info(logHelper(usdCbrfDate, usdCbrfSell, usdCbrfPurc, usdCbrfDiff));
-		log.info(logHelper(eurCbrfDate, eurCbrfSell, eurCbrfPurc, eurCbrfDiff));
-		log.info(logHelper(eurUsdDate, eurUsdSell, eurUsdPurc, eurUsdDiff));
-		log.info(logHelper(btcUsdDate, btcUsdSell, btcUsdPurc, btcUsdDiff));
+		valuesMap.forEach((k, v) -> log.info(logHelper(k.name(), v.date, v.sell, v.purc, v.diff)));
 	}
 
-	private String logHelper(String s1, String s2, String s3, String s4) {
-		return "===> Date: " + s1 + ", Sell: " + s2 + ", Purchase: " + s3 + ", Difference: " + s4;
+	private String logHelper(String name, String date, String sell, String purc, String diff) {
+		return "===> " + name + " Date: " + date + ", Sell: " + sell + ", Purchase: " + purc + ", Difference: " + diff;
 	}
 }

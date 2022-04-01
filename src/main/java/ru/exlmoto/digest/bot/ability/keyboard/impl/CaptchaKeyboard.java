@@ -162,7 +162,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			cleanCaptchaChecksMap(keyCaptcha);
 		} else {
 			log.info(String.format("==> Wrong CAPTCHA User: '%s' with '%d' id, answer: '%s'.",
-				helper.getValidUsername(callback.from()), userId), keyButton);
+				helper.getValidUsername(callback.from()), userId, keyButton));
 			sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.wrong"));
 		}
 

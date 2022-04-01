@@ -32,6 +32,8 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.util.Pair;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
@@ -44,6 +46,7 @@ import ru.exlmoto.digest.bot.task.CaptchaTask;
 import ru.exlmoto.digest.bot.task.data.CaptchaData;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.util.Answer;
+import ru.exlmoto.digest.util.file.ResourceHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
@@ -59,9 +62,13 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 	private final BotConfiguration config;
 	private final BotSender sender;
 	private final LocaleHelper locale;
+	private final ResourceHelper resource;
 	private final ThreadPoolTaskScheduler scheduler;
 
 	private final Map<String, CaptchaData> captchaChecksMap = new HashMap<>();
+
+	@Value("classpath:bot/captcha/Motorola_E398_Original_Photo.jpg")
+	private Resource captchaPhoto;
 
 	private enum Button {
 		C650,
@@ -69,11 +76,12 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		V500
 	}
 
-	public CaptchaKeyboard(BotConfiguration config, BotSender sender, LocaleHelper locale,
+	public CaptchaKeyboard(BotConfiguration config, BotSender sender, LocaleHelper locale, ResourceHelper resource,
 	                       ThreadPoolTaskScheduler scheduler) {
 		this.config = config;
 		this.sender = sender;
 		this.locale = locale;
+		this.resource = resource;
 		this.scheduler = scheduler;
 	}
 
@@ -98,9 +106,14 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		log.info(String.format("==> Restrict user with id '%d' in the '%d' chat.", userId, chatId));
 		sender.restrictUserInChat(chatId, userId);
 
-		// 2. Send CAPTCHA message with buttons and fill HashMap.
-		Answer<String> res = sender.replyHtml(chatId, joinedMessageId,
-			String.format(locale.i18n("bot.captcha.question"), delay), getMarkup());
+		// 2. Send CAPTCHA message reply with image and buttons.
+		Answer<String> res = sender.replyResourcePhotoToChat(
+			chatId,
+			resource.asByteArray(captchaPhoto),
+			joinedMessageId,
+			String.format(locale.i18n("bot.captcha.question"), delay),
+			getMarkup()
+		);
 
 		if (res.ok()) {
 			String key = generateKey(chatId, userId, res.answer());

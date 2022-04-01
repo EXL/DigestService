@@ -91,8 +91,8 @@ public class BotSender {
 		sendMessage(chatId, replyId, text, Markdown, keyboard);
 	}
 
-	public Answer<String> replyHtml(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
-		return sendMessage(chatId, replyId, text, HTML, keyboard);
+	public void replyHtml(long chatId, int replyId, String text, InlineKeyboardMarkup keyboard) {
+		sendMessage(chatId, replyId, text, HTML, keyboard);
 	}
 
 	public void sendHtml(long chatId, String text) {
@@ -115,8 +115,7 @@ public class BotSender {
 		}
 	}
 
-	private Answer<String> sendMessage(long chatId, Integer replyId, String text, ParseMode mode,
-	                                   InlineKeyboardMarkup keyboard) {
+	private void sendMessage(long chatId, Integer replyId, String text, ParseMode mode, InlineKeyboardMarkup keyboard) {
 		SendMessage sendMessage = new SendMessage(chatId, shrinkText(text)).disableWebPagePreview(downloadFile)
 			.disableNotification(config.isDisableNotifications());
 		if (mode != null) {
@@ -128,7 +127,7 @@ public class BotSender {
 		if (keyboard != null) {
 			sendMessage.replyMarkup(keyboard);
 		}
-		return executeRequestLog(sendMessage);
+		executeRequestLog(sendMessage);
 	}
 
 	public void editMarkdown(long chatId, int messageId, String text, InlineKeyboardMarkup keyboard) {
@@ -190,6 +189,31 @@ public class BotSender {
 		} else {
 			return photo;
 		}
+	}
+
+	public Answer<String> replyResourcePhotoToChat(long chatId, byte[] photoRawData, Integer replyId, String title,
+	                                               InlineKeyboardMarkup keyboard) {
+		SendPhoto sendPhoto = new SendPhoto(chatId, photoRawData);
+		if (replyId != null) {
+			sendPhoto.replyToMessageId(replyId);
+		}
+		if (title != null) {
+			sendPhoto.parseMode(HTML);
+			sendPhoto.caption(title);
+		}
+		if (keyboard != null) {
+			sendPhoto.replyMarkup(keyboard);
+		}
+		Answer<String> res = executeRequestLog(sendPhoto);
+		if (!res.ok()) {
+			log.error(
+				String.format(
+						"Cannot execute sendPhoto() request from replyResourcePhotoToChat() method, error: %s.",
+						res.error()
+				)
+			);
+		}
+		return res;
 	}
 
 	public void sendPhotoToChat(long chatId, String uri, long origChatId, int origReplyId) {

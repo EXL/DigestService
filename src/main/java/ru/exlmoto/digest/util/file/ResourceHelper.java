@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,15 @@
 
 package ru.exlmoto.digest.util.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -50,6 +54,17 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 public class ResourceHelper {
+	private final Logger log = LoggerFactory.getLogger(ResourceHelper.class);
+
+	public byte[] asByteArray(Resource resource) {
+		try {
+			return StreamUtils.copyToByteArray(resource.getInputStream());
+		} catch (IOException ioe) {
+			log.error(String.format("Cannot open '%s' resource file.", resource.getFilename()));
+			throw new UncheckedIOException(ioe);
+		}
+	}
+
 	public String asString(Resource resource) {
 		return asString(resource, StandardCharsets.UTF_8);
 	}
@@ -62,6 +77,7 @@ public class ResourceHelper {
 		try (Reader reader = new InputStreamReader(resource.getInputStream(), charset)) {
 			return FileCopyUtils.copyToString(reader);
 		} catch (IOException ioe) {
+			log.error(String.format("Cannot open '%s' resource file.", resource.getFilename()));
 			throw new UncheckedIOException(ioe);
 		}
 	}

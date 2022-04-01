@@ -24,19 +24,14 @@
 
 package ru.exlmoto.digest.bot.task.data;
 
-import org.springframework.data.util.Pair;
-
 import java.util.concurrent.ScheduledFuture;
 
 public class CaptchaData {
+	private final int joinedMessageId;
 	private final ScheduledFuture<?> timerHandle;
 
-	// 1. Joined Message ID.
-	// 2. Additional Message ID;
-	private final Pair<Long, Long> messageIds;
-
-	public CaptchaData(Pair<Long, Long> messageIds, ScheduledFuture<?> timerHandle) {
-		this.messageIds = messageIds;
+	public CaptchaData(int joinedMessageId, ScheduledFuture<?> timerHandle) {
+		this.joinedMessageId = joinedMessageId;
 		this.timerHandle = timerHandle;
 	}
 
@@ -44,7 +39,7 @@ public class CaptchaData {
 		return timerHandle;
 	}
 
-	public Pair<Long, Long> getMessageIds() {
-		return messageIds;
+	public int getJoinedMessageId() {
+		return joinedMessageId;
 	}
 }

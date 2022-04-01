@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.data.util.Pair;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 
@@ -117,16 +116,15 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 		if (res.ok()) {
 			String key = generateKey(chatId, userId, res.answer());
-			Pair<Long, Long> messageIds = Pair.of((long) joinedMessageId, 0L);
 
 			// 3. Create timer with a key.
 			log.info(String.format("==> Schedule CAPTCHA deletion and ban task for '%d' sec, key '%s'.", delay, key));
 			ScheduledFuture<?> timerHandle =
-				scheduler.schedule(new CaptchaTask(this, key, messageIds),
+				scheduler.schedule(new CaptchaTask(this, key, joinedMessageId),
 					new Date(System.currentTimeMillis() + (delay * 1000L)));
 
 			// 4. Put data and timer handle to a HashMap.
-			captchaChecksMap.put(key, new CaptchaData(messageIds, timerHandle));
+			captchaChecksMap.put(key, new CaptchaData(joinedMessageId, timerHandle));
 		}
 	}
 
@@ -143,7 +141,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 		if (captchaChecksMap.containsKey(keyCaptcha)) {
 			CaptchaData data = captchaChecksMap.get(keyCaptcha);
-			int joinMessageId = Math.toIntExact(data.getMessageIds().getFirst());
+			int joinMessageId = data.getJoinedMessageId();
 			if (keyButton.equals(Button.E398.name())) {
 				log.info(String.format("==> Ok CAPTCHA User: '%s'.", helper.getValidUsername(callback.from())));
 				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.solved"));
@@ -185,7 +183,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		captchaChecksMap.remove(key);
 	}
 
-	private String generateKey(long chatId, long userId, String captchaMessageId) {
+	protected String generateKey(long chatId, long userId, String captchaMessageId) {
 		return String.format("%d|%d|", chatId, userId) + captchaMessageId;
 	}
 }

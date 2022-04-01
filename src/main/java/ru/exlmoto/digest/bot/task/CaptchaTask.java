@@ -27,8 +27,6 @@ package ru.exlmoto.digest.bot.task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.data.util.Pair;
-
 import ru.exlmoto.digest.bot.ability.keyboard.impl.CaptchaKeyboard;
 
 public class CaptchaTask implements Runnable {
@@ -36,32 +34,31 @@ public class CaptchaTask implements Runnable {
 
 	private final CaptchaKeyboard keyboard;
 	private final String key;
-	private final Pair<Long, Long> messageIds;
+	private final int joinedMessageId;
 
 	public static final int CAPTCHA_CHAT_ID    = 0;
 	public static final int CAPTCHA_USER_ID    = 1;
 	public static final int CAPTCHA_MESSAGE_ID = 2;
-	public static final int JOINED_MESSAGE_ID  = 3;
+	public static final int JOINED_MESSAGE_ID  = 3; // Not used.
 
-	public CaptchaTask(CaptchaKeyboard keyboard, String key, Pair<Long, Long> messageIds) {
+	public CaptchaTask(CaptchaKeyboard keyboard, String key, int joinedMessageId) {
 		this.keyboard = keyboard;
 		this.key = key;
-		this.messageIds = messageIds;
+		this.joinedMessageId = joinedMessageId;
 	}
 
 	@Override
 	public void run() {
-		long chatId = getIdFromKey(key, CAPTCHA_CHAT_ID);
-		long userId = getIdFromKey(key, CAPTCHA_USER_ID);
-		int captchaMessageId = Math.toIntExact(getIdFromKey(key, CAPTCHA_MESSAGE_ID));
-		int joinedMessageId = Math.toIntExact(messageIds.getFirst()); // JOINED_MESSAGE_ID
+		long chatId = getIdFromKey(CAPTCHA_CHAT_ID);
+		long userId = getIdFromKey(CAPTCHA_USER_ID);
+		int captchaMessageId = Math.toIntExact(getIdFromKey(CAPTCHA_MESSAGE_ID));
 		log.info(String.format("===> Run CAPTCHA Task: { chatId=%d, userId=%d, " +
 			"captchaMessageId=%d, joinedMessageId=%d }.", chatId, userId, captchaMessageId, joinedMessageId));
 		keyboard.processWrongAnswer(chatId, userId, captchaMessageId, joinedMessageId);
 		keyboard.cleanCaptchaChecksMap(key);
 	}
 
-	protected long getIdFromKey(String key, int id) {
+	protected long getIdFromKey(int id) {
 		try {
 			String[] tokens = key.split("\\|");
 			if (id < tokens.length)

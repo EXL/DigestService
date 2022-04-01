@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.mockito.Mockito.when;
 
@@ -90,7 +91,10 @@ class BotSenderTest {
 		sender.sendPhotoToChat(0L, "Fake uri");
 		System.out.println("---");
 		sender.sendLocalPhotoToChat(0L, new File("FakeFile"));
-		sender.sendLocalPhotoToChat(0L, new File("FakeFile"), "Title");
+		assertNotNull(sender.sendLocalPhotoToChat(0L, new File("FakeFile"), "Title"));
+		System.out.println("---");
+		byte[] corruptJpegBytes = { (byte) 0xFF, (byte) 0xD8, (byte) 0xFF };
+		sender.replyResourcePhotoToChat(0L, corruptJpegBytes, 0, "Test title", inlineKeyboardMarkup);
 		System.out.println("=== END testBotSenderMethods() ===");
 	}
 

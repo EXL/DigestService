@@ -22,30 +22,40 @@
  * SOFTWARE.
  */
 
-package ru.exlmoto.digest.bot.handler;
+package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import ru.exlmoto.digest.bot.ability.keyboard.Keyboard;
 import ru.exlmoto.digest.bot.configuration.BotConfiguration;
+import ru.exlmoto.digest.bot.sender.BotSender;
+import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.bot.util.UpdateHelper;
-import ru.exlmoto.digest.service.DatabaseService;
+import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class BotHandlerMockTest {
+class CaptchaKeyboardTest {
 	@Autowired
-	private BotHandler handler;
+	private CaptchaKeyboard keyboard;
 
-	@MockBean
-	private DatabaseService service;
+	@Autowired
+	private BotHelper helper;
+
+	@Autowired
+	private BotSender sender;
+
+	@Autowired
+	private LocaleHelper locale;
 
 	@SpyBean
 	private BotConfiguration config;
@@ -55,16 +65,33 @@ public class BotHandlerMockTest {
 	@BeforeEach
 	public void setUpTests() {
 		when(config.isSilent()).thenReturn(true);
-		when(config.isUseButtonCaptcha()).thenReturn(false);
 	}
 
 	@Test
-	public void testDisableGreetingsByGroup() {
-		when(service.checkGreeting(anyLong())).thenReturn(false);
+	public void testGetMarkup() {
+		assertNotNull(keyboard.getMarkup());
+	}
 
-		/* No output. */
-		handler.onNewUsers(update.getNewUsers(4));
-		handler.onLeftUser(update.getLeftUser("Left"));
-		handler.onNewPhotos(update.getNewPhotos(4));
+	@Test
+	public void testHandle() {
+		System.out.println("=== START testHandle() ===");
+		keyboard.execute(helper, sender, locale,
+			update.getCallbackQueryUsername(Keyboard.captcha.withName(), "exlmoto"));
+		System.out.println("---");
+		keyboard.execute(helper, sender, locale,
+			update.getCallbackQueryUsername(Keyboard.captcha.withName() + "E398", "exlmoto"));
+		System.out.println("---");
+		keyboard.execute(helper, sender, locale,
+			update.getCallbackQueryUsername(Keyboard.rate.withName() + "V500", "exlmoto"));
+		System.out.println("=== END testHandle() ===");
+	}
+
+	@Test
+	public void testGenerateKey() {
+		String[] parts = keyboard.generateKey(0L, 0L, "0").split("\\|");
+		assertEquals(parts.length, 3);
+		assertEquals(parts[0], "0");
+		assertEquals(parts[1], "0");
+		assertEquals(parts[2], "0");
 	}
 }

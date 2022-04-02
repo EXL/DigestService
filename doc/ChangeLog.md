@@ -27,11 +27,11 @@
     - Gradle 6.7.1 => 7.4.1
     - Spring Boot 2.4.1 => 2.6.6
     - Spring Boot Dependency Management 1.0.10.RELEASE => 1.0.11.RELEASE
-    - com.github.pengrad:java-telegram-bot-api 5.0.1 => 5.3.0
+    - com.github.pengrad:java-telegram-bot-api 5.0.1 => 5.7.0
     - org.yaml:snakeyaml 1.27 => 1.29
     - org.jsoup:jsoup 1.13.1 => 1.14.3
-    - org.apache.poi:poi 4.1.2 => 5.1.0
-    - org.apache.poi:poi-ooxml 4.1.2 => 5.1.0
+    - org.apache.poi:poi 4.1.2 => 5.2.2
+    - org.apache.poi:poi-ooxml 4.1.2 => 5.2.2
 
 ## v1.0.1, 27-Dec-2020, Patch Release:
 

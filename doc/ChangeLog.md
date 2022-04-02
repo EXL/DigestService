@@ -23,7 +23,7 @@
 - Fixed HTML escaping in MotoFan.Ru posts.
 
 - Updated libraries and frameworks:
-    - Java 1.8.0_275 => 1.8.0_312
+    - Java 1.8.0_275 => 1.8.0_322
     - Gradle 6.7.1 => 7.4.1
     - Spring Boot 2.4.1 => 2.6.6
     - Spring Boot Dependency Management 1.0.10.RELEASE => 1.0.11.RELEASE

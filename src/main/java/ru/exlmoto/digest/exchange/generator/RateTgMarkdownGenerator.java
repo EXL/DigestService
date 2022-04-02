@@ -99,14 +99,14 @@ public class RateTgMarkdownGenerator {
 
 	private String bankRuRbcReport() {
 		String report = "";
-		ExchangeRateRbcEntity usdCashEntity = service.getRbcQuotes(ExchangeRateRbcEntity.RBC_ROW_USD_CASH).orElse(null);
-		if (usdCashEntity != null) {
-			report += String.format(locale.i18n("exchange.rbc.header"), usdCashEntity.getDate()) + "\n";
+		ExchangeRateRbcEntity usdExchEntity = service.getRbcQuotes(ExchangeRateRbcEntity.RBC_ROW_USD_EXCH).orElse(null);
+		if (usdExchEntity != null) {
+			report += String.format(locale.i18n("exchange.rbc.header"), usdExchEntity.getDate()) + "\n";
 			report += "```\n";
-			report += bankRuRbcReportAux(usdCashEntity,
-				locale.i18n("exchange.rbc.usd.cash"), false);
-			report += bankRuRbcReportAux(service.getRbcQuotes(ExchangeRateRbcEntity.RBC_ROW_EUR_CASH).orElse(null),
-				locale.i18n("exchange.rbc.eur.cash"), false);
+//			report += bankRuRbcReportAux(service.getRbcQuotes(ExchangeRateRbcEntity.RBC_ROW_USD_CASH).orElse(null),
+//				locale.i18n("exchange.rbc.usd.cash"), false);
+//			report += bankRuRbcReportAux(service.getRbcQuotes(ExchangeRateRbcEntity.RBC_ROW_EUR_CASH).orElse(null),
+//				locale.i18n("exchange.rbc.eur.cash"), false);
 			report += bankRuRbcReportAux(service.getRbcQuotes(ExchangeRateRbcEntity.RBC_ROW_USD_EXCH).orElse(null),
 				locale.i18n("exchange.rbc.usd.exch"), true);
 			report += bankRuRbcReportAux(service.getRbcQuotes(ExchangeRateRbcEntity.RBC_ROW_EUR_EXCH).orElse(null),

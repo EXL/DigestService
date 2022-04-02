@@ -45,26 +45,27 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.USD_CASH;
-import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_CASH;
-import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.USD_EXCH;
-import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_EXCH;
-import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.USD_CBRF;
-import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_CBRF;
-import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_USD;
-import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.BTC_USD;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.USD_CASH_ID;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_CASH_ID;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.USD_EXCH_ID;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_EXCH_ID;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.USD_CBRF_ID;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_CBRF_ID;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.EUR_USD_ID;
+import static ru.exlmoto.digest.exchange.key.ExchangeRbcKey.BTC_USD_ID;
 
 public class RateRbcParser extends GeneralParser {
 	private final Logger log = LoggerFactory.getLogger(RateRbcParser.class);
 
 	private static class Quotes {
+		public String name = null;
 		public String date = null;
 		public String sell = null;
 		public String purc = null;
 		public String diff = null;
 	}
 
-	private final Map<ExchangeRbcKey, Quotes> valuesMap = new LinkedHashMap<>();
+	private final Map<String, Quotes> valuesMap = new LinkedHashMap<>();
 
 	private Quotes getCashValues(JsonObject object) {
 		return getGeneralValues(object, "value1");
@@ -76,17 +77,20 @@ public class RateRbcParser extends GeneralParser {
 
 	private Quotes getGeneralValues(JsonObject object, String sellField) {
 		Quotes quotes = new Quotes();
-		quotes.date = filterCommas(filterSpaces(object.getAsJsonPrimitive("maxDealDate").getAsString()));
-		quotes.sell = filterCommas(filterSpaces(object.getAsJsonPrimitive(sellField).getAsString()));
-		quotes.purc = filterCommas(filterSpaces(object.getAsJsonPrimitive("value2").getAsString()));
-		quotes.diff = filterCommas(filterSpaces(object.getAsJsonPrimitive("change").getAsString()));
+		quotes.name = object.getAsJsonPrimitive("ticker").getAsString();
+		JsonObject prepared = object.getAsJsonObject("prepared");
+		quotes.date = filterCommas(filterSpaces(prepared.getAsJsonPrimitive("maxDealDate").getAsString()));
+		quotes.sell = filterCommas(filterSpaces(prepared.getAsJsonPrimitive(sellField).getAsString()));
+		quotes.purc = filterCommas(filterSpaces(prepared.getAsJsonPrimitive("value2").getAsString()));
+		quotes.diff = filterCommas(filterSpaces(prepared.getAsJsonPrimitive("change").getAsString()));
 		return quotes;
 	}
 
-	public Optional<JsonObject> getElementByPosition(JsonArray array, ExchangeRbcKey position) {
+	public Optional<JsonObject> getElementById(JsonArray array, String id) {
 		for (JsonElement element : array) {
-			if (element.getAsJsonObject().getAsJsonPrimitive("position").getAsInt() == position.ordinal()) {
-				return Optional.of(element.getAsJsonObject().getAsJsonObject("item").getAsJsonObject("prepared"));
+			JsonObject item = element.getAsJsonObject().getAsJsonObject("item");
+			if (item.getAsJsonPrimitive("ticker_id").getAsString().equals(id)) {
+				return Optional.of(item);
 			}
 		}
 		return Optional.empty();
@@ -98,14 +102,14 @@ public class RateRbcParser extends GeneralParser {
 				JsonObject document = JsonParser.parseString(content).getAsJsonObject();
 				JsonArray arr = document.getAsJsonArray("shared_key_indicators");
 				if (!arr.isEmpty()) {
-					getElementByPosition(arr, USD_CASH).ifPresent(e -> valuesMap.put(USD_CASH, getCashValues(e)));
-					getElementByPosition(arr, EUR_CASH).ifPresent(e -> valuesMap.put(EUR_CASH, getCashValues(e)));
-					getElementByPosition(arr, USD_EXCH).ifPresent(e -> valuesMap.put(USD_EXCH, getOtherValues(e)));
-					getElementByPosition(arr, EUR_EXCH).ifPresent(e -> valuesMap.put(EUR_EXCH, getOtherValues(e)));
-					getElementByPosition(arr, USD_CBRF).ifPresent(e -> valuesMap.put(USD_CBRF, getOtherValues(e)));
-					getElementByPosition(arr, EUR_CBRF).ifPresent(e -> valuesMap.put(EUR_CBRF, getOtherValues(e)));
-					getElementByPosition(arr, EUR_USD).ifPresent(e -> valuesMap.put(EUR_USD, getOtherValues(e)));
-					getElementByPosition(arr, BTC_USD).ifPresent(e -> valuesMap.put(BTC_USD, getOtherValues(e)));
+					getElementById(arr, USD_CASH_ID).ifPresent(e -> valuesMap.put(USD_CASH_ID, getCashValues(e)));
+					getElementById(arr, EUR_CASH_ID).ifPresent(e -> valuesMap.put(EUR_CASH_ID, getCashValues(e)));
+					getElementById(arr, USD_EXCH_ID).ifPresent(e -> valuesMap.put(USD_EXCH_ID, getOtherValues(e)));
+					getElementById(arr, EUR_EXCH_ID).ifPresent(e -> valuesMap.put(EUR_EXCH_ID, getOtherValues(e)));
+					getElementById(arr, USD_CBRF_ID).ifPresent(e -> valuesMap.put(USD_CBRF_ID, getOtherValues(e)));
+					getElementById(arr, EUR_CBRF_ID).ifPresent(e -> valuesMap.put(EUR_CBRF_ID, getOtherValues(e)));
+					getElementById(arr, EUR_USD_ID).ifPresent(e -> valuesMap.put(EUR_USD_ID, getOtherValues(e)));
+					getElementById(arr, BTC_USD_ID).ifPresent(e -> valuesMap.put(BTC_USD_ID, getOtherValues(e)));
 					return true;
 				}
 			} catch (Exception e) {
@@ -115,8 +119,8 @@ public class RateRbcParser extends GeneralParser {
 		return false;
 	}
 
-	private void updateEntity(DatabaseService service, ExchangeRbcKey key, Quotes quotes) {
-		int id = key.ordinal() + 1;
+	private void updateEntity(DatabaseService service, String key, Quotes quotes) {
+		int id = ExchangeRbcKey.convertRbcIdToDatabaseId(key);
 		ExchangeRateRbcEntity entity = service.getRbcQuotes(id).orElse(null);
 		if (entity == null) {
 			entity = new ExchangeRateRbcEntity();
@@ -157,10 +161,10 @@ public class RateRbcParser extends GeneralParser {
 
 	public void logParsedValues() {
 		log.info("==> Using RBC");
-		valuesMap.forEach((k, v) -> log.info(logHelper(k.name(), v.date, v.sell, v.purc, v.diff)));
+		valuesMap.forEach((k, v) -> log.info(logHelper(v.name, v.date, v.sell, v.purc, v.diff)));
 	}
 
 	private String logHelper(String name, String date, String sell, String purc, String diff) {
-		return "===> " + name + " Date: " + date + ", Sell: " + sell + ", Purchase: " + purc + ", Difference: " + diff;
+		return "===> " + name + ", Date: " + date + ", Sell: " + sell + ", Purchase: " + purc + ", Difference: " + diff;
 	}
 }

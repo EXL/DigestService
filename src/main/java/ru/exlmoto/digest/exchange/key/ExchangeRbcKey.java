@@ -24,13 +24,29 @@
 
 package ru.exlmoto.digest.exchange.key;
 
-public enum ExchangeRbcKey {
-	USD_CASH,
-	EUR_CASH,
-	USD_EXCH,
-	EUR_EXCH,
-	USD_CBRF,
-	EUR_CBRF,
-	EUR_USD,
-	BTC_USD
+import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
+
+public class ExchangeRbcKey {
+	public static final String USD_CASH_ID = "unknown-1"; // Disabled.
+	public static final String EUR_CASH_ID = "unknown-2"; // Disabled.
+	public static final String USD_EXCH_ID = "59111";
+	public static final String EUR_EXCH_ID = "59090";
+	public static final String USD_CBRF_ID = "72413";
+	public static final String EUR_CBRF_ID = "72383";
+	public static final String EUR_USD_ID  = "59087";
+	public static final String BTC_USD_ID  = "166026";
+
+	public static int convertRbcIdToDatabaseId(String key) {
+		switch (key) {
+			default:
+			case USD_CASH_ID: return ExchangeRateRbcEntity.RBC_ROW_USD_CASH;
+			case EUR_CASH_ID: return ExchangeRateRbcEntity.RBC_ROW_EUR_CASH;
+			case USD_EXCH_ID: return ExchangeRateRbcEntity.RBC_ROW_USD_EXCH;
+			case EUR_EXCH_ID: return ExchangeRateRbcEntity.RBC_ROW_EUR_EXCH;
+			case USD_CBRF_ID: return ExchangeRateRbcEntity.RBC_ROW_USD_CBRF;
+			case EUR_CBRF_ID: return ExchangeRateRbcEntity.RBC_ROW_EUR_CBRF;
+			case EUR_USD_ID:  return ExchangeRateRbcEntity.RBC_ROW_EUR_USD;
+			case BTC_USD_ID:  return ExchangeRateRbcEntity.RBC_ROW_BTC_USD;
+		}
+	}
 }

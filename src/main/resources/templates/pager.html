@@ -5,7 +5,7 @@
 			<div class="controls">
 			<!--/*@thymesVar id="goto" type="ru.exlmoto.digest.site.form.GoToPageForm"*/-->
 			<!--/*@thymesVar id="pager" type="ru.exlmoto.digest.site.model.PagerModel"
-			*/--><form th:fragment="paginator(side)" class="paginator" method="get" th:action="@{__${goto.path}__}" th:if="${pager.all > 1}" th:with="start=${T(Math).max(0, pager.startAux)}, end=${T(Math).min(pager.all, pager.endAux)}, arrow_down=#{site.pager.down}, arrow_up=#{site.pager.up}, anchor=${#strings.equals(side, 'up') ? '#pager-down' : '#pager-up'}"><!--/*
+			*/--><form th:fragment="paginator(side)" class="paginator" method="get" th:action="@{__${goto.path}__}" th:if="${pager.all > 1}" th:with="start=${T(java.lang.Math).max(0, pager.startAux)}, end=${T(java.lang.Math).min(pager.all, pager.endAux)}, arrow_down=#{site.pager.down}, arrow_up=#{site.pager.up}, anchor=${#strings.equals(side, 'up') ? '#pager-down' : '#pager-up'}"><!--/*
 					*/--><span class="page-link"><!--/*
 						*/--><a th:id="${'pager-' + side}" th:href="${anchor}" th:text="${#strings.equals(side, 'up') ? arrow_down : arrow_up}">Arrow</a><!--/*
 						*/-->&nbsp;<!--/*

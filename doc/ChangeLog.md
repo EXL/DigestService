@@ -1,5 +1,7 @@
 ## Upcoming Release:
 
+- Added date to the digest output (suggestion by @yakimka).
+
 - Added anti-spam system and CAPTCHA question.
 
 - Added quotes from RBC and AliExpress to rates report.

@@ -115,9 +115,10 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 			StringBuilder stringBuilder = new StringBuilder();
 			for (BotDigestEntity entity : digestEntities) {
 				stringBuilder.append(marker).append(" ");
-				if (page == 1 && newMarkerCount > 0) {
-					stringBuilder.append(newMarker).append(" ");
-				}
+//				if (page == 1 && newMarkerCount > 0) {
+//					stringBuilder.append(newMarker).append(" ");
+//				}
+				stringBuilder.append(FilterHelper.getDateFromTimeStamp("dd.MM.yy", entity.getDate())).append(": ");
 				stringBuilder.append(filter.removeUserCasts(filter.escapeTags(entity.getDigest())));
 				Long messageEntityId = entity.getMessageId();
 				if (chatId == config.getMotofanChatId() && messageEntityId != null) {

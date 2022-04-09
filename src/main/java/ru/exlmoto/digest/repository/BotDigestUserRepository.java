@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 package ru.exlmoto.digest.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 
@@ -35,7 +36,7 @@ public interface BotDigestUserRepository extends JpaRepository<BotDigestUserEnti
 		return findBotDigestUserEntitiesByUsernameStartsWith("@");
 	}
 
-	List<BotDigestUserEntity> findBotDigestUserEntitiesByUsernameStartsWith(String startWith);
+	List<BotDigestUserEntity> findBotDigestUserEntitiesByUsernameStartsWith(@Param("prefix") String prefix);
 
 	BotDigestUserEntity getBotDigestUserEntityById(long id);
 

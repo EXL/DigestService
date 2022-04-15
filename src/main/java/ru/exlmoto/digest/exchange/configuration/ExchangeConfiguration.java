@@ -40,6 +40,7 @@ public class ExchangeConfiguration {
 	private String rbc;
 	private String aliexpress;
 	private String aliexpressHelpix;
+	private boolean useHelpix;
 
 	public String getBankRu() {
 		return bankRu;
@@ -135,5 +136,13 @@ public class ExchangeConfiguration {
 
 	public void setAliexpressHelpix(String aliexpressHelpix) {
 		this.aliexpressHelpix = aliexpressHelpix;
+	}
+
+	public boolean isUseHelpix() {
+		return useHelpix;
+	}
+
+	public void setUseHelpix(boolean useHelpix) {
+		this.useHelpix = useHelpix;
 	}
 }

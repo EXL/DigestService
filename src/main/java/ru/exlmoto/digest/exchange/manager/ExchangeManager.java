@@ -106,7 +106,10 @@ public class ExchangeManager {
 	}
 
 	public void commitAliexpress() {
-//		new RateAliParser().commitRates(config.getAliexpress(), service, rest);
-		new RateAliHelpixParser().commitRates(config.getAliexpressHelpix(), service, rest);
+		if (config.isUseHelpix()) {
+			new RateAliHelpixParser().commitRates(config.getAliexpressHelpix(), service, rest);
+		} else {
+			new RateAliParser().commitRates(config.getAliexpress(), service, rest);
+		}
 	}
 }

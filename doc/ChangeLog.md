@@ -4,7 +4,7 @@
 
 - Added anti-spam system and CAPTCHA question.
 
-- Added quotes from RBC and AliExpress to rates report.
+- Added quotes from RBC and AliExpress (Helpix and Track24) to rates report.
 
 - Added Bitcoin currency to the rates report (suggestion by @mbv06).
 

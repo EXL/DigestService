@@ -62,14 +62,6 @@ public abstract class RateParser extends GeneralParser {
 		return false;
 	}
 
-	private String chopContent(String content) {
-		int SMALL_STRING_SIZE = 50;
-		if (content.length() < SMALL_STRING_SIZE) {
-			return filterLines(content);
-		}
-		return filterLines(content.substring(0, SMALL_STRING_SIZE));
-	}
-
 	protected BigDecimal parseValue(Document document, String valueId) {
 		try {
 			return parseValueAux(document, valueId);

@@ -31,6 +31,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public abstract class GeneralParser {
+	protected String chopContent(String content) {
+		int SMALL_STRING_SIZE = 50;
+		if (content.length() < SMALL_STRING_SIZE) {
+			return filterLines(content);
+		}
+		return filterLines(content.substring(0, SMALL_STRING_SIZE));
+	}
+
 	protected String formatDate(String original) {
 		final String[] parts = original.substring(5).replaceAll("-", ".").split("\\.");
 		return parts[1] + "." + parts[0];

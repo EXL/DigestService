@@ -46,7 +46,7 @@ import java.util.List;
 public class RateAliParser extends GeneralParser {
 	private final Logger log = LoggerFactory.getLogger(RateAliParser.class);
 
-	private final List<ExchangeAliKey> lastRowsArray;
+	protected final List<ExchangeAliKey> lastRowsArray;
 
 	public RateAliParser() {
 		lastRowsArray = new ArrayList<>();

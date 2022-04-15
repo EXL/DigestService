@@ -30,8 +30,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
-import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateAliHelpixParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankUaMirrorParser;
@@ -66,7 +67,7 @@ public class ExchangeManager {
 		commitMetalRu(config.getMetalRu(), config.getMetalRuMirror());
 		commitBitcoin(config.getBitcoin());
 		commitRbc(config.getRbc());
-		commitAliexpress(config.getAliexpress());
+		commitAliexpress();
 		log.info("=> End update exchanging rates.");
 	}
 
@@ -104,7 +105,8 @@ public class ExchangeManager {
 		new RateRbcParser().commitRates(url, service, rest);
 	}
 
-	public void commitAliexpress(String url) {
-		new RateAliParser().commitRates(url, service, rest);
+	public void commitAliexpress() {
+//		new RateAliParser().commitRates(config.getAliexpress(), service, rest);
+		new RateAliHelpixParser().commitRates(config.getAliexpressHelpix(), service, rest);
 	}
 }

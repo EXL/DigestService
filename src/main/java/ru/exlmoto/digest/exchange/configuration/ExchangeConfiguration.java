@@ -39,6 +39,7 @@ public class ExchangeConfiguration {
 	private String bitcoin;
 	private String rbc;
 	private String aliexpress;
+	private String aliexpressHelpix;
 
 	public String getBankRu() {
 		return bankRu;
@@ -126,5 +127,13 @@ public class ExchangeConfiguration {
 
 	public void setAliexpress(String aliexpress) {
 		this.aliexpress = aliexpress;
+	}
+
+	public String getAliexpressHelpix() {
+		return aliexpressHelpix;
+	}
+
+	public void setAliexpressHelpix(String aliexpressHelpix) {
+		this.aliexpressHelpix = aliexpressHelpix;
 	}
 }

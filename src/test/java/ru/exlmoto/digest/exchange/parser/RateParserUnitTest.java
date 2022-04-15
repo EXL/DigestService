@@ -35,6 +35,7 @@ import ru.exlmoto.digest.exchange.parser.impl.MetalRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.exchange.parser.impl.BitcoinParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateAliHelpixParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
 import ru.exlmoto.digest.util.file.ResourceHelper;
 
@@ -213,11 +214,35 @@ class RateParserUnitTest {
 	}
 
 	@Test
+	public void testAliexpressHelpixParser() {
+		assertTrue(parserHelper.process(new RateAliHelpixParser(), parserHelper.fileContent("helpix.html")));
+		assertFalse(parserHelper.process(new RateAliHelpixParser(), parserHelper.fileContent("helpixError.html")));
+
+		generalTests(new RateAliHelpixParser());
+	}
+
+	@Test
 	public void testRbcParser() {
 		assertTrue(parserHelper.process(new RateRbcParser(), parserHelper.fileContent("currencyRbc.json")));
 		assertFalse(parserHelper.process(new RateRbcParser(), parserHelper.fileContent("currencyRbcError.json")));
 
 		generalTests(new RateRbcParser());
+	}
+
+	@Test
+	public void testChopContent() {
+		assertEquals(
+			new BankRuParser().chopContent("1234567890"),
+			"1234567890"
+		);
+		assertEquals(
+			new BankRuParser().chopContent("12345678901234567890123456789012345678901234567890"),
+			"12345678901234567890123456789012345678901234567890"
+		);
+		assertEquals(
+			new BankRuParser().chopContent("123456789012345678901234567890123456789012345678901"),
+			"12345678901234567890123456789012345678901234567890"
+		);
 	}
 
 	@Test

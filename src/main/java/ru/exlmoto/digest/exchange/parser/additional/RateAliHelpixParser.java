@@ -49,7 +49,7 @@ public class RateAliHelpixParser extends RateAliParser {
 		try {
 			return parseDocument(Jsoup.parse(content));
 		} catch (Exception e) {
-			log.error(String.format("Error while parsing Helpix document. Chunk: '%s'.", chopContent(content)), e);
+			log.error("Error while parsing Helpix HTML document!", e);
 		}
 		return false;
 	}

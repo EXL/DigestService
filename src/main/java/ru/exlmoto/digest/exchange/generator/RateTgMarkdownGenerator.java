@@ -289,7 +289,7 @@ public class RateTgMarkdownGenerator {
 
 	protected String filterStringDifference(String difference, int limit) {
 		final String SPACE = " ";
-		if (difference != null) {
+		if (difference != null && helper.isNumeric(difference)) {
 			return ", " + (difference.startsWith("-") ?
 				helper.addTrailingSigns(difference, SPACE, limit) +
 					" " + locale.i18n("exchange.change.down") :

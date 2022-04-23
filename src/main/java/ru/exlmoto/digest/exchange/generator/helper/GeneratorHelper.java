@@ -96,4 +96,13 @@ public class GeneratorHelper {
 	public boolean isDateNotEmpty(String date) {
 		return date != null && !date.isEmpty() && !date.equals("null");
 	}
+
+	public boolean isNumeric(String number) {
+		try {
+			Double.parseDouble(number);
+			return true;
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
+	}
 }

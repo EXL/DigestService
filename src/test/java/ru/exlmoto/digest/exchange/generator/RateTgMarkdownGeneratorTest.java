@@ -38,6 +38,8 @@ import java.math.BigDecimal;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.mockito.Mockito.when;
@@ -187,5 +189,9 @@ class RateTgMarkdownGeneratorTest {
 
 		assertThat(generator.filterStringDifference("-0.134", 7)).startsWith(", -");
 		assertThat(generator.filterStringDifference("-0.134", 7)).doesNotStartWith(", --");
+
+		assertEquals(generator.filterStringDifference("null", 7), ".");
+		assertEquals(generator.filterStringDifference("error", 7), ".");
+		assertEquals(generator.filterStringDifference("—", 7), ".");
 	}
 }

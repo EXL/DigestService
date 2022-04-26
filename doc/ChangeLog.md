@@ -27,7 +27,7 @@
 - Updated libraries and frameworks:
     - Java 1.8.0_275 => 1.8.0_322
     - Gradle 6.7.1 => 7.4.1
-    - Spring Boot 2.4.1 => 2.6.6
+    - Spring Boot 2.4.1 => 2.6.7
     - Spring Boot Dependency Management 1.0.10.RELEASE => 1.0.11.RELEASE
     - com.github.pengrad:java-telegram-bot-api 5.0.1 => 5.7.0
     - org.yaml:snakeyaml 1.27 => 1.29

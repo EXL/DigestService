@@ -1,4 +1,4 @@
-## Upcoming Release:
+## v1.0.2, 27-Apr-2022, Patch Release:
 
 - Added date to the digest output (suggestion by @yakimka).
 
@@ -34,6 +34,30 @@
     - org.jsoup:jsoup 1.13.1 => 1.14.3
     - org.apache.poi:poi 4.1.2 => 5.2.2
     - org.apache.poi:poi-ooxml 4.1.2 => 5.2.2
+
+### Technical Notes:
+
+```bash
+git log --pretty=oneline --abbrev-commit | wc -l
+1131
+
+cloc src/main/
+     188 text files.
+     188 unique files.                                          
+       5 files ignored.
+
+github.com/AlDanial/cloc v 1.82  T=1.56 s (117.7 files/s, 12797.3 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Java                           160           2728           3831          11493
+HTML                            19              0             62           1074
+CSS                              3              7              9            538
+YAML                             1              0              0            160
+-------------------------------------------------------------------------------
+SUM:                           183           2735           3902          13265
+-------------------------------------------------------------------------------
+```
 
 ## v1.0.1, 27-Dec-2020, Patch Release:
 

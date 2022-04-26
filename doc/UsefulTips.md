@@ -36,10 +36,11 @@ find . -name \*.py -exec sh -c "mv '{}' tmp && cp util/template/license_header_o
 
 These commands should be run at the root of the project.
 
-## Show all changed files from date
+## Show all changed files from date and tag
 
 ```shell script
 git log --since="01-Jan-2021" --name-only --pretty=format: | sort | uniq
+git log v1.0.1..HEAD --name-only --pretty=format: | sort | uniq
 ```
 
 ## Add additional field to the Bot Setup table

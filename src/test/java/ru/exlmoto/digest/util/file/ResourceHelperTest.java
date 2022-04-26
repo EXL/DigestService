@@ -72,7 +72,7 @@ class ResourceHelperTest {
 	@Test
 	public void testAsByteArray() {
 		byte[] byteArray = resourceHelper.asByteArray(resourceOk);
-		assertEquals(String.format("%02X%02X%02X", byteArray[0], byteArray[1], byteArray[2]), "6D6D62");
+		assertEquals(String.format("%02X%02X%02X", byteArray[0], byteArray[1], byteArray[2]), "6D6D62"); // JPEG header.
 
 		assertThrows(UncheckedIOException.class, () -> resourceHelper.asByteArray(resourceFail));
 	}

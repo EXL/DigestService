@@ -48,3 +48,4 @@ List of tests that require some attention on their logs.
 43. [RestHelperMockTest.java](../src/test/java/ru/exlmoto/digest/util/rest/RestHelperMockTest.java)
 44. [MotofanServiceTest.java](../src/test/java/ru/exlmoto/digest/motofan/MotofanServiceTest.java)
 45. [MotofanWorkerTest.java](../src/test/java/ru/exlmoto/digest/bot/worker/MotofanWorkerTest.java)
+46. [CaptchaKeyboardTest.java](../src/test/java/ru/exlmoto/digest/bot/ability/keyboard/impl/CaptchaKeyboardTest.java)

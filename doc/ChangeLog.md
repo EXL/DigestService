@@ -1,3 +1,11 @@
+## Upcoming Release:
+
+- Added username or nickname to CAPTCHA question.
+
+- Fixed digest editing bug with reactions.
+
+- Fixed race condtion in CAPTCHA timer.
+
 ## v1.0.2, 27-Apr-2022, Patch Release:
 
 - Added date to the digest output (suggestion by @yakimka).

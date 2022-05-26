@@ -113,7 +113,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			chatId,
 			resource.asByteArray(captchaPhoto),
 			joinedMessageId,
-			String.format(locale.i18n("bot.captcha.question"), botHelper.getValidUsername(userId), delay),
+			String.format(locale.i18n("bot.captcha.question"), botHelper.getValidUsername(message.from()), delay),
 			getMarkup()
 		);
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -89,9 +89,11 @@ public class DigestHashTag extends MessageAbility {
 					Optional<BotDigestEntity> digestEntityOptional = service.getDigest(chatId, messageId);
 					if (digestEntityOptional.isPresent()) {
 						BotDigestEntity digestEntity = digestEntityOptional.get();
-						digestEntity.setDigest(messageText);
-						service.saveDigest(digestEntity);
-						sender.replySimple(chatId, messageId, locale.i18nR("bot.hashtag.digest.changed"));
+						if (!digestEntity.getDigest().equals(messageText)) {
+							digestEntity.setDigest(messageText);
+							service.saveDigest(digestEntity);
+							sender.replySimple(chatId, messageId, locale.i18nR("bot.hashtag.digest.changed"));
+						}
 					} else {
 						service.saveDigest(new BotDigestEntity(chatId,
 							message.date(), (long) messageId, messageText, digestUserEntity));

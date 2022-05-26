@@ -143,9 +143,9 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		log.debug(String.format("captchaChecksMap size: '%d'.", captchaChecksMap.size()));
 
 		if (captchaChecksMap.containsKey(keyCaptcha)) {
+			CaptchaData data = captchaChecksMap.get(keyCaptcha);
 			data.getTimerHandle().cancel(true);
 
-			CaptchaData data = captchaChecksMap.get(keyCaptcha);
 			int joinMessageId = data.getJoinedMessageId();
 			if (keyButton.equals(Button.E398.name())) {
 				log.info(String.format("==> Ok CAPTCHA User: '%s', answer: '%s'.",

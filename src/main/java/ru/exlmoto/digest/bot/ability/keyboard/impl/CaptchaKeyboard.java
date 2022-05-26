@@ -60,6 +60,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 	private final BotConfiguration config;
 	private final BotSender sender;
+	private final BotHelper botHelper;
 	private final LocaleHelper locale;
 	private final ResourceHelper resource;
 	private final ThreadPoolTaskScheduler scheduler;
@@ -75,10 +76,12 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		V500
 	}
 
-	public CaptchaKeyboard(BotConfiguration config, BotSender sender, LocaleHelper locale, ResourceHelper resource,
+	public CaptchaKeyboard(BotConfiguration config, BotSender sender,
+	                       BotHelper botHelper, LocaleHelper locale, ResourceHelper resource,
 	                       ThreadPoolTaskScheduler scheduler) {
 		this.config = config;
 		this.sender = sender;
+		this.botHelper = botHelper;
 		this.locale = locale;
 		this.resource = resource;
 		this.scheduler = scheduler;
@@ -110,7 +113,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			chatId,
 			resource.asByteArray(captchaPhoto),
 			joinedMessageId,
-			String.format(locale.i18n("bot.captcha.question"), delay),
+			String.format(locale.i18n("bot.captcha.question"), botHelper.getValidUserName(userId), delay),
 			getMarkup()
 		);
 

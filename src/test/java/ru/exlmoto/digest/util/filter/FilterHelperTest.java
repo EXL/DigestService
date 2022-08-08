@@ -123,6 +123,7 @@ class FilterHelperTest {
 		assertEquals("Test _@exlmoto.", filter.removeUserCasts("Test _@exlmoto."));
 		assertEquals("Test email@exlmoto.ru", filter.removeUserCasts("Test email@exlmoto.ru"));
 		assertEquals("Test >exlmoto and end.", filter.removeUserCasts("Test >@exlmoto and end."));
+		assertEquals("Nice https://v.c/@exlmoto here.", filter.removeUserCasts("Nice https://v.c/@exlmoto here."));
 	}
 
 	@Test

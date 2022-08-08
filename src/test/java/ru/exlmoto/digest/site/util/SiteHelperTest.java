@@ -222,6 +222,8 @@ class SiteHelperTest {
 		System.out.println(helper.activateUsers("Test >@exlmoto and end."));
 		System.out.println(helper.activateUsers("Test email@exlmoto.ru"));
 		System.out.println(helper.activateUsers("Test _@exlmoto."));
+
+		System.out.println(helper.activateUsers("Nice https://v.c/@exlmoto here."));
 		System.out.println("=== END testActivateUsers() ===");
 	}
 
@@ -268,6 +270,9 @@ class SiteHelperTest {
 		System.out.println(helper.activateLinks("Test @exlmoto"));
 		System.out.println(helper.activateLinks("Test test@exlmoto"));
 		System.out.println(helper.activateLinks("Test test@exlmoto.ru"));
+
+		// Username + Links.
+		System.out.println(helper.activateLinks("Nice https://v.c/@exlmoto here."));
 		System.out.println("=== END testActivateLinksSpecialCases() ===");
 	}
 

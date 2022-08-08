@@ -106,7 +106,12 @@ public class FilterHelper {
 	}
 
 	public String removeUserCasts(String str) {
-		return str.replaceAll("\\B@", "");
+		return str
+			.replace("(@", "(")
+			.replace("'@", "'")
+			.replace("<@", "<")
+			.replace(">@", ">")
+			.replaceAll("(?<= |^)@+", "");
 	}
 
 	public String arrangeString(String string, int length) {

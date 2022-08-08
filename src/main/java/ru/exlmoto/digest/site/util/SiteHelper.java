@@ -304,7 +304,7 @@ public class SiteHelper {
 
 	protected String activateUsers(String digest) {
 		if (digest != null && !digest.isEmpty()) {
-			Matcher matcher = Pattern.compile("\\B@[\\w_-]+",
+			Matcher matcher = Pattern.compile("(?<= |^)@[\\w\\d]+",
 				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL).matcher(digest);
 			StringBuffer stringBuffer = new StringBuffer();
 			while (matcher.find()) {

@@ -6,6 +6,8 @@
 
 - Fixed race condtion in CAPTCHA timer.
 
+- Fixed parsing links with at (@) symbol.
+
 ## v1.0.2, 27-Apr-2022, Patch Release:
 
 - Added date to the digest output (suggestion by @yakimka).

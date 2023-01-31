@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2023 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import ru.exlmoto.digest.motofan.json.MotofanPost;
 import ru.exlmoto.digest.motofan.json.MotofanPostHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,6 +77,27 @@ class PostTgHtmlGeneratorTest {
 		assertNull(htmlGenerator.generateMotofanBirthdaysReport(" "));
 		assertNull(htmlGenerator.generateMotofanBirthdaysReport("test"));
 		assertNull(htmlGenerator.generateMotofanBirthdaysReport("<html>test</html>"));
+	}
+
+	@Test
+	public void testGenerateMotofanPostWithHtmlTags() {
+		MotofanPost motofanPost = post.getRandomMotofanPost(42L);
+
+		motofanPost.setAuthor(">>author<<>>");
+		motofanPost.setTitle(">>title<<>>");
+		motofanPost.setText(">>text<<>>");
+
+		assertEquals(">>author<<>>", motofanPost.getAuthor());
+		assertEquals(">>title<<>>", motofanPost.getTitle());
+		assertEquals(">>text<<>>", motofanPost.getText());
+
+		motofanPost.setAuthor(htmlGenerator.filterMotofanPost(">>author<<>>"));
+		motofanPost.setTitle(htmlGenerator.filterMotofanPost(">>title<<>>"));
+		motofanPost.setText(htmlGenerator.filterMotofanPost(">>text<<>>"));
+
+		assertEquals("&gt;&gt;author&lt;&lt;&gt;&gt;", motofanPost.getAuthor());
+		assertEquals("&gt;&gt;title&lt;&lt;&gt;&gt;", motofanPost.getTitle());
+		assertEquals("&gt;&gt;text&lt;&lt;&gt;&gt;", motofanPost.getText());
 	}
 
 	private void generateHtmlReports(long timestamp) {

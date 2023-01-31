@@ -8,6 +8,8 @@
 
 - Fixed parsing links with at (@) symbol.
 
+- Fixed MotoFan.Ru forum post HTML escaping.
+
 ## v1.0.2, 27-Apr-2022, Patch Release:
 
 - Added date to the digest output (suggestion by @yakimka).

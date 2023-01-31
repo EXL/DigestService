@@ -119,6 +119,19 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
     ALTER USER user WITH PASSWORD 'password';
     \q
 
+    # Show all databases and users.
+    psql
+    \l
+    \l+
+    \du+
+    \q
+
+    # Show all tables.
+    psql digest
+    \d+
+    \dt+
+    \q
+
     pg_dump digest > /tmp/digest-service.sql # Optional. BackUp database.
     psql digest < /tmp/digest-service.sql # Optional. Restore database.
 
@@ -130,7 +143,8 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 4. Install Java Runtime Environment and test application running:
 
     ```shell script
-    sudo yum -y install java-1.8.0-openjdk # Or just "java" package.
+    sudo yum -y install java-1.8.0-openjdk # JRE or just "java" package.
+    sudo yum -y install java-1.8.0-openjdk-devel # Optional JDK package.
     sudo yum -y install dejavu-sans-mono-fonts # Optional fonts for proper text/html to image rendering.
 
     scp ~/Deploy/DigestService/build/libs/digest-service-<version>.jar <username>@<host-address>:/home/<username> # Run this command on build host.

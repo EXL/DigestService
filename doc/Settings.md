@@ -326,10 +326,10 @@ See [application.properties](../src/main/resources/application.properties) file 
     Example:
 
     ```
-    rest.max-body-size=5242880
+    rest.max-body-size=15728640
     ```
 
-    Note: 5242880 bytes is 5 MiB.
+    Note: 5242880 bytes is 5 MiB, 15728640 bytes is 15 MiB.
 
 * *rest.simple-http-client* - Enable or disable using Simple HTTP Client instead of OkHttp or Apache.
 

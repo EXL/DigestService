@@ -55,5 +55,5 @@ SELECT * FROM bot_setup;
 ## Execute only one test class via Gradle
 
 ```shell script
-./gradlew test --tests ru.exlmoto.digest.bot.handler.BotHandlerMockTest
+./gradlew test -i --tests ru.exlmoto.digest.bot.handler.BotHandlerMockTest
 ```

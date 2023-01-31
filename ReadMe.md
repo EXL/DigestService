@@ -68,7 +68,7 @@ For example, on Linux:
     DB_CONNECTION=jdbc:postgresql://localhost:5432/<database name> DB_USERNAME=<username> DB_PASSWORD=<password> HOST=//localhost:8080/ TG_TOKEN=<token> TG_CHAT=<chat id> PROTECT=false java -jar build/libs/digest-service-<version>.jar
     ```
 
-*Note: You may need to change the `max_connections` variable in the `data/postgresql.conf` file to 300-500 and then restart PostgreSQL service.*
+*Note: You may need to change the `max_connections` variable in the `data/postgresql.conf` file to 300-500 then restart PostgreSQL service.*
 
 ## Deploy
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2023 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -68,10 +68,10 @@ public class PostTgHtmlGenerator {
 
 	public String generateMotofanPostHtmlReport(MotofanPost post) {
 		return
-			locale.i18n("motofan.title") + "\n\n" +
-			"<b>" + post.getAuthor() + "</b> " + locale.i18n("motofan.wrote") +
-			" (<i>" + post.getTime() + "</i>):\n" + "<i>" + filterMotofanPost(post.getText()) + "</i>\n\n" +
-			locale.i18n("motofan.read") + " <a href=\"" + post.getPost_link() + "\">" + post.getTitle() + "</a>";
+			locale.i18n("motofan.title") + "\n\n" + "<b>" + filterMotofanPost(post.getAuthor()) + "</b> " +
+			locale.i18n("motofan.wrote") + " (<i>" + post.getTime() + "</i>):\n" + "<i>" +
+			filterMotofanPost(post.getText()) + "</i>\n\n" + locale.i18n("motofan.read") + " <a href=\"" +
+			post.getPost_link() + "\">" + filterMotofanPost(post.getTitle()) + "</a>";
 	}
 
 	public String filterMotofanPost(String text) {

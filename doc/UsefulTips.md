@@ -58,8 +58,10 @@ SELECT * FROM bot_setup;
 ./gradlew test -i --tests ru.exlmoto.digest.bot.handler.BotHandlerMockTest
 ```
 
-## Limit max workers
+## Stop Gradle daemons and run build+tests with limit of max workers
 
 ```shell script
-DB_CONNECTION=jdbc:postgresql://localhost:5432/digest_test DB_USERNAME=user DB_PASSWORD=password HOST=//localhost:8080/ TG_TOKEN=token TG_CHAT=chat PROTECT=false ./gradlew -Dorg.gradle.java.home=/usr/lib/jvm/java-1.8.0 clean build --max-workers=2
+./gradlew --stop
+
+DB_CONNECTION=jdbc:postgresql://localhost:5432/digest_test DB_USERNAME=user DB_PASSWORD=password HOST=//localhost:8080/ TG_TOKEN=token TG_CHAT=chat PROTECT=false ./gradlew -Dorg.gradle.jvmargs="-Xms128m -Xmx512m" -Dorg.gradle.java.home=/usr/lib/jvm/java-1.8.0 clean build --max-workers=1
 ```

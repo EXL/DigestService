@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2025 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,9 +65,9 @@ public abstract class RateParser extends GeneralParser {
 	protected BigDecimal parseValue(Document document, String valueId) {
 		try {
 			return parseValueAux(document, valueId);
-		} catch (NumberFormatException nfe) {
-			log.error("Error parsing some value from document.", nfe);
-			return null;
+		} catch (Exception ex) {
+			log.error("Error parsing some value from document.", ex);
+			return new BigDecimal("0.0");
 		}
 	}
 

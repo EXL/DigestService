@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2025 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,6 +49,8 @@ import ru.exlmoto.digest.util.file.ResourceHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
+import javax.annotation.PostConstruct;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,40 +70,57 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 	private final Map<String, CaptchaData> captchaChecksMap = new HashMap<>();
 
-	private enum ChatFlavor {
-		MotoFan,
-		SiePatch
+	@Value("${bot.captcha-contact}")
+	private String captchaContact;
+
+	private final int CAPTCHA_ELEMENTS = 7;
+
+	@Value("classpath:bot/captcha/Motorola_E398_1.jpg")
+	private Resource imgMotorolaE398_1;
+
+	@Value("classpath:bot/captcha/Motorola_E398_2.jpg")
+	private Resource imgMotorolaE398_2;
+
+	@Value("classpath:bot/captcha/Motorola_ROKR_E1_1.jpg")
+	private Resource imgMotorolaE1_1;
+
+	@Value("classpath:bot/captcha/Motorola_C350_1.jpg")
+	private Resource imgMotorolaC350_1;
+
+	@Value("classpath:bot/captcha/Motorola_C650_1.jpg")
+	private Resource imgMotorolaC650_1;
+
+	@Value("classpath:bot/captcha/Motorola_RAZR_V3_1.jpg")
+	private Resource imgMotorolaV3_1;
+
+	@Value("classpath:bot/captcha/Motorola_RAZR_L7_1.jpg")
+	private Resource imgMotorolaL7_1;
+
+	private class CaptchaItem {
+		private Resource img;
+		private String[] buttons;
+		private String correctAnswer;
+
+		public CaptchaItem(Resource img, String[] buttons, String correctAnswer) {
+			this.img = img;
+			this.buttons = buttons;
+			this.correctAnswer = correctAnswer;
+		}
+
+		public Resource getImg() {
+			return img;
+		}
+
+		public String[] getButtons() {
+			return buttons;
+		}
+
+		public String getCorrectAnswer() {
+			return correctAnswer;
+		}
 	}
 
-	@Value("${bot.captcha-chat-id-motofan}")
-	private long captchaChatIdMotofan;
-
-	@Value("${bot.captcha-chat-id-siepatchdb}")
-	private long captchaChatIdSiepatchdb;
-
-	@Value("classpath:bot/captcha/Motorola_E398_Original_Photo_1.jpg")
-	private Resource captchaPhotoMotoFan_1;
-
-	@Value("classpath:bot/captcha/Motorola_E398_Original_Photo_2.jpg")
-	private Resource captchaPhotoMotoFan_2;
-
-	@Value("classpath:bot/captcha/Siemens_S75_Original_Photo_1.jpg")
-	private Resource captchaPhotoSiePatch_1;
-
-	@Value("classpath:bot/captcha/Siemens_S75_Original_Photo_2.jpg")
-	private Resource captchaPhotoSiePatch_2;
-
-	private enum ButtonMotoFan {
-		C650,
-		E398,
-		V500
-	}
-
-	private enum ButtonSiePatch {
-		C60,
-		S75,
-		SX1
-	}
+	public final CaptchaItem[] CAPTCHAS = new CaptchaItem[CAPTCHA_ELEMENTS];
 
 	public CaptchaKeyboard(BotConfiguration config, BotSender sender,
 	                       BotHelper botHelper, LocaleHelper locale, ResourceHelper resource,
@@ -114,29 +133,26 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		this.scheduler = scheduler;
 	}
 
-	@Override
-	public InlineKeyboardMarkup getMarkup() {
-		return getMarkupChat(ChatFlavor.MotoFan);
+	@PostConstruct
+	private void setUp() {
+		CAPTCHAS[0] = new CaptchaItem(imgMotorolaE398_1, new String[] { "C650", "E398", "V500"          }, "E398");
+		CAPTCHAS[1] = new CaptchaItem(imgMotorolaE398_2, new String[] { "C350", "V535", "E398"          }, "E398");
+		CAPTCHAS[2] = new CaptchaItem(imgMotorolaE1_1,   new String[] { "RAZR V3", "ROKR E1", "SLVR L7" }, "ROKR E1");
+		CAPTCHAS[3] = new CaptchaItem(imgMotorolaC350_1, new String[] { "C380", "C650", "C350"          }, "C350");
+		CAPTCHAS[4] = new CaptchaItem(imgMotorolaC650_1, new String[] { "E398", "C650", "V635"          }, "C650");
+		CAPTCHAS[5] = new CaptchaItem(imgMotorolaV3_1,   new String[] { "RIZR Z8", "PEBL U6", "RAZR V3" }, "RAZR V3");
+		CAPTCHAS[6] = new CaptchaItem(imgMotorolaL7_1,   new String[] { "KRZR K1", "SLVR L7", "AURA R1" }, "SLVR L7");
 	}
 
-	public InlineKeyboardMarkup getMarkupChat(ChatFlavor chatFlavor) {
-		String button1;
-		String button2;
-		String button3;
+	@Override
+	public InlineKeyboardMarkup getMarkup() {
+		return getMarkupCaptchaButtons(CAPTCHAS[0]);
+	}
 
-		switch (chatFlavor) {
-			default:
-			case MotoFan:
-				button1 = ButtonMotoFan.C650.name();
-				button2 = ButtonMotoFan.E398.name();
-				button3 = ButtonMotoFan.V500.name();
-				break;
-			case SiePatch:
-				button1 = ButtonSiePatch.C60.name();
-				button2 = ButtonSiePatch.S75.name();
-				button3 = ButtonSiePatch.SX1.name();
-				break;
-		}
+	public InlineKeyboardMarkup getMarkupCaptchaButtons(CaptchaItem captcha) {
+		final String button1 = captcha.getButtons()[0];
+		final String button2 = captcha.getButtons()[1];
+		final String button3 = captcha.getButtons()[2];
 
 		return new InlineKeyboardMarkup(
 			new InlineKeyboardButton(button1).callbackData(Keyboard.captcha.withName() + button1),
@@ -145,64 +161,12 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		);
 	}
 
-	public Resource getResourceImg(ChatFlavor chatFlavor) {
-		switch (chatFlavor) {
-			default:
-			case MotoFan:
-				switch (ThreadLocalRandom.current().nextInt(0, 2)) {
-					default:
-					case 0:
-						return captchaPhotoMotoFan_1;
-					case 1:
-						return captchaPhotoMotoFan_2;
-				}
-			case SiePatch:
-				switch (ThreadLocalRandom.current().nextInt(0, 2)) {
-					default:
-					case 0:
-						return captchaPhotoSiePatch_1;
-					case 1:
-						return captchaPhotoSiePatch_2;
-				}
-		}
-	}
-
-	public String getCorrectAnswer(ChatFlavor chatFlavor) {
-		switch (chatFlavor) {
-			default:
-			case MotoFan:
-				return ButtonMotoFan.E398.name();
-			case SiePatch:
-				return ButtonSiePatch.S75.name();
-		}
-	}
-
-	public ChatFlavor getChatFlavor(long chatId) {
-		if (chatId == captchaChatIdMotofan) {
-			return ChatFlavor.MotoFan;
-		} else if (chatId == captchaChatIdSiepatchdb) {
-			return ChatFlavor.SiePatch;
-		} else {
-			log.warn(String.format("Unknown Chat flavor id: '%d'.", chatId));
-			return ChatFlavor.MotoFan;
-		}
-	}
-
-	public String getAdminUsername(ChatFlavor chatFlavor) {
-		switch (chatFlavor) {
-			default:
-			case MotoFan:
-				return "@exlmoto";
-			case SiePatch:
-				return "@Nanak0n";
-		}
-	}
-
 	public void processCaptchaForUser(long chatId, Message message) {
-		ChatFlavor chatFlavor = getChatFlavor(chatId);
 		long userId = message.from().id();
 		int joinedMessageId = message.messageId();
 		int delay = config.getCaptchaDelay();
+
+		CaptchaItem captcha = CAPTCHAS[ThreadLocalRandom.current().nextInt(0, CAPTCHA_ELEMENTS)];
 
 		// 1. Restrict user rights.
 		log.info(String.format("==> Restrict user with id '%d' in the '%d' chat.", userId, chatId));
@@ -211,13 +175,13 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		// 2. Send CAPTCHA message reply with image and buttons.
 		Answer<String> res = sender.replyResourcePhotoToChat(
 			chatId,
-			resource.asByteArray(getResourceImg(chatFlavor)),
+			resource.asByteArray(captcha.getImg()),
 			joinedMessageId,
 			String.format(
-				locale.i18nU("bot.captcha.question", getAdminUsername(chatFlavor)),
+				locale.i18nU("bot.captcha.question", captchaContact),
 				botHelper.getValidUsername(message.from()), delay
 			),
-			getMarkupChat(chatFlavor)
+			getMarkupCaptchaButtons(captcha)
 		);
 
 		if (res.ok()) {
@@ -230,7 +194,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 					new Date(System.currentTimeMillis() + (delay * 1000L)));
 
 			// 4. Put data and timer handle to a HashMap.
-			captchaChecksMap.put(key, new CaptchaData(joinedMessageId, timerHandle));
+			captchaChecksMap.put(key, new CaptchaData(joinedMessageId, captcha.getCorrectAnswer(), timerHandle));
 		}
 	}
 
@@ -238,7 +202,6 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
 		Message message = callback.message();
 		long chatId = message.chat().id();
-		ChatFlavor chatFlavor = getChatFlavor(chatId);
 		long userId = callback.from().id();
 		int messageId = message.messageId();
 		String keyButton = Keyboard.chopKeyboardNameLeft(callback.data());
@@ -251,7 +214,8 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			data.getTimerHandle().cancel(true);
 
 			int joinMessageId = data.getJoinedMessageId();
-			if (keyButton.equals(getCorrectAnswer(chatFlavor))) {
+			String correctAnswer = data.getCorrectAnswer();
+			if (keyButton.equals(correctAnswer)) {
 				log.info(String.format("==> Ok CAPTCHA User: '%s', answer: '%s'.",
 					helper.getValidUsername(callback.from()), keyButton));
 				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.solved"));

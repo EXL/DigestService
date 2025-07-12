@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2025 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +28,13 @@ import java.util.concurrent.ScheduledFuture;
 
 public class CaptchaData {
 	private final int joinedMessageId;
+	private final String correctAnswer;
 	private final ScheduledFuture<?> timerHandle;
 
-	public CaptchaData(int joinedMessageId, ScheduledFuture<?> timerHandle) {
+	public CaptchaData(int joinedMessageId, String correctAnswer, ScheduledFuture<?> timerHandle) {
 		this.joinedMessageId = joinedMessageId;
 		this.timerHandle = timerHandle;
+		this.correctAnswer = correctAnswer;
 	}
 
 	public ScheduledFuture<?> getTimerHandle() {
@@ -41,5 +43,9 @@ public class CaptchaData {
 
 	public int getJoinedMessageId() {
 		return joinedMessageId;
+	}
+
+	public String getCorrectAnswer() {
+		return correctAnswer;
 	}
 }

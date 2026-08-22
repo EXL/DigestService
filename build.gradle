@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,18 @@
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.6.7'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.springframework.boot' version '4.1.1'
+	id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'ru.exlmoto'
 version = '1.0.2'
-sourceCompatibility = '1.8'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
 
 configurations {
 	compileOnly {
@@ -55,40 +60,56 @@ springBoot {
 dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
 	runtimeOnly 'org.postgresql:postgresql'
 
-	implementation 'com.github.pengrad:java-telegram-bot-api:5.7.0'
+	implementation 'com.github.pengrad:java-telegram-bot-api:10.1.0'
+	implementation 'org.yaml:snakeyaml:2.6'
+	implementation 'org.jsoup:jsoup:1.23.1'
+	implementation 'org.nibor.autolink:autolink:0.12.0'
+	implementation 'org.owasp.encoder:encoder:1.4.0'
+	implementation 'org.apache.poi:poi:5.5.1'
+	implementation 'org.apache.poi:poi-ooxml:5.5.1'
 
-	implementation 'org.yaml:snakeyaml:1.29'
-	implementation 'org.jsoup:jsoup:1.14.3'
-	implementation 'org.nibor.autolink:autolink:0.10.0'
-	implementation 'org.owasp.encoder:encoder:1.2.3'
-	implementation 'org.apache.poi:poi:5.2.2'
-	implementation 'org.apache.poi:poi-ooxml:5.2.2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	/* @WithMockUser, @WithUserDetails, SecurityMockMvcRequestPostProcessors.csrf() */
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
 }
 
 def getShortGitRevision() {
-	def commit = 'git rev-parse --short HEAD'
-	def count = 'git rev-list --count HEAD'
-	def branch = 'git rev-parse --abbrev-ref HEAD'
 	try {
-		return [branch.execute().text.trim(), commit.execute().text.trim(), count.execute().text.trim()].join('_')
-	} catch (IOException ignored) {
+		def branch = providers.exec {
+			commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
+		}.standardOutput.asText.get().trim()
+
+		def commit = providers.exec {
+			commandLine 'git', 'rev-parse', '--short', 'HEAD'
+		}.standardOutput.asText.get().trim()
+
+		def count = providers.exec {
+			commandLine 'git', 'rev-list', '--count', 'HEAD'
+		}.standardOutput.asText.get().trim()
+
+		return "${branch}_${commit}_${count}"
+	} catch (Exception ignored) {
 		logger.warn('Cannot get information from Git commands. Is Git installed?')
 		return 'unknown'
 	}

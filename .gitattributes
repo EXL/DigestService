@@ -1,8 +1,14 @@
 #
 # https://help.github.com/articles/dealing-with-line-endings/
 #
+# This is explicitly UNIX-like script and should use lf
+/gradlew text eol=lf
+#
 # These are explicitly windows files and should use crlf
 *.bat text eol=crlf
+#
+# These are explicitly JAR files and should be treated as binary files
+*.jar binary
 
 #
 # https://github.com/github/linguist

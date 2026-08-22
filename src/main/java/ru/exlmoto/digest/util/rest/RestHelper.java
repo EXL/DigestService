@@ -28,9 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -66,6 +66,9 @@ public class RestHelper {
 	@Value("${rest.max-body-size}")
 	private long maxBodySize;
 
+	@Value("${rest.simple-http-client}")
+	private boolean simpleHttpClient;
+
 	@Value("${rest.fake-user-agent}")
 	private String fakeUserAgent;
 
@@ -73,10 +76,17 @@ public class RestHelper {
 
 	@PostConstruct
 	private void setUp() {
-		SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
-		simpleClientHttpRequestFactory.setConnectTimeout(timeoutSec * 1000);
-		simpleClientHttpRequestFactory.setReadTimeout(timeoutSec * 1000);
-		restTemplate = new RestTemplate(simpleClientHttpRequestFactory);
+		if (simpleHttpClient) {
+			SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+			simpleClientHttpRequestFactory.setConnectTimeout(timeoutSec * 1000);
+			simpleClientHttpRequestFactory.setReadTimeout(timeoutSec * 1000);
+			restTemplate = new RestTemplate(simpleClientHttpRequestFactory);
+		} else {
+			restTemplate = new RestTemplateBuilder()
+				.setConnectTimeout(Duration.ofSeconds(timeoutSec))
+				.setReadTimeout(Duration.ofSeconds(timeoutSec))
+				.build();
+		}
 		if (!StringUtils.isEmpty(fakeUserAgent)) {
 			restTemplate.getInterceptors().add((request, body, execution) -> {
 				request.getHeaders().set("User-Agent", fakeUserAgent);
@@ -157,7 +167,7 @@ public class RestHelper {
 			 * Ignore "405 Method Not Allowed" error on head request.
 			 * Ignore "403 Forbidden: [no body]" error on head request.
 			 */
-			HttpStatusCode statusCode = hcee.getStatusCode();
+			HttpStatus statusCode = hcee.getStatusCode();
 			if (statusCode == HttpStatus.METHOD_NOT_ALLOWED) {
 				log.debug(
 					String.format("HEAD, HttpClientErrorException: '405 Method Not Allowed', Url: '%s'.", url),

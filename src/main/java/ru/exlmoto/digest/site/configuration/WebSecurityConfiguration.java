@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,48 +24,50 @@
 
 package ru.exlmoto.digest.site.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 import ru.exlmoto.digest.service.impl.UserDetailsServiceImpl;
 
 @Configuration
-public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration {
+
 	private final UserDetailsServiceImpl userDetailsService;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public WebSecurityConfiguration(UserDetailsServiceImpl userDetailsService) {
 		this.userDetailsService = userDetailsService;
-		this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	}
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-			.antMatchers("/obey/**")
-				.authenticated()
-			.anyRequest()
-				.permitAll()
-			.and()
-				.formLogin()
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http
+			.userDetailsService(userDetailsService)
+			.authorizeHttpRequests(auth -> auth
+				.requestMatchers("/obey/**").authenticated()
+				.anyRequest().permitAll()
+			)
+			.formLogin(form -> form
 				.loginPage("/ds-auth-login")
 				.defaultSuccessUrl("/obey")
 				.failureForwardUrl("/ds-auth-login?error=true")
-			.and()
-				.logout()
+			)
+			.logout(logout -> logout
 				.logoutUrl("/ds-auth-logout")
 				.logoutSuccessUrl("/")
 				.clearAuthentication(true)
 				.invalidateHttpSession(true)
-				.deleteCookies("JSESSIONID");
+				.deleteCookies("JSESSIONID")
+			);
+
+		return http.build();
 	}
 }

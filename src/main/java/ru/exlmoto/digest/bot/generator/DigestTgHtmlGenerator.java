@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ public class DigestTgHtmlGenerator {
 			String.format(locale.i18n("bot.hashtag.digest.subscribe.title"),
 				helper.getValidChatName(message.chat())) + "\n\n<b>" +
 			helper.getValidUsername(message.from()) + "</b> " + locale.i18n("bot.hashtag.digest.subscribe.wrote") +
-			" (<i>" + filter.getDateFromTimeStamp(dateFormat, message.date()) + "</i>):\n<i>" +
+			" (<i>" + FilterHelper.getDateFromTimeStamp(dateFormat, message.date()) + "</i>):\n<i>" +
 			digest + "</i>\n\n" + locale.i18n("bot.hashtag.digest.subscribe.read") +
 			" <a href=\"" + filter.checkLink(config.getMotofanChatUrl()) + message.messageId() + "\">" +
 			locale.i18n("bot.hashtag.digest.subscribe.link") + "</a>";

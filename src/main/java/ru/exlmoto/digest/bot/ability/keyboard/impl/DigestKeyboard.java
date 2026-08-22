@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -80,7 +80,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 
 	@Override
 	public void handle(int messageId, Chat chat, User user, int page, boolean edit, BotSender sender) {
-		int NEW_MARKERS_COUNT = 3;
+//		final int NEW_MARKERS_COUNT = 3;
 		long chatId = chat.id();
 		String username = helper.getValidUsername(user);
 		String text = locale.i18nRU("bot.command.digest.empty", username);
@@ -109,9 +109,9 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 			text += "</i>\n\n";
 
 			String marker = locale.i18n("bot.command.digest.marker");
-			String newMarker = locale.i18n("bot.command.digest.marker.new");
+//			String newMarker = locale.i18n("bot.command.digest.marker.new");
 
-			int newMarkerCount = NEW_MARKERS_COUNT;
+//			int newMarkerCount = NEW_MARKERS_COUNT;
 			StringBuilder stringBuilder = new StringBuilder();
 			for (BotDigestEntity entity : digestEntities) {
 				stringBuilder.append(marker).append(" ");
@@ -127,7 +127,7 @@ public class DigestKeyboard extends KeyboardPagerAbility {
 						.append("</a>");
 				}
 				stringBuilder.append("\n");
-				newMarkerCount--;
+//				newMarkerCount--;
 			}
 			text += stringBuilder.toString();
 		}

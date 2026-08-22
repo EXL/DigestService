@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,6 @@ import ru.exlmoto.digest.util.Covid;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -115,10 +114,6 @@ public class CovidWorker {
 
 	private boolean checkCovidReport(String report) {
 		return report != null && !report.isEmpty();
-	}
-
-	private void sendCovidReport(String report, long chatId, Covid stat) {
-		sendCovidReport(report, Collections.singletonList(chatId), stat);
 	}
 
 	private void sendCovidReport(Object report, List<Long> subscribers, Covid stat) {

@@ -49,8 +49,7 @@ import jakarta.annotation.PostConstruct;
 
 import java.io.File;
 import java.io.FileOutputStream;
-
-import java.net.URL;
+import java.net.URI;
 
 import java.time.Duration;
 
@@ -132,7 +131,7 @@ public class RestHelper {
 
 	private String getRestFileAux(RestTemplate template, String url) {
 		return template.execute(url, HttpMethod.GET, null, response -> {
-			String suffix = "-" + new File(new URL(url).getPath()).getName();
+			String suffix = "-" + new File(URI.create(url).toURL().getPath()).getName();
 			suffix = suffix.length() > 3 ? suffix : null;
 			File tempFile = File.createTempFile("temp-", suffix);
 			StreamUtils.copy(response.getBody(), new FileOutputStream(tempFile));

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -173,7 +173,7 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey/delete/{id}")
 	public String obeyDelete(@PathVariable(name = "id") String id) {
-		Optional.of(helper.getLong(id)).ifPresent(service::deleteDigest);
+		Optional.of(helper.getLong(id)).ifPresent(dId -> service.deleteDigest(dId));
 
 		return "redirect:/obey";
 	}
@@ -229,7 +229,7 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey/user/delete/{id}")
 	public String obeyUserDelete(@PathVariable(name = "id") String id) {
-		Optional.of(helper.getLong(id)).ifPresent(service::deleteDigestUser);
+		Optional.of(helper.getLong(id)).ifPresent(uId -> service.deleteDigestUser(uId));
 
 		return "redirect:/obey/user";
 	}
@@ -319,7 +319,7 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey/sub-digest/delete/{id}")
 	public String obeySubDigestDelete(@PathVariable(name = "id") String id) {
-		Optional.of(helper.getLong(id)).ifPresent(service::deleteDigestSub);
+		Optional.of(helper.getLong(id)).ifPresent(sId -> service.deleteDigestSub(sId));
 
 		return "redirect:/obey/sub-digest";
 	}
@@ -347,7 +347,7 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey/sub-motofan/delete/{id}")
 	public String obeySubMotofanDelete(@PathVariable(name = "id") String id) {
-		Optional.of(helper.getLong(id)).ifPresent(service::deleteMotofanSub);
+		Optional.of(helper.getLong(id)).ifPresent(sId -> service.deleteMotofanSub(sId));
 
 		return "redirect:/obey/sub-motofan";
 	}
@@ -374,14 +374,14 @@ public class ObeyController {
 
 	@PostMapping(path = "/obey/sub-greeting/edit")
 	public String obeySubGreetingEdit(SubscriberForm subscriberForm) {
-		Optional.of(subscriberForm.getChatId()).ifPresent(service::addChatToGreetingIgnores);
+		Optional.of(subscriberForm.getChatId()).ifPresent(chatId -> service.addChatToGreetingIgnores(chatId));
 
 		return "redirect:/obey/sub-greeting";
 	}
 
 	@RequestMapping(path = "/obey/sub-greeting/delete/{id}")
 	public String obeySubGreetingDelete(@PathVariable(name = "id") String id) {
-		Optional.of(helper.getLong(id)).ifPresent(service::deleteChatFromGreetingIgnores);
+		Optional.of(helper.getLong(id)).ifPresent(chatId -> service.deleteChatFromGreetingIgnores(chatId));
 
 		return "redirect:/obey/sub-greeting";
 	}
@@ -409,7 +409,7 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey/sub-covid/delete/{id}")
 	public String obeySubCovidDelete(@PathVariable(name = "id") String id) {
-		Optional.of(helper.getLong(id)).ifPresent(service::deleteCovidSub);
+		Optional.of(helper.getLong(id)).ifPresent(chatId -> service.deleteCovidSub(chatId));
 
 		return "redirect:/obey/sub-covid";
 	}
@@ -444,7 +444,7 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey/sub-covid-ua/delete/{id}")
 	public String obeySubCovidUaDelete(@PathVariable(name = "id") String id) {
-		Optional.of(helper.getLong(id)).ifPresent(service::deleteCovidUaSub);
+		Optional.of(helper.getLong(id)).ifPresent(chatId -> service.deleteCovidUaSub(chatId));
 
 		return "redirect:/obey/sub-covid-ua";
 	}
@@ -472,7 +472,7 @@ public class ObeyController {
 
 	@RequestMapping(path = "/obey/sub-rate/delete/{id}")
 	public String obeySubRateDelete(@PathVariable(name = "id") String id) {
-		Optional.of(helper.getLong(id)).ifPresent(service::deleteRateSub);
+		Optional.of(helper.getLong(id)).ifPresent(chatId -> service.deleteRateSub(chatId));
 
 		return "redirect:/obey/sub-rate";
 	}
@@ -598,7 +598,7 @@ public class ObeyController {
 			return "redirect:/obey";
 		}
 
-		Optional.of(helper.getLong(id)).ifPresent(service::deleteMember);
+		Optional.of(helper.getLong(id)).ifPresent(uId -> service.deleteMember(uId));
 
 		return "redirect:/obey/member";
 	}
@@ -663,7 +663,7 @@ public class ObeyController {
 			});
 		} else {
 			digestForm.setUpdate(false);
-			digestForm.setDate(filter.getCurrentUnixTime());
+			digestForm.setDate(FilterHelper.getCurrentUnixTime());
 		}
 		return digestForm;
 	}
@@ -677,7 +677,7 @@ public class ObeyController {
 				user.getUsername(),
 				user.getId(),
 				digest.getChat(),
-				filter.getDateFromTimeStamp(dateFormat, digest.getDate()),
+				FilterHelper.getDateFromTimeStamp(dateFormat, digest.getDate()),
 				filter.ellipsisMiddle(digest.getDigest(), LONG_TEXT)
 			));
 		});
@@ -801,7 +801,7 @@ public class ObeyController {
 		service.getAllMembers().forEach(member -> participantList.add(
 			new Participant(member.getId(), member.getUsername(), member.getRole(), member.isEnable()))
 		);
-		participantList.sort(Comparator.comparing(Participant::getId));
+		participantList.sort(Comparator.comparing(participant -> participant.getId()));
 		return participantList;
 	}
 

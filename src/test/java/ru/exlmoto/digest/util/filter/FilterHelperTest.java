@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -73,12 +73,12 @@ class FilterHelperTest {
 
 	@Test
 	public void testGetDateFromTimeStamp() {
-		System.out.println(filter.getDateFromTimeStamp("dd.MM.yyyy HH:mm", 1580520624L));
-		System.out.println(filter.getDateFromTimeStamp("dd.MMM.yyyy HH:mm", 1580520624L));
-		System.out.println(filter.getDateFromTimeStamp("dd-MM-yyyy HH:mm", 1580585762L));
-		System.out.println(filter.getDateFromTimeStamp("dd-MMM-yyyy HH:mm", 1580585762L));
+		System.out.println(FilterHelper.getDateFromTimeStamp("dd.MM.yyyy HH:mm", 1580520624L));
+		System.out.println(FilterHelper.getDateFromTimeStamp("dd.MMM.yyyy HH:mm", 1580520624L));
+		System.out.println(FilterHelper.getDateFromTimeStamp("dd-MM-yyyy HH:mm", 1580585762L));
+		System.out.println(FilterHelper.getDateFromTimeStamp("dd-MMM-yyyy HH:mm", 1580585762L));
 
-		System.out.println(filter.getDateFromTimeStamp("dd.MM.yyyy EEEE", 1580520624L));
+		System.out.println(FilterHelper.getDateFromTimeStamp("dd.MM.yyyy EEEE", 1580520624L));
 		System.out.println(filter.getDateFromTimeStamp("dd-MM-yyyy EEEE", Locale.forLanguageTag("en"), 1580585762L));
 		System.out.println(filter.getDateFromTimeStamp("dd-MM-yyyy EEEE", Locale.forLanguageTag("fr"), 1580585762L));
 		System.out.println(filter.getDateFromTimeStamp("dd.MMM.yyyy EEEE", Locale.forLanguageTag("ru"), 1580520624L));
@@ -86,7 +86,7 @@ class FilterHelperTest {
 
 	@Test
 	public void testGetCurrentUnixTime() {
-		String value = String.valueOf(filter.getCurrentUnixTime());
+		String value = String.valueOf(FilterHelper.getCurrentUnixTime());
 		assertEquals(10, value.length());
 		System.out.println("Unix Time: " + value);
 	}

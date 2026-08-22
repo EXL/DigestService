@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,6 @@ import ru.exlmoto.digest.util.rest.RestHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
@@ -129,7 +128,7 @@ public class SystemReport {
 
 	private String getDigestServiceBuildDateTime() {
 		return String.format("Build Date Time: %s",
-			filter.getDateFromTimeStamp(dateFormat, context.getBean(BuildProperties.class).getTime().getEpochSecond()));
+			FilterHelper.getDateFromTimeStamp(dateFormat, context.getBean(BuildProperties.class).getTime().getEpochSecond()));
 	}
 
 	private String getOsName() {
@@ -225,19 +224,19 @@ public class SystemReport {
 		String uptime = "Uptime: ";
 		String command = "uptime";
 		try {
-			BufferedReader reader =
-				new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(command).getInputStream()));
-			StringBuilder builder = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				builder.append(line);
-				builder.append(System.getProperty("line.separator"));
+			Process process = new ProcessBuilder(command).start();
+			try (BufferedReader reader = process.inputReader()) {
+				StringBuilder builder = new StringBuilder();
+				String line;
+				while ((line = reader.readLine()) != null) {
+					builder.append(line).append(System.lineSeparator());
+				}
+				String res = filter.strip(builder.toString());
+				if (res.contains(", load")) {
+					res = res.replace(", load", "\nHost load");
+				}
+				return uptime + res;
 			}
-			String res = filter.strip(builder.toString());
-			if (res.contains(", load")) {
-				res = res.replace(", load", "\nHost load");
-			}
-			return uptime + res;
 		} catch (IOException ioe) {
 			log.error(String.format("Cannot exec '%s' command.", command), ioe);
 		}

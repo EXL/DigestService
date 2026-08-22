@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -145,7 +145,7 @@ public class SiteHelper {
 		String sorted = (sort != null) ? sort : "";
 		switch (sorted) {
 			case "id":
-				users.sort(Comparator.comparing(BotDigestUserEntity::getId));
+				users.sort(Comparator.comparing(user -> user.getId()));
 				Collections.reverse(users);
 				break;
 			case "group":
@@ -286,7 +286,7 @@ public class SiteHelper {
 	}
 
 	public String filterDateAndTime(long timestamp, Locale lang) {
-		String[] dateAndTime = filter.getDateFromTimeStamp(dateFormat, timestamp).split(" ");
+		String[] dateAndTime = FilterHelper.getDateFromTimeStamp(dateFormat, timestamp).split(" ");
 		if (dateAndTime.length == 2) {
 			return String.format(locale.i18nW("site.content.date.time", lang), dateAndTime[0], dateAndTime[1]);
 		}

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,9 +98,10 @@ public class FlatCianParser extends FlatParser {
 	public Answer<List<Flat>> getAvailableFlats(String path) {
 		String error = null;
 		List<Flat> flats = new ArrayList<>();
-		try {
-			File xlsx = new File(path);
-			Workbook workbook = new XSSFWorkbook(new FileInputStream(xlsx));
+		File xlsx = new File(path);
+
+		try (InputStream is = new FileInputStream(xlsx);
+			Workbook workbook = new XSSFWorkbook(is)) {
 
 			// Get first sheet from XLSX book.
 			Sheet sheet = workbook.getSheetAt(0);
@@ -121,10 +122,6 @@ public class FlatCianParser extends FlatParser {
 					parseCell(row, linkColumn)
 				));
 			}
-
-			if (deleteXlsxFile && !xlsx.delete()) {
-				log.error(String.format("Cannot delete xlsx file on '%s' path.", path));
-			}
 		} catch (IOException ioe) {
 			error = String.format("Cannot read xlsx file on '%s' path.", path);
 			log.error(error, ioe);
@@ -132,6 +129,12 @@ public class FlatCianParser extends FlatParser {
 			error = String.format("Cannot parse xlsx file on '%s' path.", path);
 			log.error(error, noxfe);
 		}
+
+		// Attempt deletion outside try-with-resources after stream/workbook are safely closed.
+		if (deleteXlsxFile && !xlsx.delete()) {
+			log.error(String.format("Cannot delete xlsx file on '%s' path.", path));
+		}
+
 		if (flats.isEmpty()) {
 			if (error == null) {
 				error = locale.i18n("flat.error.empty");

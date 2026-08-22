@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,16 +47,13 @@ public class DigestWorker {
 	private final Logger log = LoggerFactory.getLogger(DigestWorker.class);
 
 	private final BotConfiguration config;
-	private final FilterHelper filter;
 	private final DatabaseService service;
 	private final DigestTgHtmlGenerator htmlGenerator;
 
 	public DigestWorker(BotConfiguration config,
-	                    FilterHelper filter,
 	                    DatabaseService service,
 	                    DigestTgHtmlGenerator htmlGenerator) {
 		this.config = config;
-		this.filter = filter;
 		this.service = service;
 		this.htmlGenerator = htmlGenerator;
 	}
@@ -67,7 +64,7 @@ public class DigestWorker {
 			log.info("=> Start drop obsolete data from database.");
 
 			try {
-				service.dropObsoleteDigests(filter.getCurrentUnixTime() - config.getObsoleteDataDelay(),
+				service.dropObsoleteDigests(FilterHelper.getCurrentUnixTime() - config.getObsoleteDataDelay(),
 					config.getMotofanChatId());
 
 				List<Long> usersId = service.getAllUserIds();

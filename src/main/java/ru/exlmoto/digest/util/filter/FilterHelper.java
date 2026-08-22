@@ -40,6 +40,7 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import jakarta.annotation.PostConstruct;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -175,7 +176,7 @@ public class FilterHelper {
 
 	public String getSiteUrlFromLink(String link) {
 		try {
-			URL url = new URL(link);
+			URL url = URI.create(link).toURL();
 			int port = url.getPort();
 			return (port == -1) ?
 				String.format("%s://%s", url.getProtocol(), url.getHost()) :

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2021 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -122,6 +122,7 @@ public class DebugCommand extends MessageAdminAbility {
 				case BBirthday: { text = toggleBirthday(locale); break; }
 				case BCaptcha: { text = toggleCaptcha(locale); break; }
 				case BSilent: { text = toggleSilent(locale); break; }
+				case UNHANDLED_DEFAULT: default: { break; }
 			}
 		}
 		sender.replyMarkdown(message.chat().id(), message.messageId(), text);

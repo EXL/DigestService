@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -247,7 +247,7 @@ public class RateTgMarkdownGenerator {
 		BigDecimal rub = bitcoinEntity.getRub();
 		BigDecimal uah = bitcoinEntity.getUah();
 		BigDecimal byn = bitcoinEntity.getByn();
-		BigDecimal kzt = bitcoinEntity.getKzt();
+//		BigDecimal kzt = bitcoinEntity.getKzt();
 
 		report += "\n" + String.format(locale.i18n("exchange.bank.header"), filterDate(bitcoinEntity.getDate()));
 		report += "\n```\n";

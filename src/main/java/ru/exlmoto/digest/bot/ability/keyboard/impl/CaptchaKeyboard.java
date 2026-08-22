@@ -26,6 +26,7 @@ package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.message.MaybeInaccessibleMessage;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
@@ -51,7 +52,7 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import jakarta.annotation.PostConstruct;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -191,7 +192,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			log.info(String.format("==> Schedule CAPTCHA deletion and ban task for '%d' sec, key '%s'.", delay, key));
 			ScheduledFuture<?> timerHandle =
 				scheduler.schedule(new CaptchaTask(this, key, joinedMessageId),
-					new Date(System.currentTimeMillis() + (delay * 1000L)));
+					Instant.now().plusSeconds(delay));
 
 			// 4. Put data and timer handle to a HashMap.
 			captchaChecksMap.put(key, new CaptchaData(joinedMessageId, captcha.getCorrectAnswer(), timerHandle));
@@ -200,7 +201,16 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
-		Message message = callback.message();
+		MaybeInaccessibleMessage maybeMessage = callback.maybeInaccessibleMessage();
+		if (maybeMessage == null || !(maybeMessage instanceof Message message)) {
+			log.warn(String.format(
+				"Deleted or inaccessible message from user '%s' (%d) for callback data '%s'.",
+				helper.getValidUsername(callback.from()),
+				callback.from().id(),
+				callback.data()));
+			return;
+		}
+
 		long chatId = message.chat().id();
 		long userId = callback.from().id();
 		int messageId = message.messageId();

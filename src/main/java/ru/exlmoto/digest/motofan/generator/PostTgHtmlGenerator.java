@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2023 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -97,7 +97,7 @@ public class PostTgHtmlGenerator {
 					line = reader.readLine();
 				}
 				return String.format(locale.i18n("motofan.birthday"),
-					filter.getDateFromTimeStamp(dateFormat, Locale.forLanguageTag(lang), filter.getCurrentUnixTime()),
+					filter.getDateFromTimeStamp(dateFormat, Locale.forLanguageTag(lang), FilterHelper.getCurrentUnixTime()),
 						"<pre>\n" + Encode.forHtml(birthdays.toString().trim()) + "\n</pre>", count);
 			} catch (RuntimeException | IOException re_and_ioe) {
 				log.error("Cannot parse MotoFan.Ru page.", re_and_ioe);

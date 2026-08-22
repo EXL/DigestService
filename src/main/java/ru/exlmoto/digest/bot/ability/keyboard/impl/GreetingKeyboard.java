@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.message.MaybeInaccessibleMessage;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
@@ -71,7 +72,15 @@ public class GreetingKeyboard extends KeyboardAbility {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
-		Message message = callback.message();
+		MaybeInaccessibleMessage maybeMessage = callback.maybeInaccessibleMessage();
+		if (maybeMessage == null || !(maybeMessage instanceof Message message)) {
+			log.warn(String.format(
+				"Deleted or inaccessible message from user '%s' (%d) for callback data '%s'.",
+				helper.getValidUsername(callback.from()),
+				callback.from().id(),
+				callback.data()));
+			return;
+		}
 		long chatId = message.chat().id();
 
 		String callbackId = callback.id();

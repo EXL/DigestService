@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.MessageEntity;
 import com.pengrad.telegrambot.model.User;
+import com.pengrad.telegrambot.model.message.MaybeInaccessibleMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,12 +119,22 @@ public class BotHandler {
 	}
 
 	public void onCallbackQuery(CallbackQuery callbackQuery) {
+		MaybeInaccessibleMessage maybeMessage = callbackQuery.maybeInaccessibleMessage();
+		if (!(maybeMessage instanceof Message message)) {
+			log.warn(String.format(
+				"Deleted or inaccessible message from user '%s' (%d) for callback data '%s'.",
+				helper.getValidUsername(callbackQuery.from()),
+				callbackQuery.from().id(),
+				callbackQuery.data()));
+			return;
+		}
+
 		// Disable delay for CAPTCHA requests.
 		if (callbackQuery.data().startsWith(Keyboard.captcha.withName())) {
 			onKeyboard(callbackQuery);
 		} else {
 			if (config.isUseStack()) {
-				long delay = callbackQueriesWorker.getDelayForChat(callbackQuery.message().chat().id());
+				long delay = callbackQueriesWorker.getDelayForChat(message.chat().id());
 				if (delay == 0L) {
 					onKeyboard(callbackQuery);
 				} else {

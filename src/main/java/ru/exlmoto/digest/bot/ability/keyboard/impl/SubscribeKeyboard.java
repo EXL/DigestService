@@ -28,6 +28,7 @@ import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Chat.Type;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.message.MaybeInaccessibleMessage;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
@@ -134,7 +135,15 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
-		Message message = callback.message();
+		MaybeInaccessibleMessage maybeMessage = callback.maybeInaccessibleMessage();
+		if (maybeMessage == null || !(maybeMessage instanceof Message message)) {
+			log.warn(String.format(
+				"Deleted or inaccessible message from user '%s' (%d) for callback data '%s'.",
+				helper.getValidUsername(callback.from()),
+				callback.from().id(),
+				callback.data()));
+			return;
+		}
 		int messageId = message.messageId();
 		Chat chat = message.chat();
 

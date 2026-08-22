@@ -26,8 +26,12 @@ package ru.exlmoto.digest.bot.ability.keyboard.impl;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.message.MaybeInaccessibleMessage;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Component;
 
@@ -43,6 +47,8 @@ import jakarta.annotation.PostConstruct;
 
 @Component
 public class RateKeyboard extends KeyboardSimpleAbility {
+	private final Logger log = LoggerFactory.getLogger(RateKeyboard.class);
+
 	private final ExchangeService service;
 
 	private InlineKeyboardMarkup markup = null;
@@ -94,7 +100,15 @@ public class RateKeyboard extends KeyboardSimpleAbility {
 
 	@Override
 	protected void execute(BotHelper helper, BotSender sender, LocaleHelper locale, CallbackQuery callback) {
-		Message message = callback.message();
+		MaybeInaccessibleMessage maybeMessage = callback.maybeInaccessibleMessage();
+		if (maybeMessage == null || !(maybeMessage instanceof Message message)) {
+			log.warn(String.format(
+				"Deleted or inaccessible message from user '%s' (%d) for callback data '%s'.",
+				helper.getValidUsername(callback.from()),
+				callback.from().id(),
+				callback.data()));
+			return;
+		}
 		long chatId = message.chat().id();
 		int messageId = message.messageId();
 

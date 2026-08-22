@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 
 import static ru.exlmoto.digest.util.Answer.Ok;
 import static ru.exlmoto.digest.util.Answer.Error;
@@ -48,22 +49,26 @@ public class UdpSender {
 		try {
 			InetAddress inetAddress = InetAddress.getByName(hostname);
 
-			DatagramSocket datagramSocket = new DatagramSocket();
-			datagramSocket.setSoTimeout((timeoutSec / 3) * 1000);
+			try (DatagramSocket datagramSocket = new DatagramSocket()) {
+				datagramSocket.setSoTimeout((timeoutSec / 3) * 1000);
 
-			// https://en.wikipedia.org/wiki/Out-of-band_data
-			byte[] bufferOut = ("||||" + command).getBytes();
-			for (int i = 0; i < 4; ++i) {
-				bufferOut[i] = (byte) 0xFF;
+				// https://en.wikipedia.org/wiki/Out-of-band_data
+				byte[] bufferOut = ("||||" + command).getBytes(StandardCharsets.UTF_8);
+				for (int i = 0; i < 4; ++i) {
+					bufferOut[i] = (byte) 0xFF;
+				}
+				byte[] bufferIn = new byte[BUFFER_SIZE];
+
+				DatagramPacket outgoingPacket = new DatagramPacket(bufferOut, bufferOut.length, inetAddress, port);
+				DatagramPacket incomingPacket = new DatagramPacket(bufferIn, bufferIn.length);
+
+				datagramSocket.send(outgoingPacket);
+				datagramSocket.receive(incomingPacket);
+
+				// Construct string using only received bytes and explicit UTF-8 encoding.
+				String result = new String(incomingPacket.getData(), 0, incomingPacket.getLength(), StandardCharsets.UTF_8);
+				return Ok(result);
 			}
-			byte[] bufferIn = new byte[BUFFER_SIZE];
-
-			DatagramPacket outgoingPacket = new DatagramPacket(bufferOut, bufferOut.length, inetAddress, port);
-			DatagramPacket incomingPacket = new DatagramPacket(bufferIn, bufferIn.length);
-
-			datagramSocket.send(outgoingPacket);
-			datagramSocket.receive(incomingPacket);
-			return Ok(new String(incomingPacket.getData()));
 		} catch (IOException ioe) {
 			return Error(ioe.getLocalizedMessage());
 		}

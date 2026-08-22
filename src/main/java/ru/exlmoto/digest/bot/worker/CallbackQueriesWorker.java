@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,11 +44,9 @@ public class CallbackQueriesWorker {
 	private int delay = 0;
 
 	private final BotConfiguration config;
-	private final FilterHelper filter;
 
-	public CallbackQueriesWorker(BotConfiguration config, FilterHelper filter) {
+	public CallbackQueriesWorker(BotConfiguration config) {
 		this.config = config;
-		this.filter = filter;
 	}
 
 	@Scheduled(cron = "${cron.bot.callbacks.clear}")
@@ -60,7 +58,7 @@ public class CallbackQueriesWorker {
 
 	public long getDelayForChat(long chatId) {
 		int cooldown = config.getCooldown();
-		long currentTime = filter.getCurrentUnixTime();
+		long currentTime = FilterHelper.getCurrentUnixTime();
 		if (!callbackQueriesMap.containsKey(chatId) || callbackQueriesMap.get(chatId) <= currentTime - cooldown) {
 			callbackQueriesMap.put(chatId, currentTime);
 			return 0L;

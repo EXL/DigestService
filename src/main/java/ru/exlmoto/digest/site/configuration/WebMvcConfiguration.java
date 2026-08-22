@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,11 +34,11 @@ import java.util.Locale;
 
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
+
 	@Bean
 	public LocaleResolver localeResolver() {
-		final CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-		cookieLocaleResolver.setDefaultLocale(Locale.forLanguageTag("ru"));
-		cookieLocaleResolver.setCookieName("lang");
-		return cookieLocaleResolver;
+		CookieLocaleResolver resolver = new CookieLocaleResolver("lang");
+		resolver.setDefaultLocale(Locale.forLanguageTag("ru"));
+		return resolver;
 	}
 }

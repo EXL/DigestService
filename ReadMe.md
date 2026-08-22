@@ -86,14 +86,10 @@ For example, on fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux di
 2. Setup PostgreSQL database engine:
 
     ```shell script
-    # Create database admin user.
-    sudo -u postgres psql
-    ALTER USER postgres WITH PASSWORD 'your_secure_password';
-    \q
-
-    # Create database and database user.
-    sudo -u postgres createuser --interactive # user, n, n, n
-    sudo -u postgres createdb database_name
+    # Create database, user, and grant all permissions.
+    sudo -u postgres psql -c "CREATE USER digest_user WITH PASSWORD 'digest_password';"
+    sudo -u postgres psql -c "CREATE DATABASE digest_database OWNER digest_user;"
+    sudo -u postgres psql -d digest_database -c "GRANT ALL ON SCHEMA public TO digest_user;"
     ```
 
 1. Enable [EPEL repository](https://fedoraproject.org/wiki/EPEL) for CentOS 7:

@@ -28,7 +28,7 @@ A special control module allows administrators to manage the Digest Service, del
 
 ## Requirements
 
-1. [Java Runtime Environment 8+](https://www.oracle.com/java/technologies/javase-jre8-downloads.html) for running or [Java Development Kit 8+](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) for building application (tested with JRE/JDK 8).
+1. [Java Development Kit 25+](https://www.oracle.com/java/technologies/downloads/) for running and building application (tested with JDK 25).
 2. [PostgreSQL](https://www.postgresql.org/) database.
 3. [Nginx](https://www.nginx.com/) web server (optional).
 
@@ -36,7 +36,7 @@ A special control module allows administrators to manage the Digest Service, del
 
 For example, on Linux:
 
-1. Install JDK 8+ via your system package manager.
+1. Install JDK 25+ via your system package manager.
 
 2. Clone the Digest Service source code via Git:
 
@@ -72,7 +72,29 @@ For example, on Linux:
 
 ## Deploy
 
-For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Linux distribution:
+For example, on fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux distribution:
+
+1. Prepare environment:
+
+    ```shell script
+    timedatectl set-timezone "Europe/Moscow"
+
+    sudo apt install -y default-jdk
+    sudo apt install -y postgresql
+    ```
+
+2. Setup PostgreSQL database engine:
+
+    ```shell script
+    # Create database admin user.
+    sudo -u postgres psql
+    ALTER USER postgres WITH PASSWORD 'your_secure_password';
+    \q
+
+    # Create database and database user.
+    sudo -u postgres createuser --interactive # user, n, n, n
+    sudo -u postgres createdb database_name
+    ```
 
 1. Enable [EPEL repository](https://fedoraproject.org/wiki/EPEL) for CentOS 7:
 

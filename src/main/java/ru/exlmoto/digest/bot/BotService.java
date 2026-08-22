@@ -116,7 +116,7 @@ public class BotService implements UpdatesListener {
 	}
 
 	private Message checkForward(Message message) {
-		return (message != null && message.forwardDate() == null) ? message : null;
+		return (message != null && message.forwardOrigin() == null) ? message : null;
 	}
 
 	private Message checkMessage(Update update) {

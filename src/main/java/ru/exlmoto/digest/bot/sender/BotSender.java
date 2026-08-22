@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,12 @@
 package ru.exlmoto.digest.bot.sender;
 
 import com.pengrad.telegrambot.model.ChatMember;
+import com.pengrad.telegrambot.model.ChatPermissions;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.LinkPreviewOptions;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ParseMode;
+import com.pengrad.telegrambot.model.request.ReplyParameters;
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.EditMessageText;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -116,13 +119,15 @@ public class BotSender {
 	}
 
 	private void sendMessage(long chatId, Integer replyId, String text, ParseMode mode, InlineKeyboardMarkup keyboard) {
-		SendMessage sendMessage = new SendMessage(chatId, shrinkText(text)).disableWebPagePreview(downloadFile)
-			.disableNotification(config.isDisableNotifications());
+		SendMessage sendMessage =
+			new SendMessage(chatId, shrinkText(text))
+				.linkPreviewOptions(new LinkPreviewOptions().isDisabled(downloadFile))
+				.disableNotification(config.isDisableNotifications());
 		if (mode != null) {
 			sendMessage.parseMode(mode);
 		}
 		if (replyId != null) {
-			sendMessage.replyToMessageId(replyId);
+			sendMessage.replyParameters(new ReplyParameters(replyId));
 		}
 		if (keyboard != null) {
 			sendMessage.replyMarkup(keyboard);
@@ -139,8 +144,9 @@ public class BotSender {
 	}
 
 	private void editMessage(long chatId, int messageId, String text, ParseMode mode, InlineKeyboardMarkup keyboard) {
-		EditMessageText editMessageText = new EditMessageText(chatId, messageId, shrinkText(text))
-			.parseMode(mode).disableWebPagePreview(downloadFile);
+		EditMessageText editMessageText =
+			new EditMessageText(chatId, messageId, shrinkText(text))
+				.parseMode(mode).linkPreviewOptions(new LinkPreviewOptions().isDisabled(downloadFile));
 		if (keyboard != null) {
 			editMessageText.replyMarkup(keyboard);
 		}
@@ -148,7 +154,7 @@ public class BotSender {
 	}
 
 	public void replySticker(long chatId, int replyId, String stickerId) {
-		executeRequestLog(new SendSticker(chatId, stickerId).replyToMessageId(replyId));
+		executeRequestLog(new SendSticker(chatId, stickerId).replyParameters(new ReplyParameters(replyId)));
 	}
 
 	public void sendStickerToChat(long chatId, String stickerId) {
@@ -196,7 +202,7 @@ public class BotSender {
 		SendPhoto sendPhoto = new SendPhoto(chatId, photoRawData);
 		sendPhoto.disableNotification(config.isDisableNotifications());
 		if (replyId != null) {
-			sendPhoto.replyToMessageId(replyId);
+			sendPhoto.replyParameters(new ReplyParameters(replyId));
 		}
 		if (title != null) {
 			sendPhoto.parseMode(HTML);
@@ -232,7 +238,7 @@ public class BotSender {
 			sendPhoto = new SendPhoto(chatId, uri);
 		}
 		if (replyId != null) {
-			sendPhoto.replyToMessageId(replyId);
+			sendPhoto.replyParameters(new ReplyParameters(replyId));
 		}
 		if (title != null) {
 			sendPhoto.caption(title);
@@ -315,15 +321,22 @@ public class BotSender {
 	}
 
 	public void restrictUserInChat(long chatId, long userId) {
-		executeRequestLog(new RestrictChatMember(chatId, userId));
+		executeRequestLog(new RestrictChatMember(chatId, userId, new ChatPermissions()));
 	}
 
 	public void allowUserInChat(long chatId, long userId) {
-		executeRequestLog(new RestrictChatMember(chatId, userId)
+		ChatPermissions permissions = new ChatPermissions()
 			.canSendMessages(true)
-			.canSendMediaMessages(true)
-			.canAddWebPagePreviews(true)
-			.canSendOtherMessages(true));
+			.canSendAudios(true)
+			.canSendDocuments(true)
+			.canSendPhotos(true)
+			.canSendVideos(true)
+			.canSendVideoNotes(true)
+			.canSendVoiceNotes(true)
+			.canSendOtherMessages(true)
+			.canAddWebPagePreviews(true);
+
+		executeRequestLog(new RestrictChatMember(chatId, userId, permissions));
 	}
 
 	public void banUserInChat(long chatId, long userId, long seconds) {

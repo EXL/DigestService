@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ package ru.exlmoto.digest.motofan;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 
 import ru.exlmoto.digest.motofan.json.MotofanPost;
@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class MotofanServiceMockTest {
-	@SpyBean
+	@MockitoSpyBean
 	private MotofanService service;
 
 	private final MotofanPostHelper post = new MotofanPostHelper();

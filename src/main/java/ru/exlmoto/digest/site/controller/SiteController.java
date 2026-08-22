@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,9 +45,9 @@ import ru.exlmoto.digest.site.model.help.Help;
 import ru.exlmoto.digest.site.util.SiteHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Locale;
 import java.util.Optional;

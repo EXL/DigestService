@@ -331,8 +331,6 @@ See [application.properties](../src/main/resources/application.properties) file 
 
     Note: 5242880 bytes is 5 MiB, 15728640 bytes is 15 MiB.
 
-* *rest.simple-http-client* - Enable or disable using Simple HTTP Client instead of OkHttp or Apache.
-
 * *rest.fake-user-agent* - Set fake user agent for Rest Template queries.
 
     Example for typical Firefox ESR user agent on Fedora Linux distro:

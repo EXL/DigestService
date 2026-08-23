@@ -1,5 +1,13 @@
 ## Upcoming Release:
 
+- Migrated from CentOS 7 to Ubuntu Server 26.04 LTS
+
+- Used MOEX and Bitpay instead of RBC.ru for quotes.
+
+- Bot admins can solve CAPTCHA instead of users now.
+
+- Added new phones to CAPTCHA quizes.
+
 - Added username or nickname to CAPTCHA question.
 
 - Fixed digest editing bug with reactions.
@@ -9,6 +17,25 @@
 - Fixed parsing links with at (@) symbol.
 
 - Fixed MotoFan.Ru forum post HTML escaping.
+
+- Increase http body size limit from 5 MiB to 15 MiB.
+
+- Fix MotoFan.Ru post HTML escaping.
+
+- Updated libraries and frameworks:
+
+    - Java 1.8.0_412 (Java 8) => 25.0.3 (Java 25)
+    - PostgreSQL 9.2.24 => PostgreSQL 18.6
+    - Gradle 7.4.1 => 9.5.1
+    - Spring Boot 2.6.7 => 4.1.1
+    - Spring Boot Dependency Management 1.0.11.RELEASE => 1.1.7
+    - com.github.pengrad:java-telegram-bot-api 5.7.0 => 10.1.0
+    - org.yaml:snakeyaml 1.29 => 2.6
+    - org.jsoup:jsoup 1.14.3 => 1.23.1
+    - org.nibor.autolink:autolink 0.10.0 => 0.12.0
+    - org.owasp.encoder:encoder 1.2.3 => 1.4.0
+    - org.apache.poi:poi 5.2.2 => 5.5.1
+    - org.apache.poi:poi-ooxml 5.2.2 => 5.5.1
 
 ## v1.0.2, 27-Apr-2022, Patch Release:
 
@@ -37,6 +64,7 @@
 - Fixed HTML escaping in MotoFan.Ru posts.
 
 - Updated libraries and frameworks:
+
     - Java 1.8.0_275 => 1.8.0_322
     - Gradle 6.7.1 => 7.4.1
     - Spring Boot 2.4.1 => 2.6.7
@@ -55,7 +83,7 @@ git log --pretty=oneline --abbrev-commit | wc -l
 
 cloc src/main/
      188 text files.
-     188 unique files.                                          
+     188 unique files.
        5 files ignored.
 
 github.com/AlDanial/cloc v 1.82  T=1.56 s (117.7 files/s, 12797.3 lines/s)
@@ -100,6 +128,7 @@ SUM:                           183           2735           3902          13265
 - Moved to new hosting by Oracle Cloud.
 
 - Updated libraries and frameworks:
+
     - Java 1.8.0_252 => 1.8.0_275
     - Gradle 6.3 => 6.7.1
     - Spring Boot 2.3.0 => 2.4.1

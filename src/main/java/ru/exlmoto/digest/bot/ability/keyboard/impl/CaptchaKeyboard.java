@@ -53,7 +53,6 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import jakarta.annotation.PostConstruct;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -75,9 +74,6 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 	@Value("${bot.captcha-contact}")
 	private String captchaContact;
-
-	@Value("${bot.admins}")
-	private String[] botAdmins;
 
 	private final int CAPTCHA_ELEMENTS = 8;
 
@@ -238,7 +234,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			data = captchaChecksMap.get(keyCaptcha);
 		}
 		boolean adminApproval = data != null && !callbackKey.equals(keyCaptcha) &&
-			Arrays.asList(botAdmins).contains(helper.getValidUsername(callback.from()));
+			helper.isUserAdmin(callback.from().username());
 
 		log.debug(String.format("captchaChecksMap size: '%d'.", captchaChecksMap.size()));
 

@@ -91,7 +91,8 @@ public class RateMoexParser extends GeneralParser {
 				int secIdIdx = colIdx.getOrDefault("SECID", -1);
 				int lastIdx = colIdx.getOrDefault("LAST", -1);
 				int changeIdx = colIdx.getOrDefault("CHANGE", -1);
-				int prevPriceIdx = colIdx.getOrDefault("LASTTOPREVPRICE", -1);
+				int closingPriceIdx = colIdx.getOrDefault("CLOSINGPRICE", -1);
+				int lastToPrevPriceIdx = colIdx.getOrDefault("LASTTOPREVPRICE", -1);
 				int timeIdx = colIdx.getOrDefault("UPDATETIME", -1);
 				int dateIdx = colIdx.getOrDefault("TRADEDATE", -1);
 
@@ -101,29 +102,37 @@ public class RateMoexParser extends GeneralParser {
 
 				for (JsonElement rowElement : dataArray) {
 					JsonArray row = rowElement.getAsJsonArray();
-					String secId = row.get(secIdIdx).isJsonNull() ? "" : row.get(secIdIdx).getAsString();
+					String secId = getStringValue(row, secIdIdx);
 
 					if (TARGET_TICKERS.contains(secId)) {
 						Quotes quotes = new Quotes();
 						quotes.name = secId;
 
-						// Reading date and time, prefer UPDATETIME over TRADEDATE.
-						String timeStr = (timeIdx != -1 && !row.get(timeIdx).isJsonNull()) ? row.get(timeIdx).getAsString() : "";
-						String dateStr = (dateIdx != -1 && !row.get(dateIdx).isJsonNull()) ? row.get(dateIdx).getAsString() : "";
+						// 1. Read date with fallback to time if date is not available.
+						String timeStr = getStringValue(row, timeIdx);
+						String dateStr = getStringValue(row, dateIdx);
 						quotes.date = filterCommas(filterSpaces(StringUtils.hasText(timeStr) ? timeStr : dateStr));
 
-						// Reading price (LAST, fallback to LASTTOPREVPRICE when the exchange is closed).
-						JsonElement lastElem = (lastIdx != -1) ? row.get(lastIdx) : null;
-						if (lastElem != null && !lastElem.isJsonNull()) {
-							quotes.sell = filterCommas(filterSpaces(lastElem.getAsString()));
-						} else if (prevPriceIdx != -1 && !row.get(prevPriceIdx).isJsonNull()) {
-							quotes.sell = filterCommas(filterSpaces(row.get(prevPriceIdx).getAsString()));
+						// 2. Read price with fallbacks: LAST -> CLOSINGPRICE -> LASTTOPREVPRICE.
+						Double lastVal = getDoubleValue(row, lastIdx);
+						Double closingVal = getDoubleValue(row, closingPriceIdx);
+						Double prevVal = getDoubleValue(row, lastToPrevPriceIdx);
+
+						double finalPrice = 0.0;
+						if (lastVal != null && lastVal > 0) {
+							finalPrice = lastVal;
+						} else if (closingVal != null && closingVal > 0) {
+							finalPrice = closingVal;
+						} else if (prevVal != null && prevVal > 0) {
+							finalPrice = prevVal;
 						}
 
-						// Reading difference (CHANGE).
-						JsonElement changeElem = (changeIdx != -1) ? row.get(changeIdx) : null;
-						if (changeElem != null && !changeElem.isJsonNull()) {
-							quotes.diff = filterCommas(filterSpaces(changeElem.getAsString()));
+						quotes.sell = (finalPrice > 0) ? String.valueOf(finalPrice) : "0.00";
+
+						// 3. Read difference (CHANGE).
+						Double changeVal = getDoubleValue(row, changeIdx);
+						if (changeVal != null) {
+							quotes.diff = filterCommas(filterSpaces(String.valueOf(changeVal)));
 						} else {
 							quotes.diff = "0.00";
 						}
@@ -137,6 +146,22 @@ public class RateMoexParser extends GeneralParser {
 			}
 		}
 		return false;
+	}
+
+	private String getStringValue(JsonArray row, int index) {
+		if (index != -1 && index < row.size() && !row.get(index).isJsonNull()) {
+			return row.get(index).getAsString();
+		}
+		return "";
+	}
+
+	private Double getDoubleValue(JsonArray row, int index) {
+		if (index != -1 && index < row.size() && !row.get(index).isJsonNull()) {
+			try {
+				return row.get(index).getAsDouble();
+			} catch (Exception ignored) {}
+		}
+		return null;
 	}
 
 	private void updateEntity(DatabaseService service, String key, Quotes quotes) {

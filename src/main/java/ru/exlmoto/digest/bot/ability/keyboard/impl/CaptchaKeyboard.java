@@ -74,7 +74,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 	@Value("${bot.captcha-contact}")
 	private String captchaContact;
 
-	private final int CAPTCHA_ELEMENTS = 7;
+	private final int CAPTCHA_ELEMENTS = 8;
 
 	@Value("classpath:bot/captcha/Motorola_E398_1.jpg")
 	private Resource imgMotorolaE398_1;
@@ -96,6 +96,9 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 	@Value("classpath:bot/captcha/Motorola_RAZR_L7_1.jpg")
 	private Resource imgMotorolaL7_1;
+
+	@Value("classpath:bot/captcha/Motorola_ZINE_ZN5_1.jpg")
+	private Resource imgMotorolaZN5_1;
 
 	private class CaptchaItem {
 		private Resource img;
@@ -136,13 +139,14 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 
 	@PostConstruct
 	private void setUp() {
-		CAPTCHAS[0] = new CaptchaItem(imgMotorolaE398_1, new String[] { "C650", "E398", "V500"          }, "E398");
-		CAPTCHAS[1] = new CaptchaItem(imgMotorolaE398_2, new String[] { "C350", "V535", "E398"          }, "E398");
-		CAPTCHAS[2] = new CaptchaItem(imgMotorolaE1_1,   new String[] { "RAZR V3", "ROKR E1", "SLVR L7" }, "ROKR E1");
-		CAPTCHAS[3] = new CaptchaItem(imgMotorolaC350_1, new String[] { "C380", "C650", "C350"          }, "C350");
-		CAPTCHAS[4] = new CaptchaItem(imgMotorolaC650_1, new String[] { "E398", "C650", "V635"          }, "C650");
-		CAPTCHAS[5] = new CaptchaItem(imgMotorolaV3_1,   new String[] { "RIZR Z8", "PEBL U6", "RAZR V3" }, "RAZR V3");
-		CAPTCHAS[6] = new CaptchaItem(imgMotorolaL7_1,   new String[] { "KRZR K1", "SLVR L7", "AURA R1" }, "SLVR L7");
+		CAPTCHAS[0] = new CaptchaItem(imgMotorolaE398_1, new String[] { "C650", "E398", "V500"           }, "E398");
+		CAPTCHAS[1] = new CaptchaItem(imgMotorolaE398_2, new String[] { "C350", "V535", "E398"           }, "E398");
+		CAPTCHAS[2] = new CaptchaItem(imgMotorolaE1_1,   new String[] { "RAZR V3", "ROKR E1", "SLVR L7"  }, "ROKR E1");
+		CAPTCHAS[3] = new CaptchaItem(imgMotorolaC350_1, new String[] { "C380", "C650", "C350"           }, "C350");
+		CAPTCHAS[4] = new CaptchaItem(imgMotorolaC650_1, new String[] { "E398", "C650", "V635"           }, "C650");
+		CAPTCHAS[5] = new CaptchaItem(imgMotorolaV3_1,   new String[] { "RIZR Z8", "PEBL U6", "RAZR V3"  }, "RAZR V3");
+		CAPTCHAS[6] = new CaptchaItem(imgMotorolaL7_1,   new String[] { "KRZR K1", "SLVR L7", "AURA R1"  }, "SLVR L7");
+		CAPTCHAS[7] = new CaptchaItem(imgMotorolaZN5_1,  new String[] { "ROKR E8", "RIZR Z8", "ZINE ZN5" }, "ZINE ZN5");
 	}
 
 	@Override
@@ -168,6 +172,8 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		int delay = config.getCaptchaDelay();
 
 		CaptchaItem captcha = CAPTCHAS[ThreadLocalRandom.current().nextInt(0, CAPTCHA_ELEMENTS)];
+
+		captcha = CAPTCHAS[7];
 
 		// 1. Restrict user rights.
 		log.info(String.format("==> Restrict user with id '%d' in the '%d' chat.", userId, chatId));

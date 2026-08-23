@@ -58,7 +58,7 @@ public class WebSecurityConfiguration {
 			.formLogin(form -> form
 				.loginPage("/ds-auth-login")
 				.defaultSuccessUrl("/obey")
-				.failureForwardUrl("/ds-auth-login?error=true")
+				.failureUrl("/ds-auth-login?error=true")
 			)
 			.logout(logout -> logout
 				.logoutUrl("/ds-auth-logout")

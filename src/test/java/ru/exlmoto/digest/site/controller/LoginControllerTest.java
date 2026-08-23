@@ -31,6 +31,11 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest(properties = "site.obey-protection=false")
 @AutoConfigureMockMvc
 class LoginControllerTest {
@@ -50,6 +55,16 @@ class LoginControllerTest {
 		helper.checkAuthorizedWithoutCsrf(mvc, "/ds-auth-login");
 		// helper.checkAuthorizedWithCsrf(mvc, "/ds-auth-login");
 		helper.checkAuthorizedWithCsrfRedirect(mvc, "/ds-auth-login", "/**/obey");
+	}
+
+	@Test
+	public void testDsAuthLoginWrongPasswordRedirects() throws Exception {
+		mvc.perform(post("/ds-auth-login")
+				.param("username", "admin")
+				.param("password", "wrong-password")
+				.with(csrf()))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl("/ds-auth-login?error=true"));
 	}
 
 	@Test

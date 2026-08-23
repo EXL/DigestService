@@ -46,7 +46,7 @@ public class ExchangeRateMoexEntity {
 	private String sale;
 
 	@Column(nullable = false)
-	private String difference;
+	private String prev;
 
 	public int getId() {
 		return id;
@@ -72,12 +72,12 @@ public class ExchangeRateMoexEntity {
 		this.sale = sale;
 	}
 
-	public String getDifference() {
-		return difference;
+	public String getPrev() {
+		return prev;
 	}
 
-	public void setDifference(String difference) {
-		this.difference = difference;
+	public void setPrev(String prev) {
+		this.prev = prev;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class ExchangeRateMoexEntity {
 			"ExchangeRateRbcEntity{id=" + id +
 			", date=" + date +
 			", sale=" + sale +
-			", difference=" + difference +
+			", prev=" + prev +
 			"}";
 	}
 }

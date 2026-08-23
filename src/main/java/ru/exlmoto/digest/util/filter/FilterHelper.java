@@ -39,7 +39,6 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import jakarta.annotation.PostConstruct;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.time.Instant;
@@ -181,8 +180,8 @@ public class FilterHelper {
 			return (port == -1) ?
 				String.format("%s://%s", url.getProtocol(), url.getHost()) :
 				String.format("%s://%s:%d", url.getProtocol(), url.getHost(), port);
-		} catch (MalformedURLException mue) {
-			log.warn(String.format("Wrong URL link: '%s'.", link), mue);
+		} catch (Exception e) {
+			log.warn(String.format("Wrong URL link: '%s'.", link), e);
 			return link;
 		}
 	}

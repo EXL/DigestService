@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -72,7 +72,10 @@ public abstract class BankParser extends RateParser {
 
 	@Override
 	protected boolean checkParsedValues() {
-		return usd != null && eur != null && cny != null && gbp != null;
+		return usd != null && usd.compareTo(BigDecimal.ZERO) != 0
+			&& eur != null && eur.compareTo(BigDecimal.ZERO) != 0
+			&& cny != null && cny.compareTo(BigDecimal.ZERO) != 0
+			&& gbp != null && gbp.compareTo(BigDecimal.ZERO) != 0;
 	}
 
 	@Override

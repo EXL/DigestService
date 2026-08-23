@@ -171,9 +171,8 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		int joinedMessageId = message.messageId();
 		int delay = config.getCaptchaDelay();
 
-		CaptchaItem captcha = CAPTCHAS[ThreadLocalRandom.current().nextInt(0, CAPTCHA_ELEMENTS)];
-
-		captcha = CAPTCHAS[7];
+		//CaptchaItem captcha = CAPTCHAS[ThreadLocalRandom.current().nextInt(0, CAPTCHA_ELEMENTS)];
+		CaptchaItem captcha = CAPTCHAS[7];
 
 		// 1. Restrict user rights.
 		log.info(String.format("==> Restrict user with id '%d' in the '%d' chat.", userId, chatId));

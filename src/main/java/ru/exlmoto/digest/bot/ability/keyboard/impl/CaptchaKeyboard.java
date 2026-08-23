@@ -240,8 +240,6 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		log.debug(String.format("captchaChecksMap size: '%d'.", captchaChecksMap.size()));
 
 		if (data != null && (userId == data.getUserId() || adminApproval)) {
-			data.getTimerHandle().cancel(true);
-
 			int joinMessageId = data.getJoinedMessageId();
 			String correctAnswer = data.getCorrectAnswer();
 			if (keyButton.equals(correctAnswer)) {
@@ -249,6 +247,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 					helper.getValidUsername(callback.from()), keyButton));
 				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.solved"));
 
+				data.getTimerHandle().cancel(false);
 				processCorrectAnswer(chatId, data.getUserId(), messageId);
 
 				sender.replySimple(chatId, joinMessageId,
@@ -261,6 +260,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 					sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.wrong"));
 				} else {
 					sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.failed"));
+					data.getTimerHandle().cancel(false);
 					processWrongAnswer(chatId, data.getUserId(), messageId, joinMessageId);
 				}
 			}

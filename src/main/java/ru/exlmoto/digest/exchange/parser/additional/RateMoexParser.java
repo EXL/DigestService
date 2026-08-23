@@ -64,8 +64,10 @@ public class RateMoexParser extends GeneralParser {
 
 	private Map<String, Integer> getColumnIndexes(JsonArray columnsArray) {
 		Map<String, Integer> indexes = new HashMap<>();
-		for (int i = 0; i < columnsArray.size(); i++) {
-			indexes.put(columnsArray.get(i).getAsString(), i);
+		if (columnsArray != null) {
+			for (int i = 0; i < columnsArray.size(); i++) {
+				indexes.put(columnsArray.get(i).getAsString(), i);
+			}
 		}
 		return indexes;
 	}
@@ -74,70 +76,114 @@ public class RateMoexParser extends GeneralParser {
 		if (StringUtils.hasText(content)) {
 			try {
 				JsonObject document = JsonParser.parseString(content).getAsJsonObject();
-				if (!document.has("marketdata")) {
+
+				JsonObject securities = document.has("securities") ? document.getAsJsonObject("securities") : null;
+				JsonObject marketData = document.has("marketdata") ? document.getAsJsonObject("marketdata") : null;
+
+				if (securities == null && marketData == null) {
 					return false;
 				}
 
-				JsonObject marketData = document.getAsJsonObject("marketdata");
-				JsonArray columns = marketData.getAsJsonArray("columns");
-				JsonArray dataArray = marketData.getAsJsonArray("data");
+				Map<String, String> prevPrices = new HashMap<>();
+				Map<String, String> secDates = new HashMap<>();
 
-				if (columns == null || dataArray == null) {
-					return false;
-				}
+				if (securities != null) {
+					JsonArray secCols = securities.getAsJsonArray("columns");
+					JsonArray secData = securities.getAsJsonArray("data");
 
-				Map<String, Integer> colIdx = getColumnIndexes(columns);
+					if (secCols != null && secData != null) {
+						Map<String, Integer> secIdx = getColumnIndexes(secCols);
 
-				int secIdIdx = colIdx.getOrDefault("SECID", -1);
-				int lastIdx = colIdx.getOrDefault("LAST", -1);
-				int changeIdx = colIdx.getOrDefault("CHANGE", -1);
-				int closingPriceIdx = colIdx.getOrDefault("CLOSINGPRICE", -1);
-				int lastToPrevPriceIdx = colIdx.getOrDefault("LASTTOPREVPRICE", -1);
-				int timeIdx = colIdx.getOrDefault("UPDATETIME", -1);
-				int dateIdx = colIdx.getOrDefault("TRADEDATE", -1);
+						int secIdIdx = secIdx.getOrDefault("SECID", -1);
+						int prevPriceIdx = secIdx.getOrDefault("PREVPRICE", -1);
+						int tradeDateIdx = secIdx.getOrDefault("TRADEDATE", -1);
 
-				if (secIdIdx == -1) {
-					return false;
-				}
+						for (JsonElement rowElement : secData) {
+							JsonArray row = rowElement.getAsJsonArray();
+							String secId = getStringValue(row, secIdIdx);
 
-				for (JsonElement rowElement : dataArray) {
-					JsonArray row = rowElement.getAsJsonArray();
-					String secId = getStringValue(row, secIdIdx);
+							if (TARGET_TICKERS.contains(secId)) {
+								String prevPrice = getStringValue(row, prevPriceIdx);
+								String tradeDate = getStringValue(row, tradeDateIdx);
 
-					if (TARGET_TICKERS.contains(secId)) {
-						Quotes quotes = new Quotes();
-						quotes.name = secId;
-
-						// 1. Read date with fallback to time if date is not available.
-						String timeStr = getStringValue(row, timeIdx);
-						String dateStr = getStringValue(row, dateIdx);
-						quotes.date = filterCommas(filterSpaces(StringUtils.hasText(timeStr) ? timeStr : dateStr));
-
-						// 2. Read price with fallbacks: LAST -> CLOSINGPRICE -> LASTTOPREVPRICE.
-						Double lastVal = getDoubleValue(row, lastIdx);
-						Double closingVal = getDoubleValue(row, closingPriceIdx);
-						Double prevVal = getDoubleValue(row, lastToPrevPriceIdx);
-
-						double finalPrice = 0.0;
-						if (lastVal != null && lastVal > 0) {
-							finalPrice = lastVal;
-						} else if (closingVal != null && closingVal > 0) {
-							finalPrice = closingVal;
-						} else if (prevVal != null && prevVal > 0) {
-							finalPrice = prevVal;
+								if (StringUtils.hasText(prevPrice)) {
+									prevPrices.put(secId, prevPrice);
+								}
+								if (StringUtils.hasText(tradeDate)) {
+									secDates.put(secId, tradeDate);
+								}
+							}
 						}
+					}
+				}
 
-						quotes.sell = (finalPrice > 0) ? String.valueOf(finalPrice) : "0.00";
+				if (marketData != null) {
+					JsonArray mdCols = marketData.getAsJsonArray("columns");
+					JsonArray mdData = marketData.getAsJsonArray("data");
 
-						// 3. Read difference (CHANGE).
-						Double changeVal = getDoubleValue(row, changeIdx);
-						if (changeVal != null) {
-							quotes.diff = filterCommas(filterSpaces(String.valueOf(changeVal)));
-						} else {
-							quotes.diff = "0.00";
+					if (mdCols != null && mdData != null) {
+						Map<String, Integer> mdIdx = getColumnIndexes(mdCols);
+
+						int secIdIdx = mdIdx.getOrDefault("SECID", -1);
+						int lastIdx = mdIdx.getOrDefault("LAST", -1);
+						int changeIdx = mdIdx.getOrDefault("CHANGE", -1);
+						int closingPriceIdx = mdIdx.getOrDefault("CLOSINGPRICE", -1);
+						int lastToPrevPriceIdx = mdIdx.getOrDefault("LASTTOPREVPRICE", -1);
+						int dateIdx = mdIdx.getOrDefault("TRADEDATE", -1);
+						int sysTimeIdx = mdIdx.getOrDefault("SYSTIME", -1);
+
+						for (JsonElement rowElement : mdData) {
+							JsonArray row = rowElement.getAsJsonArray();
+							String secId = getStringValue(row, secIdIdx);
+
+							if (TARGET_TICKERS.contains(secId)) {
+								Quotes quotes = new Quotes();
+								quotes.name = secId;
+
+								// 1. Parse date with fallback (TRADEDATE -> secDates -> SYSTIME without time).
+								String dateStr = getStringValue(row, dateIdx);
+								if (!StringUtils.hasText(dateStr)) {
+									dateStr = secDates.getOrDefault(secId, "");
+								}
+								if (!StringUtils.hasText(dateStr)) {
+									String sysTime = getStringValue(row, sysTimeIdx);
+									if (StringUtils.hasText(sysTime) && sysTime.contains(" ")) {
+										dateStr = sysTime.split(" ")[0];
+									}
+								}
+								quotes.date = filterCommas(filterSpaces(dateStr));
+
+								// 2. Parse price with fallback (LAST -> CLOSINGPRICE -> LASTTOPREVPRICE -> PREVPRICE from securities).
+								Double lastVal = getDoubleValue(row, lastIdx);
+								Double closingVal = getDoubleValue(row, closingPriceIdx);
+								Double prevVal = getDoubleValue(row, lastToPrevPriceIdx);
+
+								double finalPrice = 0.0;
+								if (lastVal != null && lastVal > 0) {
+									finalPrice = lastVal;
+								} else if (closingVal != null && closingVal > 0) {
+									finalPrice = closingVal;
+								} else if (prevVal != null && prevVal > 0) {
+									finalPrice = prevVal;
+								} else if (prevPrices.containsKey(secId)) {
+									try {
+										finalPrice = Double.parseDouble(prevPrices.get(secId));
+									} catch (NumberFormatException ignored) {}
+								}
+
+								quotes.sell = (finalPrice > 0) ? String.valueOf(finalPrice) : "0.00";
+
+								// 3. Parse difference (CHANGE).
+								Double changeVal = getDoubleValue(row, changeIdx);
+								if (changeVal != null) {
+									quotes.diff = filterCommas(filterSpaces(String.valueOf(changeVal)));
+								} else {
+									quotes.diff = "0.00";
+								}
+
+								valuesMap.put(secId, quotes);
+							}
 						}
-
-						valuesMap.put(secId, quotes);
 					}
 				}
 				return !valuesMap.isEmpty();

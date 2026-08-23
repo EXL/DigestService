@@ -153,8 +153,14 @@ public class RateTgMarkdownGenerator {
 				report += String.format(
 					"%s %s%s\n",
 					locale.i18n("exchange.bitpay.usd.btc"),
-					filterBitcoin(bitcoinEntity.getUsd()),
+					filterValueAux(bitcoinEntity.getUsd(), 7),
 					filterDifferenceBitcoin(bitcoinEntity.getPrevUsd(), bitcoinEntity.getUsd())
+				);
+				report += String.format(
+					"%s %s%s\n",
+					locale.i18n("exchange.bitpay.rub.btc"),
+					filterValueAux(bitcoinEntity.getRub(), 7),
+					filterDifferenceBitcoin(bitcoinEntity.getPrevRub(), bitcoinEntity.getRub())
 				);
 			}
 			report += "```";

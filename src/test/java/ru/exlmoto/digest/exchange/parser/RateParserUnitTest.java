@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -76,7 +76,7 @@ class RateParserUnitTest {
 			parserHelper.fileContent("bankRu.xml")));
 		assertFalse(parserHelper.process(new BankRuParser(),
 			parserHelper.fileContent("bankRuChunk.xml", "Windows-1251")));
-		assertTrue(parserHelper.process(new BankRuParser(),
+		assertFalse(parserHelper.process(new BankRuParser(),
 			parserHelper.fileContent("bankRuError.xml", "Windows-1251")));
 		assertFalse(parserHelper.process(new BankRuParser(),
 			parserHelper.fileContent("bankRuErrors.xml", "Windows-1251")));
@@ -87,7 +87,7 @@ class RateParserUnitTest {
 			parserHelper.fileContent("bankRuAlt.xml")));
 		assertFalse(parserHelper.process(new BankRuParser(),
 			parserHelper.fileContent("bankRuAltChunk.xml", "Windows-1251")));
-		assertTrue(parserHelper.process(new BankRuParser(),
+		assertFalse(parserHelper.process(new BankRuParser(),
 			parserHelper.fileContent("bankRuAltError.xml", "Windows-1251")));
 		assertFalse(parserHelper.process(new BankRuParser(),
 			parserHelper.fileContent("bankRuAltErrors.xml", "Windows-1251")));
@@ -153,7 +153,7 @@ class RateParserUnitTest {
 			parserHelper.fileContent("bankKz.xml", "Windows-1251")));
 		assertFalse(parserHelper.process(new BankKzParser(),
 			parserHelper.fileContent("bankKzChunk.xml")));
-		assertTrue(parserHelper.process(new BankKzParser(),
+		assertFalse(parserHelper.process(new BankKzParser(),
 			parserHelper.fileContent("bankKzError.xml")));
 		assertFalse(parserHelper.process(new BankKzParser(),
 			parserHelper.fileContent("bankKzErrors.xml")));

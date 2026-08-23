@@ -129,7 +129,7 @@ class SiteHelperTest {
 		assertTrue(filterWithoutAt.contains("member-user"));
 		assertTrue(filterWithAt.contains("member-user"));
 
-		filterWithoutAt = helper.filterUsername("@yakimka", false);
+		filterWithoutAt = helper.filterUsername("@Finnetr", false);
 		assertTrue(filterWithoutAt.contains("member-moderator"));
 
 		filterWithoutAt = helper.filterUsername("@exlmoto", true);

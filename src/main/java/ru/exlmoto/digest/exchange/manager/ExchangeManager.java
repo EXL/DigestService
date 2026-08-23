@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliHelpixParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateMoexParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankRuParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankUaParser;
 import ru.exlmoto.digest.exchange.parser.impl.BankUaMirrorParser;
@@ -66,7 +67,9 @@ public class ExchangeManager {
 		commitBankKz(config.getBankKz());
 		commitMetalRu(config.getMetalRu(), config.getMetalRuMirror());
 		commitBitcoin(config.getBitcoin());
-		commitRbc(config.getRbc());
+		// Disable RBC.ru and use MOEX instead, because RBC.ru closed their public API.
+		// commitRbc(config.getRbc());
+		commitMoex(config.getMoex());
 		commitAliexpress();
 		log.info("=> End update exchanging rates.");
 	}
@@ -103,6 +106,10 @@ public class ExchangeManager {
 
 	public void commitRbc(String url) {
 		new RateRbcParser().commitRates(url, service, rest);
+	}
+
+	public void commitMoex(String url) {
+		new RateMoexParser().commitRates(url, service, rest);
 	}
 
 	public void commitAliexpress() {

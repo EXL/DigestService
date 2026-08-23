@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,6 +45,7 @@ import ru.exlmoto.digest.entity.BotSetupEntity;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.entity.ExchangeRateAliEntity;
 import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
+import ru.exlmoto.digest.entity.ExchangeRateMoexEntity;
 import ru.exlmoto.digest.entity.MemberEntity;
 import ru.exlmoto.digest.entity.FlatSetupEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
@@ -59,6 +60,7 @@ import ru.exlmoto.digest.repository.BotSetupRepository;
 import ru.exlmoto.digest.repository.ExchangeRateRepository;
 import ru.exlmoto.digest.repository.ExchangeRateAliRepository;
 import ru.exlmoto.digest.repository.ExchangeRateRbcRepository;
+import ru.exlmoto.digest.repository.ExchangeRateMoexRepository;
 import ru.exlmoto.digest.repository.MemberRepository;
 import ru.exlmoto.digest.repository.FlatSetupRepository;
 
@@ -81,6 +83,7 @@ public class DatabaseService {
 	private final ExchangeRateRepository exchangeRateRepository;
 	private final ExchangeRateAliRepository exchangeRateAliRepository;
 	private final ExchangeRateRbcRepository exchangeRateRbcRepository;
+	private final ExchangeRateMoexRepository exchangeRateMoexRepository;
 	private final MemberRepository memberRepository;
 	private final FlatSetupRepository flatSetupRepository;
 
@@ -96,6 +99,7 @@ public class DatabaseService {
 	                       ExchangeRateRepository exchangeRateRepository,
 	                       ExchangeRateAliRepository exchangeRateAliRepository,
 	                       ExchangeRateRbcRepository exchangeRateRbcRepository,
+	                       ExchangeRateMoexRepository exchangeRateMoexRepository,
 	                       MemberRepository memberRepository,
 	                       FlatSetupRepository flatSetupRepository) {
 		this.digestRepository = digestRepository;
@@ -110,6 +114,7 @@ public class DatabaseService {
 		this.exchangeRateRepository = exchangeRateRepository;
 		this.exchangeRateAliRepository = exchangeRateAliRepository;
 		this.exchangeRateRbcRepository = exchangeRateRbcRepository;
+		this.exchangeRateMoexRepository = exchangeRateMoexRepository;
 		this.memberRepository = memberRepository;
 		this.flatSetupRepository = flatSetupRepository;
 	}
@@ -437,6 +442,22 @@ public class DatabaseService {
 	}
 
 	/* End: ExchangeRateRbcEntity */
+
+	/* Start: ExchangeRateMoexEntity */
+
+	public Optional<ExchangeRateMoexEntity> getMoexQuotes(int position) {
+		return exchangeRateMoexRepository.getQuotes(position);
+	}
+
+	public void saveMoexExchange(ExchangeRateMoexEntity rate) {
+		if (rate != null) {
+			exchangeRateMoexRepository.save(rate);
+		} else {
+			log.error("Cannot save ExchangeRateMoexEntity, because rate is null.");
+		}
+	}
+
+	/* End: ExchangeRateMoexEntity */
 
 	/* Start: MemberEntity */
 

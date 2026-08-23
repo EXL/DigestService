@@ -58,7 +58,7 @@ For example, on Linux:
     ```shell script
     cd ~/Deploy/DigestService
     ./gradlew clean
-    DB_CONNECTION=jdbc:postgresql://localhost:5432/<database name> DB_USERNAME=<username> DB_PASSWORD=<password> HOST=//localhost:8080/ TG_TOKEN=<token> TG_CHAT=<chat id> PROTECT=false ./gradlew build
+    DB_CONNECTION=jdbc:postgresql://localhost:5432/digest_database DB_USERNAME=<username> DB_PASSWORD=<password> HOST=//localhost:8080/ TG_TOKEN=<token> TG_CHAT=<chat id> PROTECT=false ./gradlew build
     ```
 
 5. Run the Digest Service application (optional, database installation required):

@@ -29,14 +29,16 @@ import java.util.concurrent.ScheduledFuture;
 public class CaptchaData {
 	private final long userId;
 	private final String username;
+	private final int captchaMessageId;
 	private final int joinedMessageId;
 	private final String correctAnswer;
 	private final ScheduledFuture<?> timerHandle;
 
-	public CaptchaData(long userId, String username, int joinedMessageId, String correctAnswer,
+	public CaptchaData(long userId, String username, int captchaMessageId, int joinedMessageId, String correctAnswer,
 	                   ScheduledFuture<?> timerHandle) {
 		this.userId = userId;
 		this.username = username;
+		this.captchaMessageId = captchaMessageId;
 		this.joinedMessageId = joinedMessageId;
 		this.timerHandle = timerHandle;
 		this.correctAnswer = correctAnswer;
@@ -48,6 +50,10 @@ public class CaptchaData {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public int getCaptchaMessageId() {
+		return captchaMessageId;
 	}
 
 	public ScheduledFuture<?> getTimerHandle() {

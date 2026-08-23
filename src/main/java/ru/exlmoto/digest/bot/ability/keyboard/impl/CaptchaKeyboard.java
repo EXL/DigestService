@@ -203,6 +203,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 			captchaChecksMap.put(key, new CaptchaData(
 				userId,
 				botHelper.getValidUsername(message.from()),
+				Integer.parseInt(res.answer()),
 				joinedMessageId,
 				captcha.getCorrectAnswer(),
 				timerHandle
@@ -263,7 +264,9 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 					processWrongAnswer(chatId, data.getUserId(), messageId, joinMessageId);
 				}
 			}
-			cleanCaptchaChecksMap(keyCaptcha);
+			if (!adminApproval || keyButton.equals(correctAnswer)) {
+				cleanCaptchaChecksMap(keyCaptcha);
+			}
 		} else {
 			log.info(String.format("==> Wrong CAPTCHA User: '%s' with '%d' id, answer: '%s'.",
 				helper.getValidUsername(callback.from()), userId, keyButton));
@@ -274,9 +277,9 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 	}
 
 	private String findCaptchaKey(long chatId, int messageId) {
-		String messageIdSuffix = "|" + messageId;
 		Optional<String> key = captchaChecksMap.keySet().stream()
-			.filter(candidate -> candidate.startsWith(chatId + "|") && candidate.endsWith(messageIdSuffix))
+			.filter(candidate -> candidate.startsWith(chatId + "|") &&
+				captchaChecksMap.get(candidate).getCaptchaMessageId() == messageId)
 			.findFirst();
 		return key.orElse("");
 	}

@@ -89,7 +89,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObey() throws Exception {
-		helper.checkRedirect(mvc, "/obey", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -100,7 +100,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyDelete() throws Exception {
-		helper.checkRedirect(mvc, "/obey/delete/100", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/delete/100", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -114,7 +114,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyEdit() throws Exception {
-		helper.checkRedirect(mvc, "/obey/edit", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/edit", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -128,7 +128,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyShredder() throws Exception {
-		helper.checkRedirect(mvc, "/obey/shredder", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/shredder", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -139,7 +139,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyBirthday() throws Exception {
-		helper.checkRedirect(mvc, "/obey/birthday", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/birthday", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -150,7 +150,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyCallback() throws Exception {
-		helper.checkRedirect(mvc, "/obey/callback", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/callback", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -161,7 +161,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyUser() throws Exception {
-		helper.checkRedirect(mvc, "/obey/user", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/user", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -190,7 +190,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyUserAvatar() throws Exception {
-		helper.checkRedirect(mvc, "/obey/user/avatar", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/user/avatar", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -201,7 +201,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeySetup() throws Exception {
-		helper.checkRedirect(mvc, "/obey/setup", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/setup", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -221,7 +221,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeySubDigest() throws Exception {
-		helper.checkRedirect(mvc, "/obey/sub-digest", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/sub-digest", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -253,7 +253,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeySubMotofan() throws Exception {
-		helper.checkRedirect(mvc, "/obey/sub-motofan", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/sub-motofan", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -285,7 +285,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyMotofanUpdate() throws Exception {
-		helper.checkRedirect(mvc, "/obey/motofan/update", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/motofan/update", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -296,7 +296,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeySubGreeting() throws Exception {
-		helper.checkRedirect(mvc, "/obey/sub-greeting", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/sub-greeting", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -328,7 +328,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeySubCovid() throws Exception {
-		helper.checkRedirect(mvc, "/obey/sub-covid", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/sub-covid", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -360,7 +360,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyCovidSend() throws Exception {
-		helper.checkRedirect(mvc, "/obey/covid/send", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/covid/send", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -371,7 +371,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeySubCovidUa() throws Exception {
-		helper.checkRedirect(mvc, "/obey/sub-covid-ua", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/sub-covid-ua", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -403,7 +403,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeySubRate() throws Exception {
-		helper.checkRedirect(mvc, "/obey/sub-rate", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/sub-rate", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -435,7 +435,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyExchange() throws Exception {
-		helper.checkRedirect(mvc, "/obey/exchange", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/exchange", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -455,7 +455,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyExchangeUpdate() throws Exception {
-		helper.checkRedirect(mvc, "/obey/exchange/update", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/exchange/update", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -466,7 +466,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyExchangeSend() throws Exception {
-		helper.checkRedirect(mvc, "/obey/exchange/send", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/exchange/send", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -477,7 +477,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeySend() throws Exception {
-		helper.checkRedirect(mvc, "/obey/send", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/send", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -495,7 +495,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyMember() throws Exception {
-		helper.checkRedirect(mvc, "/obey/member", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/member", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -542,7 +542,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyFlat() throws Exception {
-		helper.checkRedirect(mvc, "/obey/flat", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/flat", "/**/ds-auth-login");
 	}
 
 	@Test
@@ -571,7 +571,7 @@ class ObeyControllerTest {
 
 	@Test
 	public void testObeyFlatSend() throws Exception {
-		helper.checkRedirect(mvc, "/obey/flat/send", "**/ds-auth-login");
+		helper.checkRedirect(mvc, "/obey/flat/send", "/**/ds-auth-login");
 		helper.checkAuthorizedWithCsrfRedirectWrongRole(mvc, "/obey/flat/send", "/**/obey");
 	}
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -97,6 +97,9 @@ class ChartServiceTest {
 		assertFalse(res.ok());
 		System.out.println(res.error());
 
+		// Disable it since now it's off-line.
+
+		/*
 		Chart chart = chartService.getChart("mmbv").answer();
 		assertNotNull(chart);
 		System.out.println(chart.getTitle());
@@ -105,5 +108,6 @@ class ChartServiceTest {
 		System.out.println(chart.getUrl());
 		System.out.println(chart.getPath());
 		System.out.println("=== END testGetChart() ===");
+		 */
 	}
 }

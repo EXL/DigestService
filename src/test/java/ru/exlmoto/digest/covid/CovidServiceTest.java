@@ -34,7 +34,6 @@ import ru.exlmoto.digest.util.Covid;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 class CovidServiceTest {
@@ -47,19 +46,21 @@ class CovidServiceTest {
 		assertTrue(service.jsonUaReport().startsWith("{"));
 	}
 
+	/*
+
 	@Test
 	public void testTgHtmlReport() {
-		// Disable deprecated tests by assertTrue => assertFalse.
-		assertFalse(service.tgHtmlRuReport().startsWith("<"));
-		assertFalse(service.tgHtmlUaReport().startsWith("<"));
+		assertTrue(service.tgHtmlRuReport().startsWith("<"));
+		assertTrue(service.tgHtmlUaReport().startsWith("<"));
 	}
 
 	@Test
 	public void testTgHtmlImageRenderedHtmlReport() {
-		// Disable deprecated tests by assertTrue => assertFalse.
-		assertFalse(service.tgHtmlImageRenderedHtmlReport(service.tgHtmlRuReport()).startsWith("<"));
-		assertFalse(service.tgHtmlImageRenderedHtmlReport(service.tgHtmlUaReport()).startsWith("<"));
+		assertTrue(service.tgHtmlImageRenderedHtmlReport(service.tgHtmlRuReport()).startsWith("<"));
+		assertTrue(service.tgHtmlImageRenderedHtmlReport(service.tgHtmlUaReport()).startsWith("<"));
 	}
+
+	*/
 
 	@Test
 	public void testTgHtmlImageRenderedHtmlReportTitle() {

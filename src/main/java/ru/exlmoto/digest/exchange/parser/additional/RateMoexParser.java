@@ -129,7 +129,7 @@ public class RateMoexParser extends GeneralParser {
 						int lastIdx = mdIdx.getOrDefault("LAST", -1);
 						int changeIdx = mdIdx.getOrDefault("CHANGE", -1);
 						int closingPriceIdx = mdIdx.getOrDefault("CLOSINGPRICE", -1);
-						int lastToPrevPriceIdx = mdIdx.getOrDefault("LASTTOPREVPRICE", -1);
+						int lastToPrevDiffIdx = mdIdx.getOrDefault("LASTTOPREVPRICEDIF", -1);
 						int dateIdx = mdIdx.getOrDefault("TRADEDATE", -1);
 						int sysTimeIdx = mdIdx.getOrDefault("SYSTIME", -1);
 
@@ -141,7 +141,7 @@ public class RateMoexParser extends GeneralParser {
 								Quotes quotes = new Quotes();
 								quotes.name = secId;
 
-								// 1. Parsing the date and converting it to the "DD.MM.YYYY" format.
+								// 1. Parsing trade date and formatting it to DD.MM.YYYY.
 								String dateStr = getStringValue(row, dateIdx);
 								if (!StringUtils.hasText(dateStr)) {
 									dateStr = secDates.getOrDefault(secId, "");
@@ -154,34 +154,36 @@ public class RateMoexParser extends GeneralParser {
 								}
 								quotes.date = formatDate(filterCommas(filterSpaces(dateStr)));
 
-								// 2. Parsing the price (LAST -> CLOSINGPRICE -> LASTTOPREVPRICE -> PREVPRICE).
+								// 2. Extracting price: LAST -> CLOSINGPRICE -> PREVPRICE.
 								Double lastVal = getDoubleValue(row, lastIdx);
 								Double closingVal = getDoubleValue(row, closingPriceIdx);
-								Double prevVal = getDoubleValue(row, lastToPrevPriceIdx);
+								Double prevPriceVal = prevPrices.get(secId);
 
 								double finalPrice = 0.0;
 								if (lastVal != null && lastVal > 0) {
 									finalPrice = lastVal;
 								} else if (closingVal != null && closingVal > 0) {
 									finalPrice = closingVal;
-								} else if (prevVal != null && prevVal > 0) {
-									finalPrice = prevVal;
-								} else if (prevPrices.containsKey(secId)) {
-									finalPrice = prevPrices.get(secId);
+								} else if (prevPriceVal != null && prevPriceVal > 0) {
+									finalPrice = prevPriceVal;
 								}
 
-								quotes.sell = (finalPrice > 0) ? String.valueOf(finalPrice) : "0.00";
+								quotes.sell = (finalPrice > 0) ? String.format(Locale.ROOT, "%.2f", finalPrice) : "0.00";
 
-								// 3. Parsing the difference (CHANGE).
+								// 3. Extracting or calculating price difference (CHANGE / LASTTOPREVPRICEDIF).
 								Double changeVal = getDoubleValue(row, changeIdx);
+								Double diffVal = getDoubleValue(row, lastToPrevDiffIdx);
+
+								Double finalDiff = null;
 								if (changeVal != null) {
-									quotes.diff = filterCommas(filterSpaces(String.valueOf(changeVal)));
-								} else if (finalPrice > 0 && prevPrices.containsKey(secId)) {
-									double diffVal = finalPrice - prevPrices.get(secId);
-									quotes.diff = String.format(Locale.ROOT, "%.2f", diffVal);
-								} else {
-									quotes.diff = "0.00";
+									finalDiff = changeVal;
+								} else if (diffVal != null) {
+									finalDiff = diffVal;
+								} else if (finalPrice > 0 && prevPriceVal != null && prevPriceVal > 0) {
+									finalDiff = finalPrice - prevPriceVal;
 								}
+
+								quotes.diff = (finalDiff != null) ? String.format(Locale.ROOT, "%.2f", finalDiff) : "0.00";
 
 								valuesMap.put(secId, quotes);
 							}

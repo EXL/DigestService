@@ -155,13 +155,13 @@ public class RateTgMarkdownGenerator {
 					"%s %s%s\n",
 					locale.i18n("exchange.bitpay.usd.btc"),
 					formatLongBitcoinValues(bitcoinEntity.getUsd()),
-					filterStringDifference(helper.getDifference(bitcoinEntity.getPrevUsd(), bitcoinEntity.getUsd(), "%.2f"), 11)
+					filterStringDifference(helper.getDifference(bitcoinEntity.getPrevUsd(), bitcoinEntity.getUsd(), "%.2f"), 9)
 				);
 				report += String.format(
 					"%s %s%s\n",
 					locale.i18n("exchange.bitpay.rub.btc"),
 					formatLongBitcoinValues(bitcoinEntity.getRub()),
-					filterStringDifference(helper.getDifference(bitcoinEntity.getPrevRub(), bitcoinEntity.getRub(), "%.2f"), 11)
+					filterStringDifference(helper.getDifference(bitcoinEntity.getPrevRub(), bitcoinEntity.getRub(), "%.2f"), 9)
 				);
 			}
 			report += "```";
@@ -173,7 +173,7 @@ public class RateTgMarkdownGenerator {
 		String report = "";
 		if (entity != null) {
 			report += label + " " + helper.addLeadingSigns(entity.getSale(), " ", 10) +
-				((diff) ? filterStringDifference(entity.getDifference(), 7) : ",  " + entity.getSale()) + "\n";
+				((diff) ? filterStringDifference(entity.getDifference(), 9) : ",  " + entity.getSale()) + "\n";
 		}
 		return report;
 	}

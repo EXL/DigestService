@@ -43,7 +43,8 @@ public class BotHelper {
 	}
 
 	public String getValidUsername(User user) {
-		return getValidUsernameAux(user.username(), user.lastName(), user.firstName());
+		String username = getValidUsernameAux(user.username(), user.lastName(), user.firstName());
+		return username != null ? username : "user-" + user.id();
 	}
 
 	public boolean isUserAdmin(String username) {
@@ -56,12 +57,21 @@ public class BotHelper {
 	}
 
 	private String getValidUsernameAux(String username, String lastName, String firstName) {
-		return (username != null) ? "@" + username : (lastName != null) ?
-			removeFirstCast(firstName) + " " + removeFirstCast(lastName) :
-			removeFirstCast(firstName);
+		if (username != null) {
+			return "@" + username;
+		}
+		String validFirstName = removeFirstCast(firstName);
+		String validLastName = removeFirstCast(lastName);
+		if (validFirstName != null && validLastName != null) {
+			return validFirstName + " " + validLastName;
+		}
+		return validFirstName != null ? validFirstName : validLastName;
 	}
 
 	private String removeFirstCast(String name) {
+		if (name == null) {
+			return null;
+		}
 		if (name.charAt(0) != '@') {
 			return name;
 		}

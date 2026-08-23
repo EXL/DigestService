@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2025 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,27 @@ package ru.exlmoto.digest.bot.task.data;
 import java.util.concurrent.ScheduledFuture;
 
 public class CaptchaData {
+	private final long userId;
+	private final String username;
 	private final int joinedMessageId;
 	private final String correctAnswer;
 	private final ScheduledFuture<?> timerHandle;
 
-	public CaptchaData(int joinedMessageId, String correctAnswer, ScheduledFuture<?> timerHandle) {
+	public CaptchaData(long userId, String username, int joinedMessageId, String correctAnswer,
+	                   ScheduledFuture<?> timerHandle) {
+		this.userId = userId;
+		this.username = username;
 		this.joinedMessageId = joinedMessageId;
 		this.timerHandle = timerHandle;
 		this.correctAnswer = correctAnswer;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public String getUsername() {
+		return username;
 	}
 
 	public ScheduledFuture<?> getTimerHandle() {

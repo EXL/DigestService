@@ -53,8 +53,10 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import jakarta.annotation.PostConstruct;
 
 import java.time.Instant;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -69,10 +71,13 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 	private final ResourceHelper resource;
 	private final ThreadPoolTaskScheduler scheduler;
 
-	private final Map<String, CaptchaData> captchaChecksMap = new HashMap<>();
+	private final Map<String, CaptchaData> captchaChecksMap = new ConcurrentHashMap<>();
 
 	@Value("${bot.captcha-contact}")
 	private String captchaContact;
+
+	@Value("${bot.admins}")
+	private String[] botAdmins;
 
 	private final int CAPTCHA_ELEMENTS = 8;
 
@@ -171,8 +176,7 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		int joinedMessageId = message.messageId();
 		int delay = config.getCaptchaDelay();
 
-		//CaptchaItem captcha = CAPTCHAS[ThreadLocalRandom.current().nextInt(0, CAPTCHA_ELEMENTS)];
-		CaptchaItem captcha = CAPTCHAS[7];
+		CaptchaItem captcha = CAPTCHAS[ThreadLocalRandom.current().nextInt(0, CAPTCHA_ELEMENTS)];
 
 		// 1. Restrict user rights.
 		log.info(String.format("==> Restrict user with id '%d' in the '%d' chat.", userId, chatId));
@@ -200,7 +204,13 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 					Instant.now().plusSeconds(delay));
 
 			// 4. Put data and timer handle to a HashMap.
-			captchaChecksMap.put(key, new CaptchaData(joinedMessageId, captcha.getCorrectAnswer(), timerHandle));
+			captchaChecksMap.put(key, new CaptchaData(
+				userId,
+				botHelper.getValidUsername(message.from()),
+				joinedMessageId,
+				captcha.getCorrectAnswer(),
+				timerHandle
+			));
 		}
 	}
 
@@ -220,12 +230,19 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		long userId = callback.from().id();
 		int messageId = message.messageId();
 		String keyButton = Keyboard.chopKeyboardNameLeft(callback.data());
-		String keyCaptcha = generateKey(chatId, userId, String.valueOf(messageId));
+		String callbackKey = generateKey(chatId, userId, String.valueOf(messageId));
+		String keyCaptcha = callbackKey;
+		CaptchaData data = captchaChecksMap.get(keyCaptcha);
+		if (data == null) {
+			keyCaptcha = findCaptchaKey(chatId, messageId);
+			data = captchaChecksMap.get(keyCaptcha);
+		}
+		boolean adminApproval = data != null && !callbackKey.equals(keyCaptcha) &&
+			Arrays.asList(botAdmins).contains(helper.getValidUsername(callback.from()));
 
 		log.debug(String.format("captchaChecksMap size: '%d'.", captchaChecksMap.size()));
 
-		if (captchaChecksMap.containsKey(keyCaptcha)) {
-			CaptchaData data = captchaChecksMap.get(keyCaptcha);
+		if (data != null && (userId == data.getUserId() || adminApproval)) {
 			data.getTimerHandle().cancel(true);
 
 			int joinMessageId = data.getJoinedMessageId();
@@ -235,10 +252,10 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 					helper.getValidUsername(callback.from()), keyButton));
 				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.solved"));
 
-				processCorrectAnswer(chatId, userId, messageId);
+				processCorrectAnswer(chatId, data.getUserId(), messageId);
 
 				sender.replySimple(chatId, joinMessageId,
-					locale.i18nRU("bot.event.user.new", helper.getValidUsername(callback.from())));
+					locale.i18nRU("bot.event.user.new", data.getUsername()));
 			} else {
 				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.failed"));
 				log.info(String.format("==> Fail CAPTCHA User: '%s', answer: '%s'.",
@@ -254,6 +271,14 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 		}
 
 		log.debug(String.format("captchaChecksMap size: '%d'.", captchaChecksMap.size()));
+	}
+
+	private String findCaptchaKey(long chatId, int messageId) {
+		String messageIdSuffix = "|" + messageId;
+		Optional<String> key = captchaChecksMap.keySet().stream()
+			.filter(candidate -> candidate.startsWith(chatId + "|") && candidate.endsWith(messageIdSuffix))
+			.findFirst();
+		return key.orElse("");
 	}
 
 	private void processCorrectAnswer(long chatId, long userId, int messageId) {

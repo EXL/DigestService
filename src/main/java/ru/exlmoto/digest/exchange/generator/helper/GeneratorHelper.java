@@ -36,6 +36,10 @@ public class GeneratorHelper {
 	private final Logger log = LoggerFactory.getLogger(GeneratorHelper.class);
 
 	public String getDifference(BigDecimal prev, BigDecimal current) {
+		return getDifference(prev, current, "%.4f");
+	}
+
+	public String getDifference(BigDecimal prev, BigDecimal current, String format) {
 		if (prev == null || current == null) {
 			return null;
 		}
@@ -45,7 +49,7 @@ public class GeneratorHelper {
 		if (prev.compareTo(current) == 0) {
 			return null;
 		}
-		BigDecimal difference = new BigDecimal(String.format("%.4f", current.subtract(prev)));
+		BigDecimal difference = new BigDecimal(String.format(format, current.subtract(prev)));
 		if (difference.signum() == 0) {
 			return null;
 		}

@@ -39,6 +39,7 @@ import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 @Component
 public class RateTgMarkdownGenerator {
@@ -153,14 +154,14 @@ public class RateTgMarkdownGenerator {
 				report += String.format(
 					"%s %s%s\n",
 					locale.i18n("exchange.bitpay.usd.btc"),
-					filterValueAux(bitcoinEntity.getUsd(), 7),
-					filterDifferenceBitcoin(bitcoinEntity.getPrevUsd(), bitcoinEntity.getUsd())
+					formatLongBitcoinValues(bitcoinEntity.getUsd()),
+					filterStringDifference(helper.getDifference(bitcoinEntity.getPrevUsd(), bitcoinEntity.getUsd(), "%.2f"), 11)
 				);
 				report += String.format(
 					"%s %s%s\n",
 					locale.i18n("exchange.bitpay.rub.btc"),
-					filterValueAux(bitcoinEntity.getRub(), 7),
-					filterDifferenceBitcoin(bitcoinEntity.getPrevRub(), bitcoinEntity.getRub())
+					formatLongBitcoinValues(bitcoinEntity.getRub()),
+					filterStringDifference(helper.getDifference(bitcoinEntity.getPrevRub(), bitcoinEntity.getRub(), "%.2f"), 11)
 				);
 			}
 			report += "```";
@@ -171,10 +172,14 @@ public class RateTgMarkdownGenerator {
 	private String bankRuMoexReportAux(ExchangeRateMoexEntity entity, String label, boolean diff) {
 		String report = "";
 		if (entity != null) {
-			report += label + " " + helper.addLeadingSigns(entity.getSale(), " ", 8) +
+			report += label + " " + helper.addLeadingSigns(entity.getSale(), " ", 10) +
 				((diff) ? filterStringDifference(entity.getDifference(), 7) : ",  " + entity.getSale()) + "\n";
 		}
 		return report;
+	}
+
+	private String formatLongBitcoinValues(BigDecimal value) {
+		return String.format(Locale.ROOT, "%10.2f", value);
 	}
 
 	private String bankRuAliReport() {

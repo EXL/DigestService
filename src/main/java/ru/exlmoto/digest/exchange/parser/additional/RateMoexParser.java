@@ -44,6 +44,7 @@ import ru.exlmoto.digest.util.rest.RestHelper;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class RateMoexParser extends GeneralParser {
@@ -84,7 +85,7 @@ public class RateMoexParser extends GeneralParser {
 					return false;
 				}
 
-				Map<String, String> prevPrices = new HashMap<>();
+				Map<String, Double> prevPrices = new HashMap<>();
 				Map<String, String> secDates = new HashMap<>();
 
 				if (securities != null) {
@@ -103,10 +104,10 @@ public class RateMoexParser extends GeneralParser {
 							String secId = getStringValue(row, secIdIdx);
 
 							if (TARGET_TICKERS.contains(secId)) {
-								String prevPrice = getStringValue(row, prevPriceIdx);
+								Double prevPrice = getDoubleValue(row, prevPriceIdx);
 								String tradeDate = getStringValue(row, tradeDateIdx);
 
-								if (StringUtils.hasText(prevPrice)) {
+								if (prevPrice != null && prevPrice > 0) {
 									prevPrices.put(secId, prevPrice);
 								}
 								if (StringUtils.hasText(tradeDate)) {
@@ -140,7 +141,7 @@ public class RateMoexParser extends GeneralParser {
 								Quotes quotes = new Quotes();
 								quotes.name = secId;
 
-								// 1. Parse date with fallback (TRADEDATE -> secDates -> SYSTIME without time).
+								// 1. Parsing the date and converting it to the "DD.MM.YYYY" format.
 								String dateStr = getStringValue(row, dateIdx);
 								if (!StringUtils.hasText(dateStr)) {
 									dateStr = secDates.getOrDefault(secId, "");
@@ -151,9 +152,9 @@ public class RateMoexParser extends GeneralParser {
 										dateStr = sysTime.split(" ")[0];
 									}
 								}
-								quotes.date = filterCommas(filterSpaces(dateStr));
+								quotes.date = formatDate(filterCommas(filterSpaces(dateStr)));
 
-								// 2. Parse price with fallback (LAST -> CLOSINGPRICE -> LASTTOPREVPRICE -> PREVPRICE from securities).
+								// 2. Parsing the price (LAST -> CLOSINGPRICE -> LASTTOPREVPRICE -> PREVPRICE).
 								Double lastVal = getDoubleValue(row, lastIdx);
 								Double closingVal = getDoubleValue(row, closingPriceIdx);
 								Double prevVal = getDoubleValue(row, lastToPrevPriceIdx);
@@ -166,17 +167,18 @@ public class RateMoexParser extends GeneralParser {
 								} else if (prevVal != null && prevVal > 0) {
 									finalPrice = prevVal;
 								} else if (prevPrices.containsKey(secId)) {
-									try {
-										finalPrice = Double.parseDouble(prevPrices.get(secId));
-									} catch (NumberFormatException ignored) {}
+									finalPrice = prevPrices.get(secId);
 								}
 
 								quotes.sell = (finalPrice > 0) ? String.valueOf(finalPrice) : "0.00";
 
-								// 3. Parse difference (CHANGE).
+								// 3. Parsing the difference (CHANGE).
 								Double changeVal = getDoubleValue(row, changeIdx);
 								if (changeVal != null) {
 									quotes.diff = filterCommas(filterSpaces(String.valueOf(changeVal)));
+								} else if (finalPrice > 0 && prevPrices.containsKey(secId)) {
+									double diffVal = finalPrice - prevPrices.get(secId);
+									quotes.diff = String.format(Locale.ROOT, "%.2f", diffVal);
 								} else {
 									quotes.diff = "0.00";
 								}
@@ -192,6 +194,17 @@ public class RateMoexParser extends GeneralParser {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	protected String formatDate(String dateStr) {
+		if (StringUtils.hasText(dateStr) && dateStr.contains("-")) {
+			String[] parts = dateStr.split("-");
+			if (parts.length == 3 && parts[0].length() == 4) {
+				return parts[2] + "." + parts[1] + "." + parts[0];
+			}
+		}
+		return dateStr;
 	}
 
 	private String getStringValue(JsonArray row, int index) {

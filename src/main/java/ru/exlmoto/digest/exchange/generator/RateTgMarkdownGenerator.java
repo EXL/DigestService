@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
+import ru.exlmoto.digest.entity.ExchangeRateMoexEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.service.DatabaseService;
@@ -91,12 +92,16 @@ public class RateTgMarkdownGenerator {
 			filterDifference(bankRuEntity.getPrevKzt(), kzt));
 		report += "```" + "\n";
 
-		report += bankRuRbcReport() + "\n";
+		// Disable RBC.ru and use MOEX instead, because RBC.ru closed their public API.
+//		report += bankRuRbcReport() + "\n";
+		report += bankRuMoexReport() + "\n";
+
 		report += bankRuAliReport() + "\n";
 
 		return report;
 	}
 
+	@SuppressWarnings("unused")
 	private String bankRuRbcReport() {
 		String report = "";
 		ExchangeRateRbcEntity usdExchEntity = service.getRbcQuotes(ExchangeRateRbcEntity.RBC_ROW_USD_EXCH).orElse(null);
@@ -125,6 +130,32 @@ public class RateTgMarkdownGenerator {
 		if (entity != null) {
 			report += label + " " + helper.addLeadingSigns(entity.getSale(), " ", 8) +
 				((diff) ? filterStringDifference(entity.getDifference(), 7) : ",  " + entity.getPurchase()) + "\n";
+		}
+		return report;
+	}
+
+	private String bankRuMoexReport() {
+		String report = "";
+		ExchangeRateMoexEntity usdExchEntity = service.getMoexQuotes(ExchangeRateMoexEntity.MOEX_ROW_USD_EXCH).orElse(null);
+		if (usdExchEntity != null) {
+			report += String.format(locale.i18n("exchange.moex.header"), usdExchEntity.getDate()) + "\n";
+			report += "```\n";
+			report += bankRuMoexReportAux(service.getMoexQuotes(ExchangeRateMoexEntity.MOEX_ROW_USD_EXCH).orElse(null),
+				locale.i18n("exchange.moex.usd.exch"), true);
+			report += bankRuMoexReportAux(service.getMoexQuotes(ExchangeRateMoexEntity.MOEX_ROW_EUR_EXCH).orElse(null),
+				locale.i18n("exchange.moex.eur.exch"), true);
+			report += bankRuMoexReportAux(service.getMoexQuotes(ExchangeRateMoexEntity.MOEX_ROW_EUR_USD).orElse(null),
+				locale.i18n("exchange.moex.usd.eur"), true);
+			report += "```";
+		}
+		return report;
+	}
+
+	private String bankRuMoexReportAux(ExchangeRateMoexEntity entity, String label, boolean diff) {
+		String report = "";
+		if (entity != null) {
+			report += label + " " + helper.addLeadingSigns(entity.getSale(), " ", 8) +
+				((diff) ? filterStringDifference(entity.getDifference(), 7) : ",  " + entity.getSale()) + "\n";
 		}
 		return report;
 	}

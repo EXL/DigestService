@@ -253,11 +253,15 @@ public class CaptchaKeyboard extends KeyboardSimpleAbility {
 				sender.replySimple(chatId, joinMessageId,
 					locale.i18nRU("bot.event.user.new", data.getUsername()));
 			} else {
-				sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.failed"));
 				log.info(String.format("==> Fail CAPTCHA User: '%s', answer: '%s'.",
 					helper.getValidUsername(callback.from()), keyButton));
 
-				processWrongAnswer(chatId, userId, messageId, joinMessageId);
+				if (adminApproval) {
+					sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.wrong"));
+				} else {
+					sender.sendCallbackQueryAnswer(callback.id(), locale.i18n("bot.inline.captcha.failed"));
+					processWrongAnswer(chatId, data.getUserId(), messageId, joinMessageId);
+				}
 			}
 			cleanCaptchaChecksMap(keyCaptcha);
 		} else {

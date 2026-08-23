@@ -64,7 +64,10 @@ public abstract class MetalParser extends RateParser {
 
 	@Override
 	protected boolean checkParsedValues() {
-		return gold != null || silver != null || platinum != null || palladium != null;
+		return gold != null && gold.compareTo(BigDecimal.ZERO) != 0
+			|| silver != null && silver.compareTo(BigDecimal.ZERO) != 0
+			|| platinum != null && platinum.compareTo(BigDecimal.ZERO) != 0
+			|| palladium != null && palladium.compareTo(BigDecimal.ZERO) != 0;
 	}
 
 	@Override

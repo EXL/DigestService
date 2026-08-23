@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2022 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -105,6 +105,17 @@ public class GeneratorHelper {
 		try {
 			Double.parseDouble(number);
 			return true;
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
+	}
+
+	public boolean isZero(String value) {
+		if (value == null || value.trim().isEmpty()) {
+			return false;
+		}
+		try {
+			return new BigDecimal(value.trim()).signum() == 0;
 		} catch (NumberFormatException nfe) {
 			return false;
 		}

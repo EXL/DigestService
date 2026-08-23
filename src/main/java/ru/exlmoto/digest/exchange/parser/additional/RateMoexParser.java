@@ -86,6 +86,7 @@ public class RateMoexParser extends GeneralParser {
 				}
 
 				Map<String, Double> prevPrices = new HashMap<>();
+				Map<String, Double> prevWapPrices = new HashMap<>();
 				Map<String, String> secDates = new HashMap<>();
 
 				if (securities != null) {
@@ -97,6 +98,7 @@ public class RateMoexParser extends GeneralParser {
 
 						int secIdIdx = secIdx.getOrDefault("SECID", -1);
 						int prevPriceIdx = secIdx.getOrDefault("PREVPRICE", -1);
+						int prevWapIdx = secIdx.getOrDefault("PREVWAP", -1);
 						int tradeDateIdx = secIdx.getOrDefault("TRADEDATE", -1);
 
 						for (JsonElement rowElement : secData) {
@@ -105,10 +107,14 @@ public class RateMoexParser extends GeneralParser {
 
 							if (TARGET_TICKERS.contains(secId)) {
 								Double prevPrice = getDoubleValue(row, prevPriceIdx);
+								Double prevWap = getDoubleValue(row, prevWapIdx);
 								String tradeDate = getStringValue(row, tradeDateIdx);
 
 								if (prevPrice != null && prevPrice > 0) {
 									prevPrices.put(secId, prevPrice);
+								}
+								if (prevWap != null && prevWap > 0) {
+									prevWapPrices.put(secId, prevWap);
 								}
 								if (StringUtils.hasText(tradeDate)) {
 									secDates.put(secId, tradeDate);
@@ -128,6 +134,7 @@ public class RateMoexParser extends GeneralParser {
 						int secIdIdx = mdIdx.getOrDefault("SECID", -1);
 						int lastIdx = mdIdx.getOrDefault("LAST", -1);
 						int changeIdx = mdIdx.getOrDefault("CHANGE", -1);
+						int openIdx = mdIdx.getOrDefault("OPEN", -1);
 						int closingPriceIdx = mdIdx.getOrDefault("CLOSINGPRICE", -1);
 						int lastToPrevDiffIdx = mdIdx.getOrDefault("LASTTOPREVPRICEDIF", -1);
 						int dateIdx = mdIdx.getOrDefault("TRADEDATE", -1);
@@ -157,6 +164,7 @@ public class RateMoexParser extends GeneralParser {
 								// 2. Extracting price: LAST -> CLOSINGPRICE -> PREVPRICE.
 								Double lastVal = getDoubleValue(row, lastIdx);
 								Double closingVal = getDoubleValue(row, closingPriceIdx);
+								Double openVal = getDoubleValue(row, openIdx);
 								Double prevPriceVal = prevPrices.get(secId);
 
 								double finalPrice = 0.0;
@@ -168,19 +176,29 @@ public class RateMoexParser extends GeneralParser {
 									finalPrice = prevPriceVal;
 								}
 
-								quotes.sell = (finalPrice > 0) ? String.format(Locale.ROOT, "%.2f", finalPrice) : "0.00";
+								// Keep 5 precision places for EUR/USD pair, 2 for others.
+								boolean isEurUsd = ExchangeMoexKey.EUR_USD_ID.equals(secId);
+								String priceFormat = isEurUsd ? "%.5f" : "%.2f";
+								quotes.sell = (finalPrice > 0) ? String.format(Locale.ROOT, priceFormat, finalPrice) : "0.00";
 
-								// 3. Extracting or calculating price difference (CHANGE / LASTTOPREVPRICEDIF).
+								// 3. Extracting or calculating price difference.
 								Double changeVal = getDoubleValue(row, changeIdx);
 								Double diffVal = getDoubleValue(row, lastToPrevDiffIdx);
 
 								Double finalDiff = null;
-								if (changeVal != null) {
+								if (changeVal != null && changeVal != 0.0) {
 									finalDiff = changeVal;
-								} else if (diffVal != null) {
+								} else if (diffVal != null && diffVal != 0.0) {
 									finalDiff = diffVal;
-								} else if (finalPrice > 0 && prevPriceVal != null && prevPriceVal > 0) {
-									finalDiff = finalPrice - prevPriceVal;
+								} else if (finalPrice > 0) {
+									// Fallback 1: Calculate against OPEN price if available and different.
+									if (openVal != null && openVal > 0 && Double.compare(finalPrice, openVal) != 0) {
+										finalDiff = finalPrice - openVal;
+									}
+									// Fallback 2: Calculate against PREVWAP (previous weighted average price).
+									else if (prevWapPrices.containsKey(secId) && Double.compare(finalPrice, prevWapPrices.get(secId)) != 0) {
+										finalDiff = finalPrice - prevWapPrices.get(secId);
+									}
 								}
 
 								quotes.diff = (finalDiff != null) ? String.format(Locale.ROOT, "%.2f", finalDiff) : "0.00";

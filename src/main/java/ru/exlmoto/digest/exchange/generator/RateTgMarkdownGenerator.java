@@ -136,7 +136,10 @@ public class RateTgMarkdownGenerator {
 
 	private String bankRuMoexReport() {
 		String report = "";
+
 		ExchangeRateMoexEntity usdExchEntity = service.getMoexQuotes(ExchangeRateMoexEntity.MOEX_ROW_USD_EXCH).orElse(null);
+		ExchangeRateEntity bitcoinEntity = service.getBitcoin().orElse(null);
+
 		if (usdExchEntity != null) {
 			report += String.format(locale.i18n("exchange.moex.header"), usdExchEntity.getDate()) + "\n";
 			report += "```\n";
@@ -146,6 +149,14 @@ public class RateTgMarkdownGenerator {
 				locale.i18n("exchange.moex.eur.exch"), true);
 			report += bankRuMoexReportAux(service.getMoexQuotes(ExchangeRateMoexEntity.MOEX_ROW_EUR_USD).orElse(null),
 				locale.i18n("exchange.moex.usd.eur"), true);
+			if (bitcoinEntity != null) {
+				report += String.format(
+					"%s %s%s\n",
+					locale.i18n("exchange.bitpay.usd.btc"),
+					filterBitcoin(bitcoinEntity.getUsd()),
+					filterDifferenceBitcoin(bitcoinEntity.getPrevUsd(), bitcoinEntity.getUsd())
+				);
+			}
 			report += "```";
 		}
 		return report;

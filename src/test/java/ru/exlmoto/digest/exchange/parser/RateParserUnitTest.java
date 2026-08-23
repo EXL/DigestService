@@ -37,6 +37,7 @@ import ru.exlmoto.digest.exchange.parser.impl.BitcoinParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliHelpixParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateMoexParser;
 import ru.exlmoto.digest.util.file.ResourceHelper;
 
 import java.math.BigDecimal;
@@ -227,6 +228,14 @@ class RateParserUnitTest {
 		assertFalse(parserHelper.process(new RateRbcParser(), parserHelper.fileContent("currencyRbcError.json")));
 
 		generalTests(new RateRbcParser());
+	}
+
+	@Test
+	public void testMoexParser() {
+		assertTrue(parserHelper.process(new RateMoexParser(), parserHelper.fileContent("currencyMoex.json")));
+		assertFalse(parserHelper.process(new RateMoexParser(), parserHelper.fileContent("currencyMoexError.json")));
+
+		generalTests(new RateMoexParser());
 	}
 
 	@Test

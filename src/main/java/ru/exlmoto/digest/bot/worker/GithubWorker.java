@@ -70,7 +70,7 @@ public class GithubWorker {
 					sendNewGithubCommits(githubCommits, subscribers);
 				}
 			} else {
-				log.info("=> GitHub subscriber list is empty, GitHub commits crawler service disabled.");
+				log.info("=> GitHub subscriber list is empty, GitHub commits crawler disabled.");
 			}
 		} catch (DataAccessException dae) {
 			log.error("Cannot get GitHub subscribe object from database.", dae);

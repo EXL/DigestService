@@ -45,6 +45,7 @@ import ru.exlmoto.digest.bot.worker.AvatarWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
 import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.MotofanWorker;
+import ru.exlmoto.digest.bot.worker.GithubWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.bot.worker.FlatWorker;
 import ru.exlmoto.digest.bot.worker.RateWorker;
@@ -52,6 +53,7 @@ import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
+import ru.exlmoto.digest.entity.BotSubGithubEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.entity.BotSubRateEntity;
@@ -96,6 +98,7 @@ public class ObeyController {
 	private final DigestWorker digestWorker;
 	private final AvatarWorker avatarWorker;
 	private final MotofanWorker motofanWorker;
+	private final GithubWorker githubWorker;
 	private final CallbackQueriesWorker callbackQueriesWorker;
 	private final CovidWorker covidWorker;
 	private final FlatWorker flatWorker;
@@ -121,6 +124,7 @@ public class ObeyController {
 	                      DigestWorker digestWorker,
 	                      AvatarWorker avatarWorker,
 	                      MotofanWorker motofanWorker,
+	                      GithubWorker githubWorker,
 	                      CallbackQueriesWorker callbackQueriesWorker,
 	                      CovidWorker covidWorker,
 	                      FlatWorker flatWorker,
@@ -133,6 +137,7 @@ public class ObeyController {
 		this.digestWorker = digestWorker;
 		this.avatarWorker = avatarWorker;
 		this.motofanWorker = motofanWorker;
+		this.githubWorker = githubWorker;
 		this.callbackQueriesWorker = callbackQueriesWorker;
 		this.covidWorker = covidWorker;
 		this.flatWorker = flatWorker;
@@ -357,6 +362,41 @@ public class ObeyController {
 		motofanWorker.workOnMotofanPosts();
 
 		return "redirect:/obey/sub-motofan";
+	}
+
+	@RequestMapping(path = "/obey/sub-github")
+	public String obeySubGithub(SubscriberForm subscriberForm, Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+
+		subscriberForm.setShowName(true);
+
+		model.addAttribute("sub_github", "true");
+		model.addAttribute("chatList", fillSubGithubList());
+		model.addAttribute("subscriberForm", subscriberForm);
+
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/sub-github/edit")
+	public String obeySubGithubEdit(SubscriberForm subscriberForm) {
+		Optional.of(subscriberForm.getChatId()).ifPresent(chatId ->
+			service.saveGithubSub(new BotSubGithubEntity(chatId, subscriberForm.getChatName())));
+
+		return "redirect:/obey/sub-github";
+	}
+
+	@RequestMapping(path = "/obey/sub-github/delete/{id}")
+	public String obeySubGithubDelete(@PathVariable(name = "id") String id) {
+		Optional.of(helper.getLong(id)).ifPresent(sId -> service.deleteGithubSub(sId));
+
+		return "redirect:/obey/sub-github";
+	}
+
+	@RequestMapping(path = "/obey/github/update")
+	public String obeyGithubUpdate() {
+		githubWorker.workOnGithubCommits();
+
+		return "redirect:/obey/sub-github";
 	}
 
 	@RequestMapping(path = "/obey/sub-greeting")
@@ -769,6 +809,12 @@ public class ObeyController {
 	private List<Chat> fillSubMotofanList() {
 		List<Chat> chatList = new ArrayList<>();
 		service.getAllMotofanSubs().forEach(sub -> chatList.add(new Chat(sub.getSubscription(), sub.getName())));
+		return chatList;
+	}
+
+	private List<Chat> fillSubGithubList() {
+		List<Chat> chatList = new ArrayList<>();
+		service.getAllGithubSubs().forEach(sub -> chatList.add(new Chat(sub.getSubscription(), sub.getName())));
 		return chatList;
 	}
 

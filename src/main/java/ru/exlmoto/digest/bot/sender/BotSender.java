@@ -115,7 +115,16 @@ public class BotSender {
 	}
 
 	public void sendSimpleToChat(long chatId, String text, Long origChatId, Integer origReplyId) {
-		Answer<String> res = executeRequestLog(new SendMessage(chatId, shrinkText(text)));
+		sendSimpleToChat(chatId, null, text, origChatId, origReplyId);
+	}
+
+	public void sendSimpleToChat(long chatId, Integer messageThreadId, String text,
+	                             Long origChatId, Integer origReplyId) {
+		SendMessage sendMessage = new SendMessage(chatId, shrinkText(text));
+		if (messageThreadId != null) {
+			sendMessage.messageThreadId(messageThreadId);
+		}
+		Answer<String> res = executeRequestLog(sendMessage);
 		if (!res.ok() && origChatId != null && origReplyId != null) {
 			sendError(origChatId, origReplyId,
 				shrinkText(String.format(locale.i18n("bot.error.send.message"), text, chatId, res.error())));

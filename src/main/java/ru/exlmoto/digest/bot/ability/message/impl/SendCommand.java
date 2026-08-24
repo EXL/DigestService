@@ -80,12 +80,26 @@ public class SendCommand extends MessageAdminAbility {
 		}
 
 		long chatId = chatIdRes.answer();
+		Integer messageThreadId = null;
+		if (command == Command.send && commandWithArgs.length >= 4) {
+			Answer<Integer> threadIdRes = getMessageThreadId(commandWithArgs[2], locale);
+			if (threadIdRes.ok()) {
+				messageThreadId = threadIdRes.answer();
+			}
+		}
 		text = text.replaceFirst(commandWithArgs[0], "")
 			.replaceFirst(commandWithArgs[1], "").trim();
+		if (messageThreadId != null) {
+			text = text.replaceFirst(commandWithArgs[2], "").trim();
+		}
 
 		switch (command) {
 			case send: {
-				sender.sendSimpleToChat(chatId, text, origChatId, origMessageId);
+				if (messageThreadId != null) {
+					sender.sendSimpleToChat(chatId, messageThreadId, text, origChatId, origMessageId);
+				} else {
+					sender.sendSimpleToChat(chatId, text, origChatId, origMessageId);
+				}
 				break;
 			}
 			case sticker: {
@@ -140,6 +154,14 @@ public class SendCommand extends MessageAdminAbility {
 			return Ok(NumberUtils.parseNumber(chatId, Long.class));
 		} catch (NumberFormatException nfe) {
 			return Error(String.format(locale.i18n("bot.error.chatid"), chatId));
+		}
+	}
+
+	private Answer<Integer> getMessageThreadId(String threadId, LocaleHelper locale) {
+		try {
+			return Ok(NumberUtils.parseNumber(threadId, Integer.class));
+		} catch (NumberFormatException nfe) {
+			return Error(String.format(locale.i18n("bot.error.chatid"), threadId));
 		}
 	}
 }

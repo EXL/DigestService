@@ -575,7 +575,17 @@ public class ObeyController {
 	@PostMapping(path = "/obey/send/chat")
 	public String obeySendChat(SendForm send) {
 		if (send.checkSend()) {
-			sender.sendSimpleToChat(send.getSendChatId(), send.getSendChatArg());
+			if (send.getSendMessageThreadId() == null) {
+				sender.sendSimpleToChat(send.getSendChatId(), send.getSendChatArg());
+			} else {
+				sender.sendSimpleToChat(
+					send.getSendChatId(),
+					Math.toIntExact(send.getSendMessageThreadId()),
+					send.getSendChatArg(),
+					null,
+					null
+				);
+			}
 		}
 		if (send.checkSticker()) {
 			sender.sendStickerToChat(send.getStickerChatId(), send.getStickerChatArg());

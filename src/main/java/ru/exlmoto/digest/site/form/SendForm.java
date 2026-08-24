@@ -28,6 +28,7 @@ import org.springframework.util.StringUtils;
 
 public class SendForm {
 	private Long sendChatId;
+	private Long sendMessageThreadId;
 	private String sendChatArg;
 
 	private Long stickerChatId;
@@ -54,6 +55,14 @@ public class SendForm {
 
 	public void setSendChatId(Long sendChatId) {
 		this.sendChatId = sendChatId;
+	}
+
+	public Long getSendMessageThreadId() {
+		return sendMessageThreadId;
+	}
+
+	public void setSendMessageThreadId(Long sendMessageThreadId) {
+		this.sendMessageThreadId = sendMessageThreadId;
 	}
 
 	public String getSendChatArg() {

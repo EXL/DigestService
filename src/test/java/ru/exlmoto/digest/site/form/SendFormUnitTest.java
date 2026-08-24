@@ -27,6 +27,7 @@ package ru.exlmoto.digest.site.form;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SendFormUnitTest {
@@ -43,6 +44,8 @@ class SendFormUnitTest {
 		assertFalse(form.checkSend());
 		form.setSendChatArg("value");
 		assertTrue(form.checkSend());
+		form.setSendMessageThreadId(1100646L);
+		assertEquals(1100646L, form.getSendMessageThreadId());
 	}
 
 	@Test

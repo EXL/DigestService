@@ -66,6 +66,9 @@ public class GithubService {
 	@Value("${github.max-commits-history}")
 	private int maxCommitsHistory;
 
+	@Value("${github.max-commits-per-request:3}")
+	private int maxCommitsPerRequest;
+
 	private final List<String> targetReposList = new ArrayList<>();
 	private final Map<String, Set<String>> repoSeenCommits = new HashMap<>();
 
@@ -171,7 +174,7 @@ public class GithubService {
 			}
 
 			// Reverse so oldest new commit posts first.
-			Collections.reverse(newCommits);
+			// Collections.reverse(newCommits);
 
 			for (GithubCommit commit : newCommits) {
 				String sha = commit.sha();
@@ -201,7 +204,7 @@ public class GithubService {
 		List<GithubCommit> commits = restClient.get()
 				.uri(uriBuilder -> uriBuilder
 						.path("/repos/{owner}/{repository}/commits")
-						.queryParam("per_page", 10)
+						.queryParam("per_page", maxCommitsPerRequest)
 						.build(parts[0], parts[1]))
 				.retrieve()
 				.body(new ParameterizedTypeReference<>() {});

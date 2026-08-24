@@ -367,6 +367,12 @@ This section contains API links for obtaining exchange rates data.
 
 * *covid.text.to.image* - Use images instead of text for Telegram bot reports.
 
+### GitHub Options
+
+* *github.max-commits-history* - Set the maximum number of commit hashes remembered for each repository.
+
+* *github.max-commits-per-request* - Set the maximum number of latest commits requested for each repository.
+
 ### Cron Options
 
 This section contains cron time strings for various services and workers.

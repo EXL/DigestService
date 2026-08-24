@@ -53,7 +53,8 @@ public class CommitTgHtmlGenerator {
 
 	public String generateGithubCommitHtmlReport(String repoName, GithubCommit commit) {
 		try {
-			String shaShort = commit.sha().substring(0, 7);
+			String shaLong = commit.sha();
+			// String shaShort = commit.sha().substring(0, 7);
 			String commitUrl = commit.htmlUrl();
 			String commitDate = commit.commit().committer().date();
 			String repoUrl = "https://github.com/" + repoName;
@@ -70,17 +71,15 @@ public class CommitTgHtmlGenerator {
 
 			return String.format(
 				"<b>%s</b>\n\n" +
-				"%s <b>%s</b>\n" +
-				"%s %s\n" +
-				"%s <a href=\"%s\">%s</a>\n" +
+				"%s <b>%s</b> @ \n" +
+				"%s <a href=\"%s\">%s</a>\n\n" +
 				"<code>%s</code>\n\n" +
-				"<b><a href=\"%s\">%s</a></b>",
+				"%s <b><a href=\"%s\">%s</a></b>",
 				locale.i18n("github.new.commit"),
-				locale.i18n("github.author"), authorFormatted,
-				locale.i18n("github.date"), commitDate,
-				locale.i18n("github.hash"), commitUrl, shaShort,
+				locale.i18n("github.author"), authorFormatted, commitDate,
+				locale.i18n("github.hash"), commitUrl, shaLong,
 				commitMessage,
-				repoUrl, repoUrl
+				locale.i18n("github.link.icon"), repoUrl, repoUrl
 			);
 		} catch (Exception e) {
 			log.error(String.format("==> Cannot get repo/commit information for '%s'", repoName), e);

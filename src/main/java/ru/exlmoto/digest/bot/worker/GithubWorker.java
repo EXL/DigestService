@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -48,6 +49,9 @@ public class GithubWorker {
 	private final DatabaseService databaseService;
 	private final BotSender sender;
 	private final BotConfiguration config;
+
+	@Value("${github.message-thread-id:1100646}")
+	private int githubMessageThreadId;
 
 	public GithubWorker(GithubService githubService,
 	                     DatabaseService databaseService,
@@ -89,7 +93,11 @@ public class GithubWorker {
 			long chatId = subscriber.getSubscription();
 			log.info(String.format("=> Send GitHub Commit to chat '%d', commits: '%d', subscribers: '%d'.",
 				chatId, githubCommits.size(), subscribers.size()));
-			sender.sendHtml(chatId, post);
+			if (config.getMotofanChatId() != chatId) {
+				sender.sendHtml(chatId, post);
+			} else {
+				sender.sendHtml(chatId, githubMessageThreadId, post);
+			}
 			try {
 				Thread.sleep(config.getMessageDelay() * 1000L);
 			} catch (InterruptedException ie) {

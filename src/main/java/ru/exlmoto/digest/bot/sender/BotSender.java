@@ -102,6 +102,10 @@ public class BotSender {
 		sendMessage(chatId, null, text, HTML, null);
 	}
 
+	public void sendHtml(long chatId, int messageThreadId, String text) {
+		sendMessage(chatId, null, messageThreadId, text, HTML, null);
+	}
+
 	public void sendMarkdown(long chatId, String text, InlineKeyboardMarkup keyboard) {
 		sendMessage(chatId, null, text, Markdown, keyboard);
 	}
@@ -119,10 +123,18 @@ public class BotSender {
 	}
 
 	private void sendMessage(long chatId, Integer replyId, String text, ParseMode mode, InlineKeyboardMarkup keyboard) {
+		sendMessage(chatId, replyId, null, text, mode, keyboard);
+	}
+
+	private void sendMessage(long chatId, Integer replyId, Integer messageThreadId, String text,
+	                         ParseMode mode, InlineKeyboardMarkup keyboard) {
 		SendMessage sendMessage =
 			new SendMessage(chatId, shrinkText(text))
 				.linkPreviewOptions(new LinkPreviewOptions().isDisabled(downloadFile))
 				.disableNotification(config.isDisableNotifications());
+		if (messageThreadId != null) {
+			sendMessage.messageThreadId(messageThreadId);
+		}
 		if (mode != null) {
 			sendMessage.parseMode(mode);
 		}

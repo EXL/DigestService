@@ -174,7 +174,7 @@ public class GithubService {
 			}
 
 			// Reverse so oldest new commit posts first.
-			// Collections.reverse(newCommits);
+			Collections.reverse(newCommits);
 
 			for (GithubCommit commit : newCommits) {
 				String sha = commit.sha();

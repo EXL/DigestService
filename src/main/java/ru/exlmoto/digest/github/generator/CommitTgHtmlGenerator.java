@@ -34,12 +34,17 @@ import org.owasp.encoder.Encode;
 
 import ru.exlmoto.digest.github.json.GithubCommit;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
+import ru.exlmoto.digest.util.filter.FilterHelper;
+
+import java.time.Instant;
+import java.util.Locale;
 
 @Component
 public class CommitTgHtmlGenerator {
 	private final Logger log = LoggerFactory.getLogger(CommitTgHtmlGenerator.class);
 
 	private final LocaleHelper locale;
+	private final FilterHelper filter;
 
 	@Value("${general.lang}")
 	private String lang;
@@ -47,8 +52,9 @@ public class CommitTgHtmlGenerator {
 	@Value("${general.date-day-format}")
 	private String dateFormat;
 
-	public CommitTgHtmlGenerator(LocaleHelper locale) {
+	public CommitTgHtmlGenerator(LocaleHelper locale, FilterHelper filter) {
 		this.locale = locale;
+		this.filter = filter;
 	}
 
 	public String generateGithubCommitHtmlReport(String repoName, GithubCommit commit) {
@@ -56,7 +62,10 @@ public class CommitTgHtmlGenerator {
 			String shaLong = commit.sha();
 			// String shaShort = commit.sha().substring(0, 7);
 			String commitUrl = commit.htmlUrl();
-			String commitDate = commit.commit().committer().date();
+			String commitDate = filter.getDateFromTimeStamp(
+				dateFormat,
+				Locale.forLanguageTag(lang),
+				Instant.parse(commit.commit().committer().date()).getEpochSecond());
 			String repoUrl = "https://github.com/" + repoName;
 
 			// Commit author details.
@@ -71,7 +80,7 @@ public class CommitTgHtmlGenerator {
 
 			return String.format(
 				"<b>%s</b>\n\n" +
-				"%s <b>%s</b> @ \n" +
+				"%s <b>%s</b> @ %s\n" +
 				"%s <a href=\"%s\">%s</a>\n\n" +
 				"<code>%s</code>\n\n" +
 				"%s <b><a href=\"%s\">%s</a></b>",

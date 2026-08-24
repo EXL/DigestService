@@ -65,11 +65,12 @@ public class GithubWorker {
 		try {
 			List<BotSubGithubEntity> subscribers = databaseService.getAllGithubSubs();
 			if (!subscribers.isEmpty()) {
+				log.info("=> Start GitHub crawler work. Get new commits.");
 				List<String> githubCommits = githubService.getNewGithubCommitsPosts();
 				if (!githubCommits.isEmpty()) {
-					log.info("=> Start GitHub crawler work. Send commits.");
+					log.info("=> GitHub crawler work. Send new commits if any.");
 					sendNewGithubCommits(githubCommits, subscribers);
-					log.info("=> End GitHub crawler work. Commits were sent.");
+					log.info("=> End GitHub crawler work. Commits were sent if any.");
 				}
 			} else {
 				log.info("=> GitHub subscriber list is empty, GitHub commits crawler disabled.");

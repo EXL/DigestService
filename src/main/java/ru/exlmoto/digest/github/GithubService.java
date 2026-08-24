@@ -186,6 +186,10 @@ public class GithubService {
 				newGitHubCommits.add(html);
 			}
 
+			if (newCommits.isEmpty()) {
+				log.info(String.format("==> No new commits in: %s", repoName));
+			}
+
 			return newGitHubCommits;
 		} catch (RestClientException e) {
 			log.error("Failed to process GitHub repository '{}': {}", repoName, e.getMessage());

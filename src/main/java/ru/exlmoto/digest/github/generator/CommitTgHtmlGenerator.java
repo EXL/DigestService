@@ -37,35 +37,29 @@ import ru.exlmoto.digest.util.i18n.LocaleHelper;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.time.Instant;
-import java.util.Locale;
 
 @Component
 public class CommitTgHtmlGenerator {
 	private final Logger log = LoggerFactory.getLogger(CommitTgHtmlGenerator.class);
 
 	private final LocaleHelper locale;
-	private final FilterHelper filter;
 
-	@Value("${general.lang}")
-	private String lang;
+	@Value("${general.date-short-format}")
+	private String dateShortFormat;
 
-	@Value("${general.date-day-format}")
-	private String dateFormat;
-
-	public CommitTgHtmlGenerator(LocaleHelper locale, FilterHelper filter) {
+	public CommitTgHtmlGenerator(LocaleHelper locale) {
 		this.locale = locale;
-		this.filter = filter;
 	}
 
 	public String generateGithubCommitHtmlReport(String repoName, GithubCommit commit) {
 		try {
-			String shaLong = commit.sha();
-			// String shaShort = commit.sha().substring(0, 7);
+			// String shaLong = commit.sha();
+			String shaShort = commit.sha().substring(0, 7);
 			String commitUrl = commit.htmlUrl();
-			String commitDate = filter.getDateFromTimeStamp(
-				dateFormat,
-				Locale.forLanguageTag(lang),
-				Instant.parse(commit.commit().committer().date()).getEpochSecond());
+			String commitDate = FilterHelper.getDateFromTimeStamp(
+				dateShortFormat,
+				Instant.parse(commit.commit().committer().date()).getEpochSecond()
+			);
 			String repoUrl = "https://github.com/" + repoName;
 
 			// Commit author details.
@@ -79,16 +73,16 @@ public class CommitTgHtmlGenerator {
 			String commitMessage = Encode.forHtml(commit.commit().message().trim());
 
 			return String.format(
-				"<b>%s</b>\n\n" +
-				"%s <b>%s</b> @ %s\n" +
-				"%s <a href=\"%s\">%s</a>\n\n" +
+				"<b>%s</b>\n" +
+				"<i>%s %s</i>\n\n" +
+				"%s <b>%s</b> @ <a href=\"%s\">%s</a>\n\n" +
 				"<code>%s</code>\n\n" +
-				"%s <b><a href=\"%s\">%s</a></b>",
+				"%s <b><a href=\"%s\">%s</a></b> %s",
 				locale.i18n("github.new.commit"),
-				locale.i18n("github.author"), authorFormatted, commitDate,
-				locale.i18n("github.hash"), commitUrl, shaLong,
+				locale.i18n("github.hash"), commitDate,
+				locale.i18n("github.author"), authorFormatted, commitUrl, shaShort,
 				commitMessage,
-				locale.i18n("github.link.icon"), repoUrl, repoUrl
+				locale.i18n("github.link.icon"), repoUrl, repoUrl, locale.i18n("github.link_back.icon")
 			);
 		} catch (Exception e) {
 			log.error(String.format("==> Cannot get repo/commit information for '%s'", repoName), e);

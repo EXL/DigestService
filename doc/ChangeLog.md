@@ -34,7 +34,7 @@
     - Spring Boot 2.6.7 => 4.1.1
     - Spring Boot Dependency Management 1.0.11.RELEASE => 1.1.7
     - com.github.pengrad:java-telegram-bot-api 5.7.0 => 10.1.0
-    - org.kohsuke:github-api =>
+    - org.kohsuke
     - org.yaml:snakeyaml 1.29 => 2.6
     - org.jsoup:jsoup 1.14.3 => 1.23.1
     - org.nibor.autolink:autolink 0.10.0 => 0.12.0

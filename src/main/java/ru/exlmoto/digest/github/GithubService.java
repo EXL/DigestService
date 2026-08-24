@@ -172,8 +172,12 @@ public class GithubService {
 			List<GithubCommit> commits = getRecentCommits(repoName);
 			if (initializeOnly) {
 				if (!commits.isEmpty()) {
-					seenCommits.add(commits.get(0).sha());
-					log.info(String.format("==> Saved latest commit SHA for: %s", repoName));
+					String sha = commits.get(0).sha();
+					seenCommits.add(sha);
+					log.info(String.format(
+						"==> Saved latest commit SHA for: %s, %s",
+						repoName, CommitTgHtmlGenerator.getShortSha(sha)
+					));
 				}
 				initializedRepos.add(repoName);
 				return newGitHubCommits;
@@ -196,7 +200,9 @@ public class GithubService {
 				String sha = commit.sha();
 				seenCommits.add(sha);
 
-				log.info(String.format("==> New commit: %s, %s", repoName, sha.substring(0, 7)));
+				log.info(
+					String.format("==> New commit: %s, %s", repoName, CommitTgHtmlGenerator.getShortSha(sha))
+				);
 
 				String html = htmlGenerator.generateGithubCommitHtmlReport(repoName, commit);
 				newGitHubCommits.add(html);

@@ -51,10 +51,14 @@ public class CommitTgHtmlGenerator {
 		this.locale = locale;
 	}
 
+	public static String getShortSha(String sha) {
+		return sha.substring(0, 7);
+	}
+
 	public String generateGithubCommitHtmlReport(String repoName, GithubCommit commit) {
 		try {
-			// String shaLong = commit.sha();
-			String shaShort = commit.sha().substring(0, 7);
+			String shaLong = commit.sha();
+			String shaShort = getShortSha(shaLong);
 			String commitUrl = commit.htmlUrl();
 			String commitDate = FilterHelper.getDateFromTimeStamp(
 				dateTimeFormat,

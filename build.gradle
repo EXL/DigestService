@@ -43,16 +43,6 @@ configurations {
 	}
 }
 
-configurations.configureEach {
-	resolutionStrategy.eachDependency { dependencyDetails ->
-		if (dependencyDetails.requested.group == 'com.fasterxml.jackson.core' &&
-				(dependencyDetails.requested.name == 'jackson-databind' ||
-						dependencyDetails.requested.name == 'jackson-core')) {
-			dependencyDetails.useVersion '2.17.2'
-		}
-	}
-}
-
 repositories {
 	mavenCentral()
 }
@@ -82,7 +72,6 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 
 	implementation 'com.github.pengrad:java-telegram-bot-api:10.1.0'
-	implementation 'org.kohsuke:github-api:1.326'
 	implementation 'org.yaml:snakeyaml:2.6'
 	implementation 'org.jsoup:jsoup:1.23.1'
 	implementation 'org.nibor.autolink:autolink:0.12.0'

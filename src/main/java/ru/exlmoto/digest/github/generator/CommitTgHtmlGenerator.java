@@ -30,11 +30,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import org.kohsuke.github.GHCommit;
-import org.kohsuke.github.GHRepository;
-
 import org.owasp.encoder.Encode;
 
+import ru.exlmoto.digest.github.GithubCommit;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component
@@ -53,22 +51,22 @@ public class CommitTgHtmlGenerator {
 		this.locale = locale;
 	}
 
-	public String generateGithubCommitHtmlReport(GHRepository repo, GHCommit commit) {
+	public String generateGithubCommitHtmlReport(String repoName, GithubCommit commit) {
 		try {
-			String shaShort = commit.getSHA1().substring(0, 7);
-			String commitUrl = commit.getHtmlUrl().toString();
-			String commitDate = commit.getCommitDate().toString();
-			String repoUrl = repo.getHtmlUrl().toString();
+			String shaShort = commit.sha().substring(0, 7);
+			String commitUrl = commit.htmlUrl();
+			String commitDate = commit.commit().committer().date();
+			String repoUrl = "https://github.com/" + repoName;
 
 			// Commit author details.
-			String authorName = commit.getCommitShortInfo().getAuthor().getName();
-			String authorLink = (commit.getAuthor() != null) ? commit.getAuthor().getHtmlUrl().toString() : null;
+			String authorName = commit.commit().author().name();
+			String authorLink = (commit.author() != null) ? commit.author().htmlUrl() : null;
 
 			String authorFormatted = (authorLink != null)
 					? String.format("<a href=\"%s\">%s</a>", authorLink, Encode.forHtml(authorName))
 					: Encode.forHtml(authorName);
 
-			String commitMessage = Encode.forHtml(commit.getCommitShortInfo().getMessage().trim());
+			String commitMessage = Encode.forHtml(commit.commit().message().trim());
 
 			return String.format(
 				"<b>%s</b>\n\n" +
@@ -85,7 +83,7 @@ public class CommitTgHtmlGenerator {
 				repoUrl, repoUrl
 			);
 		} catch (Exception e) {
-			log.error(String.format("==> Cannot get repo/commit information for '%s'", repo.getFullName()), e);
+			log.error(String.format("==> Cannot get repo/commit information for '%s'", repoName), e);
 		}
 		return "";
 	}

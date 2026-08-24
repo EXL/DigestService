@@ -31,14 +31,14 @@ import jakarta.annotation.PostConstruct;
 
 import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 import org.springframework.stereotype.Service;
 
 import org.thymeleaf.util.StringUtils;
-
-import org.kohsuke.github.GHCommit;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GitHubBuilder;
 
 import ru.exlmoto.digest.github.generator.CommitTgHtmlGenerator;
 import ru.exlmoto.digest.util.filter.FilterHelper;
@@ -46,6 +46,7 @@ import ru.exlmoto.digest.util.filter.FilterHelper;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,9 +59,6 @@ import java.util.Set;
 public class GithubService {
 	private final Logger log = LoggerFactory.getLogger(GithubService.class);
 
-	@Value("${github.oauth.token:#{null}}")
-	private String githubToken;
-
 	@Value("classpath:github/github-repos.txt")
 	private Resource githubRepos;
 
@@ -70,12 +68,31 @@ public class GithubService {
 	private final List<String> targetReposList = new ArrayList<>();
 	private final Map<String, Set<String>> repoSeenCommits = new HashMap<>();
 
+	private final RestClient restClient;
 	private final FilterHelper filter;
 	private final CommitTgHtmlGenerator htmlGenerator;
 
-	public GithubService(FilterHelper filter, CommitTgHtmlGenerator htmlGenerator) {
+	public GithubService(FilterHelper filter,
+	                     CommitTgHtmlGenerator htmlGenerator,
+	                     @Value("${github.oauth.token:}") String githubToken,
+	                     @Value("${rest.timeout-sec:10}") int timeoutSec) {
 		this.filter = filter;
 		this.htmlGenerator = htmlGenerator;
+
+		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+		requestFactory.setConnectTimeout(Duration.ofSeconds(timeoutSec));
+		requestFactory.setReadTimeout(Duration.ofSeconds(timeoutSec));
+
+		RestClient.Builder builder = RestClient.builder()
+				.baseUrl("https://api.github.com")
+				.requestFactory(requestFactory)
+				.defaultHeader(HttpHeaders.ACCEPT, "application/vnd.github+json")
+				.defaultHeader("X-GitHub-Api-Version", "2022-11-28")
+				.defaultHeader(HttpHeaders.USER_AGENT, "DigestService");
+		if (githubToken != null && !githubToken.isBlank()) {
+			builder.defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + githubToken.trim());
+		}
+		this.restClient = builder.build();
 	}
 
 	@PostConstruct
@@ -122,17 +139,8 @@ public class GithubService {
 		}
 
 		try {
-			GitHub gitHub;
-			if (StringUtils.isEmpty(githubToken)) {
-				log.warn("=> GitHub token is null or empty. Getting GitHub commits will be limited.");
-				gitHub = new GitHubBuilder().build();
-			} else {
-				log.info("=> GitHub token provided. Getting GitHub commits in high-rate.");
-				gitHub = new GitHubBuilder().withOAuthToken(githubToken).build();
-			}
-
 			for (String repoName : targetReposList) {
-				List<String> newGitHubCommits = processGithubRepository(gitHub, repoName);
+				List<String> newGitHubCommits = processGithubRepository(repoName);
 				for (String post : newGitHubCommits) {
 					newGitHubCommitsPosts.add(post);
 				}
@@ -145,18 +153,16 @@ public class GithubService {
 		return new ArrayList<>();
 	}
 
-	private List<String> processGithubRepository(GitHub gitHub, String repoName) {
+	private List<String> processGithubRepository(String repoName) {
 		List<String> newGitHubCommits = new ArrayList<>();
 		try {
-			GHRepository repo = gitHub.getRepository(repoName);
 			Set<String> seenCommits = repoSeenCommits.get(repoName);
 
-			// Fetch recent commits (latest 10).
-			List<GHCommit> commits = repo.listCommits().iterator().nextPage();
-			List<GHCommit> newCommits = new ArrayList<>();
+			List<GithubCommit> commits = getRecentCommits(repoName);
+			List<GithubCommit> newCommits = new ArrayList<>();
 
-			for (GHCommit commit : commits) {
-				String sha = commit.getSHA1();
+			for (GithubCommit commit : commits) {
+				String sha = commit.sha();
 				if (seenCommits.contains(sha)) {
 					break; // Stopped at already processed history.
 				}
@@ -166,20 +172,38 @@ public class GithubService {
 			// Reverse so oldest new commit posts first.
 			Collections.reverse(newCommits);
 
-			for (GHCommit commit : newCommits) {
-				String sha = commit.getSHA1();
+			for (GithubCommit commit : newCommits) {
+				String sha = commit.sha();
 				seenCommits.add(sha);
 
-				log.info(String.format("==> New commit: %s, %s", repo.getFullName(), sha));
+				log.info(String.format("==> New commit: %s, %s", repoName, sha));
 
-				String html = htmlGenerator.generateGithubCommitHtmlReport(repo, commit);
+				String html = htmlGenerator.generateGithubCommitHtmlReport(repoName, commit);
 				newGitHubCommits.add(html);
 			}
 
 			return newGitHubCommits;
-		} catch (Exception e) {
+		} catch (RestClientException e) {
+			log.error("Failed to process GitHub repository '{}': {}", repoName, e.getMessage());
+		} catch (RuntimeException e) {
 			log.error("Failed to process GitHub repository: {}", repoName, e);
 		}
 		return new ArrayList<>();
+	}
+
+	private List<GithubCommit> getRecentCommits(String ownerRepo) {
+		String[] parts = ownerRepo.split("/", -1);
+		if (parts.length != 2 || parts[0].isBlank() || parts[1].isBlank()) {
+			throw new IllegalArgumentException("GitHub repository must have the 'owner/name' format: " + ownerRepo);
+		}
+
+		List<GithubCommit> commits = restClient.get()
+				.uri(uriBuilder -> uriBuilder
+						.path("/repos/{owner}/{repository}/commits")
+						.queryParam("per_page", 10)
+						.build(parts[0], parts[1]))
+				.retrieve()
+				.body(new ParameterizedTypeReference<>() {});
+		return commits != null ? commits : List.of();
 	}
 }

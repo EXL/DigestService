@@ -97,9 +97,9 @@ public class GithubService {
 				.defaultHeader(HttpHeaders.USER_AGENT, "DigestService");
 		if (StringUtils.isEmpty(githubToken)) {
 			log.warn("GitHub Token is empty. GitHub API requests may be limited.");
-			builder.defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + githubToken.trim());
 		} else {
 			log.info("GitHub Token is present. GitHub API requests have large limits.");
+			builder.defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + githubToken.trim());
 		}
 		this.restClient = builder.build();
 	}
@@ -175,7 +175,7 @@ public class GithubService {
 					String sha = commits.get(0).sha();
 					seenCommits.add(sha);
 					log.info(String.format(
-						"==> Saved latest commit SHA for: %s, %s",
+						"==> Saved latest SHA for: %s, %s",
 						repoName, CommitTgHtmlGenerator.getShortSha(sha)
 					));
 				}

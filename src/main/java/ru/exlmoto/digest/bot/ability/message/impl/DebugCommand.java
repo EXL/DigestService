@@ -43,6 +43,7 @@ import ru.exlmoto.digest.bot.worker.DigestWorker;
 import ru.exlmoto.digest.bot.worker.CovidWorker;
 import ru.exlmoto.digest.bot.worker.CallbackQueriesWorker;
 import ru.exlmoto.digest.bot.worker.FlatWorker;
+import ru.exlmoto.digest.bot.worker.GithubWorker;
 import ru.exlmoto.digest.bot.worker.RateWorker;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
@@ -55,6 +56,7 @@ public class DebugCommand extends MessageAdminAbility {
 	private final BotConfiguration config;
 	private final ExchangeService exchangeService;
 	private final MotofanWorker motofanWorker;
+	private final GithubWorker githubWorker;
 	private final AvatarWorker avatarWorker;
 	private final DigestWorker digestWorker;
 	private final CovidWorker covidWorker;
@@ -66,6 +68,7 @@ public class DebugCommand extends MessageAdminAbility {
 	                    BotConfiguration config,
 	                    ExchangeService exchangeService,
 	                    MotofanWorker motofanWorker,
+	                    GithubWorker githubWorker,
 	                    AvatarWorker avatarWorker,
 	                    DigestWorker digestWorker,
 	                    CovidWorker covidWorker,
@@ -76,6 +79,7 @@ public class DebugCommand extends MessageAdminAbility {
 		this.config = config;
 		this.exchangeService = exchangeService;
 		this.motofanWorker = motofanWorker;
+		this.githubWorker = githubWorker;
 		this.avatarWorker = avatarWorker;
 		this.digestWorker = digestWorker;
 		this.covidWorker = covidWorker;
@@ -88,6 +92,7 @@ public class DebugCommand extends MessageAdminAbility {
 		VRates,
 		VRatesSub,
 		VPosts,
+		VGithub,
 		VShredder,
 		VAvatars,
 		VQueries,
@@ -111,6 +116,7 @@ public class DebugCommand extends MessageAdminAbility {
 				case VRates: { text = processRates(locale); break; }
 				case VRatesSub: { text = processSubRates(locale); break; }
 				case VPosts: { text = processPosts(locale); break; }
+				case VGithub: { text = processGithub(locale); break; }
 				case VShredder: { text = processShredder(locale); break; }
 				case VAvatars: { text = processAvatars(locale); break; }
 				case VQueries: { text = processQueries(locale); break; }
@@ -143,6 +149,11 @@ public class DebugCommand extends MessageAdminAbility {
 
 	private String processPosts(LocaleHelper locale) {
 		motofanWorker.workOnMotofanPosts();
+		return locale.i18n("bot.command.debug.data");
+	}
+
+	private String processGithub(LocaleHelper locale) {
+		githubWorker.workOnGithubCommits();
 		return locale.i18n("bot.command.debug.data");
 	}
 

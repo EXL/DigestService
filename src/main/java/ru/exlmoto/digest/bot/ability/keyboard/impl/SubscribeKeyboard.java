@@ -45,12 +45,13 @@ import ru.exlmoto.digest.bot.sender.BotSender;
 import ru.exlmoto.digest.bot.util.BotHelper;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
-import ru.exlmoto.digest.entity.BotSubCovidEntity;
-import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
+import ru.exlmoto.digest.entity.BotSubGithubEntity;
+//import ru.exlmoto.digest.entity.BotSubCovidEntity;
+//import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.entity.BotSubRateEntity;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.Answer;
-import ru.exlmoto.digest.util.Covid;
+//import ru.exlmoto.digest.util.Covid;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 import jakarta.annotation.PostConstruct;
@@ -67,12 +68,14 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		digest_unsubscribe,
 		motofan_subscribe,
 		motofan_unsubscribe,
-		covid_subscribe,
-		covid_unsubscribe,
-		covid_ua_subscribe,
-		covid_ua_unsubscribe,
+//		covid_subscribe,
+//		covid_unsubscribe,
+//		covid_ua_subscribe,
+//		covid_ua_unsubscribe,
 		exchange_rate_subscribe,
-		exchange_rate_unsubscribe
+		exchange_rate_unsubscribe,
+		github_subscribe,
+		github_unsubscribe
 	}
 
 	private final BotHelper helper;
@@ -108,6 +111,13 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					.callbackData(Keyboard.subscribe.withName() + Subscription.digest_unsubscribe)
 			},
 			new InlineKeyboardButton[] {
+				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.subscribe.github"))
+					.callbackData(Keyboard.subscribe.withName() + Subscription.github_subscribe),
+				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.unsubscribe.github"))
+					.callbackData(Keyboard.subscribe.withName() + Subscription.github_unsubscribe)
+			},
+			/*
+			new InlineKeyboardButton[] {
 				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.subscribe.covid"))
 					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_subscribe),
 				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.unsubscribe.covid"))
@@ -119,6 +129,7 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.unsubscribe.covid.ua"))
 					.callbackData(Keyboard.subscribe.withName() + Subscription.covid_ua_unsubscribe)
 			},
+			*/
 			new InlineKeyboardButton[] {
 				new InlineKeyboardButton(locale.i18n("bot.command.subscribe.button.subscribe.rate"))
 					.callbackData(Keyboard.subscribe.withName() + Subscription.exchange_rate_subscribe),
@@ -181,8 +192,7 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					locale.i18n("bot.command.subscribe"), chatTitle, chatId,
 					getSubscribeStatus(service.getMotofanSub(chatId) != null),
 					getSubscribeStatus(service.getDigestSub(chatId) != null),
-					getSubscribeStatus(service.getCovidSub(chatId) != null),
-					getSubscribeStatus(service.getCovidUaSub(chatId) != null),
+					getSubscribeStatus(service.getGithubSub(chatId) != null),
 					getSubscribeStatus(service.getRateSub(chatId) != null)
 				)
 			);
@@ -227,6 +237,15 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					digestUnsubscribe(messageId, chat, callbackId, sender);
 					break;
 				}
+				case github_subscribe: {
+					githubSubscribe(messageId, chat, callbackId, sender);
+					break;
+				}
+				case github_unsubscribe: {
+					githubUnsubscribe(messageId, chat, callbackId, sender);
+					break;
+				}
+				/*
 				case covid_subscribe: {
 					covidSubscribe(messageId, chat, callbackId, sender, Covid.ru);
 					break;
@@ -243,6 +262,7 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 					covidUnsubscribe(messageId, chat, callbackId, sender, Covid.ua);
 					break;
 				}
+				*/
 				case exchange_rate_subscribe: {
 					exchangeRateSubscribe(messageId, chat, callbackId, sender);
 					break;
@@ -306,6 +326,29 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 		}
 	}
 
+	private void githubSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
+		if (service.getGithubSub(chatId) != null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.subscribe.exist"));
+		} else {
+			service.saveGithubSub(new BotSubGithubEntity(chatId, helper.getValidChatName(chat)));
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.subscribed"));
+			processSubscribeStatusMessage(messageId, chat, true, sender);
+		}
+	}
+
+	private void githubUnsubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
+		long chatId = chat.id();
+		if (service.getGithubSub(chatId) == null) {
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.error.unsubscribe.exist"));
+		} else {
+			service.deleteGithubSub(chatId);
+			sender.sendCallbackQueryAnswer(callbackId, locale.i18n("bot.inline.subscribe.unsubscribed"));
+			processSubscribeStatusMessage(messageId, chat, true, sender);
+		}
+	}
+
+/*
 	private void covidSubscribe(int messageId, Chat chat, String callbackId, BotSender sender, Covid stat) {
 		long chatId = chat.id();
 		if (checkCovidSubscribe(chatId, stat)) {
@@ -359,7 +402,7 @@ public class SubscribeKeyboard extends KeyboardSimpleAbility {
 			}
 		}
 	}
-
+*/
 	private void exchangeRateSubscribe(int messageId, Chat chat, String callbackId, BotSender sender) {
 		long chatId = chat.id();
 		if (service.getRateSub(chatId) != null) {

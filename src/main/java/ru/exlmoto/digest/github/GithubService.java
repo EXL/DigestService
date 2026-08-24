@@ -50,6 +50,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,6 +72,7 @@ public class GithubService {
 
 	private final List<String> targetReposList = new ArrayList<>();
 	private final Map<String, Set<String>> repoSeenCommits = new HashMap<>();
+	private final Set<String> initializedRepos = new HashSet<>();
 
 	private final RestClient restClient;
 	private final FilterHelper filter;
@@ -147,7 +149,9 @@ public class GithubService {
 
 		try {
 			for (String repoName : targetReposList) {
-				List<String> newGitHubCommits = processGithubRepository(repoName);
+				List<String> newGitHubCommits = processGithubRepository(
+					repoName,
+					!initializedRepos.contains(repoName));
 				for (String post : newGitHubCommits) {
 					newGitHubCommitsPosts.add(post);
 				}
@@ -160,12 +164,21 @@ public class GithubService {
 		return new ArrayList<>();
 	}
 
-	private List<String> processGithubRepository(String repoName) {
+	private List<String> processGithubRepository(String repoName, boolean initializeOnly) {
 		List<String> newGitHubCommits = new ArrayList<>();
 		try {
 			Set<String> seenCommits = repoSeenCommits.get(repoName);
 
 			List<GithubCommit> commits = getRecentCommits(repoName);
+			if (initializeOnly) {
+				if (!commits.isEmpty()) {
+					seenCommits.add(commits.get(0).sha());
+					log.info(String.format("==> Saved latest commit SHA for: %s", repoName));
+				}
+				initializedRepos.add(repoName);
+				return newGitHubCommits;
+			}
+
 			List<GithubCommit> newCommits = new ArrayList<>();
 
 			for (GithubCommit commit : commits) {

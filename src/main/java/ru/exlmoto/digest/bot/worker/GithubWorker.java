@@ -68,9 +68,11 @@ public class GithubWorker {
 				log.info("=> Start GitHub crawler work. Get new commits.");
 				List<String> githubCommits = githubService.getNewGithubCommitsPosts();
 				if (!githubCommits.isEmpty()) {
-					log.info("=> GitHub crawler work. Send new commits if any.");
+					log.info("=> GitHub crawler work. Send new commits.");
 					sendNewGithubCommits(githubCommits, subscribers);
-					log.info("=> End GitHub crawler work. Commits were sent if any.");
+					log.info("=> End GitHub crawler work. Commits were sent.");
+				} else {
+					log.info("=> End GitHub crawler work. No new commits.");
 				}
 			} else {
 				log.info("=> GitHub subscriber list is empty, GitHub commits crawler disabled.");

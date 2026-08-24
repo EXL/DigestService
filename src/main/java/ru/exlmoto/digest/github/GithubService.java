@@ -93,8 +93,11 @@ public class GithubService {
 				.defaultHeader(HttpHeaders.ACCEPT, "application/vnd.github+json")
 				.defaultHeader("X-GitHub-Api-Version", "2022-11-28")
 				.defaultHeader(HttpHeaders.USER_AGENT, "DigestService");
-		if (githubToken != null && !githubToken.isBlank()) {
+		if (StringUtils.isEmpty(githubToken)) {
+			log.warn("GitHub Token is empty. GitHub API requests may be limited.");
 			builder.defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + githubToken.trim());
+		} else {
+			log.info("GitHub Token is present. GitHub API requests have large limits.");
 		}
 		this.restClient = builder.build();
 	}
@@ -180,7 +183,7 @@ public class GithubService {
 				String sha = commit.sha();
 				seenCommits.add(sha);
 
-				log.info(String.format("==> New commit: %s, %s", repoName, sha));
+				log.info(String.format("==> New commit: %s, %s", repoName, sha.substring(0, 7)));
 
 				String html = htmlGenerator.generateGithubCommitHtmlReport(repoName, commit);
 				newGitHubCommits.add(html);

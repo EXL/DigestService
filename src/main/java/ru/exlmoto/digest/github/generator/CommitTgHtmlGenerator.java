@@ -44,8 +44,8 @@ public class CommitTgHtmlGenerator {
 
 	private final LocaleHelper locale;
 
-	@Value("${general.date-short-format}")
-	private String dateShortFormat;
+	@Value("${general.date-format}")
+	private String dateTimeFormat;
 
 	public CommitTgHtmlGenerator(LocaleHelper locale) {
 		this.locale = locale;
@@ -57,7 +57,7 @@ public class CommitTgHtmlGenerator {
 			String shaShort = commit.sha().substring(0, 7);
 			String commitUrl = commit.htmlUrl();
 			String commitDate = FilterHelper.getDateFromTimeStamp(
-				dateShortFormat,
+				dateTimeFormat,
 				Instant.parse(commit.commit().committer().date()).getEpochSecond()
 			);
 			String repoUrl = "https://github.com/" + repoName;
@@ -79,7 +79,7 @@ public class CommitTgHtmlGenerator {
 				"<code>%s</code>\n\n" +
 				"%s <b><a href=\"%s\">%s</a></b> %s",
 				locale.i18n("github.new.commit"),
-				locale.i18n("github.hash"), commitDate,
+				locale.i18n("github.datetime"), commitDate,
 				locale.i18n("github.author"), authorFormatted, commitUrl, shaShort,
 				commitMessage,
 				locale.i18n("github.link.icon"), repoUrl, repoUrl, locale.i18n("github.link_back.icon")

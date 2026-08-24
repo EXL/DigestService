@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,6 +52,8 @@ public class SendCommand extends MessageAdminAbility {
 		image
 	}
 
+	private record Destination(long chatId, Integer messageThreadId) { }
+
 	private final ImageHelper rest;
 
 	public SendCommand(ImageHelper rest) {
@@ -73,25 +75,17 @@ public class SendCommand extends MessageAdminAbility {
 			return;
 		}
 
-		Answer<Long> chatIdRes = getChatId(commandWithArgs[1], locale);
-		if (!chatIdRes.ok()) {
-			sender.replyMarkdown(origChatId, origMessageId, chatIdRes.error());
+		Answer<Destination> destinationRes = getDestination(commandWithArgs[1], locale);
+		if (!destinationRes.ok()) {
+			sender.replyMarkdown(origChatId, origMessageId, destinationRes.error());
 			return;
 		}
 
-		long chatId = chatIdRes.answer();
-		Integer messageThreadId = null;
-		if (command == Command.send && commandWithArgs.length >= 4) {
-			Answer<Integer> threadIdRes = getMessageThreadId(commandWithArgs[2], locale);
-			if (threadIdRes.ok()) {
-				messageThreadId = threadIdRes.answer();
-			}
-		}
+		Destination destination = destinationRes.answer();
+		long chatId = destination.chatId();
+		Integer messageThreadId = destination.messageThreadId();
 		text = text.replaceFirst(commandWithArgs[0], "")
 			.replaceFirst(commandWithArgs[1], "").trim();
-		if (messageThreadId != null) {
-			text = text.replaceFirst(commandWithArgs[2], "").trim();
-		}
 
 		switch (command) {
 			case send: {
@@ -103,13 +97,13 @@ public class SendCommand extends MessageAdminAbility {
 				break;
 			}
 			case sticker: {
-				sender.sendStickerToChat(chatId, text, origChatId, origMessageId);
+				sender.sendStickerToChat(chatId, messageThreadId, text, origChatId, origMessageId);
 				break;
 			}
 			case image: {
 				Answer<String> imageRes = rest.getImageByLink(text);
 				if (imageRes.ok()) {
-					sender.sendPhotoToChat(chatId, imageRes.answer(), origChatId, origMessageId);
+					sender.sendPhotoToChat(chatId, messageThreadId, imageRes.answer(), origChatId, origMessageId);
 				} else {
 					sender.replyMarkdown(origChatId, origMessageId,
 						String.format(locale.i18n("bot.error.send.image"), text, chatId, imageRes.error()));
@@ -157,11 +151,22 @@ public class SendCommand extends MessageAdminAbility {
 		}
 	}
 
-	private Answer<Integer> getMessageThreadId(String threadId, LocaleHelper locale) {
+	private Answer<Destination> getDestination(String value, LocaleHelper locale) {
+		String[] parts = value.split("\\|", -1);
+		if (parts.length > 2 || parts[0].isEmpty() || (parts.length == 2 && parts[1].isEmpty())) {
+			return Error(String.format(locale.i18n("bot.error.chatid"), value));
+		}
+		Answer<Long> chatId = getChatId(parts[0], locale);
+		if (!chatId.ok()) {
+			return Error(chatId.error());
+		}
+		if (parts.length == 1) {
+			return Ok(new Destination(chatId.answer(), null));
+		}
 		try {
-			return Ok(NumberUtils.parseNumber(threadId, Integer.class));
+			return Ok(new Destination(chatId.answer(), NumberUtils.parseNumber(parts[1], Integer.class)));
 		} catch (NumberFormatException nfe) {
-			return Error(String.format(locale.i18n("bot.error.chatid"), threadId));
+			return Error(String.format(locale.i18n("bot.error.chatid"), value));
 		}
 	}
 }

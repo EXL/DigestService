@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2020 EXL <exlmotodev@gmail.com>
+ * Copyright (c) 2015-2026 EXL <exlmotodev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ package ru.exlmoto.digest.site.form;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SendFormUnitTest {
@@ -36,7 +35,7 @@ class SendFormUnitTest {
 	@Test
 	public void testCheckSend() {
 		assertFalse(form.checkSend());
-		form.setSendChatId(0L);
+		form.setSendChatId("0|1100646");
 		assertFalse(form.checkSend());
 		form.setSendChatArg("");
 		assertFalse(form.checkSend());
@@ -44,14 +43,12 @@ class SendFormUnitTest {
 		assertFalse(form.checkSend());
 		form.setSendChatArg("value");
 		assertTrue(form.checkSend());
-		form.setSendMessageThreadId(1100646L);
-		assertEquals(1100646L, form.getSendMessageThreadId());
 	}
 
 	@Test
 	public void testCheckSticker() {
 		assertFalse(form.checkSticker());
-		form.setStickerChatId(0L);
+		form.setStickerChatId("0|1100646");
 		assertFalse(form.checkSticker());
 		form.setStickerChatArg("");
 		assertFalse(form.checkSticker());
@@ -64,7 +61,7 @@ class SendFormUnitTest {
 	@Test
 	public void testCheckImage() {
 		assertFalse(form.checkImage());
-		form.setImageChatId(0L);
+		form.setImageChatId("0|1100646");
 		assertFalse(form.checkImage());
 		form.setImageChatArg("");
 		assertFalse(form.checkImage());

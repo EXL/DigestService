@@ -80,8 +80,8 @@ class SendCommandTest {
 		/* Ok. */
 		onCmd("/send 87336977 text");
 		onCmd("/send 87336977 text text");
-		onCmd("/send 87336977 1100646 text");
-		onCmd("/send -1001148683293 1100646 text text");
+		onCmd("/send 87336977|1100646 text");
+		onCmd("/send -1001148683293|1100646 text text");
 		onCmd("/send -1001148683293 text");
 		onCmd("/send -1001148683293 text text");
 		System.out.println("=== END testSendCommand() ===");
@@ -104,6 +104,7 @@ class SendCommandTest {
 		/* Ok. */
 		onCmd("/sticker 87336977 CAADAgADzAEAAhGoNAVFRRJu94qe3gI");
 		onCmd("/sticker -1001148683293 CAADAgADzAEAAhGoNAVFRRJu94qe3gI");
+		onCmd("/sticker -1001148683293|1100646 CAADAgADzAEAAhGoNAVFRRJu94qe3gI");
 		System.out.println("=== END testStickerCommand() ===");
 	}
 
@@ -124,6 +125,7 @@ class SendCommandTest {
 		/* Ok. */
 		onCmd("/image 87336977 https://www.apple.com/apple-touch-icon.png");
 		onCmd("/image -1001148683293 https://www.apple.com/apple-touch-icon.png");
+		onCmd("/image -1001148683293|1100646 https://www.apple.com/apple-touch-icon.png");
 		System.out.println("=== END testImageCommand() ===");
 	}
 

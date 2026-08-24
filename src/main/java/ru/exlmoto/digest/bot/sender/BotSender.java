@@ -183,7 +183,16 @@ public class BotSender {
 	}
 
 	public void sendStickerToChat(long chatId, String stickerId, Long origChatId, Integer origReplyId) {
-		Answer<String> res = executeRequestLog(new SendSticker(chatId, stickerId));
+		sendStickerToChat(chatId, null, stickerId, origChatId, origReplyId);
+	}
+
+	public void sendStickerToChat(long chatId, Integer messageThreadId, String stickerId,
+	                              Long origChatId, Integer origReplyId) {
+		SendSticker sendSticker = new SendSticker(chatId, stickerId);
+		if (messageThreadId != null) {
+			sendSticker.messageThreadId(messageThreadId);
+		}
+		Answer<String> res = executeRequestLog(sendSticker);
 		if (!res.ok() && origChatId != null && origReplyId != null) {
 			sendError(origChatId, origReplyId,
 				shrinkText(String.format(locale.i18n("bot.error.send.sticker"), stickerId, chatId, res.error())));
@@ -191,11 +200,11 @@ public class BotSender {
 	}
 
 	public void replyPhoto(long chatId, int replyId, String uri, String title) {
-		sendPhoto(chatId, replyId, uri, title, chatId, replyId);
+		sendPhoto(chatId, replyId, null, uri, title, chatId, replyId);
 	}
 
 	public void sendPhotoToChat(long chatId, String uri) {
-		sendPhoto(chatId, null, uri, null, null, null);
+		sendPhoto(chatId, null, null, uri, null, null, null);
 	}
 
 	public void sendLocalPhotoToChat(long chatId, File photo) {
@@ -245,10 +254,14 @@ public class BotSender {
 	}
 
 	public void sendPhotoToChat(long chatId, String uri, long origChatId, int origReplyId) {
-		sendPhoto(chatId, null, uri, null, origChatId, origReplyId);
+		sendPhoto(chatId, null, null, uri, null, origChatId, origReplyId);
 	}
 
-	private void sendPhoto(long chatId, Integer replyId, String uri, String title,
+	public void sendPhotoToChat(long chatId, int messageThreadId, String uri, long origChatId, int origReplyId) {
+		sendPhoto(chatId, null, messageThreadId, uri, null, origChatId, origReplyId);
+	}
+
+	private void sendPhoto(long chatId, Integer replyId, Integer messageThreadId, String uri, String title,
 	                       Long origChatId, Integer origReplyId) {
 		SendPhoto sendPhoto;
 		File photo = null;
@@ -260,6 +273,9 @@ public class BotSender {
 		}
 		if (replyId != null) {
 			sendPhoto.replyParameters(new ReplyParameters(replyId));
+		}
+		if (messageThreadId != null) {
+			sendPhoto.messageThreadId(messageThreadId);
 		}
 		if (title != null) {
 			sendPhoto.caption(title);

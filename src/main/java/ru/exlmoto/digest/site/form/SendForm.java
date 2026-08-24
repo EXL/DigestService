@@ -27,14 +27,13 @@ package ru.exlmoto.digest.site.form;
 import org.springframework.util.StringUtils;
 
 public class SendForm {
-	private Long sendChatId;
-	private Long sendMessageThreadId;
+	private String sendChatId;
 	private String sendChatArg;
 
-	private Long stickerChatId;
+	private String stickerChatId;
 	private String stickerChatArg;
 
-	private Long imageChatId;
+	private String imageChatId;
 	private String imageChatArg;
 
 	public boolean checkSend() {
@@ -49,20 +48,12 @@ public class SendForm {
 		return imageChatId != null && StringUtils.hasText(imageChatArg);
 	}
 
-	public Long getSendChatId() {
+	public String getSendChatId() {
 		return sendChatId;
 	}
 
-	public void setSendChatId(Long sendChatId) {
+	public void setSendChatId(String sendChatId) {
 		this.sendChatId = sendChatId;
-	}
-
-	public Long getSendMessageThreadId() {
-		return sendMessageThreadId;
-	}
-
-	public void setSendMessageThreadId(Long sendMessageThreadId) {
-		this.sendMessageThreadId = sendMessageThreadId;
 	}
 
 	public String getSendChatArg() {
@@ -73,11 +64,11 @@ public class SendForm {
 		this.sendChatArg = sendChatArg;
 	}
 
-	public Long getStickerChatId() {
+	public String getStickerChatId() {
 		return stickerChatId;
 	}
 
-	public void setStickerChatId(Long stickerChatId) {
+	public void setStickerChatId(String stickerChatId) {
 		this.stickerChatId = stickerChatId;
 	}
 
@@ -89,11 +80,11 @@ public class SendForm {
 		this.stickerChatArg = stickerChatArg;
 	}
 
-	public Long getImageChatId() {
+	public String getImageChatId() {
 		return imageChatId;
 	}
 
-	public void setImageChatId(Long imageChatId) {
+	public void setImageChatId(String imageChatId) {
 		this.imageChatId = imageChatId;
 	}
 

@@ -92,6 +92,8 @@ import java.util.Optional;
 public class ObeyController {
 	private final Logger log = LoggerFactory.getLogger(ObeyController.class);
 
+	private record Destination(long chatId, Integer messageThreadId) { }
+
 	private final SiteHelper helper;
 	private final DatabaseService service;
 	private final FilterHelper filter;
@@ -564,9 +566,9 @@ public class ObeyController {
 	public String obeySend(Model model, SendForm send) {
 		model.addAttribute("time", System.currentTimeMillis());
 
-		send.setSendChatId(motofanChatId);
-		send.setStickerChatId(motofanChatId);
-		send.setImageChatId(motofanChatId);
+		send.setSendChatId(String.valueOf(motofanChatId));
+		send.setStickerChatId(String.valueOf(motofanChatId));
+		send.setImageChatId(String.valueOf(motofanChatId));
 		model.addAttribute("send", send);
 
 		return "obey";
@@ -575,32 +577,70 @@ public class ObeyController {
 	@PostMapping(path = "/obey/send/chat")
 	public String obeySendChat(SendForm send) {
 		if (send.checkSend()) {
-			if (send.getSendMessageThreadId() == null) {
-				sender.sendSimpleToChat(send.getSendChatId(), send.getSendChatArg());
-			} else {
-				sender.sendSimpleToChat(
-					send.getSendChatId(),
-					Math.toIntExact(send.getSendMessageThreadId()),
-					send.getSendChatArg(),
-					null,
-					null
-				);
+			String[] chatParts = send.getSendChatId().split("\\|", -1);
+			try {
+				long chatId = Long.parseLong(chatParts[0]);
+				if (chatParts.length == 1) {
+					sender.sendSimpleToChat(chatId, send.getSendChatArg());
+				} else if (chatParts.length == 2) {
+					sender.sendSimpleToChat(
+						chatId,
+						Math.toIntExact(Long.parseLong(chatParts[1])),
+						send.getSendChatArg(),
+						null,
+						null
+					);
+				} else {
+					log.error("Cannot send message: chat ID must have the 'chatId|threadId' format.");
+				}
+			} catch (NumberFormatException | ArithmeticException exception) {
+				log.error("Cannot send message: chat ID and thread ID must be numeric.", exception);
 			}
 		}
 		if (send.checkSticker()) {
-			sender.sendStickerToChat(send.getStickerChatId(), send.getStickerChatArg());
+			getDestination(send.getStickerChatId()).ifPresent(destination -> {
+				if (destination.messageThreadId() == null) {
+					sender.sendStickerToChat(destination.chatId(), send.getStickerChatArg());
+				} else {
+					sender.sendStickerToChat(
+						destination.chatId(), destination.messageThreadId(), send.getStickerChatArg(), null, null);
+				}
+			});
 		}
 		if (send.checkImage()) {
-			String imageLink = send.getImageChatArg();
-			Answer<String> imageRes = rest.getImageByLink(imageLink);
-			if (imageRes.ok()) {
-				sender.sendPhotoToChat(send.getImageChatId(), imageRes.answer());
-			} else {
-				log.error(String.format("Cannot get image by link '%s', reason: '%s'.", imageLink, imageRes.error()));
-			}
+			getDestination(send.getImageChatId()).ifPresent(destination -> {
+				String imageLink = send.getImageChatArg();
+				Answer<String> imageRes = rest.getImageByLink(imageLink);
+				if (imageRes.ok()) {
+					if (destination.messageThreadId() == null) {
+						sender.sendPhotoToChat(destination.chatId(), imageRes.answer());
+					} else {
+						sender.sendPhotoToChat(
+							destination.chatId(), destination.messageThreadId(), imageRes.answer(), 0L, 0);
+					}
+				} else {
+					log.error(String.format("Cannot get image by link '%s', reason: '%s'.", imageLink, imageRes.error()));
+				}
+			});
 		}
 
 		return "redirect:/obey/send";
+	}
+
+	private Optional<Destination> getDestination(String value) {
+		String[] parts = value.split("\\|", -1);
+		if (parts.length > 2 || parts[0].isBlank() || (parts.length == 2 && parts[1].isBlank())) {
+			log.error("Cannot send message: chat ID must have the 'chatId|threadId' format.");
+			return Optional.empty();
+		}
+		try {
+			long chatId = Long.parseLong(parts[0]);
+			Integer messageThreadId = (parts.length == 2) ? Math.toIntExact(Long.parseLong(parts[1])) : null;
+			return Optional.of(new Destination(chatId, messageThreadId));
+		} catch (NumberFormatException | ArithmeticException exception) {
+			log.error("Cannot send message: chat ID and thread ID must be numeric.", exception);
+			return Optional.empty();
+		}
 	}
 
 	@RequestMapping(path = "/obey/member")

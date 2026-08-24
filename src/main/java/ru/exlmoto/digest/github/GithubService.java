@@ -170,6 +170,8 @@ public class GithubService {
 				String sha = commit.getSHA1();
 				seenCommits.add(sha);
 
+				log.info(String.format("==> New commit: %s, %s", repo.getFullName(), sha));
+
 				String html = htmlGenerator.generateGithubCommitHtmlReport(repo, commit);
 				newGitHubCommits.add(html);
 			}

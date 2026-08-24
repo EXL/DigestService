@@ -37,6 +37,7 @@ import ru.exlmoto.digest.entity.BotDigestEntity;
 import ru.exlmoto.digest.entity.BotDigestUserEntity;
 import ru.exlmoto.digest.entity.BotSubDigestEntity;
 import ru.exlmoto.digest.entity.BotSubMotofanEntity;
+import ru.exlmoto.digest.entity.BotSubGithubEntity;
 import ru.exlmoto.digest.entity.BotSubGreetingEntity;
 import ru.exlmoto.digest.entity.BotSubCovidEntity;
 import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
@@ -52,6 +53,7 @@ import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.repository.BotSubDigestRepository;
 import ru.exlmoto.digest.repository.BotSubMotofanRepository;
+import ru.exlmoto.digest.repository.BotSubGithubRepository;
 import ru.exlmoto.digest.repository.BotSubGreetingRepository;
 import ru.exlmoto.digest.repository.BotSubCovidRepository;
 import ru.exlmoto.digest.repository.BotSubCovidUaRepository;
@@ -74,6 +76,7 @@ public class DatabaseService {
 	private final BotDigestRepository digestRepository;
 	private final BotDigestUserRepository digestUserRepository;
 	private final BotSubMotofanRepository subMotofanRepository;
+	private final BotSubGithubRepository subGithubRepository;
 	private final BotSubDigestRepository subDigestRepository;
 	private final BotSubGreetingRepository subGreetingRepository;
 	private final BotSubCovidRepository subCovidRepository;
@@ -90,6 +93,7 @@ public class DatabaseService {
 	public DatabaseService(BotDigestRepository digestRepository,
 	                       BotDigestUserRepository digestUserRepository,
 	                       BotSubMotofanRepository subMotofanRepository,
+	                       BotSubGithubRepository subGithubRepository,
 	                       BotSubDigestRepository subDigestRepository,
 	                       BotSubGreetingRepository subGreetingRepository,
 	                       BotSubCovidRepository subCovidRepository,
@@ -105,6 +109,7 @@ public class DatabaseService {
 		this.digestRepository = digestRepository;
 		this.digestUserRepository = digestUserRepository;
 		this.subMotofanRepository = subMotofanRepository;
+		this.subGithubRepository = subGithubRepository;
 		this.subDigestRepository = subDigestRepository;
 		this.subGreetingRepository = subGreetingRepository;
 		this.subCovidRepository = subCovidRepository;
@@ -259,6 +264,26 @@ public class DatabaseService {
 	}
 
 	/* End: BotSubMotofanEntity */
+
+	/* Start: BotSubGithubEntity */
+
+	public List<BotSubGithubEntity> getAllGithubSubs() {
+		return subGithubRepository.findAll();
+	}
+
+	public BotSubGithubEntity getGithubSub(long subscription) {
+		return subGithubRepository.findBotSubGithubEntityBySubscription(subscription);
+	}
+
+	public void deleteGithubSub(long subscription) {
+		subGithubRepository.deleteBotSubGithubEntityBySubscription(subscription);
+	}
+
+	public void saveGithubSub(BotSubGithubEntity githubSub) {
+		subGithubRepository.save(githubSub);
+	}
+
+	/* End: BotSubGithubEntity */
 
 	/* Start: BotSubDigestEntity */
 

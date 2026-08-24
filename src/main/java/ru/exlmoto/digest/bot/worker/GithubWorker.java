@@ -67,15 +67,17 @@ public class GithubWorker {
 			if (!subscribers.isEmpty()) {
 				List<String> githubCommits = githubService.getNewGithubCommitsPosts();
 				if (!githubCommits.isEmpty()) {
+					log.info("=> Start GitHub crawler work. Send commits.");
 					sendNewGithubCommits(githubCommits, subscribers);
+					log.info("=> End GitHub crawler work. Commits were sent.");
 				}
 			} else {
 				log.info("=> GitHub subscriber list is empty, GitHub commits crawler disabled.");
 			}
 		} catch (DataAccessException dae) {
-			log.error("Cannot get GitHub subscribe object from database.", dae);
+			log.error("=> Cannot get GitHub subscribe object from database.", dae);
 		} catch (RuntimeException re) {
-			log.error("Runtime exception on GitHub Commits sender thread.", re);
+			log.error("=> Runtime exception on GitHub Commits sender thread.", re);
 		}
 	}
 

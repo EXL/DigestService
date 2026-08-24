@@ -66,6 +66,7 @@ class BotSenderTest {
 		sender.replyPhoto(0L, 0, "Fake uri", "Fake title");
 		System.out.println("---");
 		sender.sendHtml(0L, "<b>Fake text</b>");
+		sender.sendHtml(0L, 1100646, "<b>Fake text in topic</b>");
 		sender.sendCallbackQueryAnswer("0", "Fake callbackQueryAnswer");
 		System.out.println("---");
 		sender.sendSimpleToChat(0L, "Fake text", 0L, 0);

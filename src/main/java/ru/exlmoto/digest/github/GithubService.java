@@ -175,8 +175,8 @@ public class GithubService {
 					String sha = commits.get(0).sha();
 					seenCommits.add(sha);
 					log.info(String.format(
-						"==> Saved latest SHA for: %s, %s",
-						repoName, CommitTgHtmlGenerator.getShortSha(sha)
+						"==> Saved latest SHA %s for %s",
+						CommitTgHtmlGenerator.getShortSha(sha), repoName
 					));
 				}
 				initializedRepos.add(repoName);

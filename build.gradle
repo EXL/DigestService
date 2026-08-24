@@ -43,6 +43,16 @@ configurations {
 	}
 }
 
+configurations.configureEach {
+	resolutionStrategy.eachDependency { dependencyDetails ->
+		if (dependencyDetails.requested.group == 'com.fasterxml.jackson.core' &&
+				(dependencyDetails.requested.name == 'jackson-databind' ||
+						dependencyDetails.requested.name == 'jackson-core')) {
+			dependencyDetails.useVersion '2.17.2'
+		}
+	}
+}
+
 repositories {
 	mavenCentral()
 }

@@ -41,6 +41,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
 import ru.exlmoto.digest.github.generator.CommitTgHtmlGenerator;
+import ru.exlmoto.digest.github.json.GithubCommit;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.io.BufferedReader;

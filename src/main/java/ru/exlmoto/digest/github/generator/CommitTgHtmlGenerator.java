@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 
 import org.owasp.encoder.Encode;
 
-import ru.exlmoto.digest.github.GithubCommit;
+import ru.exlmoto.digest.github.json.GithubCommit;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 
 @Component

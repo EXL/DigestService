@@ -49,6 +49,11 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
     sudo -u postgres psql -c "CREATE USER digest_user WITH PASSWORD 'digest_password';"
     sudo -u postgres psql -c "CREATE DATABASE digest_database OWNER digest_user;"
     sudo -u postgres psql -d digest_database -c "GRANT ALL ON SCHEMA public TO digest_user;"
+
+    # (Optional) If restoring from a database dump:
+    sudo -u postgres pg_restore -d digest_database --no-owner --role=digest_user -v digest.dump
+    sudo -u postgres vacuumdb --dbname=digest_database --analyze-in-stages
+    sudo -u postgres reindexdb --dbname=digest_database
     ```
 
     *Note: You may need to change the `max_connections` variable in the `/etc/postgresql/*/main/postgresql.conf` file to 300-500 then restart the PostgreSQL service (`sudo systemctl restart postgresql`).*
@@ -56,7 +61,7 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
 3. Test application running:
 
     ```shell script
-    DB_USERNAME=user DB_PASSWORD=password HOST=//digest.exlmoto.ru/ TG_TOKEN=<token> TG_CHAT=<chat id> GH_TOKEN=<token> PROTECT=false java -jar /srv/digest-service.jar
+    DB_USERNAME=user DB_PASSWORD=password HOST=//digest.exlmoto.ru/ TG_TOKEN=<token> TG_CHAT=<chat id> GH_TOKEN=<token> PROTECT=false java -jar /srv/digest-service-current.jar
     ```
 
 4. Daemonize Digest Service application via [systemd](https://github.com/systemd/systemd) Service Manager:
@@ -111,7 +116,24 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
 
     *Note:* You can use the ID of your main Telegram chat as a parameter for `TG_CHAT` property and your host url for `HOST` property instead of "digest.exlmoto.ru" address. Please use the **/subscribe** command to get ID of the Telegram chat.
 
-6. Restart the server after completing the Digest Service configuration and deployment.
+6. Nginx configuration is simple and something like this:
+
+    ```nginx
+    server {
+        listen 80;
+        server_name digest.exlmoto.ru;
+
+        location / {
+            proxy_pass http://127.0.0.1:8080;
+
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    ```
+
+7. Restart the server after completing the Digest Service configuration and deployment.
 
 ## Additional Information
 

@@ -25,63 +25,33 @@ A special control module allows administrators to manage the Digest Service, del
 
 ## Requirements
 
-1. [Java Development Kit 25+](https://www.oracle.com/java/technologies/downloads/) for running and building application (tested with JDK 25).
+1. [Java Development Kit 25+](https://www.oracle.com/java/technologies/downloads/) for running and building application (tested with OpenJDK 25).
 2. [PostgreSQL 18+](https://www.postgresql.org/) database.
 3. [Nginx](https://www.nginx.com/) web server (optional).
 
-## Build & Test & Run
-
-For example, on Linux:
-
-1. Install JDK 25+ using system package manager.
-
-2. Clone the Digest Service source code via Git:
-
-    ```shell script
-    cd ~/Deploy/
-    git clone <this repository url>
-    ```
-
-3. Build standalone JAR package via [Gradle Build Tool](https://gradle.org/) wrapper:
-
-    ```shell script
-    cd ~/Deploy/DigestService
-    ./gradlew clean
-    ./gradlew bootJar
-
-    ./gradlew build # Optional. Run tests, database installation and tokens required.
-    ```
-
-4. Run the Digest Service application (optional, database installation and tokens required):
-
-    ```shell script
-    cd ~/Deploy/DigestService
-    java -jar build/libs/digest-service.jar
-    ```
-
-*Note: You may need to change the `max_connections` variable in the `data/postgresql.conf` file to 300-500 then restart PostgreSQL service for weak VPS.*
-
 ## Deploy
 
-For example, on fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux distribution:
+For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux distribution:
 
 1. Prepare environment:
 
     ```shell script
-    timedatectl set-timezone "Europe/Moscow"
+    sudo timedatectl set-timezone "Europe/Moscow"
 
-    sudo apt install -y default-jdk
-    sudo apt install -y postgresql
+    sudo apt update
+    sudo apt install -y openjdk-25-jdk postgresql
     ```
 
 2. Setup PostgreSQL database engine:
 
     ```shell script
-    # Create database, user, and grant all permissions.
+    # Create database, user, and grant permissions.
     sudo -u postgres psql -c "CREATE USER digest_user WITH PASSWORD 'digest_password';"
     sudo -u postgres psql -c "CREATE DATABASE digest_database OWNER digest_user;"
     sudo -u postgres psql -d digest_database -c "GRANT ALL ON SCHEMA public TO digest_user;"
     ```
+
+    *Note: You may need to change the `max_connections` variable in the `/etc/postgresql/*/main/postgresql.conf` file to 300-500 then restart the PostgreSQL service (`sudo systemctl restart postgresql`).*
 
 3. Test application running:
 
@@ -92,31 +62,33 @@ For example, on fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux di
 4. Daemonize Digest Service application via [systemd](https://github.com/systemd/systemd) Service Manager:
 
     ```shell script
-    cd ~/DigestService/
-    sudo cp util/digest.service /etc/systemd/system
+    sudo cp util/digest.service /etc/systemd/system/
 
-    sudo EDITOR=vim systemctl edit digest
+    # Edit environment overrides
+    sudo systemctl edit digest
+    ```
 
+    In the opened editor, add your environment variables:
+
+    ```ini
     [Service]
-    Environment=HOST=//digest.exlmoto.ru/
-    Environment=TG_TOKEN=<token>
-    Environment=TG_CHAT=<chat id>
-    Environment=DB_USERNAME=user
-    Environment=DB_PASSWORD=password
-    Environment=GH_TOKEN=<token>
-    Environment=PROTECT=false
+    Environment="HOST=//digest.exlmoto.ru/"
+    Environment="TG_TOKEN=<token>"
+    Environment="TG_CHAT=<chat id>"
+    Environment="DB_USERNAME=digest_user"
+    Environment="DB_PASSWORD=digest_password"
+    Environment="GH_TOKEN=<token>"
+    Environment="PROTECT=false"
+    ```
 
-    cat /etc/systemd/system/digest.service.d/override.conf
+    Secure the override file containing sensitive tokens:
+
+    ```shell script
     sudo chmod 0600 /etc/systemd/system/digest.service.d/override.conf
-    cat /etc/systemd/system/digest.service.d/override.conf
 
-    sudo systemctl enable digest
-    sudo systemctl start digest
+    sudo systemctl enable --now digest
 
-    # Useful commands.
-    journalctl -u digest # Show Digest Service logs.
-    journalctl -fu digest # Show Digest Service logs dynamically.
-    sudo systemctl stop digest # Stop Digest Service application.
+    sudo journalctl -u digest -f
     ```
 
 5. Add administrator profiles (optional) and finish deployment:
@@ -124,15 +96,13 @@ For example, on fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux di
     Go to the **/obey/** page with "*password*" password and any username to enter control module. Then add some administrator profiles to the **Member** database table and restart Digest Service with `PROTECT=true` environment variable:
 
     ```shell script
-    sudo EDITOR=vim systemctl edit digest
+    sudo systemctl edit digest
 
     [Service]
     ...
     Environment=PROTECT=true
 
-    cat /etc/systemd/system/digest.service.d/override.conf
     sudo chmod 0600 /etc/systemd/system/digest.service.d/override.conf
-    cat /etc/systemd/system/digest.service.d/override.conf
 
     sudo systemctl restart digest
     ```

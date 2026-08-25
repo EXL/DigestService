@@ -55,7 +55,7 @@ class CommitTgHtmlGeneratorTest {
 		String result = generator.generateGithubCommitHtmlReport("EXL/DigestService", commit);
 
 		assertTrue(result.contains("2026-08-12"));
-		assertTrue(result.contains("<code>Fix &lt;bug&gt;</code>"));
+		assertTrue(result.contains("<pre>Fix &lt;bug&gt;</pre>"));
 		assertTrue(result.contains("1234567"));
 	}
 

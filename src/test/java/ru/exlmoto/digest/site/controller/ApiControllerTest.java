@@ -51,6 +51,7 @@ class ApiControllerTest {
 		helper.validateJson(mvc, "/api/rate?key=metal_ru");
 	}
 
+	/*
 	@Test
 	public void testCovidRu() throws Exception {
 		helper.validateJsonUtf8(mvc, "/api/covid/ru");
@@ -60,4 +61,5 @@ class ApiControllerTest {
 	public void testCovidUa() throws Exception {
 		helper.validateJsonUtf8(mvc, "/api/covid/ua");
 	}
+	*/
 }

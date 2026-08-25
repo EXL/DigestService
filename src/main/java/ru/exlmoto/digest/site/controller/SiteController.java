@@ -191,6 +191,7 @@ public class SiteController {
 		return "index";
 	}
 
+	/*
 	@RequestMapping(path = "/help")
 	public String help(@CookieValue(value = "lang", defaultValue = "ru") String tag, Model model) {
 		setTitleAndTime(model, "site.title.help", Locale.forLanguageTag(tag));
@@ -198,6 +199,7 @@ public class SiteController {
 
 		return "index";
 	}
+	 */
 
 	private void setTime(Model model) {
 		model.addAttribute("time", System.currentTimeMillis());

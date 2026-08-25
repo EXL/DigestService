@@ -10,6 +10,10 @@
 
 - Bot admins can solve CAPTCHA instead of users now.
 
+- Removed help module and obsolete documents.
+
+- Improved send functions, now they can send to threads.
+
 - Added new phones to CAPTCHA quizes.
 
 - Added username or nickname to CAPTCHA question.

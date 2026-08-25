@@ -257,7 +257,7 @@ public class BotSender {
 		sendPhoto(chatId, null, null, uri, null, origChatId, origReplyId);
 	}
 
-	public void sendPhotoToChat(long chatId, int messageThreadId, String uri, long origChatId, int origReplyId) {
+	public void sendPhotoToChat(long chatId, Integer messageThreadId, String uri, long origChatId, int origReplyId) {
 		sendPhoto(chatId, null, messageThreadId, uri, null, origChatId, origReplyId);
 	}
 

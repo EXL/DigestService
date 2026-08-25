@@ -1,6 +1,6 @@
 # Digest Service Project Changes
 
-## Upcoming Release:
+## Upcoming v1.1.0 Release:
 
 - Migrated from CentOS 7 to Ubuntu Server 26.04 LTS
 

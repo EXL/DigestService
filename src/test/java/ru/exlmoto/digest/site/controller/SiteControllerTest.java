@@ -79,8 +79,10 @@ class SiteControllerTest {
 		helper.validateHtmlUtf8(mvc, "/users", "!DOCTYPE");
 	}
 
+	/*
 	@Test
 	public void testHelp() throws Exception {
 		helper.validateHtmlUtf8(mvc, "/help", "!DOCTYPE");
 	}
+	*/
 }

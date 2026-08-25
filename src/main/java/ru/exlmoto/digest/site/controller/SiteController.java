@@ -41,7 +41,7 @@ import ru.exlmoto.digest.site.form.GoToPageForm;
 import ru.exlmoto.digest.site.form.SearchForm;
 import ru.exlmoto.digest.site.model.DigestModel;
 import ru.exlmoto.digest.site.model.PagerModel;
-import ru.exlmoto.digest.site.model.help.Help;
+// import ru.exlmoto.digest.site.model.help.Help;
 import ru.exlmoto.digest.site.util.SiteHelper;
 import ru.exlmoto.digest.util.i18n.LocaleHelper;
 

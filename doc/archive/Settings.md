@@ -1,7 +1,7 @@
 Settings Description
 ====================
 
-See [application.properties](../src/main/resources/application.properties) file for the application properties.
+See [application.properties](../../src/main/resources/application.properties) file for the application properties.
 
 ## Spring Framework Parameters
 
@@ -173,7 +173,7 @@ See [application.properties](../src/main/resources/application.properties) file 
     site.proxy=//digest.exlmoto.ru/proxy/
     ```
 
-    Note: See an example of the proxy server in the [digest.conf](../util/nginx/digest.conf) Nginx config file.
+    Note: See an example of the proxy server in the [digest.conf](../../util/nginx/digest.conf) Nginx config file.
 
 * *site.autolinker-enabled* - Enable or disable an auto-linking via 3rd party library.
 

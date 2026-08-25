@@ -234,9 +234,9 @@ For example, on fresh and clean [CentOS 7](https://wiki.centos.org/Download) Lin
 
 ## Configuration Files
 
-1. [application.properties](src/main/resources/application.properties) is main configuration file for the Digest Service application. Please see [Settings.md](doc/Settings.md) document for descriptions of various Digest Service properties.
-2. [digest.service](util/digest.service) is systemd unit file for the Digest Service application.
-3. [digest.conf](util/nginx/digest.conf) is Nginx web server config file for the Digest Service website.
+1. [application.properties](../../src/main/resources/application.properties) is main configuration file for the Digest Service application. Please see [Settings.md](Settings.md) document for descriptions of various Digest Service properties.
+2. [digest.service](../../util/digest.service) is systemd unit file for the Digest Service application.
+3. [digest.conf](../../util/nginx/digest.conf) is Nginx web server config file for the Digest Service website.
 
 ## Additional Information
 

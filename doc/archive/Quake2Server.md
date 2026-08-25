@@ -83,4 +83,4 @@ rm q2ded.tar
 
 ## Quake II Server Configuration
 
-See [q2ded.cfg](../util/q2ded/q2ded.cfg) configuration file.
+See [q2ded.cfg](../../util/q2ded/q2ded.cfg) configuration file.

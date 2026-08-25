@@ -24,41 +24,46 @@
 
 package ru.exlmoto.digest.site.form;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
+import org.junit.jupiter.api.Test;
 
-public class GithubForm {
-	private static final Pattern REPOSITORY_URL = Pattern.compile(
-		"https://github\\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/?");
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-	private String githubRepos;
-	private String validationError;
+class GithubFormUnitTest {
+	@Test
+	void acceptsRepositoryUrlsCommentsAndBlankLines() {
+		GithubForm form = new GithubForm();
+		form.setGithubRepos(
+			"\n# Public repositories\n" +
+			"https://github.com/EXL/DigestService\n\n" +
+			"https://github.com/MotoFanRu/Hitagi/\n"
+		);
 
-	public String getGithubRepos() {
-		return githubRepos;
+		assertTrue(form.validate());
+		assertNull(form.getValidationError());
 	}
 
-	public void setGithubRepos(String githubRepos) {
-		this.githubRepos = githubRepos;
+	@Test
+	void rejectsNonRepositoryValues() {
+		GithubForm form = new GithubForm();
+		form.setGithubRepos(
+			"https://github.com/EXL\n" +
+			"http://github.com/EXL/DigestService\n" +
+			"random text"
+		);
+
+		assertFalse(form.validate());
+		assertTrue(form.getValidationError().contains("Line 1:"));
+		assertTrue(form.getValidationError().contains("Line 2:"));
+		assertTrue(form.getValidationError().contains("Line 3:"));
 	}
 
-	public boolean validate() {
-		List<String> errors = new ArrayList<>();
-		if (githubRepos != null) {
-			String[] lines = githubRepos.split("\\R", -1);
-			for (int index = 0; index < lines.length; index++) {
-				String line = lines[index].trim();
-				if (!line.isEmpty() && !line.startsWith("#") && !REPOSITORY_URL.matcher(line).matches()) {
-					errors.add(String.format("Line %d: %s", index + 1, line));
-				}
-			}
-		}
-		validationError = errors.isEmpty() ? null : String.join("\n", errors);
-		return validationError == null;
-	}
+	@Test
+	void acceptsBlankRepositoryList() {
+		GithubForm form = new GithubForm();
+		form.setGithubRepos("\n # disabled\n");
 
-	public String getValidationError() {
-		return validationError;
+		assertTrue(form.validate());
 	}
 }

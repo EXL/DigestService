@@ -377,25 +377,30 @@ public class ObeyController {
 		model.addAttribute("sub_github", "true");
 		model.addAttribute("chatList", fillSubGithubList());
 		model.addAttribute("subscriberForm", subscriberForm);
-
-		return "obey";
-	}
-
-	@RequestMapping(path = "/obey/github/repos")
-	public String obeyGithubRepos(GithubForm githubForm, Model model) {
-		model.addAttribute("time", System.currentTimeMillis());
+		GithubForm githubForm = new GithubForm();
 		service.getGithubRepos().ifPresent(repos -> githubForm.setGithubRepos(repos.getReposList()));
 		model.addAttribute("github", githubForm);
+
 		return "obey";
 	}
 
 	@PostMapping(path = "/obey/github/repos/edit")
-	public String obeyGithubReposEdit(GithubForm githubForm) {
+	public String obeyGithubReposEdit(GithubForm githubForm, SubscriberForm subscriberForm, Model model) {
+		if (!githubForm.validate()) {
+			log.error("Cannot save GitHub repositories:\n{}", githubForm.getValidationError());
+			model.addAttribute("time", System.currentTimeMillis());
+			subscriberForm.setShowName(true);
+			model.addAttribute("sub_github", "true");
+			model.addAttribute("chatList", fillSubGithubList());
+			model.addAttribute("subscriberForm", subscriberForm);
+			model.addAttribute("github", githubForm);
+			return "obey";
+		}
 		GithubReposEntity repos = service.getGithubRepos()
 			.orElseGet(() -> new GithubReposEntity(GithubReposEntity.REPOS_ROW));
 		repos.setReposList(githubForm.getGithubRepos());
 		service.saveGithubRepos(repos);
-		return "redirect:/obey/github/repos";
+		return "redirect:/obey/sub-github";
 	}
 
 	@PostMapping(path = "/obey/sub-github/edit")

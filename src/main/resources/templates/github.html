@@ -7,6 +7,7 @@
 				<label for="github-repos-field" th:text="#{site.obey.github.repos}">Repositories</label>
 				<textarea id="github-repos-field" class="send-text-field" rows="12" cols="80"
 				          th:field="*{githubRepos}" th:placeholder="#{site.obey.github.repos.placeholder}"></textarea>
+				<p th:if="${github.validationError != null}" th:text="${github.validationError}">Invalid repository list</p>
 				<p><input class="button" type="submit" value="Save" th:value="#{site.obey.content.action.save}"/></p>
 			</form>
 		</div>

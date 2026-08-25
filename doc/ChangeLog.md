@@ -2,7 +2,7 @@
 
 ## Upcoming v1.1.0 Release:
 
-- Migrated from CentOS 7 to Ubuntu Server 26.04 LTS
+- Migrated from CentOS 7 to Ubuntu Server 26.04 LTS distro.
 
 - Added GitHub repository commit crawler.
 
@@ -26,9 +26,11 @@
 
 - Fixed MotoFan.Ru forum post HTML escaping.
 
-- Increase http body size limit from 5 MiB to 15 MiB.
+- Increased http body size limit from 5 MiB to 15 MiB.
 
-- Fix MotoFan.Ru post HTML escaping.
+- Fixed MotoFan.Ru post HTML escaping.
+
+- Added GitHub Actions CI building.
 
 - Updated libraries and frameworks:
 

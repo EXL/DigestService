@@ -577,25 +577,14 @@ public class ObeyController {
 	@PostMapping(path = "/obey/send/chat")
 	public String obeySendChat(SendForm send) {
 		if (send.checkSend()) {
-			String[] chatParts = send.getSendChatId().split("\\|", -1);
-			try {
-				long chatId = Long.parseLong(chatParts[0]);
-				if (chatParts.length == 1) {
-					sender.sendSimpleToChat(chatId, send.getSendChatArg());
-				} else if (chatParts.length == 2) {
-					sender.sendSimpleToChat(
-						chatId,
-						Math.toIntExact(Long.parseLong(chatParts[1])),
-						send.getSendChatArg(),
-						null,
-						null
-					);
+			getDestination(send.getSendChatId()).ifPresent(destination -> {
+				if (destination.messageThreadId() == null) {
+					sender.sendSimpleToChat(destination.chatId(), send.getSendChatArg());
 				} else {
-					log.error("Cannot send message: chat ID must have the 'chatId|threadId' format.");
+					sender.sendSimpleToChat(
+						destination.chatId(), destination.messageThreadId(), send.getSendChatArg(), null, null);
 				}
-			} catch (NumberFormatException | ArithmeticException exception) {
-				log.error("Cannot send message: chat ID and thread ID must be numeric.", exception);
-			}
+			});
 		}
 		if (send.checkSticker()) {
 			getDestination(send.getStickerChatId()).ifPresent(destination -> {
@@ -628,7 +617,7 @@ public class ObeyController {
 	}
 
 	private Optional<Destination> getDestination(String value) {
-		String[] parts = value.split("\\|", -1);
+		String[] parts = value.trim().split("\\|", -1);
 		if (parts.length > 2 || parts[0].isBlank() || (parts.length == 2 && parts[1].isBlank())) {
 			log.error("Cannot send message: chat ID must have the 'chatId|threadId' format.");
 			return Optional.empty();

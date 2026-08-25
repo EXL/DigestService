@@ -130,7 +130,9 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-Port $server_port;
         }
+    }
     ```
 
 7. Restart the server after completing the Digest Service configuration and deployment.

@@ -23,5 +23,5 @@ Telegram digest bot for group chats. Bot records all messages with the #digest t
 ## About
 
 ```
-Telegram digest bot for groups. Written by EXL (@exlmoto), © 2015-2020. Source: https://github.com/EXL/DigestService
+Telegram digest bot for groups. Written by EXL (@exlmoto), © 2015-2026. Source: https://github.com/EXL/DigestService
 ```

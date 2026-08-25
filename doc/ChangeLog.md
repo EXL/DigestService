@@ -1,16 +1,16 @@
-# Digest Service Project Changes
+# Digest Service Changelog
+
+High-level revision history and release notes for Digest Service.
 
 ## Upcoming v1.1.0 Release:
 
-- Migrated from CentOS 7 to Ubuntu Server 26.04 LTS distro.
+- Migrated from CentOS 7 to Ubuntu Server 26 distro.
 
 - Added GitHub repository commit crawler.
 
 - Used MOEX and Bitpay instead of RBC.ru for quotes (suggestion by @Siesta).
 
 - Bot admins can solve CAPTCHA instead of users now.
-
-- Removed help module and obsolete documents.
 
 - Improved send functions, now they can send to threads.
 
@@ -20,7 +20,7 @@
 
 - Fixed digest editing bug with reactions.
 
-- Fixed race condtion in CAPTCHA timer.
+- Fixed race condition in CAPTCHA timer.
 
 - Fixed parsing links with at (@) symbol.
 
@@ -28,13 +28,14 @@
 
 - Increased http body size limit from 5 MiB to 15 MiB.
 
-- Fixed MotoFan.Ru post HTML escaping.
-
 - Added GitHub Actions CI building.
+
+- Removed help module and obsolete documents.
 
 - Updated libraries and frameworks:
 
-    - Java 1.8.0_412 (Java 8) => 25.0.3 (Java 25)
+    - CentOS 7.9.2009 => Ubuntu Server 26.04.1 LTS
+    - Java 1.8.0_412 (Java 8) => 25.0.3 (Java 25 LTS)
     - PostgreSQL 9.2.24 => PostgreSQL 18.6
     - Gradle 7.4.1 => 9.5.1
     - Spring Boot 2.6.7 => 4.1.1
@@ -46,6 +47,12 @@
     - org.owasp.encoder:encoder 1.2.3 => 1.4.0
     - org.apache.poi:poi 5.2.2 => 5.5.1
     - org.apache.poi:poi-ooxml 5.2.2 => 5.5.1
+
+### Technical Notes:
+
+```bash
+git log --pretty=oneline --abbrev-commit | wc -l
+```
 
 ## v1.0.2, 27-Apr-2022, Patch Release:
 

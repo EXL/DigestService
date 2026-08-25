@@ -2,27 +2,27 @@ name: Build
 
 on:
   push:
-    # tags:
-    #  - '**'
-    branches:
-       - '**'
+    tags:
+      - '**'
+    # branches:
+    #   - '**'
 
 jobs:
   build:
     runs-on: ubuntu-26.04
 
     steps:
-      - name: Check out source
+      - name: Check out source code
         uses: actions/checkout@v7
 
-      - name: Set up Java
+      - name: Set up Java environment
         uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '25'
           cache: gradle
 
-      - name: Build JAR
+      - name: Build standalone JAR
         run: ./gradlew bootJar
 
       - name: Upload JAR artifact

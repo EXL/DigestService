@@ -13,6 +13,7 @@
 					<p><a href="/obey/sub-digest">Digest Sub Digest</a></p>
 					<p><a href="/obey/sub-motofan">Digest Sub MotoFan</a></p>
 					<p><a href="/obey/sub-github">Digest Sub GitHub</a></p>
+					<p><a href="/obey/github/repos" th:text="#{site.obey.github.repos}">GitHub Repositories</a></p>
 					<p><a href="/obey/sub-greeting">Digest Sub Greeting</a></p>
 					<p><a href="/obey/sub-covid">Digest Sub Covid</a></p>
 					<p><a href="/obey/sub-covid-ua">Digest Sub Covid Ua</a></p>
@@ -124,6 +125,9 @@
 					<div th:if="${sub_github != null}">
 						<p><a href="/obey/github/update" th:text="#{site.obey.github.send}">Send New GitHub Commits</a></p>
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.github},'sub-github')}"></div>
+					</div>
+					<div th:if="${github != null}">
+						<div th:replace="~{github :: github-form}"></div>
 					</div>
 					<div th:if="${sub_greeting != null}">
 						<div th:replace="~{subscriber :: subscriber-form(#{site.obey.subscribe.greeting},'sub-greeting')}"></div>

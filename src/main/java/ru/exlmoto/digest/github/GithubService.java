@@ -42,6 +42,8 @@ import org.thymeleaf.util.StringUtils;
 
 import ru.exlmoto.digest.github.generator.CommitTgHtmlGenerator;
 import ru.exlmoto.digest.github.json.GithubCommit;
+import ru.exlmoto.digest.entity.GithubReposEntity;
+import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.util.filter.FilterHelper;
 
 import java.io.BufferedReader;
@@ -55,6 +57,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -73,17 +76,21 @@ public class GithubService {
 	private final List<String> targetReposList = new ArrayList<>();
 	private final Map<String, Set<String>> repoSeenCommits = new HashMap<>();
 	private final Set<String> initializedRepos = new HashSet<>();
+	private boolean initialRepositoriesLoaded;
 
 	private final RestClient restClient;
+	private final DatabaseService databaseService;
 	private final FilterHelper filter;
 	private final CommitTgHtmlGenerator htmlGenerator;
 
 	public GithubService(FilterHelper filter,
 	                     CommitTgHtmlGenerator htmlGenerator,
+	                     DatabaseService databaseService,
 	                     @Value("${github.oauth.token:}") String githubToken,
 	                     @Value("${rest.timeout-sec:10}") int timeoutSec) {
 		this.filter = filter;
 		this.htmlGenerator = htmlGenerator;
+		this.databaseService = databaseService;
 
 		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
 		requestFactory.setConnectTimeout(Duration.ofSeconds(timeoutSec));
@@ -106,29 +113,76 @@ public class GithubService {
 
 	@PostConstruct
 	public void setUp() {
-		loadRepositories();
+		initializeRepositories();
 	}
 
-	private void loadRepositories() {
+	private void initializeRepositories() {
+		try {
+			GithubReposEntity repos = databaseService.getGithubRepos().orElse(null);
+			if (repos == null || repos.getReposList() == null) {
+				GithubReposEntity initialRepos = (repos != null) ? repos : new GithubReposEntity(GithubReposEntity.REPOS_ROW);
+				initialRepos.setReposList(readRepositoriesFile());
+				databaseService.saveGithubRepos(initialRepos);
+				log.info("==> Initialized GitHub repositories list in database.");
+			}
+		} catch (Exception e) {
+			log.error("Failed to initialize GitHub repositories list", e);
+		}
+	}
+
+	private String readRepositoriesFile() {
+		StringBuilder repositories = new StringBuilder();
 		try (BufferedReader reader = new BufferedReader(
 				new InputStreamReader(githubRepos.getInputStream(), StandardCharsets.UTF_8)
 			)) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				line = filter.strip(line);
-				if (!StringUtils.isEmpty(line) && !line.startsWith("#")) {
-					// Converts "https://github.com/EXL/DigestService" -> "EXL/DigestService"
-					String repoPath =
-						line
-							.replace("https://github.com/", "")
-							.replaceAll("/$", "");
-					targetReposList.add(repoPath);
-					repoSeenCommits.put(repoPath, createRingBuffer());
-				}
+				repositories.append(line).append('\n');
 			}
 		} catch (Exception e) {
 			log.error("Failed to read github-repos.txt file", e);
 		}
+		return repositories.toString().stripTrailing();
+	}
+
+	private void reloadRepositories() {
+		Optional<GithubReposEntity> repos = databaseService.getGithubRepos();
+		if (repos.isEmpty()) {
+			return;
+		}
+
+		List<String> previousRepos = new ArrayList<>(targetReposList);
+		List<String> configuredRepos = parseRepositories(repos.get().getReposList());
+		targetReposList.clear();
+		targetReposList.addAll(configuredRepos);
+		repoSeenCommits.keySet().retainAll(configuredRepos);
+		initializedRepos.retainAll(configuredRepos);
+
+		for (String repoName : configuredRepos) {
+			repoSeenCommits.computeIfAbsent(repoName, ignored -> createRingBuffer());
+			if (initialRepositoriesLoaded && !previousRepos.contains(repoName)) {
+				initializedRepos.add(repoName);
+			}
+		}
+		initialRepositoriesLoaded = true;
+	}
+
+	private List<String> parseRepositories(String repositories) {
+		if (StringUtils.isEmpty(repositories)) {
+			return List.of();
+		}
+
+		List<String> result = new ArrayList<>();
+		for (String line : repositories.split("\\R")) {
+			line = filter.strip(line);
+			if (!StringUtils.isEmpty(line) && !line.startsWith("#")) {
+				String repoPath = line
+					.replace("https://github.com/", "")
+					.replaceAll("/$", "");
+				result.add(repoPath);
+			}
+		}
+		return result;
 	}
 
 	private Set<String> createRingBuffer() {
@@ -141,9 +195,10 @@ public class GithubService {
 	}
 
 	public List<String> getNewGithubCommitsPosts() {
+		reloadRepositories();
 		List<String> newGitHubCommitsPosts = new ArrayList<>();
 		if (targetReposList.isEmpty()) {
-			log.error("=> GitHub repositories list file is empty. Cannot get GitHub commits.");
+			log.info("=> GitHub repositories list is empty. GitHub commits crawler disabled.");
 			return new ArrayList<>();
 		}
 

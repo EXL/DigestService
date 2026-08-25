@@ -1,15 +1,2 @@
-https://github.com/MotoFanRu/.github
-https://github.com/MotoFanRu/P2K-ELF-SDK
-https://github.com/MotoFanRu/Hitagi
-https://github.com/MotoFanRu/IDA_Decompiler_M-CORE
-https://github.com/MotoFanRu/MotoMAGX_EZX_Vault
-https://github.com/MotoFanRu/ElfPack3
-
-https://github.com/EXL/DigestService
-https://github.com/EXL/FlashTerminal
-https://github.com/EXL/P2kDoom
-https://github.com/EXL/P2kElfs
 https://github.com/EXL/2048
-
-https://github.com/Siesta/apmdrv
-https://github.com/Siesta/ida-plugins
+https://github.com/EXL/DigestService

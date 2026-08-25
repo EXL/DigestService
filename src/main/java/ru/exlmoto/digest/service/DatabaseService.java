@@ -49,6 +49,7 @@ import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
 import ru.exlmoto.digest.entity.ExchangeRateMoexEntity;
 import ru.exlmoto.digest.entity.MemberEntity;
 import ru.exlmoto.digest.entity.FlatSetupEntity;
+import ru.exlmoto.digest.entity.GithubReposEntity;
 import ru.exlmoto.digest.repository.BotDigestRepository;
 import ru.exlmoto.digest.repository.BotDigestUserRepository;
 import ru.exlmoto.digest.repository.BotSubDigestRepository;
@@ -65,6 +66,7 @@ import ru.exlmoto.digest.repository.ExchangeRateRbcRepository;
 import ru.exlmoto.digest.repository.ExchangeRateMoexRepository;
 import ru.exlmoto.digest.repository.MemberRepository;
 import ru.exlmoto.digest.repository.FlatSetupRepository;
+import ru.exlmoto.digest.repository.GithubReposRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -89,6 +91,7 @@ public class DatabaseService {
 	private final ExchangeRateMoexRepository exchangeRateMoexRepository;
 	private final MemberRepository memberRepository;
 	private final FlatSetupRepository flatSetupRepository;
+	private final GithubReposRepository githubReposRepository;
 
 	public DatabaseService(BotDigestRepository digestRepository,
 	                       BotDigestUserRepository digestUserRepository,
@@ -105,7 +108,8 @@ public class DatabaseService {
 	                       ExchangeRateRbcRepository exchangeRateRbcRepository,
 	                       ExchangeRateMoexRepository exchangeRateMoexRepository,
 	                       MemberRepository memberRepository,
-	                       FlatSetupRepository flatSetupRepository) {
+	                       FlatSetupRepository flatSetupRepository,
+	                       GithubReposRepository githubReposRepository) {
 		this.digestRepository = digestRepository;
 		this.digestUserRepository = digestUserRepository;
 		this.subMotofanRepository = subMotofanRepository;
@@ -122,6 +126,7 @@ public class DatabaseService {
 		this.exchangeRateMoexRepository = exchangeRateMoexRepository;
 		this.memberRepository = memberRepository;
 		this.flatSetupRepository = flatSetupRepository;
+		this.githubReposRepository = githubReposRepository;
 	}
 
 	/* Start: BotDigestEntity */
@@ -525,4 +530,16 @@ public class DatabaseService {
 	}
 
 	/* End: FlatSetupEntity */
+
+	/* Start: GithubReposEntity */
+
+	public Optional<GithubReposEntity> getGithubRepos() {
+		return githubReposRepository.getSetupGithub();
+	}
+
+	public void saveGithubRepos(GithubReposEntity repos) {
+		githubReposRepository.save(repos);
+	}
+
+	/* End: GithubReposEntity */
 }

@@ -59,6 +59,7 @@ import ru.exlmoto.digest.entity.BotSubCovidUaEntity;
 import ru.exlmoto.digest.entity.BotSubRateEntity;
 import ru.exlmoto.digest.entity.MemberEntity;
 import ru.exlmoto.digest.entity.FlatSetupEntity;
+import ru.exlmoto.digest.entity.GithubReposEntity;
 import ru.exlmoto.digest.exchange.ExchangeService;
 import ru.exlmoto.digest.service.DatabaseService;
 import ru.exlmoto.digest.site.configuration.SiteConfiguration;
@@ -71,6 +72,7 @@ import ru.exlmoto.digest.site.form.SetupForm;
 import ru.exlmoto.digest.site.form.UserForm;
 import ru.exlmoto.digest.site.form.SendForm;
 import ru.exlmoto.digest.site.form.FlatForm;
+import ru.exlmoto.digest.site.form.GithubForm;
 import ru.exlmoto.digest.site.model.PagerModel;
 import ru.exlmoto.digest.site.model.chat.Chat;
 import ru.exlmoto.digest.site.model.digest.Digest;
@@ -377,6 +379,23 @@ public class ObeyController {
 		model.addAttribute("subscriberForm", subscriberForm);
 
 		return "obey";
+	}
+
+	@RequestMapping(path = "/obey/github/repos")
+	public String obeyGithubRepos(GithubForm githubForm, Model model) {
+		model.addAttribute("time", System.currentTimeMillis());
+		service.getGithubRepos().ifPresent(repos -> githubForm.setGithubRepos(repos.getReposList()));
+		model.addAttribute("github", githubForm);
+		return "obey";
+	}
+
+	@PostMapping(path = "/obey/github/repos/edit")
+	public String obeyGithubReposEdit(GithubForm githubForm) {
+		GithubReposEntity repos = service.getGithubRepos()
+			.orElseGet(() -> new GithubReposEntity(GithubReposEntity.REPOS_ROW));
+		repos.setReposList(githubForm.getGithubRepos());
+		service.saveGithubRepos(repos);
+		return "redirect:/obey/github/repos";
 	}
 
 	@PostMapping(path = "/obey/sub-github/edit")

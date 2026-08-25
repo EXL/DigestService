@@ -6,7 +6,7 @@
 
 - Added GitHub repository commit crawler.
 
-- Used MOEX and Bitpay instead of RBC.ru for quotes.
+- Used MOEX and Bitpay instead of RBC.ru for quotes (suggestion by @Siesta).
 
 - Bot admins can solve CAPTCHA instead of users now.
 

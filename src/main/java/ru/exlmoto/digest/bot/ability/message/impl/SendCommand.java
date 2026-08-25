@@ -84,8 +84,8 @@ public class SendCommand extends MessageAdminAbility {
 		Destination destination = destinationRes.answer();
 		long chatId = destination.chatId();
 		Integer messageThreadId = destination.messageThreadId();
-		text = text.replaceFirst(commandWithArgs[0], "")
-			.replaceFirst(commandWithArgs[1], "").trim();
+		text = text.substring(commandWithArgs[0].length()).trim();
+		text = text.substring(commandWithArgs[1].length()).trim();
 
 		switch (command) {
 			case send: {

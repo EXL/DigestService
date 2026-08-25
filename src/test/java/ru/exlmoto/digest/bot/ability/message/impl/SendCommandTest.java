@@ -81,7 +81,7 @@ class SendCommandTest {
 		onCmd("/send 87336977 text");
 		onCmd("/send 87336977 text text");
 		onCmd("/send 87336977|1100646 text");
-		onCmd("/send -1001148683293|1100646 text text");
+		onCmd("/send -1001148683293|7394 test message");
 		onCmd("/send -1001148683293 text");
 		onCmd("/send -1001148683293 text text");
 		System.out.println("=== END testSendCommand() ===");

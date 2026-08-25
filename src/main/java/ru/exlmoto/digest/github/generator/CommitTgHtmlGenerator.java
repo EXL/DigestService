@@ -77,18 +77,16 @@ public class CommitTgHtmlGenerator {
 			String commitMessage = Encode.forHtml(commit.commit().message().trim());
 
 			return String.format(
-				"<b>%s</b>\n" +
+				"<b>%s</b>\n\n" +
+				"%s <b>%s</b> @ <a href=\"%s\">%s</a>\n" +
 				"<i>%s %s</i>\n\n" +
-				"%s <b>%s</b> @ <a href=\"%s\">%s</a>\n\n" +
-				"<code>%s</code>\n\n" +
-				"%s\n" +
-				"<b><a href=\"%s\">%s</a></b>",
+				"<pre>%s</pre>\n\n" +
+				"%s <b><a href=\"%s\">%s</a></b>",
 				locale.i18n("github.new.commit"),
-				locale.i18n("github.datetime"), commitDate,
 				locale.i18n("github.author"), authorFormatted, commitUrl, shaShort,
+				locale.i18n("github.datetime"), commitDate,
 				commitMessage,
-				locale.i18n("github.project"),
-				repoUrl, repoUrl
+				locale.i18n("github.project"), repoUrl, repoUrl
 			);
 		} catch (Exception e) {
 			log.error(String.format("==> Cannot get repo/commit information for '%s'", repoName), e);

@@ -2,9 +2,9 @@
 
 High-level revision history and release notes for Digest Service.
 
-## Upcoming v1.1.0 Release:
+## v1.1.0, 28-Aug-2026, Minor Release:
 
-- Migrated from CentOS 7 to Ubuntu Server 26 distro.
+- Migrated from CentOS 7 to Ubuntu Server 26 Linux distro.
 
 - Added GitHub repository commit crawler.
 
@@ -52,6 +52,26 @@ High-level revision history and release notes for Digest Service.
 
 ```bash
 git log --pretty=oneline --abbrev-commit | wc -l
+1263
+
+$ cloc src/main/
+     202 text files.
+     202 unique files.
+      21 files ignored.
+
+github.com/AlDanial/cloc v 2.06  T=0.20 s (1029.4 files/s, 116317.5 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Java                           173           2997           4260          12721
+Properties                       4             30             44           1065
+HTML                            19              0             20           1005
+CSS                              3              7              9            500
+YAML                             1              0              0            160
+Text                             2              1              0              6
+-------------------------------------------------------------------------------
+SUM:                           202           3035           4333          15457
+-------------------------------------------------------------------------------
 ```
 
 ## v1.0.2, 27-Apr-2022, Patch Release:

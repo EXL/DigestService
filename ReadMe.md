@@ -39,7 +39,8 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
     sudo timedatectl set-timezone "Europe/Moscow"
 
     sudo apt update
-    sudo apt install -y openjdk-25-jdk postgresql
+    sudo apt install -y openjdk-25-jdk postgresql nginx
+    # Alternative: openjdk-25-jre-headless
     ```
 
 2. Setup PostgreSQL database engine:
@@ -51,7 +52,7 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
     sudo -u postgres psql -d digest_database -c "GRANT ALL ON SCHEMA public TO digest_user;"
 
     # (Optional) If restoring from a database dump:
-    sudo -u postgres pg_restore -d digest_database --no-owner --role=digest_user -v digest.dump
+    sudo -u postgres pg_restore -d digest_database --no-owner --role=digest_user -v /tmp/digest_psql.dump
     sudo -u postgres vacuumdb --dbname=digest_database --analyze-in-stages
     sudo -u postgres reindexdb --dbname=digest_database
     ```
@@ -83,7 +84,7 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
     Environment="DB_USERNAME=digest_user"
     Environment="DB_PASSWORD=digest_password"
     Environment="GH_TOKEN=<token>"
-    Environment="PROTECT=false"
+    Environment="PROTECT=true"
     ```
 
     Secure the override file containing sensitive tokens:
@@ -133,6 +134,11 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
             proxy_set_header X-Forwarded-Port $server_port;
         }
     }
+    ```
+
+    ```
+    sudo cp util/nginx/digest.exlmoto.ru /etc/nginx/sites-available/
+    sudo ln -s /etc/nginx/sites-available/digest.exlmoto.ru /etc/nginx/sites-enabled/
     ```
 
 7. Restart the server after completing the Digest Service configuration and deployment.

@@ -1,6 +1,6 @@
 server {
 	listen 80;
-	server_name baat.exlmoto.ru baat.z-lab.me;
+	server_name digest.exlmoto.ru;
 
 	location / {
 		proxy_pass http://127.0.0.1:8080;

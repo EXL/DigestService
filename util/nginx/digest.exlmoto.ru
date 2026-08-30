@@ -10,4 +10,14 @@ server {
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header X-Forwarded-Proto $scheme;
 	}
+
+	# Reverse proxy.
+	# To avoid stupid RKN blocks.
+	# See additional information: http://www.nginx-discovery.com/2011/05/day-51-proxypass-and-resolver.html
+	location ^~ /proxy {
+		resolver 8.8.8.8;
+		location ~ "^/proxy/(.*)/(.*)" {
+			proxy_pass https://$1/$2;
+		}
+	}
 }

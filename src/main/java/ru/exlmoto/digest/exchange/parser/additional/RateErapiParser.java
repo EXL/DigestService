@@ -199,7 +199,6 @@ public class RateErapiParser extends GeneralParser {
 		valuesMap.forEach((k, v) -> log.info(logHelper(v.name, v.date, v.sell)));
 	}
 
-
 	private String logHelper(String name, String date, String sell) {
 		return "===> " + name + ", Date: " + date + ", Sell: " + sell;
 	}

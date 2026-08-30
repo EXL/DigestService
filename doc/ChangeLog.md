@@ -2,6 +2,10 @@
 
 High-level revision history and release notes for Digest Service.
 
+## Next v1.1.1 Release:
+
+- Used ER API instead of MOEX.
+
 ## v1.1.0, 28-Aug-2026, Minor Release:
 
 - Migrated from CentOS 7 to Ubuntu Server 26 Linux distro.

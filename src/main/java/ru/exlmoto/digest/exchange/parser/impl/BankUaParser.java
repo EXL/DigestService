@@ -70,8 +70,13 @@ public class BankUaParser extends BankParser {
 		usd = parseValue(document, "840");
 		eur = parseValue(document, "978");
 		kzt = parseValue(document, "398");
-		byn = parseValue(document, "933");
-		rub = parseValue(document, "643");
+
+		// Fix exceptions.
+		// byn = parseValue(document, "933");
+		// rub = parseValue(document, "643");
+		byn = new BigDecimal("0.0");
+		rub = new BigDecimal("0.0");
+
 		cny = parseValue(document, "156");
 		gbp = parseValue(document, "826");
 	}

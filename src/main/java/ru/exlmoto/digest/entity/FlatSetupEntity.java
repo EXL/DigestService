@@ -46,13 +46,13 @@ public class FlatSetupEntity {
 	@Column(length = 4095)
 	private String apiCianUrl;
 
-	@Column(length = 4095)
+	@Column(name = "api_n1_url", length = 4095)
 	private String apiN1Url;
 
 	@Column(length = 4095)
 	private String viewCianUrl;
 
-	@Column(length = 4095)
+	@Column(name = "view_n1_url", length = 4095)
 	private String viewN1Url;
 
 	public FlatSetupEntity() {

@@ -22,71 +22,16 @@
  * SOFTWARE.
  */
 
-package ru.exlmoto.digest.entity;
+package ru.exlmoto.digest.repository;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import org.springframework.data.repository.CrudRepository;
 
-@Entity
-@Table(name = "exchange_rate_moex")
-public class ExchangeRateMoexEntity {
-	public static final int MOEX_ROW_USD_EXCH = 1;
-	public static final int MOEX_ROW_EUR_EXCH = 2;
-	public static final int MOEX_ROW_EUR_USD  = 3;
+import ru.exlmoto.digest.entity.ExchangeRateErapiEntity;
 
-	@Id
-	private int id;
+import java.util.Optional;
 
-	@Column(nullable = false)
-	private String date;
-
-	@Column(nullable = false)
-	private String sale;
-
-	@Column(nullable = false)
-	private String prev;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public String getSale() {
-		return sale;
-	}
-
-	public void setSale(String sale) {
-		this.sale = sale;
-	}
-
-	public String getPrev() {
-		return prev;
-	}
-
-	public void setPrev(String prev) {
-		this.prev = prev;
-	}
-
-	@Override
-	public String toString() {
-		return
-			"ExchangeRateMoexEntity{id=" + id +
-			", date=" + date +
-			", sale=" + sale +
-			", prev=" + prev +
-			"}";
+public interface ExchangeRateErapiRepository extends CrudRepository<ExchangeRateErapiEntity, Integer> {
+	default Optional<ExchangeRateErapiEntity> getQuotes(int index) {
+		return findById(index);
 	}
 }

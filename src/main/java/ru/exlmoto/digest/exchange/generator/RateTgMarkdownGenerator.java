@@ -33,6 +33,7 @@ import org.springframework.stereotype.Component;
 import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
 import ru.exlmoto.digest.entity.ExchangeRateMoexEntity;
+import ru.exlmoto.digest.entity.ExchangeRateErapiEntity;
 import ru.exlmoto.digest.exchange.generator.helper.GeneratorHelper;
 import ru.exlmoto.digest.exchange.key.ExchangeKey;
 import ru.exlmoto.digest.service.DatabaseService;
@@ -95,7 +96,11 @@ public class RateTgMarkdownGenerator {
 
 		// Disable RBC.ru and use MOEX instead, because RBC.ru closed their public API.
 //		report += bankRuRbcReport() + "\n";
-		report += bankRuMoexReport() + "\n";
+
+		// Disable MOEX and use ERAPI instead, because MOEX and RKN are shit.
+//		report += bankRuMoexReport() + "\n";
+
+		report += bankRuErapiReport() + "\n";
 
 		report += bankRuAliReport() + "\n";
 
@@ -135,6 +140,7 @@ public class RateTgMarkdownGenerator {
 		return report;
 	}
 
+	@SuppressWarnings("unused")
 	private String bankRuMoexReport() {
 		String report = "";
 
@@ -175,6 +181,57 @@ public class RateTgMarkdownGenerator {
 	}
 
 	private String bankRuMoexReportAux(ExchangeRateMoexEntity entity, String label, boolean diff) {
+		String report = "";
+		if (entity != null) {
+			report += label + " " + helper.addLeadingSigns(entity.getSale(), " ", 10) +
+				((diff) ?
+					filterDifference(new BigDecimal(entity.getPrev()), new BigDecimal(entity.getSale()), 9) :
+					".")
+				+ "\n";
+		}
+		return report;
+	}
+
+	private String bankRuErapiReport() {
+		String report = "";
+
+		ExchangeRateErapiEntity usdExchEntity = service.getErapiQuotes(ExchangeRateErapiEntity.ERAPI_ROW_USD_EXCH).orElse(null);
+		ExchangeRateEntity bitcoinEntity = service.getBitcoin().orElse(null);
+
+		if (usdExchEntity != null) {
+			report += String.format(locale.i18n("exchange.erapi.header"), usdExchEntity.getDate()) + "\n";
+			report += "```\n";
+			report += bankRuErapiReportAux(service.getErapiQuotes(ExchangeRateErapiEntity.ERAPI_ROW_USD_EXCH).orElse(null),
+				locale.i18n("exchange.erapi.usd.exch"), true);
+			report += bankRuErapiReportAux(service.getErapiQuotes(ExchangeRateErapiEntity.ERAPI_ROW_EUR_EXCH).orElse(null),
+				locale.i18n("exchange.erapi.eur.exch"), true);
+			report += bankRuErapiReportAux(service.getErapiQuotes(ExchangeRateErapiEntity.ERAPI_ROW_EUR_USD).orElse(null),
+				locale.i18n("exchange.erapi.usd.eur"), true);
+			if (bitcoinEntity != null) {
+				report += String.format(
+					"%s %s%s\n",
+					locale.i18n("exchange.bitpay.usd.btc"),
+					String.format(Locale.ROOT, "%10.2f", bitcoinEntity.getUsd()),
+					filterStringDifference(
+						helper.getDifference(bitcoinEntity.getPrevUsd(), bitcoinEntity.getUsd(), "%.2f"),
+						9
+					)
+				);
+				report += String.format(
+					"%s %s%s\n",
+					locale.i18n("exchange.bitpay.rub.btc"),
+					String.format(Locale.ROOT, "%10.2f", bitcoinEntity.getRub()),
+					filterStringDifference(helper.getDifference(
+						bitcoinEntity.getPrevRub(), bitcoinEntity.getRub(), "%.2f"), 9
+					)
+				);
+			}
+			report += "```";
+		}
+		return report;
+	}
+
+	private String bankRuErapiReportAux(ExchangeRateErapiEntity entity, String label, boolean diff) {
 		String report = "";
 		if (entity != null) {
 			report += label + " " + helper.addLeadingSigns(entity.getSale(), " ", 10) +

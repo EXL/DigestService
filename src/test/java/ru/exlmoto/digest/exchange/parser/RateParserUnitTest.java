@@ -36,6 +36,7 @@ import ru.exlmoto.digest.exchange.parser.impl.MetalRuMirrorParser;
 import ru.exlmoto.digest.exchange.parser.impl.BitcoinParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliHelpixParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateErapiParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateMoexParser;
 import ru.exlmoto.digest.util.file.ResourceHelper;
@@ -236,6 +237,14 @@ class RateParserUnitTest {
 		assertFalse(parserHelper.process(new RateMoexParser(), parserHelper.fileContent("currencyMoexError.json")));
 
 		generalTests(new RateMoexParser());
+	}
+
+	@Test
+	public void testErapiParser() {
+		assertTrue(parserHelper.process(new RateErapiParser(), parserHelper.fileContent("currencyErApi.json")));
+		assertFalse(parserHelper.process(new RateErapiParser(), parserHelper.fileContent("currencyErApiError.json")));
+
+		generalTests(new RateErapiParser());
 	}
 
 	@Test

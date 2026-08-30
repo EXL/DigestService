@@ -30,11 +30,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "exchange_rate_moex")
-public class ExchangeRateMoexEntity {
-	public static final int MOEX_ROW_USD_EXCH = 1;
-	public static final int MOEX_ROW_EUR_EXCH = 2;
-	public static final int MOEX_ROW_EUR_USD  = 3;
+@Table(name = "exchange_rate_erapi")
+public class ExchangeRateErapiEntity {
+	public static final int ERAPI_ROW_USD_EXCH = 1;
+	public static final int ERAPI_ROW_EUR_EXCH = 2;
+	public static final int ERAPI_ROW_EUR_USD  = 3;
 
 	@Id
 	private int id;
@@ -83,7 +83,7 @@ public class ExchangeRateMoexEntity {
 	@Override
 	public String toString() {
 		return
-			"ExchangeRateMoexEntity{id=" + id +
+			"ExchangeRateErapiEntity{id=" + id +
 			", date=" + date +
 			", sale=" + sale +
 			", prev=" + prev +

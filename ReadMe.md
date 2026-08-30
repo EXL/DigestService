@@ -62,7 +62,7 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
 3. Test application running:
 
     ```shell script
-    DB_USERNAME=user DB_PASSWORD=password HOST=//digest.exlmoto.ru/ TG_TOKEN=<token> TG_CHAT=<chat id> GH_TOKEN=<token> PROTECT=false java -jar /srv/digest-service-current.jar
+    DB_PASSWORD=<password> TG_TOKEN=<token> TG_CHAT=<chat id> GH_TOKEN=<token> PROTECT=false java -jar /srv/digest-service-current.jar
     ```
 
 4. Daemonize Digest Service application via [systemd](https://github.com/systemd/systemd) Service Manager:
@@ -81,7 +81,6 @@ For example, on a fresh and clean [Ubuntu 26.04 LTS](https://ubuntu.com/) Linux 
     Environment="HOST=//digest.exlmoto.ru/"
     Environment="TG_TOKEN=<token>"
     Environment="TG_CHAT=<chat id>"
-    Environment="DB_USERNAME=digest_user"
     Environment="DB_PASSWORD=digest_password"
     Environment="GH_TOKEN=<token>"
     Environment="PROTECT=true"

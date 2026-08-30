@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 
 import ru.exlmoto.digest.exchange.configuration.ExchangeConfiguration;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliParser;
+import ru.exlmoto.digest.exchange.parser.additional.RateErapiParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateAliHelpixParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateRbcParser;
 import ru.exlmoto.digest.exchange.parser.additional.RateMoexParser;
@@ -67,9 +68,15 @@ public class ExchangeManager {
 		commitBankKz(config.getBankKz());
 		commitMetalRu(config.getMetalRu(), config.getMetalRuMirror());
 		commitBitcoin(config.getBitcoin());
+
 		// Disable RBC.ru and use MOEX instead, because RBC.ru closed their public API.
 		// commitRbc(config.getRbc());
-		commitMoex(config.getMoex());
+
+		// Disable MOEX and use ER API instead, because MOEX and RKN is shit.
+		// commitMoex(config.getMoex());
+
+		commitErapi(config.getErApi());
+
 		commitAliexpress();
 		log.info("=> End update exchanging rates.");
 	}
@@ -110,6 +117,10 @@ public class ExchangeManager {
 
 	public void commitMoex(String url) {
 		new RateMoexParser().commitRates(url, service, rest);
+	}
+
+	public void commitErapi(String url) {
+		new RateErapiParser().commitRates(url, service, rest);
 	}
 
 	public void commitAliexpress() {

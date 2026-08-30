@@ -47,6 +47,7 @@ import ru.exlmoto.digest.entity.ExchangeRateEntity;
 import ru.exlmoto.digest.entity.ExchangeRateAliEntity;
 import ru.exlmoto.digest.entity.ExchangeRateRbcEntity;
 import ru.exlmoto.digest.entity.ExchangeRateMoexEntity;
+import ru.exlmoto.digest.entity.ExchangeRateErapiEntity;
 import ru.exlmoto.digest.entity.MemberEntity;
 import ru.exlmoto.digest.entity.FlatSetupEntity;
 import ru.exlmoto.digest.entity.GithubReposEntity;
@@ -64,6 +65,7 @@ import ru.exlmoto.digest.repository.ExchangeRateRepository;
 import ru.exlmoto.digest.repository.ExchangeRateAliRepository;
 import ru.exlmoto.digest.repository.ExchangeRateRbcRepository;
 import ru.exlmoto.digest.repository.ExchangeRateMoexRepository;
+import ru.exlmoto.digest.repository.ExchangeRateErapiRepository;
 import ru.exlmoto.digest.repository.MemberRepository;
 import ru.exlmoto.digest.repository.FlatSetupRepository;
 import ru.exlmoto.digest.repository.GithubReposRepository;
@@ -89,6 +91,7 @@ public class DatabaseService {
 	private final ExchangeRateAliRepository exchangeRateAliRepository;
 	private final ExchangeRateRbcRepository exchangeRateRbcRepository;
 	private final ExchangeRateMoexRepository exchangeRateMoexRepository;
+	private final ExchangeRateErapiRepository exchangeRateErapiRepository;
 	private final MemberRepository memberRepository;
 	private final FlatSetupRepository flatSetupRepository;
 	private final GithubReposRepository githubReposRepository;
@@ -107,6 +110,7 @@ public class DatabaseService {
 	                       ExchangeRateAliRepository exchangeRateAliRepository,
 	                       ExchangeRateRbcRepository exchangeRateRbcRepository,
 	                       ExchangeRateMoexRepository exchangeRateMoexRepository,
+	                       ExchangeRateErapiRepository exchangeRateErapiRepository,
 	                       MemberRepository memberRepository,
 	                       FlatSetupRepository flatSetupRepository,
 	                       GithubReposRepository githubReposRepository) {
@@ -124,6 +128,7 @@ public class DatabaseService {
 		this.exchangeRateAliRepository = exchangeRateAliRepository;
 		this.exchangeRateRbcRepository = exchangeRateRbcRepository;
 		this.exchangeRateMoexRepository = exchangeRateMoexRepository;
+		this.exchangeRateErapiRepository = exchangeRateErapiRepository;
 		this.memberRepository = memberRepository;
 		this.flatSetupRepository = flatSetupRepository;
 		this.githubReposRepository = githubReposRepository;
@@ -488,6 +493,22 @@ public class DatabaseService {
 	}
 
 	/* End: ExchangeRateMoexEntity */
+
+	/* Start: ExchangeRateErapiEntity */
+
+	public Optional<ExchangeRateErapiEntity> getErapiQuotes(int position) {
+		return exchangeRateErapiRepository.getQuotes(position);
+	}
+
+	public void saveErapiExchange(ExchangeRateErapiEntity rate) {
+		if (rate != null) {
+			exchangeRateErapiRepository.save(rate);
+		} else {
+			log.error("Cannot save ExchangeRateErapiEntity, because rate is null.");
+		}
+	}
+
+	/* End: ExchangeRateErapiEntity */
 
 	/* Start: MemberEntity */
 

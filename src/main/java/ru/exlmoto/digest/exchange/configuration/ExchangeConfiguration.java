@@ -39,6 +39,7 @@ public class ExchangeConfiguration {
 	private String bitcoin;
 	private String rbc;
 	private String moex;
+	private String erApi;
 	private String aliexpress;
 	private String aliexpressHelpix;
 	private boolean useHelpix;
@@ -129,6 +130,14 @@ public class ExchangeConfiguration {
 
 	public void setMoex(String moex) {
 		this.moex = moex;
+	}
+
+	public String getErApi() {
+		return erApi;
+	}
+
+	public void setErApi(String erApi) {
+		this.erApi = erApi;
 	}
 
 	public String getAliexpress() {
